@@ -1,0 +1,147 @@
+<template>
+	<view style="height: 200%;background-color: #F2F2F2;">
+		
+		<uni-nav-bar :fixed="true" statusBar="true"  color="#fff" backgroundColor="#11B38C" left-text="项目进度" />
+		
+		
+		<view class="end-title" style="color: #707070;height: 110rpx;line-height: 110rpx;font-weight: 750;background-color: #F2F2F2;">
+		　　<view @tap="change(0)" :class="{btna:btnnum == 0}">进度滞后</view>
+		  　<view @tap="change(1)" :class="{btna:btnnum == 1}">进度正常</view>
+		</view>
+		
+		<view class="end-cont" :class="{dis:btnnum == 0}">
+			<uni-tag style="margin-left: 18rpx;" :inverted="true" 
+				:text="tag" v-for="(tag,index) in tagName" :key=tag
+				@click="changeTags(index)" :class="{'tagsBackground' : index==currentIndex}">
+			</uni-tag>
+			
+			<uni-card :is-shadow="true" v-for="(project,index) in projectMessage" :title="project.name">
+				
+				<view v-for="(item,index) in project.list">
+					<uni-tag :text="item.type"></uni-tag>
+					<text style="margin-left: 20rpx;color: #000000;">{{item.content}}({{item.status}})</text>
+				</view>
+				
+			</uni-card>
+		 　　
+		</view>
+		
+		<view class="end-cont" :class="{dis:btnnum == 1}">
+		 　　<uni-card :is-shadow="true" v-for="(project,index) in projectMessage" :title="project.name" style="margin-top: -15rpx !important;">
+				
+				<view v-for="(item,index) in project.list">
+					<uni-tag :text="item.type"></uni-tag>
+					<text style="margin-left: 20rpx;color: #000000;">{{item.content}}({{item.status}})</text>
+				</view>
+				
+			</uni-card>
+		</view>
+		
+	</view>
+	
+</template>
+
+<script>
+	export default {
+		components:{},
+		data(){
+			return {
+				 btnnum: 0,
+				 tagName:['全部','一般','较重','严重','特别严重'],
+				 currentIndex:0,
+				 projectMessage:[{
+					 name:'郑州鲁能花园一号院二期项目',
+					 list:[{
+						 type:'较重',
+						 content:'外装饰完成',
+						 status:'未开始,未涉及'
+					 }]
+					 
+				 },{
+					 name:'郑州鲁能花园一号院二期项目',
+					 list:[{
+						 type:'较重',
+						 content:'外装饰完成',
+						 status:'未开始,未涉及'
+					 }]
+					 
+				 }]
+			}
+		},
+		onLoad() {
+			
+		},
+		methods: {
+			 change(e) {
+			      this.btnnum = e
+			  },
+			  changeTags(index){
+				  this.currentIndex = index
+			  }
+		},
+		
+	}
+</script>
+
+<style scoped>
+	>>> .uni-card{
+		margin-left: 8rpx !important;
+	}
+	.tips{
+		background-color: #E95A4E;
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		top: -12px;
+		left: 45px;
+		border-radius: 50px;
+		color: #FFFFFF;
+	}
+	.tagsBackground{
+		background-color: #00B48F;
+		color: #FFFFFF !important;
+	}
+	
+	.uni-tag[data-v-1516016e]{
+		padding: 10rpx 20rpx;
+	}
+	.uni-tag--default--inverted[data-v-1516016e]{
+		color: #27A386;
+		border-color: #27A386;
+		font-size: 14px;
+	}
+	/* 将三个内容view的display设置为none(隐藏) */
+	.end-title{
+		display: flex;
+	}
+	.end-title view{
+		flex-grow: 1;
+		text-align: center;
+	}
+	.end-cont{
+		display: none;
+		margin-top: 5rpx;
+		padding: 30rpx;
+	}
+	.btna{
+		color: #000000;
+		border-bottom: 6rpx solid #2297F4;
+	}
+	.dis{
+		display: block;
+	}    
+	>>> .uni-navbar__header[data-v-6bda1a90]{
+		height: 110rpx;
+		line-height: 110rpx;
+	}
+	>>> .uni-navbar__header-btns-left[data-v-6bda1a90]{
+		margin-left: 10rpx;
+		width: 170rpx;
+	}
+	>>> .uni-navbar__content_view[data-v-6bda1a90] uni-text span{
+		font-size: 38rpx !important;
+	}
+	>>> .uni-navbar__content_view[data-v-6bda1a90] uni-text{
+		font-size: 55rpx !important;
+	}
+</style>

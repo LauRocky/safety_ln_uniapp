@@ -1,0 +1,89 @@
+<template>
+	<view>
+		
+		<uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C">
+				<view v-show="!showTitle">
+					<input style="background-color: #FFFFFF;color: #000000; border-radius: 50px;height: 45rpx;width: 300rpx;" type="text" :value="dangerName" />
+				</view>
+			    <view slot="left" style="font-size: 38rpx;" v-show="showTitle">隐患列表</view>
+			    <view slot="right" style="color: #FFFFFF;">
+					<uni-icons type="search" color="#fff" @click="search()"></uni-icons>
+				</view>
+		</uni-nav-bar>
+				
+		<view class="end-title" style="color: #707070;height: 50px;line-height: 50px;font-weight: 750;background-color: #F2F2F2;">
+		　　<view @tap="change(0)" :class="{btna:btnnum == 0}">全部</view>
+		  　<view @tap="change(1)" :class="{btna:btnnum == 1}">我的</view>
+		</view>
+		
+		<view class="end-cont" :class="{dis:btnnum == 0}">
+		 　　0信息
+		</view>
+		
+		<view class="end-cont" :class="{dis:btnnum == 1}">
+		 　　1信息
+		</view>
+		
+	</view>
+	
+</template>
+
+<script>
+	export default {
+		components:{},
+		data(){
+			return {
+				 btnnum: 0,
+				 dangerName:'',
+				 showTitle:true
+			}
+		},
+		onLoad() {
+			
+		},
+		methods: {
+			 change(e) {
+			      this.btnnum = e
+			      
+			  }
+		},
+		
+	}
+</script>
+
+<style scoped>
+	/* 将三个内容view的display设置为none(隐藏) */
+	.end-title{
+		display: flex;
+	}
+	.end-title view{
+		flex-grow: 1;
+		text-align: center;
+	}
+	.end-cont{
+		display: none;
+		background: #C8C7CC;
+	}
+	.btna{
+		color: #000000;
+		border-bottom: 3px solid #2297F4;
+	}
+	.dis{
+		display: block;
+	}    
+	
+	>>> .uni-navbar__header[data-v-6bda1a90]{
+		height: 110rpx;
+		line-height: 110rpx;
+	}
+	>>> .uni-navbar__header-btns-left[data-v-6bda1a90]{
+		margin-left: 10rpx;
+		width: 170rpx;
+	}
+	>>> .uni-navbar__content_view[data-v-6bda1a90] uni-text span{
+		font-size: 38rpx !important;
+	}
+	>>> .uni-navbar__content_view[data-v-6bda1a90] uni-text{
+		font-size: 55rpx !important;
+	}
+</style>
