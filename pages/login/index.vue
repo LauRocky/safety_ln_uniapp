@@ -63,7 +63,7 @@
 							uni.setStorageSync('token', res.data.token);
 														
 							uni.switchTab({
-								url: '../index/index'
+								url: '/pages/home/index'
 							});	
 						}
 					}).catch(err=>{
