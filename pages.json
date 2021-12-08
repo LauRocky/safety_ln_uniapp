@@ -1,141 +1,123 @@
-{   "easycom": {
-        // npm安装的方式不需要前面的"@/"，下载安装的方式需要"@/"
-        // npm安装方式
-        // "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
-        // 下载安装方式
-         "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
-    },
+{
+	"easycom": {
+		// npm安装的方式不需要前面的"@/"，下载安装的方式需要"@/"
+		// npm安装方式
+		// "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+		// 下载安装方式
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{ 
+		{
 			"path": "pages/login/index",
 			"style": {
-				"navigationBarBackgroundColor":"#11B38C", 
-				"navigationBarTitleText":"隐患列表",
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "隐患列表",
 				"navigationStyle": "custom",
 				"app-plus": {
-				  "titleNView": false,
-				  "bounce": "none"
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
 		},
 		{
-			"path": "pages/index/index",
+			"path": "pages/home/index",
 			"style": {
-				"navigationBarBackgroundColor":"#11B38C", 
-				"navigationBarTitleText":"首页",
-				"navigationStyle": "custom",
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "首页",
 				"app-plus": {
-				  "titleNView": false,
-				  "bounce": "none"
-				}
-				/* "app-plus": {
-					"titleNView":{
-						"backgroundColor":"#11B38C",
-						"buttons":[{
-							
-						}],
-						"titleColor":"#FFFFFF",
-						"titleText":"首页",
-						"titleSize":"18px",
-						"autoBackButton":"false",
-						"titleAlign":"left",
-						"buttons":[{
-							"text":"首页",
-							"float":"left",
-							"fontSize":"18px",
-							"width":"88px"
-						},{
-							"text":"\ue1234",
-							"float":"right",
-							"fontSize":"18px",
-							"width":"88px"
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "\ue8d4",
+							"fontSize": "26px",
+							"fontSrc": "/static/font/iconfont.ttf"
 						}]
-						
 					}
-				} */
+				}
+
 			}
-		},{
+		}, {
 			"path": "pages/dangerList/index",
 			"style": {
-				"navigationBarBackgroundColor":"#11B38C", 
-				"navigationBarTitleText":"隐患列表",
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "隐患列表",
 				"navigationStyle": "custom",
 				"app-plus": {
-				  "titleNView": false,
-				  "bounce": "none"
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
-		},{
+		}, {
 			"path": "pages/projectProgress/index",
 			"style": {
-				"navigationBarBackgroundColor":"#11B38C", 
-				"navigationBarTitleText":"项目进度",
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "项目进度",
 				"navigationStyle": "custom",
 				"app-plus": {
-				  "titleNView": false,
-				  "bounce": "none"
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
-		},{
+		}, {
 			"path": "pages/video/index",
 			"style": {
-				"navigationBarBackgroundColor":"#11B38C", 
-				"navigationBarTitleText":"视频",
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "视频",
 				"navigationStyle": "custom",
 				"app-plus": {
-				  "titleNView": false,
-				  "bounce": "none"
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
-		},{
+		}, {
 			"path": "pages/my/index",
 			"style": {
-				"navigationBarBackgroundColor":"#11B38C", 
-				"navigationBarTitleText":"我的",
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "我的",
 				"navigationStyle": "custom",
 				"app-plus": {
-				  "titleNView": false,
-				  "bounce": "none"
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
 		}
 	],
-	"tabBar":{
-	    "color": "#A9A9A9",
-	    "selectedColor": "#00B490",
-	    "borderStyle": "#F8F8F8",
-		"blurEffect":"dark",
-	    "backgroundColor": "#f8f8f8",
-	    "list": [{
-	        "pagePath": "pages/index/index",
-	        "text": "首页",
-			"iconPath":"static/tabBar/home.png",
-			"selectedIconPath":"static/tabBar/home1.png",
-			"visible":true
-	    }, {
-	        "pagePath": "pages/dangerList/index",
-	        "text": "隐患",
-			"iconPath":"static/tabBar/dangerous.png",
-			"selectedIconPath":"static/tabBar/dangerous1.png",
-			"visible":true
-	    },{
-	        "pagePath": "pages/projectProgress/index",
-	        "text": "项目进度",
-			"iconPath":"static/tabBar/progress.png",
-			"selectedIconPath":"static/tabBar/progress1.png",
-			"visible":true
-	    },{
-	        "pagePath": "pages/video/index",
-	        "text": "视频",
-			"iconPath":"static/tabBar/video.png",
-			"selectedIconPath":"static/tabBar/video1.png",
-			"visible":true
-	    },{
-	        "pagePath": "pages/my/index",
-	        "text": "我的", 
-			"iconPath":"static/tabBar/my.png",
-			"selectedIconPath":"static/tabBar/my1.png",
-			"visible":true
-	    }]
+	"tabBar": {
+		"color": "#A9A9A9",
+		"selectedColor": "#00B490",
+		"borderStyle": "#F8F8F8",
+		"blurEffect": "dark",
+		"backgroundColor": "#f8f8f8",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"text": "首页",
+			"iconPath": "static/tabBar/home.png",
+			"selectedIconPath": "static/tabBar/home1.png",
+			"visible": true
+		}, {
+			"pagePath": "pages/dangerList/index",
+			"text": "隐患",
+			"iconPath": "static/tabBar/dangerous.png",
+			"selectedIconPath": "static/tabBar/dangerous1.png",
+			"visible": true
+		}, {
+			"pagePath": "pages/projectProgress/index",
+			"text": "项目进度",
+			"iconPath": "static/tabBar/progress.png",
+			"selectedIconPath": "static/tabBar/progress1.png",
+			"visible": true
+		}, {
+			"pagePath": "pages/video/index",
+			"text": "视频",
+			"iconPath": "static/tabBar/video.png",
+			"selectedIconPath": "static/tabBar/video1.png",
+			"visible": true
+		}, {
+			"pagePath": "pages/my/index",
+			"text": "我的",
+			"iconPath": "static/tabBar/my.png",
+			"selectedIconPath": "static/tabBar/my1.png",
+			"visible": true
+		}]
 	}
 }
