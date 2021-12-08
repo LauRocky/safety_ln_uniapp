@@ -74,7 +74,8 @@
 			"https": false,
 			"proxy": {
 				"/web": {
-					"target": "http://192.168.133.11:12002/safety-server/api",
+					"target": "http://192.168.133.18:12002/safety-server/api",
+					// "target": "http://59.110.136.159:12003/",
 					"changeOrigin": true,
 					"secure": false,
 					"pathRewrite": {

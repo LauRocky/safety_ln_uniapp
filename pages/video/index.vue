@@ -1,5 +1,17 @@
 <template>
 	<view>
+		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
+			
+			<view class="u-nav-left"slot="left">
+				视频名称
+			</view>
+			
+			<view class="u-nav-right"slot="right">
+				 <u-search  shape="round" height="50" bgColor="#ffffff" :showAction="false"></u-search>
+			</view>
+			
+		</u-navbar>
+		
 		<view class="video">
 			<view class="video-item" v-for="(item,index) in dataList">
 				<view class="ball"><text>{{item.name.substring(0,1)}}</text></view>
@@ -58,15 +70,9 @@
 </script>
 
 <style scoped>
-	>>> .u-navbar__content__left__text{
-		color: #FFFFFF !important;
-		font-size:40rpx;
-		margin-left: 22rpx;
-	}
-	>>> .u-icon__icon{
-		color: #FFFFFF !important;
-		font-size: 60rpx !important;
-		margin-right: 22rpx;
+	.u-nav-left{
+		color: #FFFFFF;
+		font-weight: 550;
 	}
 	.video{
 		margin-top: 25rpx;

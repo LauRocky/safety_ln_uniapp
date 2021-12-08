@@ -1,10 +1,42 @@
 <template>
 	<view>
 		
+		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
+			
+			<view class="u-nav-left"slot="left">
+				公司名称
+			</view>
+			
+			<view class="u-nav-right"slot="right">
+				 <u-search  shape="round" height="50" bgColor="#ffffff" :showAction="false"></u-search>
+			</view>
+			
+		</u-navbar>
+		
 		<view class="project-container">
-			<uni-card title="1111">
-				111
-			</uni-card>
+			
+			<view class="project">
+				
+				<view class="title">12</view>
+				
+				<view class="status">123</view>
+				
+			</view>
+			
+			<!-- <uni-card v-for="(project,index) in projectList" :key="project.projectId" :title="project.projectName">
+				
+				<view v-if="getprocess(project.projectId) == 0">
+					<uni-tag  type="default" text="进度正常"></uni-tag>
+					<text style="margin-left: 23rpx;">项目各个环节进度正常</text> 
+				</view>
+				
+				<view v-else>
+					<uni-tag  type="error" text="进度异常"></uni-tag>
+					<text style="margin-left: 23rpx;">项目{{getprocess(project.projectId)}}个环节进度异常</text> 
+				</view>
+				
+			</uni-card> -->
+			
 		</view>
 				
 	</view>
@@ -18,35 +50,56 @@
 			return {
 				 queryForm:{
 					 companyId: JSON.parse(uni.getStorageSync('user')).companyId,
-					 projectId:0,
+					 projectId: '',
 					 status:'',
 				 },
+				 projectList:[],
 			}
 		}, 
 		methods: {
 			getProjectList(){
 				this.$http('/project/plan/withStatus','POST',this.queryForm).then(res=>{
-					console.log(res)
+					this.projectList = res.data.page 
 				})
+			},
+			getprocess(projectId){
+				let arr = []
+				if(this.projectList){
+					this.projectList.forEach(item=>{
+						if(item.projectId==projectId){
+							item.nodes.forEach(node=>{
+								if(node.nodeState == '3' || node.nodeState == '4'){
+									arr.push(node)
+								}
+							})
+						}
+					})
+				}
+				return arr.length
 			}
 		},
-		onLoad() {
-			// this.getProjectList()
+		onShow() {
+			this.getProjectList()
 		}
 		
 	}
 </script>
 
 <style scoped>
-	>>> .u-navbar__content__left__text{
-		color: #FFFFFF !important;
-		font-size:40rpx;
-		margin-left: 22rpx;
+	.status{
+		border-top: 1rpx solid #888888;
 	}
-	>>> .u-icon__icon{
-		color: #FFFFFF !important;
-		font-size: 60rpx !important;
-		margin-right: 22rpx;
+	.project{
+		background-color: #00B48F;
+		margin: 20rpx;
+		border-radius: 10rpx;
+	}
+	>>> .u-tag--primary[data-v-95cf93f4]{
+		border: none;
+	}
+	.u-nav-left{
+		color: #FFFFFF;
+		font-weight: 550;
 	}
 	.tips{
 		background-color: #E95A4E;
