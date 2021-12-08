@@ -1,18 +1,10 @@
-<<<<<<< HEAD
 // 
 // const baseUrl = 'http://192.168.133.18:12002/safety-server/api'
 var BASE_URL = 'http://192.168.133.18:12002/safety-server/api'
 // #ifdef H5
 BASE_URL = '/web'; //H5下将地址修改为/dpc
-=======
-
-var BASE_URL = 'http://192.168.133.11:12002/safety-server/api'
-
-// #ifdef H5
-BASE_URL = '/web';    //H5下将地址修改为/web
->>>>>>> cf9d4a0eaabd89cb64e4a280830c82de5e5756ed
 // #endif
-
+// 
 export function request(url, type, date, tips) {
 	// console.log(url, type, date)
 	// 默认为开启错误提示
