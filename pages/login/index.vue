@@ -1,25 +1,39 @@
 <template>
     <view class="content">
+		<image src="../../static/logo.png"></image>
+		
         <view class="login-form">
-        	<p style="font-size: 45rpx;color: #58CCAF;margin-top: 30rpx;font-weight: 900;">智慧安质平台</p>
-			
-			<uni-forms ref="loginForm" :modelValue="loginForm" :rules="rules" class="login">
+        	<p>智慧安质平台</p>
+			<!-- <u--form labelPosition="left" ref="loginForm" :model="loginForm" :rules="rules" class="login">
 				
-				<uni-forms-item name="username">
-					<input style="background-color: #FFFFFF;border-radius: 5px;" type="text" v-model="loginForm.username" placeholder="请输入您的用户名"></input>
-				</uni-forms-item>
-				<uni-forms-item name="password">
-					<!-- <uni-easyinput type="password" style="margin-top: 30rpx;background-color: #FFFFFF;border-radius: 5px;" placeholder="请输入您的密码" v-model="loginForm.password" /> -->
-					<input style="margin-top: 30rpx;background-color: #FFFFFF;border-radius: 5px;" type="password" v-model="loginForm.password" placeholder="请输入您的密码"></input>
-				</uni-forms-item>
+				<u-form-item name="username">
+					<input type="text" v-model="loginForm.username" placeholder="请输入您的用户名"></input>
+				</u-form-item>
+				
+				<u-form-item name="password">
+					<input style="margin-top: 30rpx;" type="password" v-model="loginForm.password" placeholder="请输入您的密码"></input>
+				</u-form-item>
 
-			</uni-forms>
+			</u--form> -->
 			
-			<view style="width: 350rpx;height: 100rpx;margin: 0 auto;">
-				<button @click="submit" style="color: #FFFFFF;background-color: #4CBFA2;" size="default" type="default" >登录</button>
+			<u--form  labelPosition="left" :model="loginForm" :rules="rules" ref="loginForm">
+				
+				<u-form-item prop="username">
+					<u--input placeholder="请输入您的用户名" v-model="loginForm.username"></u--input>
+				</u-form-item>
+				
+				<u-form-item prop="username">
+					<u--input placeholder="请输入密码" :password="true" v-model="loginForm.password"></u--input>
+				</u-form-item>
+				
+			</u--form>
+			
+			<view class="submit">
+				<button @click="submit" size="default" type="default" >登录</button>
 			</view>
 			
         </view>
+		
     </view>
 </template>
 
@@ -53,51 +67,67 @@
         methods: {
             submit(){
 				this.$refs.loginForm.validate().then(res=>{
-					uni.request({
-					    url: '/api/loginApp',
-						method:'POST',
-						dataType:'json',
-						header: {
-							'Content-Type': 'application/json; charset=utf-8',
-						},
-					    data: this.loginForm,
-					    success: (res) => {
-					        console.log(res.data);
-					        this.text = 'request success';
-					    }
-					});
+					
+					this.$http('/loginApp','POST',this.loginForm).then(res=>{
+						if(res.data.code==0){
+							
+							uni.setStorageSync('user', res.data.user);
+							uni.setStorageSync('token', res.data.token);
+														
+							uni.switchTab({
+								url: '../index/index'
+							});	
+						}
+					}).catch(err=>{
+						console.log(err)
+					})
+					
 				}).catch(err =>{
+					// 校验信息
 					uni.hideToast({
 					    title: err.errorMessage,
 					});
 				})
-				/* uni.switchTab({
-					url: '../index/index'
-				}); */
+				
 			}
         }
     }
 </script>
 
 <style scoped>
-
+	
+	.submit{
+		width: 350rpx;
+		height: 100rpx;
+		margin: 0 auto;
+	}
+	.submit button{
+		color: #FFFFFF;
+		background-color: #4CBFA2;
+	}
 	.login{
-		text-align: left;
 		margin-top: 30rpx;
 		padding: 30rpx
 	}
 	.login-form{
 		width: 650rpx;
-		height: 600rpx;
+		height: 450rpx;
 		text-align: center;
 		box-shadow: 3rpx 3rpx 3rpx 3rpx #D4D4D4;
 	}
+	.login-form p{
+		font-size: 45rpx;color: #58CCAF;margin-top: 30rpx;font-weight: 900;
+	}
     .content{
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		width: 100%;
 		height: 100%;
 		background-color: #FAFAFA;
+	}
+	.content image{
+		display: block; width: 95px;height: 95px;margin-bottom: 75rpx;
 	}
 </style>

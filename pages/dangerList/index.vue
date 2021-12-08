@@ -2,8 +2,8 @@
 	<view>
 		
 		<uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C">
-				<view v-show="!showTitle">
-					<input style="background-color: #FFFFFF;color: #000000; border-radius: 50px;height: 45rpx;width: 300rpx;" type="text" :value="dangerName" />
+				<view class="input-item" v-show="!showTitle">
+					<input type="text" :value="dangerName" />
 				</view>
 			    <view slot="left" style="font-size: 38rpx;" v-show="showTitle">隐患列表</view>
 			    <view slot="right" style="color: #FFFFFF;">
@@ -11,7 +11,7 @@
 				</view>
 		</uni-nav-bar>
 				
-		<view class="end-title" style="color: #707070;height: 50px;line-height: 50px;font-weight: 750;background-color: #F2F2F2;">
+		<view class="end-title">
 		　　<view @tap="change(0)" :class="{btna:btnnum == 0}">全部</view>
 		  　<view @tap="change(1)" :class="{btna:btnnum == 1}">我的</view>
 		</view>
@@ -42,19 +42,35 @@
 			
 		},
 		methods: {
-			 change(e) {
-			      this.btnnum = e
-			      
-			  }
+			change(e) {
+				this.btnnum = e
+			},
+			search() {
+				uni.showToast({
+					title: '搜索'
+				})
+			},
 		},
 		
 	}
 </script>
 
 <style scoped>
+	.input-item{
+		background-color: #FFFFFF;
+		color: #000000; 
+		border-radius: 50px;
+		height: 45rpx;
+		width: 300rpx;
+	}
 	/* 将三个内容view的display设置为none(隐藏) */
 	.end-title{
 		display: flex;
+		color: #707070;
+		height: 50px;
+		line-height: 50px;
+		font-weight: 750;
+		background-color: #F2F2F2;
 	}
 	.end-title view{
 		flex-grow: 1;

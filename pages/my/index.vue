@@ -22,15 +22,21 @@
 			
 			<view class="image">
 				<view style="margin-left: 30rpx;text-align: center;">
-					<view><image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/messsage.png" ></image></view>
+					<view>
+						<image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/messsage.png" ></image>
+					</view>
 					<text>消息</text>
 				</view>
 				<view style="margin-left: 60rpx;text-align: center;">
-					<view> <image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/remark.png" ></image></view>
+					<view> 
+						<image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/remark.png" ></image>
+					</view>
 					<text>评论</text>
 				</view>
 				<view style="margin-left: 60rpx; text-align: center;">
-					<view><image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/technicalSupportss.png" ></image></view>
+					<view>
+						<image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/technicalSupportss.png" ></image>
+					</view>
 					<text>技术支持</text>
 				</view>
 			</view>
@@ -95,6 +101,8 @@
 					content: '确定要退出当前用户？',
 					success: function (res) {
 						if (res.confirm) {
+							uni.removeStorageSync('user')
+							uni.removeStorageSync('token')
 							uni.navigateTo({
 								url: '../login/index'
 							})

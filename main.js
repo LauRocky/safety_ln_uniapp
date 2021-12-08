@@ -2,17 +2,15 @@
 // #ifndef VUE3
 import Vue from 'vue'
 import App from './App'
-import axios from 'axios'
 
-const http = axios.create({
-	timeout: 1000 * 300,
-	withCredentials: true,
-	headers: {
-		'Content-Type': 'application/json; charset=utf-8',
-	},
-})
+// uview
+import uView from 'uview-ui';
+Vue.use(uView);
 
-Vue.prototype.$axios = http
+// request
+import {request} from './utils/request.js'
+Vue.prototype.$http = request
+
 
 Vue.config.productionTip = false
 

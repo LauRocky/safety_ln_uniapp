@@ -1,5 +1,6 @@
 // 
-const baseUrl = ''
+// const baseUrl = 'http://192.168.133.18:12002/safety-server/api'
+const baseUrl = 'http://192.168.133.11:12002/safety-server/api'
 // 
 export function request( url, type, date, tips ) {
 	// console.log(url, type, date)
@@ -11,12 +12,12 @@ export function request( url, type, date, tips ) {
 	}
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: baseUrl+ 'api/' + url, //由基础路径和接口地址
+			url: baseUrl+url, //由基础路径和接口地址
 			method: type  || "GET", //请求的方式必须大写
 			data: date  || {}, //参数
 			header: {
-				'content-type': 'application/x-www-form-urlencoded',
-				'Authori-zation': uni.getStorageSync('token')
+				'content-type': 'application/json; charset=utf-8',
+				'token': uni.getStorageSync('token')
 			},
 			// 成功使用resolve
 			success: (res) => {
@@ -37,6 +38,7 @@ export function request( url, type, date, tips ) {
 			//失败调用reject，
 			fail: (err) => {
 				// 失败做处理
+				console.log(err)
 				if (tips.showError) {
 					showError(res);
 				}

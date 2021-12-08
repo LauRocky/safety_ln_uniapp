@@ -4,7 +4,7 @@
 		<uni-nav-bar :fixed="true" statusBar="true"  color="#fff" backgroundColor="#11B38C" left-text="项目进度" />
 		
 		
-		<view class="end-title" style="color: #707070;height: 110rpx;line-height: 110rpx;font-weight: 750;background-color: #F2F2F2;">
+		<view class="end-title">
 		　　<view @tap="change(0)" :class="{btna:btnnum == 0}">进度滞后</view>
 		  　<view @tap="change(1)" :class="{btna:btnnum == 1}">进度正常</view>
 		</view>
@@ -27,7 +27,7 @@
 		</view>
 		
 		<view class="end-cont" :class="{dis:btnnum == 1}">
-		 　　<uni-card :is-shadow="true" v-for="(project,index) in projectMessage" :title="project.name" style="margin-top: -15rpx !important;">
+		 　　<uni-card class="card1" :is-shadow="true" v-for="(project,index) in projectMessage" :title="project.name">
 				
 				<view v-for="(item,index) in project.list">
 					<uni-tag :text="item.type"></uni-tag>
@@ -68,16 +68,13 @@
 				 }]
 			}
 		},
-		onLoad() {
-			
-		},
 		methods: {
-			 change(e) {
-			      this.btnnum = e
-			  },
-			  changeTags(index){
-				  this.currentIndex = index
-			  }
+			change(e) {
+			    this.btnnum = e
+			},
+			changeTags(index){
+				this.currentIndex = index
+			},
 		},
 		
 	}
@@ -113,6 +110,11 @@
 	/* 将三个内容view的display设置为none(隐藏) */
 	.end-title{
 		display: flex;
+		color: #707070;
+		height: 110rpx;
+		line-height: 110rpx;
+		font-weight: 750;
+		background-color: #F2F2F2;
 	}
 	.end-title view{
 		flex-grow: 1;
@@ -122,6 +124,9 @@
 		display: none;
 		margin-top: 5rpx;
 		padding: 30rpx;
+	}
+	.end-cont .card1 {
+		margin-top: -15rpx !important;
 	}
 	.btna{
 		color: #000000;

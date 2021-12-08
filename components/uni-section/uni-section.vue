@@ -122,7 +122,6 @@
 
 	.uni-section__content-title {
 		font-size: 14px;
-		color: $uni-primary;
 	}
 
 	.distraction {
