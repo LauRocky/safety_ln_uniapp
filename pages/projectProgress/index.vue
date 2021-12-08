@@ -2,10 +2,9 @@
 	<view style="height: 200%;background-color: #F2F2F2;">
 		
 		<!-- <uni-nav-bar :fixed="true" statusBar="true"  color="#fff" backgroundColor="#11B38C" left-text="项目进度" /> -->
-		<u-navbar :fixed="true"
+		<u-navbar :fixed="true" :safeAreaInsetTop="true"
 			:placeholder="true" bgColor="#11B38C" 
-			leftIcon="" leftText="首页" rightIcon="scan"
-			 @rightClick="scan">
+			leftIcon="" leftText="项目进度">
 		 
 		 </u-navbar>
 		
@@ -86,8 +85,15 @@
 </script>
 
 <style scoped>
-	>>> .uni-card{
-		margin-left: 8rpx !important;
+	>>> .u-navbar__content__left__text{
+		color: #FFFFFF !important;
+		font-size:40rpx;
+		margin-left: 22rpx;
+	}
+	>>> .u-icon__icon{
+		color: #FFFFFF !important;
+		font-size: 60rpx !important;
+		margin-right: 22rpx;
 	}
 	.tips{
 		background-color: #E95A4E;
@@ -139,19 +145,5 @@
 	}
 	.dis{
 		display: block;
-	}    
-	>>> .uni-navbar__header[data-v-6bda1a90]{
-		height: 110rpx;
-		line-height: 110rpx;
-	}
-	>>> .uni-navbar__header-btns-left[data-v-6bda1a90]{
-		margin-left: 10rpx;
-		width: 170rpx;
-	}
-	>>> .uni-navbar__content_view[data-v-6bda1a90] uni-text span{
-		font-size: 38rpx !important;
-	}
-	>>> .uni-navbar__content_view[data-v-6bda1a90] uni-text{
-		font-size: 55rpx !important;
-	}
+	} 
 </style>

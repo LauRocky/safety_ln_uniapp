@@ -1,7 +1,7 @@
 <template>
 	<view>
 		
-		<u-navbar :fixed="true"
+		<u-navbar :fixed="true" :safeAreaInsetTop="true"
 		:placeholder="true" bgColor="#11B38C" 
 		leftIcon="" leftText="首页" rightIcon="scan"
 		 @rightClick="scan">
@@ -91,6 +91,18 @@
 </script>
 
 <style scoped>
+	
+	>>> .u-navbar__content__left__text{
+		color: #FFFFFF !important;
+		font-size:40rpx;
+		margin-left: 22rpx;
+	}
+	>>> .u-icon__icon{
+		color: #FFFFFF !important;
+		font-size: 60rpx !important;
+		margin-right: 22rpx;
+	}
+	
 	.charts-box{
 		width: 100%;
 		height: 300px;
@@ -121,19 +133,4 @@
 		width: 24%;
 		margin-left: 2rpx;
 	}
-	>>> .uni-navbar__header[data-v-6bda1a90]{
-		height: 110rpx;
-		line-height: 110rpx;
-	}
-	>>> .uni-navbar__header-btns-left[data-v-6bda1a90]{
-		margin-left: 10rpx;
-		width: 170rpx;
-	}
-	>>> .uni-navbar__content_view[data-v-6bda1a90] uni-text span{
-		font-size: 38rpx !important;
-	}
-	>>> .uni-navbar__content_view[data-v-6bda1a90] uni-text{
-		font-size: 55rpx !important;
-	}
-	
 </style>
