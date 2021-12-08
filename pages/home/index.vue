@@ -5,6 +5,7 @@
 </template>
 
 <script>
+	import {scanCode} from '../../utils/utils.js'
 export default {
 	components: {},
 	data() {
@@ -15,7 +16,7 @@ export default {
 		
 	},
 	onNavigationBarButtonTap(e) {
-		console.log(e)
+		scanCode()
 	},
 };
 </script>
