@@ -1,8 +1,12 @@
 <template>
 	<view>
 		
-		<uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C" left-text="首页" right-icon="scan" @clickRight="scan" />
-		
+		<u-navbar :fixed="true"
+		:placeholder="true" bgColor="#11B38C" 
+		leftIcon="" leftText="首页" rightIcon="scan"
+		 @rightClick="scan">
+		 
+		 </u-navbar>
 		<view class="content">
 			<view class="summary">
 				<uni-section type="line" title="汇总情况" :padding="true">

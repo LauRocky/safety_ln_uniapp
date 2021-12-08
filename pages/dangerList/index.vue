@@ -1,7 +1,14 @@
 <template>
 	<view>
 		
-		<uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C">
+		<u-navbar :fixed="true"
+			:placeholder="true" bgColor="#11B38C" 
+			leftIcon="" leftText="首页" rightIcon="scan"
+			 @rightClick="scan">
+		 
+		 </u-navbar>
+		 
+		<!-- <uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C">
 				<view class="input-item" v-show="!showTitle">
 					<input type="text" :value="dangerName" />
 				</view>
@@ -9,7 +16,7 @@
 			    <view slot="right" style="color: #FFFFFF;">
 					<uni-icons type="search" color="#fff" @click="search()"></uni-icons>
 				</view>
-		</uni-nav-bar>
+		</uni-nav-bar> -->
 				
 		<view class="end-title">
 		　　<view @tap="change(0)" :class="{btna:btnnum == 0}">全部</view>

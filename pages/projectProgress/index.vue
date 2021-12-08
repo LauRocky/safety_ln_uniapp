@@ -1,24 +1,29 @@
 <template>
 	<view style="height: 200%;background-color: #F2F2F2;">
 		
-		<uni-nav-bar :fixed="true" statusBar="true"  color="#fff" backgroundColor="#11B38C" left-text="项目进度" />
-		
+		<!-- <uni-nav-bar :fixed="true" statusBar="true"  color="#fff" backgroundColor="#11B38C" left-text="项目进度" /> -->
+		<u-navbar :fixed="true"
+			:placeholder="true" bgColor="#11B38C" 
+			leftIcon="" leftText="首页" rightIcon="scan"
+			 @rightClick="scan">
+		 
+		 </u-navbar>
 		
 		<view class="end-title">
 		　　<view @tap="change(0)" :class="{btna:btnnum == 0}">进度滞后</view>
 		  　<view @tap="change(1)" :class="{btna:btnnum == 1}">进度正常</view>
 		</view>
-		
+		 
 		<view class="end-cont" :class="{dis:btnnum == 0}">
-			<uni-tag style="margin-left: 18rpx;" :inverted="true" 
-				:text="tag" v-for="(tag,index) in tagName" :key=tag
+			<u-tag  style="margin-left: 18rpx;" :inverted="true" 
+				:text="tag" v-for="(tag,index) in tagName" :key=index
 				@click="changeTags(index)" :class="{'tagsBackground' : index==currentIndex}">
-			</uni-tag>
+			</u-tag >
 			
-			<uni-card :is-shadow="true" v-for="(project,index) in projectMessage" :title="project.name">
+			<uni-card :is-shadow="true" v-for="(project,index) in projectMessage"   :title="project.name">
 				
-				<view v-for="(item,index) in project.list">
-					<uni-tag :text="item.type"></uni-tag>
+				<view v-for="(item,index) in project.list" > 
+					<!-- <u-tag  :text="item.type"></u-tag> -->
 					<text style="margin-left: 20rpx;color: #000000;">{{item.content}}({{item.status}})</text>
 				</view>
 				
@@ -29,8 +34,8 @@
 		<view class="end-cont" :class="{dis:btnnum == 1}">
 		 　　<uni-card class="card1" :is-shadow="true" v-for="(project,index) in projectMessage" :title="project.name">
 				
-				<view v-for="(item,index) in project.list">
-					<uni-tag :text="item.type"></uni-tag>
+				<view v-for="(item,index) in project.list" :key="index"> 
+					<u-tag :text="item.type"></u-tag>
 					<text style="margin-left: 20rpx;color: #000000;">{{item.content}}({{item.status}})</text>
 				</view>
 				

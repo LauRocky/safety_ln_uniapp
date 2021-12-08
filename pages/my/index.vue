@@ -1,8 +1,12 @@
 <template>
 	<view style="height: 100%;background-color: #F2F2F2;">
 		
-		<uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C" left-text="我的" right-icon="scan" @clickRight="scan" />
-		
+	<!-- 	<uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C" left-text="我的" right-icon="scan" @clickRight="scan" /> -->
+		<u-navbar :fixed="true"
+			:placeholder="true" bgColor="#11B38C" 
+			leftIcon="" leftText="首页" rightIcon="scan"
+			 @rightClick="scan">
+		 </u-navbar>
 		<view class="my">
 			
 			<view class="info">
@@ -78,16 +82,11 @@
 		components:{},
 		data() {
 			return {
-				user:{
-					name:"苏长斌",
-					role:"公司领导",
-					phone:"18501017309",
-					position:"低碳城市南京鲁能地产有限公司公司领导"
-				}
+				user:uni.getStorageInfoSync('user')
 			}
 		},
 		onLoad() {
-	
+			console.log('user',this.user)
 		},
 		methods: {
 			scan() {

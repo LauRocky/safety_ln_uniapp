@@ -1,20 +1,8 @@
 <template>
     <view class="content">
 		<image src="../../static/logo.png"></image>
-		
         <view class="login-form">
         	<p>智慧安质平台</p>
-			<!-- <u--form labelPosition="left" ref="loginForm" :model="loginForm" :rules="rules" class="login">
-				
-				<u-form-item name="username">
-					<input type="text" v-model="loginForm.username" placeholder="请输入您的用户名"></input>
-				</u-form-item>
-				
-				<u-form-item name="password">
-					<input style="margin-top: 30rpx;" type="password" v-model="loginForm.password" placeholder="请输入您的密码"></input>
-				</u-form-item>
-
-			</u--form> -->
 			
 			<u--form  labelPosition="left" :model="loginForm" :rules="rules" ref="loginForm">
 				
