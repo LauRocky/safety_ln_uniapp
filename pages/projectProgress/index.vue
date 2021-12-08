@@ -1,13 +1,5 @@
 <template>
 	<view style="height: 200%;background-color: #F2F2F2;">
-		
-		<!-- <uni-nav-bar :fixed="true" statusBar="true"  color="#fff" backgroundColor="#11B38C" left-text="项目进度" /> -->
-		<u-navbar :fixed="true" :safeAreaInsetTop="true"
-			:placeholder="true" bgColor="#11B38C" 
-			leftIcon="" leftText="项目进度">
-		 
-		 </u-navbar>
-		
 		<view class="end-title">
 		　　<view @tap="change(0)" :class="{btna:btnnum == 0}">进度滞后</view>
 		  　<view @tap="change(1)" :class="{btna:btnnum == 1}">进度正常</view>

@@ -1,13 +1,5 @@
 <template>
 	<view>
-		
-		<u-navbar :fixed="true" :safeAreaInsetTop="true"
-			:placeholder="true" bgColor="#11B38C" 
-			leftIcon="" leftText="隐患列表" rightIcon="search"
-			 @rightClick="search">
-		 
-		 </u-navbar>
-		 
 		<!-- <uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C">
 				<view class="input-item" v-show="!showTitle">
 					<input type="text" :value="dangerName" />

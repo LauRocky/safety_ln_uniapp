@@ -1,12 +1,5 @@
 <template>
 	<view>
-		
-		<u-navbar :fixed="true" :safeAreaInsetTop="true"
-		:placeholder="true" bgColor="#11B38C" 
-		leftIcon="" leftText="首页" rightIcon="scan"
-		 @rightClick="scan">
-		 
-		 </u-navbar>
 		<view class="content">
 			<view class="summary">
 				<uni-section type="line" title="汇总情况" :padding="true">

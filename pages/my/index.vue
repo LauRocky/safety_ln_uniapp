@@ -1,162 +1,147 @@
 <template>
 	<view style="height: 100%;background-color: #F2F2F2;">
-		
-	<!-- 	<uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C" left-text="我的" right-icon="scan" @clickRight="scan" /> -->
-		<u-navbar :fixed="true" :safeAreaInsetTop="true"
-			:placeholder="true" bgColor="#11B38C" 
-			leftIcon="" leftText="首页" rightIcon="scan"
-			 @rightClick="scan">
-		 </u-navbar>
 		<view class="my">
-			
 			<view class="info">
 				<view class="name">
 					<view style="font-size: 40rpx;">
-						{{user.name}} <text style="font-size: 35rpx;">&nbsp;&nbsp; （{{user.role}})</text>
+						{{ user.name }}
+						<text style="font-size: 35rpx;">&nbsp;&nbsp; （{{ user.role }})</text>
 					</view>
 					<uni-icons @click="quit" size="28" style="color: #838383;" type="loop"></uni-icons>
 				</view>
 				<view class="phone" style="margin-top: 20rpx;">
-					<text>手机：{{user.phone}}</text>
+					<text>手机：{{ user.phone }}</text>
 				</view>
 				<view class="role-info" style="margin-top: 20rpx;">
-					<text>{{user.position}}</text>
+					<text>{{ user.position }}</text>
 				</view>
 			</view>
-			
+
 			<view class="image">
 				<view style="margin-left: 30rpx;text-align: center;">
-					<view>
-						<image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/messsage.png" ></image>
-					</view>
+					<view><image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/messsage.png"></image></view>
 					<text>消息</text>
 				</view>
 				<view style="margin-left: 60rpx;text-align: center;">
-					<view> 
-						<image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/remark.png" ></image>
-					</view>
+					<view><image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/remark.png"></image></view>
 					<text>评论</text>
 				</view>
 				<view style="margin-left: 60rpx; text-align: center;">
-					<view>
-						<image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/technicalSupportss.png" ></image>
-					</view>
+					<view><image style="width: 55px; height: 55px;" mode="aspectFill" src="../../static/my/technicalSupportss.png"></image></view>
 					<text>技术支持</text>
 				</view>
 			</view>
-			
+
 			<view class="app-plug">
-				
 				<view style="padding-bottom: 8px;">
-					<uni-icons size="22" color="#54AB54" type="reload"></uni-icons> <text style="margin-left: 20rpx;">检查更新</text>
+					<uni-icons size="22" color="#54AB54" type="reload"></uni-icons>
+					<text style="margin-left: 20rpx;">检查更新</text>
 				</view>
 				<view style="border-top: 1px solid #F2F2F2; padding-bottom: 8px;padding-top: 8px;">
-					<uni-icons size="22" color="#FD9B07" type="paperplane-filled"></uni-icons> <text style="margin-left: 20rpx;">分享</text>
+					<uni-icons size="22" color="#FD9B07" type="paperplane-filled"></uni-icons>
+					<text style="margin-left: 20rpx;">分享</text>
 				</view>
 				<view style="border-top: 1px solid #F2F2F2 ;padding-bottom: 8px;padding-top: 8px;display: flex; align-items: center;justify-content: space-between;">
 					<view>
-						<uni-icons size="22" color="#9E9E9E" type="trash-filled"></uni-icons> <text style="margin-left: 20rpx;">清除缓存</text>
+						<uni-icons size="22" color="#9E9E9E" type="trash-filled"></uni-icons>
+						<text style="margin-left: 20rpx;">清除缓存</text>
 					</view>
 					<view>
 						<text style="font-size: 28rpx;color: #868686;">0.0KB</text>
-						<uni-icons type="right"></uni-icons>	
+						<uni-icons type="right"></uni-icons>
 					</view>
 				</view>
 				<view style="border-top: 1px solid #F2F2F2 ;padding-top: 8px;display: flex; align-items: center;justify-content: space-between;">
 					<view>
-						<uni-icons size="22" color="#515151" type="info"></uni-icons> <text style="margin-left: 20rpx;">关于智慧安质平台</text>
+						<uni-icons size="22" color="#515151" type="info"></uni-icons>
+						<text style="margin-left: 20rpx;">关于智慧安质平台</text>
 					</view>
 					<uni-icons type="right"></uni-icons>
 				</view>
-				
 			</view>
-		
 		</view>
-		
 	</view>
-	
 </template>
 
 <script>
-	export default {
-		components:{},
-		data() {
-			return {
-				user:uni.getStorageInfoSync('user')
-			}
+export default {
+	components: {},
+	data() {
+		return {
+			user: uni.getStorageInfoSync('user')
+		};
+	},
+	onLoad() {
+		console.log('user', this.user);
+	},
+	methods: {
+		scan() {
+			uni.showToast({
+				title: '扫码'
+			});
 		},
-		onLoad() {
-			console.log('user',this.user)
-		},
-		methods: {
-			scan() {
-				uni.showToast({
-					title: '扫码'
-				})
-			},
-			quit(){
-				uni.showModal({
-					title: '提示',
-					content: '确定要退出当前用户？',
-					success: function (res) {
-						if (res.confirm) {
-							uni.removeStorageSync('user')
-							uni.removeStorageSync('token')
-							uni.navigateTo({
-								url: '../login/index'
-							})
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
+		quit() {
+			uni.showModal({
+				title: '提示',
+				content: '确定要退出当前用户？',
+				success: function(res) {
+					if (res.confirm) {
+						uni.removeStorageSync('user');
+						uni.removeStorageSync('token');
+						uni.navigateTo({
+							url: '../login/index'
+						});
+					} else if (res.cancel) {
+						console.log('用户点击取消');
 					}
-				});
-				
-			}
+				}
+			});
 		}
 	}
+};
 </script>
 
 <style scoped>
-	.name{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	.info{
-		background-color: #FFFFFF;
-		margin-top: 40rpx;
-		padding: 30rpx;
-		font-size: 28rpx;
-		box-shadow: 10rpx 10rpx 10rpx #D8D8D8;
-		border-radius: 15rpx;
-	}
-	.image{
-		display: flex;
-		box-shadow: 10rpx 10rpx 10rpx #D8D8D8;
-		background-color: #FFFFFF;
-		color: #929292;
-		margin-top: 40rpx;
-		padding: 30rpx;
-		border-radius: 15rpx;
-	}
-	.app-plug{
-		background-color: #FFFFFF;
-		box-shadow: 10rpx 10rpx 10rpx #D8D8D8;
-		padding: 30rpx;
-		margin-top: 40rpx;
-		border-radius: 15rpx;
-	}
-	.my{
-		margin: 40rpx;
-	}
-	>>> .u-navbar__content__left__text{
-		color: #FFFFFF !important;
-		font-size:40rpx;
-		margin-left: 22rpx;
-	}
-	>>> .u-icon__icon{
-		color: #FFFFFF !important;
-		font-size: 60rpx !important;
-		margin-right: 22rpx;
-	}
+.name {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.info {
+	background-color: #ffffff;
+	margin-top: 40rpx;
+	padding: 30rpx;
+	font-size: 28rpx;
+	box-shadow: 10rpx 10rpx 10rpx #d8d8d8;
+	border-radius: 15rpx;
+}
+.image {
+	display: flex;
+	box-shadow: 10rpx 10rpx 10rpx #d8d8d8;
+	background-color: #ffffff;
+	color: #929292;
+	margin-top: 40rpx;
+	padding: 30rpx;
+	border-radius: 15rpx;
+}
+.app-plug {
+	background-color: #ffffff;
+	box-shadow: 10rpx 10rpx 10rpx #d8d8d8;
+	padding: 30rpx;
+	margin-top: 40rpx;
+	border-radius: 15rpx;
+}
+.my {
+	margin: 40rpx;
+}
+>>> .u-navbar__content__left__text {
+	color: #ffffff !important;
+	font-size: 40rpx;
+	margin-left: 22rpx;
+}
+>>> .u-icon__icon {
+	color: #ffffff !important;
+	font-size: 60rpx !important;
+	margin-right: 22rpx;
+}
 </style>

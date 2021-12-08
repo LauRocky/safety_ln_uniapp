@@ -3,9 +3,7 @@
 		<image src="../../static/logo.png"></image>
         <view class="login-form">
         	<p>智慧安质平台</p>
-			
 			<u--form  labelPosition="left" :model="loginForm" :rules="rules" ref="loginForm">
-				
 				<u-form-item prop="username">
 					<u--input placeholder="请输入您的用户名" v-model="loginForm.username"></u--input>
 				</u-form-item>

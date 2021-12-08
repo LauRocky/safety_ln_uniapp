@@ -41,10 +41,15 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "隐患列表",
-				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "\ue8d4",
+							"fontSize": "26px",
+							"fontSrc": "/static/font/iconfont.ttf"
+						}]
+					}
 				}
 			}
 		}, {
@@ -52,10 +57,15 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "项目进度",
-				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "\ue8d4",
+							"fontSize": "26px",
+							"fontSrc": "/static/font/iconfont.ttf"
+						}]
+					}
 				}
 			}
 		}, {
@@ -63,10 +73,15 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "视频",
-				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "\ue8d4",
+							"fontSize": "26px",
+							"fontSrc": "/static/font/iconfont.ttf"
+						}]
+					}
 				}
 			}
 		}, {
@@ -74,10 +89,15 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "我的",
-				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"text": "\ue8d4",
+							"fontSize": "26px",
+							"fontSrc": "/static/font/iconfont.ttf"
+						}]
+					}
 				}
 			}
 		}

@@ -1,13 +1,5 @@
 <template>
 	<view>
-		
-		<!-- <uni-nav-bar :fixed="true" statusBar="false"  color="#fff" backgroundColor="#11B38C" left-text="视频" right-icon="search"  @clickRight="search"/> -->
-		<u-navbar :fixed="true" :safeAreaInsetTop="true"
-			:placeholder="true" bgColor="#11B38C" 
-			leftIcon="" leftText="首页" rightIcon="search"
-			 @rightClick="search">
-		 </u-navbar>
-		 
 		<view class="video">
 			<view class="video-item" v-for="(item,index) in dataList">
 				<view class="ball"><text>{{item.name.substring(0,1)}}</text></view>
