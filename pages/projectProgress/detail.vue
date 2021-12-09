@@ -86,6 +86,7 @@
 				},
 				projectInfo:{},
 				projectStatus:[],
+				timeOver:[],
 				
 			}
 		}, 
@@ -99,8 +100,49 @@
 			getProject(){
 				this.$http('/project/plan/withStatus','POST',this.project).then(res=>{
 					this.projectInfo = res.data.page[0]
+					
+					this.projectInfo.nodes.forEach(item=>{
+						
+						if(item.plannedTime && item.finishTime){
+							
+							let count = this.getDate(item.plannedTime,item.finishTime)
+							
+							// 大于7天一般 大于15天较重 大于30天严重 大于60天特别严重
+							// 0特别严重 1 严重 2较重 3一般	
+							if(count>60){
+								this.timeOver.push({
+									type:'0',
+									value:'特别严重',
+									taskName:item.taskName,
+								})
+							}else if(count>30){
+								this.timeOver.push({
+									type:'1',
+									value:'严重',
+									taskName:item.taskName,
+								})
+							}else if(count>15){
+								this.timeOver.push({
+									type:'2',
+									value:'较重',
+									taskName:item.taskName,
+								})
+							}else{
+								this.timeOver.push({
+									type:'3',
+									value:'一般',
+									taskName:item.taskName,
+								})
+							}
+							console.log('item',this.timeOver)
+							
+						}
+						
+					})
+					
 				})
 			},
+			/* 获得地址 */
 			getAddress(address){
 				if(address){
 					return address.replaceAll(",","")
@@ -109,6 +151,7 @@
 				}
 				
 			},
+			/* 获得项目的状态 */
 			getProjectStatus(status){
 				let str = ''
 				this.projectStatus.forEach(item=>{
@@ -117,7 +160,25 @@
 					}
 				})
 				return str
+			},
+			/* 将字符串转换为日期的方法 */
+			getDate(dateString1,dateString2){
+				/* var timeArr = str.split("-");
+				return new Date(timeArr[0],timeArr[1],timeArr[2]) */
+				let time1 = dateString1.split("-")
+				let time2 = dateString2.split("-")
+				let startDate = new Date(time1[0],time1[1],time1[2])
+				let endDate = new Date(time2[0],time2[1],time2[2])
+				if (startDate>endDate){
+					return 0;
+				}
+				if (startDate==endDate){
+					return 1;
+				}
+				var days=(endDate - startDate)/(1*24*60*60*1000);
+				return  days;
 			}
+			
 		},
 		
 		onLoad: function (option) {
