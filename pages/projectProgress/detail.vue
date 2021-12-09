@@ -1,6 +1,6 @@
 <template>
 	<view class="detail">
-		<u-navbar :title="projectInfo.projectName" :fixed="true" :placeholder="true" 
+		<u-navbar :title="project.projectName" :fixed="true" :placeholder="true" 
 		:safeAreaInsetTop="true" bgColor="#11B38C" @leftClick="back">
 		</u-navbar>
 		
@@ -8,36 +8,36 @@
 			
 			<view class="title">
 				<text>项目基本信息</text>
-				<u-tag style="font-size: 24rpx;" size="mini" text="在建" borderColor="#00B490" bgColor="#00B490" color="#ffffff" ></u-tag>
+				<u-tag style="font-size: 24rpx;" size="mini" :text="getProjectStatus(projectInfo.status)" borderColor="#00B490" bgColor="#00B490" color="#ffffff" ></u-tag>
 			</view>
 			
 			<view class="msg-item">
 				<view class="name">项目名称</view>
-				<view class="container">济南唐冶二期商业项目</view>
+				<view class="container">{{projectInfo.projectName}}</view>
 			</view>
 			<view class="msg-item">
 				<view class="name">计划开工时间</view>
-				<view class="container">2017-08-08</view>
+				<view class="container">{{projectInfo.beginTime}}</view>
 			</view>
 			<view class="msg-item">
 				<view class="name">计划竣工时间</view>
-				<view class="container">2021-12-20</view>
+				<view class="container">{{projectInfo.finishTime}}</view>
 			</view>
 			<view class="msg-item">
 				<view class="name">地址</view>
-				<view class="container">山东省济南市历城区</view>
+				<view class="container">{{getAddress(projectInfo.shortAddress)}}</view>
 			</view>
 			<view class="msg-item">
 				<view class="name">总包</view>
-				<view class="container">南通德胜建筑工程有限公司</view>
+				<view class="container">{{projectInfo.unit?projectInfo.unit:''}}</view>
 			</view>
 			<view class="msg-item">
 				<view class="name">项目经理（总包）</view>
-				<view class="container">张培飞</view>
+				<view class="container">{{projectInfo.partnerProjectManager}} {{projectInfo.partnerProjectManagerMobile}}</view>
 			</view>
 			<view class="msg-item">
 				<view class="name">项目经理（甲包）</view>
-				<view class="container">马振伟18678810122</view>
+				<view class="container">{{projectInfo.projectManager}} {{projectInfo.projectManagerMobile}}</view>
 			</view>
 			
 		</view>
@@ -73,34 +73,61 @@
 </template>
 
 <script>
+	import {getDictList} from '../../utils/api.js'
+	
 	export default {
-		components:{},
+		components:{}, 
 		data(){
 			return {
-				projectInfo:{
+				project:{
 					projectId:'',
 					projectName:'',
 					companyId:'',
-				}
+				},
+				projectInfo:{},
+				projectStatus:[],
+				
 			}
 		}, 
+		
 		methods: {
 			back(){
 				uni.navigateBack({
 				    delta: 2
 				});
 			},
-			getProjectInfo(){
-				this.$http('/project/plan/withStatus','POST',this.projectInfo).then(res=>{
-					// console.log(res)
+			getProject(){
+				this.$http('/project/plan/withStatus','POST',this.project).then(res=>{
+					this.projectInfo = res.data.page[0]
 				})
+			},
+			getAddress(address){
+				if(address){
+					return address.replaceAll(",","")
+				}else{
+					return ''
+				}
+				
+			},
+			getProjectStatus(status){
+				let str = ''
+				this.projectStatus.forEach(item=>{
+					if(item.code == status){
+						str = item.value
+					}
+				})
+				return str
 			}
 		},
+		
 		onLoad: function (option) {
-			this.projectInfo.projectId = option.projectId
-			this.projectInfo.projectName = option.projectName
-			this.projectInfo.companyId = option.companyId
-			// this.getProjectInfo()
+			this.project.projectId = option.projectId
+			this.project.projectName = option.projectName
+			this.project.companyId = option.companyId
+			this.getProject()
+			getDictList('PROJECT_STATUS').then(data => {
+				this.projectStatus = data
+			})
 		},
 		onShow() {
 			

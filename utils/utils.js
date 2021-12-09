@@ -1,3 +1,4 @@
+
 export function scanCode() {
 	return new Promise((resolve, reject) => {
 		uni.scanCode({
@@ -12,3 +13,4 @@ export function scanCode() {
 		});
 	})
 }
+
