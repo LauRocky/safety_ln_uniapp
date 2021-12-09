@@ -1,14 +1,7 @@
 <template>
 	<view>
-		<nav-bar :title="title" @seach="handseach"></nav-bar>
-		<view class="end-title">
-			<view @tap="change(0)" :class="{ btna: btnnum == 0 }">全部</view>
-			<view @tap="change(1)" :class="{ btna: btnnum == 1 }">我的</view>
-		</view>
-
-		<view class="end-cont" :class="{ dis: btnnum == 0 }">0信息</view>
-
-		<view class="end-cont" :class="{ dis: btnnum == 1 }">1信息</view>
+		<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>
+		<u-tabs lineColor="#00B490" lineWidth="40" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handclick"></u-tabs>
 	</view>
 </template>
 
@@ -23,11 +16,32 @@ export default {
 			title:'隐患列表',
 			btnnum: 0,
 			dangerName: '',
-			showTitle: true
+			showTitle: true,
+			list1: [
+				{
+					name: '待整改',
+					value: '1'
+				},
+				{
+					name: '待复核',
+					value: '2'
+				},
+				{
+					name: '全部',
+					value: '3'
+				},
+				
+			],
 		};
 	},
 	onLoad() {},
 	methods: {
+		handclick(){
+			
+		},
+		handUpqie(){
+			console.log('12321')
+		},
 		handseach(val){
 			console.log(val,'1231231')
 		},

@@ -1,7 +1,7 @@
 <template>
 	<view class="navbar">
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			<view class="u-nav-left" slot="left" style="color: #FFFFFF;font-size: 36upx;font-weight: bold;">
+			<view class="u-nav-left" @click="handUpqie" slot="left" style="color: #FFFFFF;font-size: 36upx;font-weight: bold;">
 				<view class="left-1">{{ title }}</view>
 				<image class="sanjiao" src="../../static/home/sanjiao.png" mode=""></image>
 			</view>
@@ -26,6 +26,9 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
+		handUpqie(){
+			this.$emit('Upqie');
+		},
 		handsearch() {
 			this.$emit('seach', this.seach);
 		}
