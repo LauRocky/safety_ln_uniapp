@@ -1,13 +1,15 @@
 <template>
 	<view class="home">
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			<view class="u-nav-left" slot="left"  style="color: #FFFFFF;font-size: 36upx;font-weight: bold;">首页</view>
-			<view class="u-nav-right" slot="right"><image @click="handscanCode" src="../../static/home/sao.png" style="width: 50upx;height: 50upx;margin-top: 10upx;" mode=""></image></view>
+			<view class="u-nav-left" slot="left" style="color: #FFFFFF;font-size: 36upx;font-weight: bold;">首页</view>
+			<view class="u-nav-right" slot="right">
+				<image @click="handscanCode" src="../../static/home/sao.png" style="width: 50upx;height: 50upx;margin-top: 10upx;" mode=""></image>
+			</view>
 		</u-navbar>
 		<image class="home-img" src="../../static/banner.png" mode=""></image>
 		<view class="main">
 			<view class="main-top">
-				<u-tabs lineColor="#00B490" lineWidth="60" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="click"></u-tabs>
+				<u-tabs lineColor="#00B490" lineWidth="80" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="click"></u-tabs>
 				<view class="main-scroll">
 					<scroll-view class="scroll" @scrolltolower="handtolower" scroll-y>
 						<view v-for="(item, index) in indexList" :key="index">
@@ -74,7 +76,10 @@ export default {
 			list1: [
 				{
 					name: '待办事项',
-					value: '1'
+					value: '1',
+					badge: {
+						isDot: true
+					}
 				},
 				{
 					name: '预警提醒',
@@ -130,7 +135,7 @@ export default {
 	},
 	onLoad() {},
 	methods: {
-		handscanCode(){
+		handscanCode() {
 			scanCode();
 		},
 		handtolower() {
@@ -139,8 +144,7 @@ export default {
 		click(item) {
 			console.log('item', item);
 		}
-	},
-
+	}
 };
 </script>
 

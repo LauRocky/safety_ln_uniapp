@@ -1,26 +1,123 @@
 <template>
-	<view>
+	<view class="danger">
 		<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>
-		<u-tabs lineColor="#00B490" lineWidth="40" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handclick"></u-tabs>
+		<u-tabs lineColor="#00B490" lineWidth="120" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handclick"></u-tabs>
+		<view class="danger-list">4个隐患</view>
+		<scroll-view class="lists" scroll-y @scrolltolower="handtolower">
+			<view class="list-1" v-for="(val, i) in numsList" :key="i">
+				<view class="list-top">
+					<image class="list-imgs" :src="val.url" mode=""></image>
+					<view class="list-right">
+						<view class="list-top-1">
+							<view class="top-left">{{ val.dan }}</view>
+							<view class="top-right" v-if="val.gai == '1'">未整改</view>
+							<view class="top-right2" v-if="val.gai == '2'">已超期</view>
+						</view>
+						<view class="list-title">{{ val.title }}</view>
+						<view class="list-ce">{{ val.ce }}</view>
+					</view>
+				</view>
+				<view class="list-foo">
+					<view class="foo-left">
+						{{val.gg}}
+					</view>
+					<view class="foo-time">
+						{{val.time}}
+					</view>
+				</view>
+				
+			</view>
+		</scroll-view>
+		<image class="add" src="../../static/danger/jia.png" mode=""></image>
+		<mypicker :show="show" :rightList="rightList" @close='handclose' />
 	</view>
 </template>
 
 <script>
-import navBar from '../../components/navBar/navBar.vue'
+import navBar from '../../components/navBar/navBar.vue';
+import mypicker from '../../components/mypicker/mypicker.vue'
 export default {
 	components: {
-		navBar
+		navBar,
+		mypicker 
 	},
 	data() {
 		return {
-			title:'隐患列表',
+			title: '隐患列表',
+			show:false,
 			btnnum: 0,
 			dangerName: '',
 			showTitle: true,
+			numsList: [
+				{
+					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
+					dan: '安全事件隐患',
+					title: '北京顺义新城21街区项目',
+					ce: '请@XXX济南公司现成记录测试',
+					gai: '1',
+					gg:'济南公司',
+					time:'17:42'
+				},
+				{
+					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
+					dan: '安全事件隐患',
+					title: '北京顺义新城21街区项目',
+					ce: '请@XXX济南公司现成记录测试',
+					gai: '1',
+					gg:'济南公司',
+					time:'17:42'
+				},
+				{
+					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
+					dan: '安全事件隐患',
+					title: '北京顺义新城21街区项目',
+					ce: '请@XXX济南公司现成记录测试',
+					gai: '2',
+					gg:'济南公司',
+					time:'17:42'
+				},
+				{
+					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
+					dan: '安全事件隐患',
+					title: '北京顺义新城21街区项目',
+					ce: '请@XXX济南公司现成记录测试',
+					gai: '2'
+				},
+				{
+					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
+					dan: '安全事件隐患',
+					title: '北京顺义新城21街区项目',
+					ce: '请@XXX济南公司现成记录测试',
+					gai: '1',
+					gg:'济南公司',
+					time:'17:42'
+				},
+				{
+					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
+					dan: '安全事件隐患',
+					title: '北京顺义新城21街区项目',
+					ce: '请@XXX济南公司现成记录测试',
+					gai: '1',
+					gg:'济南公司',
+					time:'17:42'
+				},
+				{
+					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
+					dan: '安全事件隐患',
+					title: '北京顺义新城21街区项目',
+					ce: '请@XXX济南公司现成记录测试',
+					gai: '1',
+					gg:'济南公司',
+					time:'17:42'
+				}
+			],
 			list1: [
 				{
 					name: '待整改',
-					value: '1'
+					value: '1',
+					badge: {
+						isDot: true
+					}
 				},
 				{
 					name: '待复核',
@@ -29,21 +126,88 @@ export default {
 				{
 					name: '全部',
 					value: '3'
-				},
-				
+				}
 			],
+			rightList:{
+				c:[{
+					name:'hqwdkj'
+				},
+				{
+					name:'hqwdkj'
+				},
+				{
+					name:'hqwdkj'
+				},
+				{
+					name:'hqwdkj'
+				},
+				{
+					name:'412'
+				},
+				{
+					name:'41231'
+				},
+				{
+					name:'41'
+				},
+				{
+					name:'56345345'
+				},
+				{
+					name:'123'
+				},
+				{
+					name:'3453453'
+				},
+				{
+					name:'hqwdkj'
+				}],
+				fu:[
+					{
+						name:'kijasdad',
+					},
+					
+					{
+						name:'kijasdad'
+					},
+					{
+						name:'kijasdad'
+					},
+					{
+						name:'kijasdad'
+					}
+				],
+				ne:[
+					{
+						name:'5674654645'
+					},
+					{
+						name:'5674654645'
+					},
+					{
+						name:'5674654645'
+					},
+					{
+						name:'5674654645'
+					}
+				]
+			}
 		};
 	},
 	onLoad() {},
 	methods: {
-		handclick(){
+		handclose(){
+				this.show = false
+		},
+		handtolower(){
 			
 		},
-		handUpqie(){
-			console.log('12321')
+		handclick() {},
+		handUpqie() {
+			this.show = true
 		},
-		handseach(val){
-			console.log(val,'1231231')
+		handseach(val) {
+			console.log(val, '1231231');
 		},
 		change(e) {
 			this.btnnum = e;
@@ -57,46 +221,102 @@ export default {
 };
 </script>
 
-<style scoped>
->>> .u-navbar__content__left__text {
-	color: #ffffff !important;
-	font-size: 40rpx;
-	margin-left: 22rpx;
-}
->>> .u-icon__icon {
-	color: #ffffff !important;
-	font-size: 60rpx !important;
-	margin-right: 22rpx;
-}
-.input-item {
-	background-color: #ffffff;
-	color: #000000;
-	border-radius: 50px;
-	height: 45rpx;
-	width: 300rpx;
-}
-/* 将三个内容view的display设置为none(隐藏) */
-.end-title {
-	display: flex;
-	color: #707070;
-	height: 50px;
-	line-height: 50px;
-	font-weight: 750;
-	background-color: #f2f2f2;
-}
-.end-title view {
-	flex-grow: 1;
-	text-align: center;
-}
-.end-cont {
-	display: none;
-	background: #c8c7cc;
-}
-.btna {
-	color: #000000;
-	border-bottom: 3px solid #2297f4;
-}
-.dis {
-	display: block;
+<style lang="less" scoped>
+.danger {
+	width: 100vw;
+	height: 100%;
+	.danger-list {
+		padding: 20upx 20upx;
+		font-size: 28upx;
+		font-family: PingFang SC;
+		font-weight: bold;
+		color: #333333;
+	}
+	.lists {
+		width: 100vw;
+		height: calc(100vh - 400upx);
+		.list-1 {
+			padding: 27upx 20upx 0;
+			.list-top {
+				display: flex;
+				.list-imgs {
+					margin-right: 24upx;
+					width: 154upx;
+					height: 154upx;
+					border-radius: 16upx;
+				}
+				.list-right {
+					flex: 8;
+					.list-top-1 {
+						display: flex;
+						justify-content: space-between;
+						.top-left {
+							font-size: 28upx;
+							font-family: PingFang SC;
+							font-weight: bold;
+							color: #666666;
+						}
+						.top-right {
+							display: flex;
+							align-items: center;
+							font-size: 24upx;
+							font-family: PingFang SC;
+							font-weight: 500;
+							color: #666666;
+							&:after {
+								content: ' ';
+								display: block;
+								margin-left: 10upx;
+								width: 20upx;
+								height: 20upx;
+								background: #ff0000;
+								border-radius: 50%;
+							}
+						}
+						.top-right2 {
+							font-size: 24upx;
+							font-family: PingFang SC;
+							font-weight: bold;
+							color: #ff0000;
+						}
+					}
+					.list-title {
+						padding: 23upx 0;
+						font-size: 32upx;
+						font-family: PingFang SC;
+						font-weight: bold;
+						color: #333333;
+					}
+					.list-ce {
+						font-size: 28upx;
+						font-family: PingFang SC;
+						font-weight: 500;
+						color: #666666;
+					}
+				}
+			}
+			.list-foo{
+				
+				display: flex;
+				align-items: center;
+				.foo-left{
+					flex: 2;
+				}
+				.foo-time{
+					padding: 20upx 0;
+					flex: 8;
+					text-align: right;
+					border-bottom:2upx solid #E9E9E9;
+				}
+			}
+		}
+	}
+	.add{
+		position: fixed;
+		bottom: 100upx;
+		right: 10upx;
+		width: 160upx;
+		height: 160upx;
+	}
 }
 </style>
