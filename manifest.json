@@ -83,7 +83,7 @@
                     }
                 }
             },
-            "https" : true
+            "https" : false
         }
     }
 }
