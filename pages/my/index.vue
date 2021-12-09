@@ -1,16 +1,16 @@
 <template>
-	<view style="height: 100%;background-color: #F2F2F2;">
+	<view>
 		<view class="my">
 			<view class="info">
 				<view class="name">
 					<view style="font-size: 40rpx;">
-						{{ user.name }}
-						<text style="font-size: 35rpx;">&nbsp;&nbsp; （{{ user.role }})</text>
+						{{ user.fullname }}
+						<text v-if="user.role" style="font-size: 35rpx;"> （{{ user.role }})</text>
 					</view>
 					<uni-icons @click="quit" size="28" style="color: #838383;" type="loop"></uni-icons>
 				</view>
 				<view class="phone" style="margin-top: 20rpx;">
-					<text>手机：{{ user.phone }}</text>
+					<text>手机：{{ user.mobile }}</text>
 				</view>
 				<view class="role-info" style="margin-top: 20rpx;">
 					<text>{{ user.position }}</text>
@@ -68,11 +68,10 @@ export default {
 	components: {},
 	data() {
 		return {
-			user: uni.getStorageInfoSync('user')
+			user: JSON.parse(uni.getStorageSync('user'))
 		};
 	},
 	onLoad() {
-		console.log('user', this.user);
 	},
 	methods: {
 		scan() {
