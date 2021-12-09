@@ -77,6 +77,17 @@
 					"bounce": "none"
 				}
 			}
+		},{
+			"path": "pages/projectProgress/detail",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
 		}, {
 			"path": "pages/video/index",
 			"style": {

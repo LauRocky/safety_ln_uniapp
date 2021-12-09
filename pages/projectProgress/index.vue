@@ -11,32 +11,28 @@
 				 <u-search  shape="round" height="50" bgColor="#ffffff" :showAction="false"></u-search>
 			</view>
 			
-		</u-navbar>
+		</u-navbar> 
 		
 		<view class="project-container">
 			
-			<view class="project">
+			<view class="project" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="project.projectId">
 				
-				<view class="title">12</view>
-				
-				<view class="status">123</view>
-				
-			</view>
-			
-			<!-- <uni-card v-for="(project,index) in projectList" :key="project.projectId" :title="project.projectName">
-				
-				<view v-if="getprocess(project.projectId) == 0">
-					<uni-tag  type="default" text="进度正常"></uni-tag>
-					<text style="margin-left: 23rpx;">项目各个环节进度正常</text> 
+				<view class="title">
+					<text>{{project.projectName}}</text>
+					<u-icon color="#303133" :bold="true" name="arrow-right" @click="goDetail(project.projectId,project.projectName)"></u-icon>
 				</view>
 				
-				<view v-else>
-					<uni-tag  type="error" text="进度异常"></uni-tag>
-					<text style="margin-left: 23rpx;">项目{{getprocess(project.projectId)}}个环节进度异常</text> 
+				<view class="status" v-if="getprocess(project.projectId) == 0">
+					<u-tag style="margin-top: 8rpx;" size="mini" bgColor="#00B490" color="#ffffff" text="进度正常"></u-tag>
+					<text style="margin-left: 20rpx;">项目各个环节进度异常</text>
 				</view>
 				
-			</uni-card> -->
-			
+				<view class="status" v-else>
+					<u-tag style="margin-top: 8rpx;" size="mini" bgColor="#FF0000" color="#ffffff" text="进度异常"></u-tag>
+					<text style="margin-left: 20rpx;">项目{{getprocess(project.projectId)}}个环节进度异常</text>
+				</view>
+				
+			</view>			
 		</view>
 				
 	</view>
@@ -62,6 +58,7 @@
 					this.projectList = res.data.page 
 				})
 			},
+			/* 根据项目id判断节点状态 返回有几个异常 */
 			getprocess(projectId){
 				let arr = []
 				if(this.projectList){
@@ -76,6 +73,12 @@
 					})
 				}
 				return arr.length
+			},
+			/* 跳转到详情页面 */
+			goDetail(projectId,projectName){
+				uni.navigateTo({
+					url:`./detail?projectId=${projectId}&projectName=${projectName}`
+				})
 			}
 		},
 		onShow() {
@@ -86,13 +89,27 @@
 </script>
 
 <style scoped>
+	.first{
+		margin-top: 30rpx !important;
+	}
 	.status{
-		border-top: 1rpx solid #888888;
+		border-top: 2rpx solid #F6F8F7;
+		padding: 20rpx;
+		padding-left: 0;
+		display: flex;
+		align-items: center;
 	}
 	.project{
-		background-color: #00B48F;
 		margin: 20rpx;
 		border-radius: 10rpx;
+		padding: 20rpx;
+		box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.2), 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.19);
+	}
+	.project .title{
+		display: flex;
+		align-items: center;
+		padding-bottom: 21rpx;
+		justify-content: space-between;
 	}
 	>>> .u-tag--primary[data-v-95cf93f4]{
 		border: none;
