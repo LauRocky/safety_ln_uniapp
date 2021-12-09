@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<u-navbar :fixed="true" style="display:flex;align-items: center;color: #FFFFFF;" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
+			<view class="u-nav-left" style="color: #FFFFFF;font-size: 36upx;font-weight: bold;" slot="left">首页</view>
+			<view class="u-nav-right" slot="right"><image @click="handscanCode" src="../../static/home/sao.png" style="width: 50upx;height: 50upx;margin-top: 10upx;" mode=""></image></view>
+		</u-navbar>
 		<view class="my">
 			<view class="info">
 				<view class="name">
@@ -64,6 +68,7 @@
 </template>
 
 <script>
+	import { scanCode } from '../../utils/utils.js';
 export default {
 	components: {},
 	data() {
@@ -74,6 +79,9 @@ export default {
 	onLoad() {
 	},
 	methods: {
+		handscanCode(){
+			scanCode();
+		},
 		scan() {
 			uni.showToast({
 				title: '扫码'

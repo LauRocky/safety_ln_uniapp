@@ -20,22 +20,10 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-								"float": "right",
-								"text": "\ue8d4",
-								"fontSize": "40upx",
-								"fontSrc": "/static/font/iconfont.ttf"
-							},
-							{
-								"float": "left",
-								"text": "首页",
-								"fontSize": "30upx"
-							}
-						]
-
-					}
+					"titleNView": false,
+					"bounce": "none"
 				}
 
 			}
@@ -44,22 +32,10 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-								"float": "right",
-								"text": "\ue8d4",
-								"fontSize": "40upx",
-								"fontSrc": "/static/font/iconfont.ttf"
-							},
-							{
-								"float": "left",
-								"text": "隐患列表",
-								"fontSize": "30upx",
-								"width": "70"
-							}
-						]
-					}
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
 		}, {
@@ -100,24 +76,14 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-								"float": "right",
-								"text": "\ue8d4",
-								"fontSize": "40upx",
-								"fontSrc": "/static/font/iconfont.ttf"
-							},
-							{
-								"float": "left",
-								"text": "我的",
-								"fontSize": "30upx"
-							}
-						]
-					}
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
 		}
+      
     ],
 	"tabBar": {
 		"color": "#A9A9A9",

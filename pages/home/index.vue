@@ -1,5 +1,9 @@
 <template>
 	<view class="home">
+		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
+			<view class="u-nav-left" slot="left"  style="color: #FFFFFF;font-size: 36upx;font-weight: bold;">首页</view>
+			<view class="u-nav-right" slot="right"><image @click="handscanCode" src="../../static/home/sao.png" style="width: 50upx;height: 50upx;margin-top: 10upx;" mode=""></image></view>
+		</u-navbar>
 		<image class="home-img" src="../../static/banner.png" mode=""></image>
 		<view class="main">
 			<view class="main-top">
@@ -52,10 +56,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="">
-				<barecharts />
-			</view>
-		
+			<view class=""><barecharts /></view>
 		</view>
 	</view>
 </template>
@@ -129,6 +130,9 @@ export default {
 	},
 	onLoad() {},
 	methods: {
+		handscanCode(){
+			scanCode();
+		},
 		handtolower() {
 			console.log('12321312');
 		},
@@ -136,9 +140,7 @@ export default {
 			console.log('item', item);
 		}
 	},
-	onNavigationBarButtonTap(e) {
-		scanCode();
-	}
+
 };
 </script>
 
