@@ -1,13 +1,6 @@
 <template>
 	<view>
-		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			<view class="u-nav-left"slot="left">
-				项目进度
-			</view>
-			<view class="u-nav-right"slot="right">
-				 <u-search  shape="round" height="50" bgColor="#ffffff" :showAction="false"></u-search>
-			</view>
-		</u-navbar> 
+		<nav-bar :title="company" @seach="handseach"></nav-bar>
 		
 		<view class="project-container">
 			
@@ -36,19 +29,26 @@
 </template>
 
 <script>
+	import navBar from '../../components/navBar/navBar.vue'
 	export default {
-		components:{},
+		components:{
+			navBar
+		},
 		data(){
 			return {
-				 queryForm:{
-					 companyId: JSON.parse(uni.getStorageSync('user')).companyId,
-					 projectId: '',
-					 status:'',
-				 },
+				company:"所有城市",
+				queryForm:{
+					companyId: JSON.parse(uni.getStorageSync('user')).companyId,
+					projectId: '',
+					status:'',
+				},
 				 projectList:[],
 			}
 		}, 
 		methods: {
+			handseach(){
+				console.log('搜索~~~')
+			},
 			getProjectList(){
 				this.$http('/project/plan/withStatus','POST',this.queryForm).then(res=>{
 					this.projectList = res.data.page 
@@ -95,17 +95,26 @@
 		display: flex;
 		align-items: center;
 	}
+	.status text{
+		font-size: 28rpx;
+		font-weight: 500;
+	}
 	.project{
 		margin: 20rpx;
 		border-radius: 10rpx;
 		padding: 20rpx;
-		box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.2), 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.19);
+		box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.06);
 	}
 	.project .title{
 		display: flex;
 		align-items: center;
 		padding-bottom: 21rpx;
 		justify-content: space-between;
+	}
+	.project .title text{
+		font-size: 32rpx;
+		font-weight: bold;
+		color: #333333;
 	}
 	>>> .u-tag--primary[data-v-95cf93f4]{
 		border: none;
