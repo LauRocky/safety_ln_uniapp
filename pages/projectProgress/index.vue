@@ -19,7 +19,7 @@
 				
 				<view class="title">
 					<text>{{project.projectName}}</text>
-					<u-icon color="#303133" :bold="true" name="arrow-right" @click="goDetail(project.projectId,project.projectName)"></u-icon>
+					<u-icon color="#303133" :bold="true" name="arrow-right" @click="goDetail(project.projectId,project.projectName,project.companyId)"></u-icon>
 				</view>
 				
 				<view class="status" v-if="getprocess(project.projectId) == 0">
@@ -75,9 +75,9 @@
 				return arr.length
 			},
 			/* 跳转到详情页面 */
-			goDetail(projectId,projectName){
+			goDetail(projectId,projectName,companyId){
 				uni.navigateTo({
-					url:`./detail?projectId=${projectId}&projectName=${projectName}`
+					url:`./detail?projectId=${projectId}&projectName=${projectName}&companyId=${companyId}`
 				})
 			}
 		},
