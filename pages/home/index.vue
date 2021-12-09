@@ -1,5 +1,9 @@
 <template>
 	<view class="home">
+		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
+			<view class="u-nav-left" slot="left"  style="color: #FFFFFF;font-size: 36upx;font-weight: bold;">首页</view>
+			<view class="u-nav-right" slot="right"><image @click="handscanCode" src="../../static/home/sao.png" style="width: 50upx;height: 50upx;margin-top: 10upx;" mode=""></image></view>
+		</u-navbar>
 		<image class="home-img" src="../../static/banner.png" mode=""></image>
 		<view class="main">
 			<view class="main-top">
@@ -20,72 +24,51 @@
 				<view class="look">查看更多 (15)</view>
 			</view>
 			<view class="main-cet main-top">
-				<view class="title">
-					隐患数据
-				</view>
+				<view class="title">隐患数据</view>
 				<view class="zho">
 					<view class="zho-1">
 						<view class="zho-he">
-							<view class="fa">
-								发现
-							</view>
-							<view class="nums">
-								8
-							</view>
+							<view class="fa">发现</view>
+							<view class="nums">8</view>
 						</view>
-						<view class="zho-text">
-							今日+0
-						</view>
+						<view class="zho-text">今日+0</view>
 					</view>
 					<view class="zho-1">
-						<view class="zho-he">
-							<view class="fa">
-								发现
-							</view>
-							<view class="nums">
-								8
-							</view>
+						<view class="zho-he zho-he2">
+							<view class="fa">发现</view>
+							<view class="nums">8</view>
 						</view>
-						<view class="zho-text">
-							今日+0
-						</view>
+						<view class="zho-text">今日+0</view>
 					</view>
 					<view class="zho-1">
-						<view class="zho-he">
-							<view class="fa">
-								发现
-							</view>
-							<view class="nums">
-								8
-							</view>
+						<view class="zho-he zho-he3">
+							<view class="fa">发现</view>
+							<view class="nums">8</view>
 						</view>
-						<view class="zho-text">
-							今日+0
-						</view>
+						<view class="zho-text">今日+0</view>
 					</view>
 					<view class="zho-1">
-						<view class="zho-he">
-							<view class="fa">
-								发现
-							</view>
-							<view class="nums">
-								8
-							</view>
+						<view class="zho-he zho-he4">
+							<view class="fa">发现</view>
+							<view class="nums">8</view>
 						</view>
-						<view class="zho-text">
-							今日+0
-						</view>
+						<view class="zho-text">今日+0</view>
 					</view>
 				</view>
 			</view>
+			<view class=""><barecharts /></view>
 		</view>
 	</view>
 </template>
 
 <script>
 import { scanCode } from '../../utils/utils.js';
+import barecharts from '../../components/barecharts/barecharts.vue';
+
 export default {
-	components: {},
+	components: {
+		barecharts
+	},
 	data() {
 		return {
 			list1: [
@@ -147,6 +130,9 @@ export default {
 	},
 	onLoad() {},
 	methods: {
+		handscanCode(){
+			scanCode();
+		},
 		handtolower() {
 			console.log('12321312');
 		},
@@ -154,9 +140,7 @@ export default {
 			console.log('item', item);
 		}
 	},
-	onNavigationBarButtonTap(e) {
-		scanCode();
-	}
+
 };
 </script>
 
@@ -219,37 +203,50 @@ export default {
 				font-size: 30upx;
 				font-family: PingFang SC;
 				font-weight: bold;
-				color: #00B490;
+				color: #00b490;
 			}
 		}
-		.main-cet{
+		.main-cet {
 			padding: 26upx 22upx;
 			margin-top: 20upx;
-			.title{
+			.title {
 				font-size: 32upx;
 				font-family: PingFang SC;
 				font-weight: bold;
 				color: #333333;
 			}
-			.zho{
+			.zho {
 				padding-top: 20upx;
 				display: flex;
 				justify-content: space-around;
-				.zho-1{
+				.zho-1 {
 					text-align: center;
-					.zho-he{
+					.zho-he {
+						color: #ff0000;
 						width: 120upx;
 						height: 120upx;
-						border: 8upx solid #FF0000;
+						border: 8upx solid #ff0000;
 						border-radius: 50%;
-						.fa{
+						.fa {
 							padding-top: 30upx;
 							font-size: 24upx;
 							font-family: Source Han Sans CN;
 							font-weight: 500;
 						}
 					}
-					.zho-text{
+					.zho-he2 {
+						color: #46df89;
+						border: 8upx solid #46df89;
+					}
+					.zho-he3 {
+						color: #f9bc45;
+						border: 8upx solid #f9bc45;
+					}
+					.zho-he4 {
+						color: #58b7e7;
+						border: 8upx solid #58b7e7;
+					}
+					.zho-text {
 						padding-top: 23upx;
 						font-size: 28upx;
 						font-family: Source Han Sans CN;

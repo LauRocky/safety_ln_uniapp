@@ -1,9 +1,5 @@
 {
 	"easycom": {
-		// npm安装的方式不需要前面的"@/"，下载安装的方式需要"@/"
-		// npm安装方式
-		// "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
-		// 下载安装方式
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
@@ -24,22 +20,10 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-								"float": "right",
-								"text": "\ue8d4",
-								"fontSize": "40upx",
-								"fontSrc": "/static/font/iconfont.ttf"
-							},
-							{
-								"float": "left",
-								"text": "首页",
-								"fontSize": "30upx"
-							}
-						]
-
-					}
+					"titleNView": false,
+					"bounce": "none"
 				}
 
 			}
@@ -48,22 +32,10 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-								"float": "right",
-								"text": "\ue8d4",
-								"fontSize": "40upx",
-								"fontSrc": "/static/font/iconfont.ttf"
-							},
-							{
-								"float": "left",
-								"text": "隐患列表",
-								"fontSize": "30upx",
-								"width": "70"
-							}
-						]
-					}
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
 		}, {
@@ -104,25 +76,15 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-								"float": "right",
-								"text": "\ue8d4",
-								"fontSize": "40upx",
-								"fontSrc": "/static/font/iconfont.ttf"
-							},
-							{
-								"float": "left",
-								"text": "我的",
-								"fontSize": "30upx"
-							}
-						]
-					}
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
 		}
-	],
+      
+    ],
 	"tabBar": {
 		"color": "#A9A9A9",
 		"selectedColor": "#00B490",

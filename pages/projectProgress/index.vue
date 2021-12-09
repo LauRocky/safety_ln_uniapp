@@ -1,16 +1,12 @@
 <template>
 	<view>
-		
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			
 			<view class="u-nav-left"slot="left">
-				公司名称
+				项目进度
 			</view>
-			
 			<view class="u-nav-right"slot="right">
 				 <u-search  shape="round" height="50" bgColor="#ffffff" :showAction="false"></u-search>
 			</view>
-			
 		</u-navbar> 
 		
 		<view class="project-container">
@@ -116,7 +112,6 @@
 	}
 	.u-nav-left{
 		color: #FFFFFF;
-		font-weight: 550;
 	}
 	.tips{
 		background-color: #E95A4E;

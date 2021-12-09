@@ -6,7 +6,7 @@
 				视频名称
 			</view>
 			
-			<view class="u-nav-right"slot="right">
+			<view class="u-nav-right" slot="right">
 				 <u-search  shape="round" height="50" bgColor="#ffffff" :showAction="false"></u-search>
 			</view>
 			
