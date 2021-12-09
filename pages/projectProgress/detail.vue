@@ -73,7 +73,8 @@
 </template>
 
 <script>
-	import {getDictList} from '../../utils/utils.js'
+	import {getDictList} from '../../utils/api.js'
+	
 	export default {
 		components:{}, 
 		data(){
@@ -98,7 +99,6 @@
 			getProject(){
 				this.$http('/project/plan/withStatus','POST',this.project).then(res=>{
 					this.projectInfo = res.data.page[0]
-					console.log(this.projectInfo)
 				})
 			},
 			getAddress(address){
