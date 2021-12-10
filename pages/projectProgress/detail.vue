@@ -48,23 +48,19 @@
 				<text style="margin-bottom: 14rpx;">项目进度信息</text>
 			</view>
 			
-			<view class="project-node">
+			<view class="project-node" v-for="item in timeOver" :key=item.id>
+				
 				<view class="node-tag">
-					<u-tag size="mini" borderColor="#FF0000" bgColor="#FF0000" color="#ffffff" text="特别严重"></u-tag>
+					<u-tag size="mini" :borderColor="bgColor(item.type)" :bgColor="bgColor(item.type)" color="#ffffff" :text="item.value"></u-tag>
 				</view>
-				<view class="node-info">拆完外架节点超期未完成</view>
+				
+				<view :class="{'node-info' : item.value.length==2,'node-info1' : item.value.length==4,}">{{item.taskName}}</view>
+				
 			</view>
-			<view class="project-node">
-				<view class="node-tag">
-					<u-tag size="mini" borderColor="#29ABE2" bgColor="#29ABE2" color="#ffffff" text="一般"></u-tag>
-				</view>
-				<view class="node-info">外装饰完成节点一般滞后</view>
-			</view>
-			<view class="project-node">
-				<view class="node-tag">
-					<u-tag size="mini" borderColor="#E4D708" bgColor="#E4D708" color="#ffffff" text="较重"></u-tag>
-				</view>
-				<view class="node-info">外装饰完成节点一般滞后</view>
+			
+			<view class="project-status"> 
+				<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
+				<view class="status-container" v-show="!isShow">1111111</view>
 			</view>
 			
 		</view>
@@ -79,6 +75,7 @@
 		components:{}, 
 		data(){
 			return {
+				isShow:true,
 				project:{
 					projectId:'',
 					projectName:'',
@@ -87,12 +84,24 @@
 				projectInfo:{},
 				projectStatus:[],
 				timeOver:[],
-				
 			}
 		}, 
 		
 		methods: {
+			showStatus(){
+				this.isShow = false
+			},
+			/* 处理颜色 */
+			bgColor(type){
+				switch(type){
+					case '0' : return '#FF0000'
+					case '1' : return '#ff620d'
+					case '2' : return '#E4D708'
+					case '3' : return '#29ABE2'
+				}
+			},
 			back(){
+				this.timeOver=[]
 				uni.navigateBack({
 				    delta: 2
 				});
@@ -102,39 +111,44 @@
 					this.projectInfo = res.data.page[0]
 					
 					this.projectInfo.nodes.forEach(item=>{
-						
+							
 						if(item.plannedTime && item.finishTime){
 							
 							let count = this.getDate(item.plannedTime,item.finishTime)
 							
 							// 大于7天一般 大于15天较重 大于30天严重 大于60天特别严重
 							// 0特别严重 1 严重 2较重 3一般	
-							if(count>60){
+							
+							if(count >= 60){
 								this.timeOver.push({
+									id:item.id,
 									type:'0',
 									value:'特别严重',
 									taskName:item.taskName,
 								})
-							}else if(count>30){
+							}else if(count >= 30){
 								this.timeOver.push({
+									id:item.id,
 									type:'1',
 									value:'严重',
 									taskName:item.taskName,
 								})
-							}else if(count>15){
+							}else if(count >= 15){
 								this.timeOver.push({
+									id:item.id,
 									type:'2',
 									value:'较重',
 									taskName:item.taskName,
 								})
-							}else{
+							}else if(count >= 7){
 								this.timeOver.push({
+									id:item.id,
 									type:'3',
 									value:'一般',
 									taskName:item.taskName,
 								})
 							}
-							console.log('item',this.timeOver)
+							// console.log(this.timeOver)
 							
 						}
 						
@@ -145,7 +159,8 @@
 			/* 获得地址 */
 			getAddress(address){
 				if(address){
-					return address.replaceAll(",","")
+					return address.replace(/,/g,"")
+					// return ''
 				}else{
 					return ''
 				}
@@ -198,14 +213,28 @@
 </script>
 
 <style>
+	.project-status{
+		/* display: flex;
+		align-items: center;
+		justify-content: center; */
+		margin-top: 35rpx;
+	}
+	/* 修改下箭头样式 */
+	>>> .u-icon__icon[data-v-6e20bb40]{
+		font-size: 40rpx !important;
+		font-weight: bold !important;
+		margin: 0 auto;
+	}
 	.node-info{
-		margin-right: 191rpx;
+		margin-left: 119rpx;
+	}
+	.node-info1{
+		margin-left: 70rpx;
 	}
 	.project-node{
 		display: flex;
 		font-size: 28rpx;
 		align-items: center;
-		justify-content: space-between;
 		margin-top: 20rpx;
 	}
 	.name{
