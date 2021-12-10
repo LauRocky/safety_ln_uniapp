@@ -13,7 +13,7 @@
 				
 				<view class="status" v-if="getprocess(project.projectId) == 0">
 					<u-tag style="margin-top: 8rpx;" size="mini" bgColor="#00B490" color="#ffffff" text="进度正常"></u-tag>
-					<text style="margin-left: 20rpx;">项目各个环节进度异常</text>
+					<text style="margin-left: 20rpx;">项目各个环节进度正常</text>
 				</view>
 				
 				<view class="status" v-else>
