@@ -59,8 +59,31 @@
 			</view>
 			
 			<view class="project-status"> 
+			
 				<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
-				<view class="status-container" v-show="!isShow">1111111</view>
+				
+				<view class="status-container" v-show="!isShow">
+					
+					<view class="status-tag-container">
+						
+						<!-- <u-tag :color="activeColor" :bgColor="activeBackground" borderColor="#00B490" :plain="true"  size="mini" text="全部"></u-tag>
+						
+						<u-tag color="#00B490" borderColor="#00B490" :plain="true" style="margin-left: 19rpx;" size="mini" v-for="(item,index) in statusList" :text="item.name">
+						</u-tag> -->
+						<view v-for="(item,index) in statusList" :key=item.code
+							:class="{
+								'no-margin-left':index==0||index==3,
+								'item-margin-top':index==3||index==4||index==5,
+								'active-tags':currentIndex==index}" 
+							class="tags" @click="changeTags(index)" >
+						
+							<text> {{item.name}} </text> 
+						</view> 
+						
+					</view> 
+					
+				</view>
+				
 			</view>
 			
 		</view>
@@ -75,6 +98,7 @@
 		components:{}, 
 		data(){
 			return {
+				currentIndex:0,
 				isShow:true,
 				project:{
 					projectId:'',
@@ -84,6 +108,14 @@
 				projectInfo:{},
 				projectStatus:[],
 				timeOver:[],
+				statusList: [
+					{code: '', name: '全部'},
+					{code: '1', name: '正在进行中'},
+				    {code: '0', name: '未开始/未涉及'},
+					{code: '5', name: '未超期已完成'},
+				    {code: '3', name: '超期未完成'},
+				    {code: '4', name: '超期已完成'}
+				]
 			}
 		}, 
 		
@@ -100,6 +132,9 @@
 					case '3' : return '#29ABE2'
 				}
 			},
+			changeTags(index){
+				this.currentIndex = index
+			},
 			back(){
 				this.timeOver=[]
 				uni.navigateBack({
@@ -109,9 +144,8 @@
 			getProject(){
 				this.$http('/project/plan/withStatus','POST',this.project).then(res=>{
 					this.projectInfo = res.data.page[0]
-					
 					this.projectInfo.nodes.forEach(item=>{
-							
+						// 项目进度信息时间判断
 						if(item.plannedTime && item.finishTime){
 							
 							let count = this.getDate(item.plannedTime,item.finishTime)
@@ -148,8 +182,6 @@
 									taskName:item.taskName,
 								})
 							}
-							// console.log(this.timeOver)
-							
 						}
 						
 					})
@@ -213,6 +245,35 @@
 </script>
 
 <style>
+	.active-tags{		
+		background: #00B490;
+		color: #FFFFFF !important;
+		font-weight: bold;
+	}
+	.no-margin-left{
+		margin-left: 0 !important;
+	}
+	.item-margin-top{
+		margin-top: 31rpx !important;
+	}
+	.status-tag-container .tags{
+		border: 2rpx solid #00B490;
+		font-size: 28rpx;
+		font-weight: 500;
+		color: #333333;
+		border-radius: 6rpx;
+		margin-left: 35rpx;
+		width: 190rpx;
+		height: 56rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.status-tag-container{
+		display: flex;
+		flex-wrap: wrap;
+	}
 	.project-status{
 		/* display: flex;
 		align-items: center;
@@ -220,9 +281,10 @@
 		margin-top: 35rpx;
 	}
 	/* 修改下箭头样式 */
-	>>> .u-icon__icon[data-v-6e20bb40]{
+	>>> .project-status .u-icon__icon[data-v-6e20bb40]{
 		font-size: 40rpx !important;
 		font-weight: bold !important;
+		color: #333333 !important;
 		margin: 0 auto;
 	}
 	.node-info{

@@ -7279,7 +7279,36 @@ var render = function() {
                   staticClass: _vm._$g(36, "sc"),
                   attrs: { _i: 36 }
                 },
-                [_vm._v("1111111")]
+                [
+                  _c(
+                    "v-uni-view",
+                    { staticClass: _vm._$g(37, "sc"), attrs: { _i: 37 } },
+                    _vm._l(_vm._$g(38, "f"), function(item, index, $21, $31) {
+                      return _c(
+                        "v-uni-view",
+                        {
+                          key: item,
+                          staticClass: _vm._$g("38-" + $31, "sc"),
+                          class: _vm._$g("38-" + $31, "c"),
+                          attrs: { _i: "38-" + $31 },
+                          on: {
+                            click: function($event) {
+                              return _vm.$handleViewEvent($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("v-uni-text", { attrs: { _i: "39-" + $31 } }, [
+                            _vm._v(_vm._$g("39-" + $31, "t0-0"))
+                          ])
+                        ],
+                        1
+                      )
+                    }),
+                    1
+                  )
+                ],
+                1
               )
             ],
             1
@@ -7379,7 +7408,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ./node_modules/css-loader/dist/runtime/api.js */ 27);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.project-status{\n\t/* display: flex;\n\talign-items: center;\n\tjustify-content: center; */\n\tmargin-top: 35rpx;\n}\n/* 修改下箭头样式 */\n .u-icon__icon[data-v-6e20bb40]{\n\tfont-size: 40rpx !important;\n\tfont-weight: bold !important;\n\tmargin: 0 auto;\n}\n.node-info{\n\tmargin-left: 119rpx;\n}\n.node-info1{\n\tmargin-left: 70rpx;\n}\n.project-node{\n\tdisplay: flex;\n\tfont-size: 28rpx;\n\talign-items: center;\n\tmargin-top: 20rpx;\n}\n.name{\n\tflex: 1;\n\tcolor: #666666;\n}\n.container{\n\tflex: 2;\n\tcolor: #333333;\n}\n.msg-item{\n\tdisplay: flex;\n\tmargin-top: 27rpx;\n\tfont-size: 27rpx;\n\tfont-weight: bold;\n}\n.title uni-text{\n\tfont-size: 32rpx;\n\tfont-weight: bold;\n}\n.title{\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: space-between;\n}\n.detail-container,.process-container{\n\tmargin: 20rpx; \n\tpadding: 19rpx;\n\tborder-radius: 10rpx;\n\tbox-shadow: 0rpx 0rpx 50rpx 0rpx rgba(0, 0, 0, 0.06);\n\tbackground-color: #FFFFFF;\n}\n.u-icon__icon[data-v-6e20bb40]{\n\tcolor: #FFFFFF !important;\n\tfont-weight: 900 !important;\n}\n.u-navbar__content__title[data-v-1194bf80]{\n\tcolor: #FFFFFF;\n\tfont-weight: 550;\n}\n", ""]);
+exports.push([module.i, "\n.active-tags{\t\t\n\tbackground: #00B490;\n\tcolor: #FFFFFF !important;\n\tfont-weight: bold;\n}\n.no-margin-left{\n\tmargin-left: 0 !important;\n}\n.item-margin-top{\n\tmargin-top: 31rpx !important;\n}\n.status-tag-container .tags{\n\tborder: 2rpx solid #00B490;\n\tfont-size: 28rpx;\n\tfont-weight: 500;\n\tcolor: #333333;\n\tborder-radius: 6rpx;\n\tmargin-left: 35rpx;\n\twidth: 190rpx;\n\theight: 56rpx;\n\tdisplay: flex;\n\tjustify-content: center;\n\talign-items: center;\n}\n.status-tag-container{\n\tdisplay: flex;\n\tflex-wrap: wrap;\n}\n.project-status{\n\t/* display: flex;\n\talign-items: center;\n\tjustify-content: center; */\n\tmargin-top: 35rpx;\n}\n/* 修改下箭头样式 */\n .project-status .u-icon__icon[data-v-6e20bb40]{\n\tfont-size: 40rpx !important;\n\tfont-weight: bold !important;\n\tcolor: #333333 !important;\n\tmargin: 0 auto;\n}\n.node-info{\n\tmargin-left: 119rpx;\n}\n.node-info1{\n\tmargin-left: 70rpx;\n}\n.project-node{\n\tdisplay: flex;\n\tfont-size: 28rpx;\n\talign-items: center;\n\tmargin-top: 20rpx;\n}\n.name{\n\tflex: 1;\n\tcolor: #666666;\n}\n.container{\n\tflex: 2;\n\tcolor: #333333;\n}\n.msg-item{\n\tdisplay: flex;\n\tmargin-top: 27rpx;\n\tfont-size: 27rpx;\n\tfont-weight: bold;\n}\n.title uni-text{\n\tfont-size: 32rpx;\n\tfont-weight: bold;\n}\n.title{\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: space-between;\n}\n.detail-container,.process-container{\n\tmargin: 20rpx; \n\tpadding: 19rpx;\n\tborder-radius: 10rpx;\n\tbox-shadow: 0rpx 0rpx 50rpx 0rpx rgba(0, 0, 0, 0.06);\n\tbackground-color: #FFFFFF;\n}\n.u-icon__icon[data-v-6e20bb40]{\n\tcolor: #FFFFFF !important;\n\tfont-weight: 900 !important;\n}\n.u-navbar__content__title[data-v-1194bf80]{\n\tcolor: #FFFFFF;\n\tfont-weight: 550;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
