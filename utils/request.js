@@ -24,8 +24,9 @@ export function request(url, type, date, tips) {
 			},
 			// 成功使用resolve
 			success: (res) => {
-				if (res.data && res.data.code == 1) {
-					resolve(res)
+				console.log(res)
+				if (res.data && res.data.code == 0) {
+					resolve(res.data)
 				} else {
 					/**
 					 * 请求失败，是否要提示出来;

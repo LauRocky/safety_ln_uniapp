@@ -53,12 +53,10 @@
         methods: {
             submit(){
 				this.$refs.loginForm.validate().then(res=>{
-					
-					this.$http('/loginApp','POST',this.loginForm).then(res=>{
-						if(res.data.code==0){
-							
-							uni.setStorageSync('user', res.data.user);
-							uni.setStorageSync('token', res.data.token);
+					this.$http('/loginApp','POST',this.loginForm,false).then(res=>{
+						if(res.code==0){
+							uni.setStorageSync('userInfo', res.user);
+							uni.setStorageSync('token', res.token);
 														
 							uni.switchTab({
 								url: '/pages/home/index'

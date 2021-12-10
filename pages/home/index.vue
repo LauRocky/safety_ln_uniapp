@@ -9,21 +9,21 @@
 		<image class="home-img" src="../../static/banner.png" mode=""></image>
 		<view class="main">
 			<view class="main-top">
-				<u-tabs lineColor="#00B490" lineWidth="80" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="click"></u-tabs>
+				<u-tabs lineColor="#00B490" lineWidth="80" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handtabs"></u-tabs>
 				<view class="main-scroll">
-					<scroll-view class="scroll" @scrolltolower="handtolower" scroll-y>
+					<view class="scroll">
 						<view v-for="(item, index) in indexList" :key="index">
 							<view class="main-all">
 								<view class="main-left">
 									<view class="main-yuan"></view>
-									<view class="main-sao">{{ item.name }}</view>
+									<view class="main-sao">{{ item.title }}</view>
 								</view>
 								<view class="main-right">{{ item.time }}</view>
 							</view>
 						</view>
-					</scroll-view>
+					</view>
 				</view>
-				<view class="look">查看更多 (15)</view>
+				<view class="look">查看更多 ({{totalCount}})</view>
 			</view>
 			<view class="main-cet main-top">
 				<view class="title">隐患数据</view>
@@ -31,34 +31,37 @@
 					<view class="zho-1">
 						<view class="zho-he">
 							<view class="fa">发现</view>
-							<view class="nums">8</view>
+							<view class="nums">{{problem.problemSolve + problem.problemFind + problem.problemRecheck}}</view>
 						</view>
-						<view class="zho-text">今日+0</view>
+						<view class="zho-text">今日+{{problem.problemCntToday}}</view>
 					</view>
 					<view class="zho-1">
 						<view class="zho-he zho-he2">
-							<view class="fa">发现</view>
-							<view class="nums">8</view>
+							<view class="fa">已整改</view>
+							<view class="nums">{{problem.problemSolve}}</view>
 						</view>
-						<view class="zho-text">今日+0</view>
+						<view class="zho-text">今日+{{problem.problemSolveToday}}</view>
 					</view>
 					<view class="zho-1">
 						<view class="zho-he zho-he3">
-							<view class="fa">发现</view>
-							<view class="nums">8</view>
+							<view class="fa">已复核</view>
+							<view class="nums"> {{problem.problemRecheckToday}}</view>
 						</view>
-						<view class="zho-text">今日+0</view>
+						<view class="zho-text">今日+{{problem.problemRecheckToday}}</view>
 					</view>
 					<view class="zho-1">
 						<view class="zho-he zho-he4">
-							<view class="fa">发现</view>
-							<view class="nums">8</view>
+							<view class="fa">超期 </view>
+							<view class="nums">{{problem.expireUnSolve}}</view>
 						</view>
-						<view class="zho-text">今日+0</view>
+						<view class="zho-text">今日+</view>
 					</view>
 				</view>
 			</view>
-			<view class=""><barecharts /></view>
+			<view class="main-cet main-top">
+				<view class="title">安全风险分布</view>
+				<barecharts />
+			</view>
 		</view>
 	</view>
 </template>
@@ -73,67 +76,48 @@ export default {
 	},
 	data() {
 		return {
+			project:{
+				projectName:'',
+				companyId:JSON.parse(uni.getStorageSync('userInfo')).companyId,
+			},
+			backlog: {
+				readStatus: '0',
+				page: 1,
+				limit: 10
+			},
+			receiver: {
+				searchValues:'',
+				page: 1,
+				limit: 10
+			},
+			problem:{
+				
+			},
 			list1: [
 				{
-					name: '待办事项',
-					value: '1',
-					badge: {
-						isDot: true
-					}
+					name: '项目预警',
+					value: 1
 				},
 				{
-					name: '预警提醒',
-					value: '2'
-				},
-				{
-					name: '消息通知',
-					value: '3'
+					name: '隐患通知',
+					value: 2
 				},
 				{
 					name: '公告',
-					value: '4'
+					value: 3
 				}
 			],
-			indexList: [
-				{
-					name: '12313',
-					value: '123123',
-					time: '2021-10-22'
-				},
-				{
-					name: '12313',
-					value: '123123',
-					time: '2021-10-22'
-				},
-				{
-					name: '12313',
-					value: '123123',
-					time: '2021-10-22'
-				},
-				{
-					name: '12313',
-					value: '123123',
-					time: '2021-10-22'
-				},
-				{
-					name: '12313',
-					value: '123123',
-					time: '2021-10-22'
-				},
-				{
-					name: '12313',
-					value: '123123',
-					time: '2021-10-22'
-				},
-				{
-					name: '12313',
-					value: '123123',
-					time: '2021-10-22'
-				}
-			]
+			status:0, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
+			totalCount:0,
+			indexList: [] 
 		};
 	},
-	onLoad() {},
+	onLoad() {
+		this.handbacklog();
+		this.handdetailByUser()
+		
+	},
+	onShow() {},
 	methods: {
 		handscanCode() {
 			scanCode();
@@ -141,9 +125,87 @@ export default {
 		handtolower() {
 			console.log('12321312');
 		},
-		click(item) {
-			console.log('item', item);
-		}
+		handtabs(val) {
+			if (val.value == 1) {
+				this.status = 1
+				this.handbacklog();
+			} else if (val.value == 2) {
+				this.status = 2
+				this.handmsglist();
+			} else if (val.value == 3) {
+				this.status = 3
+				this.handquerylist();
+			}
+		},
+		handbacklog() {
+			//项目预警
+			this.$http('/project/plan/page', 'POST', this.project, false)
+				.then(res => {
+					if (res.code == 0) {
+						res.page.forEach(val => {
+							val.title = val.projectName
+							let list = [];
+							list = val.createTime.split(' ');
+							val.time = list[0];
+						});
+						this.indexList = res.page.slice(0,6);
+						this.totalCount = res.page.length
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		handmsglist() {
+			//隐患通知
+			this.$http('/msg/list', 'POST', this.backlog, false)
+				.then(res => {
+					if (res.code == 0) {
+						res.page.list.forEach(val => {
+							val.title = val.newsName
+							let list = [];
+							list = val.createTime.split(' ');
+							val.time = list[0];
+						});
+						this.indexList = res.page.list.splice(0,6);
+						this.totalCount = res.page.totalCount
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		handquerylist() {
+			//公告
+			this.$http('/news/all/list', 'GET', this.receiver, false)
+				.then(res => {
+					if (res.code == 0) {
+						res.page.list.forEach(val => {
+							val.title = val.newsName
+							let list = [];
+							list = val.createTime.split(' ');
+							val.time = list[0];
+						});
+						this.indexList = res.page.list.splice(0,6);
+						this.totalCount = res.page.totalCount
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		handdetailByUser() {
+			//隐患数据
+			this.$http('/statistics/project/detailByUser', 'POST', {}, false)
+				.then(res => {
+					if (res.code == 0) {
+						this.problem = res.problemMap
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 	}
 };
 </script>
@@ -188,14 +250,18 @@ export default {
 							margin-right: 12upx;
 						}
 						.main-sao {
+							width: 60vw;
 							font-size: 28upx;
 							font-family: PingFang SC;
 							font-weight: 500;
 							color: #333333;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
 						}
 					}
 					.main-right {
-						font-size: 26upx;
+						font-size: 28upx;
 						font-family: PingFang SC;
 						font-weight: 400;
 						color: #333333;

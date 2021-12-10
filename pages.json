@@ -49,7 +49,7 @@
 					"bounce": "none"
 				}
 			}
-		},{
+		}, {
 			"path": "pages/projectProgress/detail",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -82,8 +82,26 @@
 					"bounce": "none"
 				}
 			}
+		}, {
+			"path": "pages/dangerList/add",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "新增隐患",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text":"创建",
+							"fontSize":"36upx",
+							"fontWeight":"bold"
+						}]
+					}
+
+				}
+			}
+
 		}
-    ],
+	],
 	"tabBar": {
 		"color": "#A9A9A9",
 		"selectedColor": "#00B490",

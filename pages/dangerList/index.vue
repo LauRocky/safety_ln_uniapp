@@ -28,7 +28,7 @@
 				
 			</view>
 		</scroll-view>
-		<image class="add" src="../../static/danger/jia.png" mode=""></image>
+		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
 		<mypicker :show="show" :rightList="rightList" @close='handclose' />
 	</view>
 </template>
@@ -196,6 +196,11 @@ export default {
 	},
 	onLoad() {},
 	methods: {
+		handPush(){
+			uni.navigateTo({
+				url:'/pages/dangerList/add'
+			})
+		},
 		handclose(){
 				this.show = false
 		},
@@ -212,11 +217,7 @@ export default {
 		change(e) {
 			this.btnnum = e;
 		},
-		search() {
-			uni.showToast({
-				title: '搜索'
-			});
-		}
+		 
 	}
 };
 </script>
