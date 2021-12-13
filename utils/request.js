@@ -23,7 +23,6 @@ export function request(url, type, date, tips) {
 			},
 			// 成功使用resolve
 			success: (res) => {
-				console.log(res)
 				if (res.data && res.data.code == 0) {
 					resolve(res.data)
 				} else {
@@ -41,7 +40,6 @@ export function request(url, type, date, tips) {
 			//失败调用reject，
 			fail: (err) => {
 				// 失败做处理
-				console.log(err)
 				if (tips.showError) {
 					showError(res);
 				}

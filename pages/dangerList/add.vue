@@ -1,7 +1,7 @@
 <template>
 	<view class="add">
-		<u--form labelPosition="left" :model="userAdd" :rules="rules" ref="form1">
-			<u-form-item class="form-item" prop="userAdd.name" @click="show = true" borderBottom>
+		<u--form labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
+			<u-form-item class="form-item" prop="name" @click="show = true" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/xiangmu.png" mode=""></image>
 					<view class="add-title">所属项目部（必填）</view>
@@ -9,15 +9,15 @@
 				<u--input v-model="userAdd.name" inputAlign="right" disabled placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
-			<u-form-item class="form-item" prop="userAdd.dagner" borderBottom >
+			<u-form-item class="form-item" prop="dagner"  @click="showl = true" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/yihuan.png" mode=""></image>
 					<view class="add-title">隐患等级</view>
 				</view>
-				<u--input v-model="userAdd.dagner" inputAlign="right" placeholder="请选择" border="none"></u--input>
+				<u--input v-model="userAdd.dagner" inputAlign="right" disabled placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
-			<u-form-item class="form-item" prop="userAdd.rectification" borderBottom>
+			<u-form-item class="form-item" prop="rectification" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/zheng.png" mode=""></image>
 					<view class="add-title">整改人</view>
@@ -25,7 +25,7 @@
 				<u--input v-model="userAdd.rectification" inputAlign="right" placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
-			<u-form-item class="form-item" prop="userAdd.person" borderBottom >
+			<u-form-item class="form-item" prop="person" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/zhi.png" mode=""></image>
 					<view class="add-title">知会人</view>
@@ -33,7 +33,7 @@
 				<u--input v-model="userAdd.person" inputAlign="right" placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
-			<u-form-item class="form-item" prop="userAdd.Details" borderBottom >
+			<u-form-item class="form-item" prop="Details" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/xq.png" mode=""></image>
 					<view class="add-title">隐患详情描述</view>
@@ -41,7 +41,7 @@
 				<u--input v-model="userAdd.Details" inputAlign="right" placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
-			<u-form-item class="form-item" prop="userAdd.require" borderBottom >
+			<u-form-item class="form-item" prop="require" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/gai.png" mode=""></image>
 					<view class="add-title">整改要求</view>
@@ -49,7 +49,7 @@
 				<u--input v-model="userAdd.require" inputAlign="right" placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
-			<u-form-item class="form-item" prop="userAdd.location" borderBottom >
+			<u-form-item class="form-item" prop="location" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/wei.png" mode=""></image>
 					<view class="add-title">详细发生位置</view>
@@ -57,7 +57,7 @@
 				<u--input v-model="userAdd.location" inputAlign="right" placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
-			<u-form-item class="form-item" prop="userAdd.period" borderBottom >
+			<u-form-item class="form-item" prop="period" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/qi.png" mode=""></image>
 					<view class="add-title">整改期限</view>
@@ -69,20 +69,28 @@
 				</u--input>
 			</u-form-item>
 		</u--form>
-		<projectPicker :show="show" @close="handclose" />
+		<projectPicker :show="show" @close="handclose" @handEnd="handEnd" />
+		<levelPicker :showl="showl" @closeL="handcloseL" @handEndl="handEndl" />
+		<rectification :showR="showR" @closeL="handcloseR" @handEndl="handEndR" />
 	</view>
 </template>
 <script>
-	import projectPicker from '../../components/projectPicker/projectPicker.vue'
+import projectPicker from '../../components/dangerList/projectPicker.vue';
+import levelPicker from '../../components/dangerList/levelPicker.vue'
+import rectification from '../../components/dangerList/rectification.vue'
 export default {
 	name: 'add',
 	props: [],
 	components: {
-		projectPicker
+		projectPicker,
+		levelPicker,
+		rectification
 	},
 	data() {
 		return {
-			show:false,
+			show: false,
+			showl: false,
+			showR:true,
 			userAdd: {
 				name: '',
 				dagner: '',
@@ -94,42 +102,48 @@ export default {
 				period: ''
 			},
 			rules: {
-				'userAdd.name': {
-					type: 'string',
-					required: true,
-					message: '请填写项目',
-					trigger: ['blur', 'change']
-				},
-				'userAdd.dagner': {
-					type: 'string',
-					required: true,
-					message: '请填写等级',
-					trigger: ['blur', 'change']
-				},
-				'userAdd.rectification': {
-					type: 'string',
-					required: true,
-					message: '请填写整改人',
-					trigger: ['blur', 'change']
-				},
-				'userAdd.Details': {
-					type: 'string',
-					required: true,
-					message: '请填写详情',
-					trigger: ['blur', 'change']
-				},
-				'userAdd.require': {
-					type: 'string',
-					required: true,
-					message: '请填写要求',
-					trigger: ['blur', 'change']
-				},
-				'userAdd.period': {
-					type: 'string',
-					required: true,
-					message: '请填写期限',
-					trigger: ['blur', 'change']
-				}
+				name: [
+					{
+						required: true,
+						message: '请填写项目',
+						trigger: ['blur', 'change']
+					}
+				],
+				dagner: [
+					{
+						required: true,
+						message: '请填写等级',
+						trigger: ['blur', 'change']
+					}
+				],
+				rectification: [
+					{
+						required: true,
+						message: '请填写整改人',
+						trigger: ['blur', 'change']
+					}
+				],
+				Details: [
+					{
+						required: true,
+						message: '请填写详情',
+						trigger: ['blur', 'change']
+					}
+				],
+				require: [
+					{
+						required: true,
+						message: '请填写要求',
+						trigger: ['blur', 'change']
+					}
+				],
+				period: [
+					{
+						required: true,
+						message: '请填写期限',
+						trigger: ['blur', 'change']
+					}
+				]
 			}
 		};
 	},
@@ -138,15 +152,36 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
-		handformpick(){
-			console.log('123123')
+		handEnd(v) {
+			this.userAdd.name = v.name;
+			this.show = false;
 		},
-		handclose(){
-			this.show = false
+		handEndl(v){
+			this.userAdd.dagner = v.value;
+			this.showl = false;
+		},
+		handformpick() {
+			console.log('123123');
+		},
+		handclose() {
+			this.show = false;
+		},
+		handcloseL(){
+			this.showl = false;
+		},
+		submit() {
+			this.$refs.uForm.validate()
+				.then(res => {
+					uni.$u.toast('校验通过');
+				})
+				.catch(errors => {
+					uni.$u.toast('校验失败');
+				});
 		}
+
 	},
 	onNavigationBarButtonTap() {
-		console.log('222');
+		this.submit()
 	}
 };
 </script>

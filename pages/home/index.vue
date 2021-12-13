@@ -23,7 +23,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="look">查看更多 ({{totalCount}})</view>
+				<view class="look">查看更多 ({{ totalCount }})</view>
 			</view>
 			<view class="main-cet main-top">
 				<view class="title">隐患数据</view>
@@ -31,28 +31,28 @@
 					<view class="zho-1">
 						<view class="zho-he">
 							<view class="fa">发现</view>
-							<view class="nums">{{problem.problemSolve + problem.problemFind + problem.problemRecheck}}</view>
+							<view class="nums">{{ problem.problemSolve + problem.problemFind + problem.problemRecheck }}</view>
 						</view>
-						<view class="zho-text">今日+{{problem.problemCntToday}}</view>
+						<view class="zho-text">今日+{{ problem.problemCntToday }}</view>
 					</view>
 					<view class="zho-1">
 						<view class="zho-he zho-he2">
 							<view class="fa">已整改</view>
-							<view class="nums">{{problem.problemSolve}}</view>
+							<view class="nums">{{ problem.problemSolve }}</view>
 						</view>
-						<view class="zho-text">今日+{{problem.problemSolveToday}}</view>
+						<view class="zho-text">今日+{{ problem.problemSolveToday }}</view>
 					</view>
 					<view class="zho-1">
 						<view class="zho-he zho-he3">
 							<view class="fa">已复核</view>
-							<view class="nums"> {{problem.problemRecheckToday}}</view>
+							<view class="nums">{{ problem.problemRecheckToday }}</view>
 						</view>
-						<view class="zho-text">今日+{{problem.problemRecheckToday}}</view>
+						<view class="zho-text">今日+{{ problem.problemRecheckToday }}</view>
 					</view>
 					<view class="zho-1">
 						<view class="zho-he zho-he4">
-							<view class="fa">超期 </view>
-							<view class="nums">{{problem.expireUnSolve}}</view>
+							<view class="fa">超期</view>
+							<view class="nums">{{ problem.expireUnSolve }}</view>
 						</view>
 						<view class="zho-text">今日+</view>
 					</view>
@@ -68,7 +68,7 @@
 
 <script>
 import { scanCode } from '../../utils/utils.js';
-import barecharts from '../../components/barecharts/barecharts.vue';
+import barecharts from '../../components/home/barecharts.vue';
 
 export default {
 	components: {
@@ -76,9 +76,9 @@ export default {
 	},
 	data() {
 		return {
-			project:{
-				projectName:'',
-				companyId:JSON.parse(uni.getStorageSync('userInfo')).companyId,
+			project: {
+				projectName: '',
+				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 			},
 			backlog: {
 				readStatus: '0',
@@ -86,13 +86,11 @@ export default {
 				limit: 10
 			},
 			receiver: {
-				searchValues:'',
+				searchValues: '',
 				page: 1,
 				limit: 10
 			},
-			problem:{
-				
-			},
+			problem: {},
 			list1: [
 				{
 					name: '项目预警',
@@ -107,15 +105,14 @@ export default {
 					value: 3
 				}
 			],
-			status:0, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
-			totalCount:0,
-			indexList: [] 
+			status: 0, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
+			totalCount: 0,
+			indexList: []
 		};
 	},
 	onLoad() {
 		this.handbacklog();
-		this.handdetailByUser()
-		
+		this.handdetailByUser();
 	},
 	onShow() {},
 	methods: {
@@ -127,13 +124,13 @@ export default {
 		},
 		handtabs(val) {
 			if (val.value == 1) {
-				this.status = 1
+				this.status = 1;
 				this.handbacklog();
 			} else if (val.value == 2) {
-				this.status = 2
+				this.status = 2;
 				this.handmsglist();
 			} else if (val.value == 3) {
-				this.status = 3
+				this.status = 3;
 				this.handquerylist();
 			}
 		},
@@ -143,13 +140,13 @@ export default {
 				.then(res => {
 					if (res.code == 0) {
 						res.page.forEach(val => {
-							val.title = val.projectName
+							val.title = val.projectName;
 							let list = [];
 							list = val.createTime.split(' ');
 							val.time = list[0];
 						});
-						this.indexList = res.page.slice(0,6);
-						this.totalCount = res.page.length
+						this.indexList = res.page.slice(0, 6);
+						this.totalCount = res.page.length;
 					}
 				})
 				.catch(err => {
@@ -162,13 +159,13 @@ export default {
 				.then(res => {
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
-							val.title = val.newsName
+							val.title = val.newsName;
 							let list = [];
 							list = val.createTime.split(' ');
 							val.time = list[0];
 						});
-						this.indexList = res.page.list.splice(0,6);
-						this.totalCount = res.page.totalCount
+						this.indexList = res.page.list.splice(0, 6);
+						this.totalCount = res.page.totalCount;
 					}
 				})
 				.catch(err => {
@@ -181,13 +178,13 @@ export default {
 				.then(res => {
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
-							val.title = val.newsName
+							val.title = val.newsName;
 							let list = [];
 							list = val.createTime.split(' ');
 							val.time = list[0];
 						});
-						this.indexList = res.page.list.splice(0,6);
-						this.totalCount = res.page.totalCount
+						this.indexList = res.page.list.splice(0, 6);
+						this.totalCount = res.page.totalCount;
 					}
 				})
 				.catch(err => {
@@ -199,13 +196,13 @@ export default {
 			this.$http('/statistics/project/detailByUser', 'POST', {}, false)
 				.then(res => {
 					if (res.code == 0) {
-						this.problem = res.problemMap
+						this.problem = res.problemMap;
 					}
 				})
 				.catch(err => {
 					console.log(err);
 				});
-		},
+		}
 	}
 };
 </script>
