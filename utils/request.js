@@ -1,8 +1,7 @@
 // 
-// const baseUrl = 'http://192.168.133.18:12002/safety-server/api'
-var BASE_URL = 'http://192.168.133.18:12002/safety-server/api'
+var BASE_URL = 'http://192.168.133.13:12002/safety-server/api'
 // #ifdef H5
-BASE_URL = '/web'; //H5下将地址修改为/dpc
+BASE_URL = '/web'; //H5下将地址修改为/web
 // #endif
 // 
 export function request(url, type, date, tips) {
