@@ -3,19 +3,15 @@
 		<nav-bar :title="company" @seach="handseach"></nav-bar>
 		
 		<view class="project-container">
-			
 			<view class="project" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="project.projectId">
-				
 				<view class="title">
 					<text>{{project.projectName}}</text>
 					<u-icon color="#303133" :bold="true" name="arrow-right" @click="goDetail(project.projectId,project.projectName,project.companyId)"></u-icon>
 				</view>
-				
 				<view class="status" v-if="getprocess(project.projectId) == 0">
 					<u-tag style="margin-top: 8rpx;" size="mini" bgColor="#00B490" color="#ffffff" text="进度正常"></u-tag>
 					<text style="margin-left: 20rpx;">项目各个环节进度正常</text>
 				</view>
-				
 				<view class="status" v-else>
 					<u-tag style="margin-top: 8rpx;" size="mini" bgColor="#FF0000" color="#ffffff" text="进度异常"></u-tag>
 					<text style="margin-left: 20rpx;">项目{{getprocess(project.projectId)}}个环节进度异常</text>
@@ -38,7 +34,7 @@
 			return {
 				company:"所有城市",
 				queryForm:{
-					companyId: JSON.parse(uni.getStorageSync('user')).companyId,
+					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId,
 					projectId: '',
 					status:'',
 				},
@@ -49,9 +45,11 @@
 			handseach(){
 				console.log('搜索~~~')
 			},
+		
 			getProjectList(){
-				this.$http('/project/plan/withStatus','POST',this.queryForm).then(res=>{
-					this.projectList = res.data.page 
+				this.$http('project/plan/withStatus','POST',this.queryForm ,false).then(res=>{
+					this.projectList=res.page
+					// console.log(this.projectList)
 				})
 			},
 			/* 根据项目id判断节点状态 返回有几个异常 */
@@ -77,8 +75,11 @@
 				})
 			}
 		},
-		onShow() {
+		onLoad() {
 			this.getProjectList()
+		},
+		onShow() {
+			
 		}
 		
 	}

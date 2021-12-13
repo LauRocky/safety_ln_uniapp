@@ -1,3 +1,4 @@
+
 import {
 	request
 } from "./request.js"
@@ -8,3 +9,4 @@ export function getDictList(dictType) {
 		type: dictType
 	})
 }
+
