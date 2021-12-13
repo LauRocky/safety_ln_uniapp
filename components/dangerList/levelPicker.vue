@@ -1,9 +1,9 @@
 <template>
 	<view class="levelPicker">
-		<u-popup :show="showl" @close="handIcon" :round="10" mode="bottom">
+		<u-popup :show="showl" @close="handIcon" :closeable="true" :round="10" mode="bottom">
 			<view class="titles">
 				隐患等级
-				<u-icon class="icon" @click="handIcon" name="close" color="#b5b5b5 " size="28"></u-icon>
+				<!-- <u-icon class="icon" @click="handIcon" name="close" color="#b5b5b5 " size="28"></u-icon> -->
 			</view>
 			<view class="main">
 				<view class="title2">

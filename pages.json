@@ -100,26 +100,7 @@
 
 				}
 			}
-
 		}
-	    ,{
-            "path" : "components/dangerList/levelPicker",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "components/dangerList/rectification",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
     ],
 	"tabBar": {
 		"color": "#A9A9A9",
