@@ -1,7 +1,6 @@
 <template>
 	<view>
 		<nav-bar :title="company" @seach="handseach"></nav-bar>
-		
 		<view class="project-container">
 			<view class="project" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="project.projectId">
 				<view class="title">
@@ -48,8 +47,8 @@
 		
 			getProjectList(){
 				this.$http('project/plan/withStatus','POST',this.queryForm ,false).then(res=>{
+					console.log(res)
 					this.projectList=res.page
-					// console.log(this.projectList)
 				})
 			},
 			/* 根据项目id判断节点状态 返回有几个异常 */
