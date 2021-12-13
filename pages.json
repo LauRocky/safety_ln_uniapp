@@ -92,8 +92,9 @@
 					"titleNView": {
 						"buttons": [{
 							"text":"创建",
-							"fontSize":"36upx",
-							"fontWeight":"bold"
+							"fontSize":"30upx",
+							"fontWeight":"bold",
+							"width":"60"
 						}]
 					}
 
