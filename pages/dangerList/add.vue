@@ -9,7 +9,7 @@
 				<u--input v-model="userAdd.name" inputAlign="right" disabled placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
-			<u-form-item class="form-item" prop="dagner" borderBottom>
+			<u-form-item class="form-item" prop="dagner"  @click="showl = true" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/yihuan.png" mode=""></image>
 					<view class="add-title">隐患等级</view>
@@ -70,19 +70,27 @@
 			</u-form-item>
 		</u--form>
 		<projectPicker :show="show" @close="handclose" @handEnd="handEnd" />
+		<levelPicker :showl="showl" @closeL="handcloseL" @handEndl="handEndl" />
+		<rectification :showR="showR" @closeL="handcloseR" @handEndl="handEndR" />
 	</view>
 </template>
 <script>
 import projectPicker from '../../components/dangerList/projectPicker.vue';
+import levelPicker from '../../components/dangerList/levelPicker.vue'
+import rectification from '../../components/dangerList/rectification.vue'
 export default {
 	name: 'add',
 	props: [],
 	components: {
-		projectPicker
+		projectPicker,
+		levelPicker,
+		rectification
 	},
 	data() {
 		return {
 			show: false,
+			showl: false,
+			showR:true,
 			userAdd: {
 				name: '',
 				dagner: '',
@@ -148,11 +156,18 @@ export default {
 			this.userAdd.name = v.name;
 			this.show = false;
 		},
+		handEndl(v){
+			this.userAdd.dagner = v.value;
+			this.showl = false;
+		},
 		handformpick() {
 			console.log('123123');
 		},
 		handclose() {
 			this.show = false;
+		},
+		handcloseL(){
+			this.showl = false;
 		},
 		submit() {
 			this.$refs.uForm.validate()
