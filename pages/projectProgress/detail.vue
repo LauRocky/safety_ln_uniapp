@@ -3,14 +3,13 @@
 		<u-navbar :title="project.projectName" :fixed="true" :placeholder="true" 
 		:safeAreaInsetTop="true" bgColor="#11B38C" @leftClick="back">
 		</u-navbar>
-		
 		<view class="detail-container">
-			
 			<view class="title">
 				<text>项目基本信息</text>
-				<u-tag style="font-size: 24rpx;" size="mini" :text="getProjectStatus(projectInfo.status)" borderColor="#00B490" bgColor="#00B490" color="#ffffff" ></u-tag>
+				<u-tag style="font-size: 24rpx;" size="mini" :text="getProjectStatus(projectInfo.status)" borderColor="#00B490" bgColor="#00B490" color="#ffffff" >
+				</u-tag>
+				<!-- <view class="unitag">{{projectInfo.status==0?'在建':''}}</view> -->
 			</view>
-			
 			<view class="msg-item">
 				<view class="name">项目名称</view>
 				<view class="container">{{projectInfo.projectName}}</view>
@@ -43,31 +42,20 @@
 		</view>
 		
 		<view class="process-container">
-			
 			<view class="title">
 				<text style="margin-bottom: 14rpx;">项目进度信息</text>
 			</view>
-			
-			<view class="project-node" v-for="item in timeOver" :key=item.id>
-				
+			<view class="project-node" v-for="item in timeOver" :key=item.id>	
 				<view class="node-tag">
 					<u-tag size="mini" :borderColor="bgColor(item.type)" :bgColor="bgColor(item.type)" color="#ffffff" :text="item.value"></u-tag>
-				</view>
-				
-				<view :class="{'node-info' : item.value.length==2,'node-info1' : item.value.length==4,}">{{item.taskName}}</view>
-				
+				</view>	
+				<view :class="{'node-info' : item.value.length==2,'node-info1' : item.value.length==4,}">{{item.taskName}}</view>		
 			</view>
-			
 			<view class="project-status"> 
-			
 				<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
-				
 				<view class="status-container" v-show="!isShow">
-					
 					<view class="status-tag-container">
-						
 						<!-- <u-tag :color="activeColor" :bgColor="activeBackground" borderColor="#00B490" :plain="true"  size="mini" text="全部"></u-tag>
-						
 						<u-tag color="#00B490" borderColor="#00B490" :plain="true" style="margin-left: 19rpx;" size="mini" v-for="(item,index) in statusList" :text="item.name">
 						</u-tag> -->
 						<view v-for="(item,index) in statusList" :key=item.code
@@ -76,16 +64,15 @@
 								'item-margin-top':index==3||index==4||index==5,
 								'active-tags':currentIndex==index}" 
 							class="tags" @click="changeTags(index)" >
-						
 							<text> {{item.name}} </text> 
-						</view> 
-						
+						</view> 	
 					</view> 
 					
 				</view>
 				
 			</view>
 			
+		
 		</view>
 		
 	</view>
@@ -143,16 +130,14 @@
 			},
 			getProject(){
 				this.$http('/project/plan/withStatus','POST',this.project).then(res=>{
-					this.projectInfo = res.data.page[0]
+					this.projectInfo = res.page[0]
+					console.log(this.projectInfo)
 					this.projectInfo.nodes.forEach(item=>{
 						// 项目进度信息时间判断
 						if(item.plannedTime && item.finishTime){
-							
 							let count = this.getDate(item.plannedTime,item.finishTime)
-							
 							// 大于7天一般 大于15天较重 大于30天严重 大于60天特别严重
 							// 0特别严重 1 严重 2较重 3一般	
-							
 							if(count >= 60){
 								this.timeOver.push({
 									id:item.id,
@@ -202,11 +187,13 @@
 			getProjectStatus(status){
 				let str = ''
 				this.projectStatus.forEach(item=>{
+					console.log(item)
 					if(item.code == status){
 						str = item.value
 					}
 				})
 				return str
+				console.log(str)
 			},
 			/* 将字符串转换为日期的方法 */
 			getDate(dateString1,dateString2){
@@ -227,20 +214,16 @@
 			}
 			
 		},
-		
 		onLoad: function (option) {
 			this.project.projectId = option.projectId
 			this.project.projectName = option.projectName
 			this.project.companyId = option.companyId
 			this.getProject()
 			getDictList('PROJECT_STATUS').then(data => {
+				console.log(data)
 				this.projectStatus = data
 			})
 		},
-		onShow() {
-			
-		}
-		
 	}
 </script>
 
@@ -321,6 +304,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+	}
+	.title .unitag{
+		width: 80px;
+		height: 38px;
+		background: #00B490;
+		border-radius: 6px;
 	}
 	.detail-container,.process-container{
 		margin: 20rpx; 

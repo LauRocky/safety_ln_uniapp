@@ -17,6 +17,14 @@
 				<u--input v-model="userAdd.dagner" inputAlign="right" disabled placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
+			<u-form-item class="form-item" prop="type" @click="showT = true" borderBottom>
+				<view class="add-1">
+					<image class="add-imgs" src="../../static/add/leixing.png" mode=""></image>
+					<view class="add-title">隐患类型</view>
+				</view>
+				<u--input v-model="userAdd.type" inputAlign="right" disabled placeholder="请选择" border="none"></u--input>
+				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
+			</u-form-item>
 			<u-form-item class="form-item" prop="rectification" @click="showR = true" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/zheng.png" mode=""></image>
@@ -54,7 +62,7 @@
 					<image class="add-imgs" src="../../static/add/wei.png" mode=""></image>
 					<view class="add-title">详细发生位置</view>
 				</view>
-				<u--input v-model="userAdd.location" maxlength="15" inputAlign="right" disabled placeholder="请选择" border="none"></u--input>
+				<u--input v-model="userAdd.location" maxlength="10" inputAlign="right" disabled placeholder="请选择" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
 			<u-form-item class="form-item" prop="period" borderBottom>
@@ -62,53 +70,59 @@
 					<image class="add-imgs" src="../../static/add/qi.png" mode=""></image>
 					<view class="add-title">整改期限</view>
 				</view>
-				<u--input v-model="userAdd.period" inputAlign="right" placeholder="请选择" border="none">
+				<u-input v-model="userAdd.period" inputAlign="right" placeholder="请选择" border="none">
 					<template slot="suffix">
 						<text style="color:#5F5F5F;">天</text>
 					</template>
-				</u--input>
+				</u-input>
 			</u-form-item>
-			<u-form-item class="form-item" prop="period" borderBottom>
+			<view class="form-item2">
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/pp.png" mode=""></image>
 					<view class="add-title">隐患照片</view>
 				</view>
-				<u-upload :fileList="fileList" @afterRead="afterRead" @delete="deletePic"></u-upload>
-			</u-form-item>
+				<uploadImg class="uploadImg" ref="uploadImg" :mode="imgList" @chooseFile="chooseFile" @imgDelete="imgDelete" :control="control" :columnNum="columnNum" />
+			</view>
 		</u--form>
-
-		<projectPicker :show="show" @close="handclose" @handEnd="handEnd" />
-		<levelPicker :showl="showl" @closeL="handcloseL" @handEndl="handEndl" />
-		<rectification :showR="showR" @closeR="handcloseR" @handEndR="handEndR" />
-		<InformPerson :showP="showP" @closeP="handcloseP" @handEndP="handEndP" />
-		<describe :showD="showD" @closeD="handcloseD" @handEndD="handEndD">隐患详情描述</describe>
-		<describe :showD="showZ" @closeD="handcloseZ" @handEndD="handEndZ">整改要求</describe>
-		<aderss :showA="showA" @closeA="handcloseA" @handEndA="handEndA"></aderss>
+		<projectPicker :show="show" @close="show = false" @handEnd="handEnd" />
+		<levelPicker :showl="showl" @closeL="showl = false" @handEndl="handEndl" />
+		<levelType :showl="showT" @closeL="showT = false" @handEndl="handEndT" />
+		<rectification :showR="showR" @closeR="showR = false" @handEndR="handEndR" />
+		<InformPerson :showP="showP" @closeP="showP = false" @handEndP="handEndP" />
+		<describe :showD="showD" @closeD="showD = false" @handEndD="handEndD">隐患详情描述</describe>
+		<describe :showD="showZ" @closeD="showD = false" @handEndD="handEndZ">整改要求</describe>
+		<aderss :showA="showA" @closeA="showA = false" @handEndA="handEndA"></aderss>
 	</view>
 </template>
 <script>
 import projectPicker from '../../components/dangerList/projectPicker.vue';
 import levelPicker from '../../components/dangerList/levelPicker.vue';
+import levelType from '../../components/dangerList/levelType.vue';
 import rectification from '../../components/dangerList/rectification.vue';
 import InformPerson from '../../components/dangerList/InformPerson.vue';
 import describe from '../../components/dangerList/describe.vue';
 import aderss from '../../components/dangerList/aderss.vue';
-import {BASE_URL} from '../../utils/request.js'
+import uploadImg from '../../components/xiaohuang-uploadImg/uploadImg.vue';
+import { BASE_URL } from '../../utils/request.js';
+
 export default {
 	name: 'add',
 	props: [],
 	components: {
 		projectPicker,
 		levelPicker,
+		levelType,
 		rectification,
 		InformPerson,
 		describe,
-		aderss
+		aderss,
+		uploadImg
 	},
 	data() {
 		return {
 			show: false, //项目显隐
 			showl: false, //等级
+			showT: false, //类型
 			showR: false, //整改
 			showP: false, //知会
 			showD: false, //描述
@@ -117,37 +131,50 @@ export default {
 			userAdd: {
 				name: '',
 				dagner: '',
+				type:'',
 				rectification: '',
 				person: '',
 				Details: '',
 				require: '',
 				location: '',
-				period: ''
+				period: '10',
+				images: '',
+				companyId: '', //项目id
+				projectId: '', //隐患id
+				assessment: '', //隐患等级，参考字典值。取code
+				problemType:'',  //选择，隐患类型，参考字典值。取code
+				problemSolver: '', //整改人
+				notifyPerson: '' //只会人
 			},
-			fileList:[],
-			nameobj: {},
-			dagnerobj: {},
-			cationobj: {},
-			personobj: {},
+			control: true,
+			columnNum: 4,
+			imgList: [],
 			rules: {
 				name: [
 					{
 						required: true,
-						message: '请填写项目',
+						message: '请选择项目',
 						trigger: ['blur', 'change']
 					}
 				],
 				dagner: [
 					{
 						required: true,
-						message: '请填写等级',
+						message: '请选择等级',
+						trigger: ['blur', 'change']
+					}
+				],
+				type: [
+					{
+						required: true,
+						message: '请选择类型',
 						trigger: ['blur', 'change']
 					}
 				],
 				rectification: [
 					{
 						required: true,
-						message: '请填写整改人',
+						message: '请选择整改人',
 						trigger: ['blur', 'change']
 					}
 				],
@@ -180,45 +207,82 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
-		afterRead(file) {
-			console.log(file)
+		handAdd() {
+			this.$http('/problems','POST',
+				{companyId: this.userAdd.companyId,
+					projectId: this.userAdd.projectId,
+					problemType: this.userAdd.problemType,
+					assessment: this.userAdd.assessment,
+					problemSolver: this.userAdd.problemSolver,
+					notifyPerson: this.userAdd.notifyPerson,
+					require: this.userAdd.require,
+					expireTime:Number(this.userAdd.period) + 10,
+					problemRequire: this.userAdd.Details,
+					areaDetail: this.userAdd.location,
+					images:this.userAdd.images,
+					location: this.userAdd.location,
+					source: 0,
+				},false).then(res => {
+					console.log('111111',res)
+					if (res.code == 0) {
+						console.log(res)
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		chooseFile(list, v) {
 			uni.uploadFile({
-				url:BASE_URL + '/upload/image', //你上传接口
-				pic: file.file, //上传的文件
-				name: 'fileName', //后台接收文件的标识
-				method:'POST',
+				url: BASE_URL + '/upload/image',
+				filePath: v,
+				name: 'pic',
 				header: {
-					'accept': '*/*',
-					'content-type': 'application/x-www-form-urlencoded',
-					'token': uni.getStorageSync('token')
+					accept: '*/*',
+					'Content-Type': 'application/x-www-form-urlencoded',
+					token: uni.getStorageSync('token')
 				},
 				success: res => {
-					console.log(res);
-					if (res.data.status == 'SUCCESS') {
-					} else {
-					}
-				},
-				fail: err => {}
+					const imgRes = JSON.parse(res.data);
+					this.imgList.push(imgRes.data.file_full_url);
+				}
 			});
 		},
+		imgDelete(list, eq) {
+			this.imgList.splice(eq, 1);
+		},
 		handEnd(v) {
-			this.nameobj = v;
+			//项目
+			console.log(v);
 			this.userAdd.name = v.name;
+			this.userAdd.companyId = v.companyId;
+			this.userAdd.projectId = v.projectId;
 			this.show = false;
 		},
 		handEndl(v) {
-			this.dagnerobj = v;
+			//隐患
 			this.userAdd.dagner = v.value;
+			this.userAdd.assessment = v.code;
 			this.showl = false;
 		},
+		handEndT(v) {
+			//隐患类型
+			console.log(v)
+			this.userAdd.type = v.value;
+			this.userAdd.problemType = v.code;
+			this.showT = false;
+		},
+		
 		handEndR(v) {
-			this.cationobj = v;
+			//整改
 			this.userAdd.rectification = v.fullname;
+			this.userAdd.problemSolver = v.userId;
 			this.showR = false;
 		},
 		handEndP(v) {
-			this.personobj = v;
+			//知会
 			this.userAdd.person = v.titlelist;
+			this.userAdd.notifyPerson = v.value;
 			this.showP = false;
 		},
 		handEndD(v) {
@@ -236,32 +300,21 @@ export default {
 		handformpick() {
 			console.log('123123');
 		},
-		handclose() {
-			this.show = false;
-		},
-		handcloseL() {
-			this.showl = false;
-		},
-		handcloseR() {
-			this.showR = false;
-		},
-		handcloseP() {
-			this.showP = false;
-		},
-		handcloseD() {
-			this.showD = false;
-		},
-		handcloseZ() {
-			this.showZ = false;
-		},
-		handcloseA() {
-			this.showA = false;
-		},
 		submit() {
 			this.$refs.uForm
 				.validate()
 				.then(res => {
-					uni.$u.toast('校验通过');
+					if (this.imgList.length == 0) {
+						return uni.$u.toast('请上传图片');
+					}
+					this.imgList.forEach(val => {
+						this.userAdd.images += val + '/';
+					});
+					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
+					
+					
+					this.handAdd()
+					/* uni.$u.toast('校验通过'); */
 				})
 				.catch(errors => {
 					uni.$u.toast('校验失败');
@@ -301,6 +354,18 @@ export default {
 		}
 		/deep/.u-form-item__body__right__message {
 			margin-left: 75vw !important;
+		}
+	}
+	.form-item2 {
+		padding: 40upx 0;
+		.add-title {
+			font-size: 28upx;
+			font-family: PingFang SC;
+			font-weight: bold;
+			color: #333333;
+		}
+		.uploadImg {
+			margin: 20upx 0;
 		}
 	}
 }
