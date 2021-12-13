@@ -1,9 +1,9 @@
 <template>
 	<view class="mypicker">
-		<u-popup :show="show" @close="handIcon" :round="10" mode="bottom">
+		<u-popup :show="show" @close="handIcon" :closeable="true" :round="10" mode="bottom">
 			<view class="titles">
 				请选择所在公司
-				<u-icon class="icon" @click="handIcon" name="close" color="#b5b5b5 " size="28"></u-icon>
+				<!-- <u-icon class="icon" @click="handIcon" name="close" color="#b5b5b5 " size="28"></u-icon> -->
 			</view>
 			<view class="main">
 				<view class="main-top">

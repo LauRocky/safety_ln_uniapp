@@ -1,71 +1,85 @@
 <template>
-	<view class="levelPicker">
-		<u-popup :show="showR" @close="handIcon" :round="10" mode="bottom">
+	<view class="rectification">
+		<u-popup :show="showR" @close="handIcon" :closeable="true" :round="10" mode="bottom">
 			<view class="titles">
 				请选择整改人
-				<u-icon class="icon" @click="handIcon" name="close" color="#b5b5b5 " size="28"></u-icon>
+				<!-- <u-icon class="icon" @click="handIcon" name="close" color="#b5b5b5 " size="28"></u-icon> -->
 			</view>
 			<view class="main">
 				<!-- <view class="title2">
 					请选择隐患等级
 				</view> -->
-				<scroll-view class="scroll-a" scroll-y>
-					<view class="text-a" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)" v-for="(val1, i1) in dictLsit" :key="i1">{{ val1.value }}</view>
+				<scroll-view class="scroll-a" @scrolltolower="handtolower" scroll-y>
+					<view class="text-a" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)" v-for="(val1, i1) in dictLsit" :key="i1">
+						<view class="t-a">{{ val1.fullname }}</view>
+						<view class="t-x">: {{ val1.mobile }}</view>
+					</view>
 				</scroll-view>
 			</view>
 		</u-popup>
 	</view>
 </template>
 <script>
-import { getDictList } from '../../utils/api.js';
+
 export default {
 	name: 'rectification',
 	props: ['showR'],
 	components: {},
 	data() {
 		return {
-			dictLsit:[],
-			cooindex:null,
-			listBy:{
-				page:1,
-				limit:10,
+			dictLsit: [],
+			cooindex: null,
+			listBy: {
+				page: 1,
+				limit: 10,
 				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 			}
 		};
 	},
-	onLoad() {
-		
-	},
+	onLoad() {},
 	//组件生命周期
 	created() {
-		this.handlistByProjectId()
+		this.handlistByProjectId();
 	},
 	mounted() {},
 	methods: {
-		handcoo(val, v){
-			this.cooindex = val
-			this.$emit('handEndR',v)
+		handtolower() {
+			this.handlistByProjectId();
 		},
-		handIcon(){
+		handcoo(val, v) {
+			this.cooindex = val;
+			this.$emit('handEndR', v);
+		},
+		handIcon() {
 			this.$emit('closeR');
 		},
 		handlistByProjectId() {
+			if(this.listBy.page >= 2){
+				uni.showLoading({ title: '加载中', mask: true });
+			}
 			//renyuan人员列表
-			this.$http('/users/pageByProjectId', 'POST', this.listBy, false).then(res => {
+			this.$http('/users/pageByProjectId', 'POST', this.listBy, false)
+				.then(res => {
 					if (res.code == 0) {
-						/* if(this.dictLsit.length ) */
+						uni.hideLoading();
+						if (this.dictLsit.length < res.data.totalCount) {
+							this.listBy.page++;
+							this.dictLsit = this.dictLsit.concat(res.data.list);
+							console.log(this.dictLsit);
+						} else {
+							console.log('444444');
+						}
 					}
 				})
 				.catch(err => {
 					console.log(err);
 				});
-		},
-		
+		}
 	}
 };
 </script>
 <style lang="less" scoped>
-.levelPicker {
+.rectification {
 	.titles {
 		position: relative;
 		padding: 40upx 0;
@@ -80,9 +94,9 @@ export default {
 			right: 20upx;
 		}
 	}
-	.main{
+	.main {
 		padding: 20upx 29upx 0 64upx;
-		.title2{
+		.title2 {
 			font-size: 32upx;
 			font-family: PingFang SC;
 			font-weight: bold;
@@ -92,16 +106,22 @@ export default {
 			padding-top: 30upx;
 			height: 40vh;
 			.text-a {
+				display: flex;
 				padding: 20upx 0;
 				font-size: 28upx;
 				font-family: PingFang SC;
 				font-weight: bold;
+				.t-a {
+					flex: 2;
+				}
+				.t-x {
+					flex: 5;
+				}
 			}
 			.active {
 				color: #00b490;
 			}
 		}
 	}
-	
 }
 </style>
