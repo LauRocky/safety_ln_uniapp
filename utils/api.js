@@ -9,5 +9,4 @@ export function getDictList(dictType) {
       resolve(data.dict)
     }) 
   }) 
-
 }
