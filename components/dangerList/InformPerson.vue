@@ -84,8 +84,8 @@ export default {
 					}
 				})
 			})
-			obj.titlelist.slice(0,obj.titlelist.length-1)
-			obj.value.slice(0,obj.value.length-1)
+			obj.titlelist=obj.titlelist.slice(0,obj.titlelist.length-1)
+			obj.value=obj.value.slice(0,obj.value.length-1)
 			this.$emit('handEndP',obj)
 		},
 		handIcon(){
@@ -103,7 +103,6 @@ export default {
 						if (this.dictLsit.length < res.data.totalCount) {
 							this.listBy.page++;
 							this.dictLsit = this.dictLsit.concat(res.data.list);
-							console.log(this.dictLsit);
 						} else {
 							console.log('444444');
 						}

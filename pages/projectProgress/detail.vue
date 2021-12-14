@@ -64,29 +64,44 @@
 								'item-margin-top':index==3||index==4||index==5,
 								'active-tags':currentIndex==index}" class="tags" @click="changeTags(index)">
 							<text> {{item.name}} </text>
+							<view class="yuan" v-if="index==1">
+								{{ongoing.length}}
+							</view>
+							<view class="yuan" v-if="index==2">
+								{{complete.length}}
+							</view>
+							<view class="yuan" v-if="index==3">
+								{{noovercomplete.length}}
+							</view>
+							<view class="yuan" v-if="index==4">
+								{{overundone.length}}
+							</view>
+							<view class="yuan" v-if="index==5">
+								{{overcomplete.length}}
+							</view>
 						</view>
 					</view>
 					<!-- 竖形进度条 -->
 					<view class="progress" v-if="currentIndex==0">
-						<view class="plan" style="display: flex; " v-for="(item,index) in projectInfo.nodes"
+						<view class="plan"  v-for="(item,index) in projectInfo.nodes"
 							:key="item.id">
-							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
-							</view>
+							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="index==0||index==1||index==2||index==5||index==9"
-										style="width: 38rpx;height:38rpx; " src="../../static/projectdetail/yuan.png"
-										mode=""></image>
-									<image v-if="index==3" style="width: 38rpx;height:38rpx;"
-										src="../../static/projectdetail/zise.png" mode=""></image>
-									<image v-if="index==4||index==8||index==11||index==12||index==13||index==14"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/hui.png"
-										mode=""></image>
-									<image v-if="index==6||index==10" style="width: 38rpx;height:38rpx;"
-										src="../../static/projectdetail/green.png" mode=""></image>
-									<image v-if="index==7" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/hui.png" mode=""></image>
+									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
 										src="../../static/projectdetail/red.png" mode=""></image>
+									<image
+										v-if="item.nodeState==1"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										mode=""></image>
+									<image v-if="item.nodeState==4"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+										mode=""></image>
+									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20rpx;">
 									<view class="plan-left">
@@ -99,37 +114,49 @@
 										计划完成时间:无
 									</view>
 								</view>
-								<view class="statusList">
-									{{item.expireStatus==0?'未开始/未涉及':''}}
-									{{item.expireStatus==1?'正在进行中':''}}
-									{{item.expireStatus==2?'已完成':''}}
-									{{item.expireStatus==3?'超期未完成':''}}
-									{{item.expireStatus==4?'超期已完成':''}}
-									{{item.expireStatus==5?'未超期已完成':''}}
+								<view class="statusList" v-if="item.nodeState==3">
+									超期{{item.threeTime}}未完成
 								</view>
+								<view class="statusList" v-if="item.nodeState==4">
+									超期{{item.fourTime}}已完成
+								</view>
+								<view class="statusList" v-if="item.nodeState==0">
+									未开始/未涉及
+								</view>
+								<view class="statusList" v-if="item.nodeState==1">
+									正在进行中
+								</view>
+								<view class="statusList" v-if="item.nodeState==2">
+									已完成
+								</view>
+								<view class="statusList" v-if="item.nodeState==5">
+									未超期已完成
+								</view>
+								
 							</view>
 						</view>
 					</view>
+					<!-- 正在进行中 -->
 					<view class="progress" v-if="currentIndex==1">
 						<view class="plan" style="display: flex; " v-for="item in ongoing" :key="item.id">
-							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
-							</view>
+							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view>-->
+						
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="item.taskName=='拆完外架'" style="width: 38rpx;height:38rpx;"
-										src="../../static/projectdetail/red.png" mode=""></image>
-									<image v-if="item.taskName=='外装饰完成'" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
 										src="../../static/projectdetail/hui.png" mode=""></image>
+									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
-										v-if="item.taskName=='精装启动会'||item.taskName=='策划方案审批完成'||item.taskName=='总包监理招标完成'||item.taskName=='取得施工证'||item.taskName=='项目出零米' "
+										v-if="item.nodeState==1"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										mode=""></image>
+									<image v-if="item.nodeState==4"
 										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="item.taskName=='幕墙园林进场'||item.taskName=='主体全封顶' "
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/green.png"
-										mode=""></image>
-									<image v-if="item.taskName=='召开工程启动会'" style="width: 38rpx;height:38rpx;"
-										src="../../static/projectdetail/zise.png" mode=""></image>
+									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20rpx;">
 									<view class="plan-left">
@@ -142,26 +169,50 @@
 										计划完成时间:无
 									</view>
 								</view>
-								<view class="statusList">
-									{{item.expireStatus==0?'未开始/未涉及':''}}
-									{{item.expireStatus==1?'正在进行中':''}}
-									{{item.expireStatus==2?'已完成':''}}
-									{{item.expireStatus==3?'超期未完成':''}}
-									{{item.expireStatus==4?'超期已完成':''}}
-									{{item.expireStatus==5?'未超期已完成':''}}
+								<view v-if="item.nodeState==1">
+									<view class="statusList" v-if="item.nodeState==3">
+										超期{{item.threeTime}}未完成
+									</view>
+									<view class="statusList" v-if="item.nodeState==4">
+										超期{{item.fourTime}}已完成
+									</view>
+									<view class="statusList" v-if="item.nodeState==0">
+										未开始/未涉及
+									</view>
+									<view class="statusList" v-if="item.nodeState==1">
+										正在进行中
+									</view>
+									<view class="statusList" v-if="item.nodeState==2">
+										已完成
+									</view>
+									<view class="statusList" v-if="item.nodeState==5">
+										未超期已完成
+									</view>
 								</view>
+							
 							</view>
 						</view>
-					</view>
+					</view>	
 					<view class="progress" v-if="currentIndex==2">
 						<view class="plan" style="display: flex; " v-for="item in complete" :key="item.id">
-							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
-							</view>
+							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
+							
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/hui.png" mode=""></image>
+									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/red.png" mode=""></image>
+									<image
+										v-if="item.nodeState==1"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
 										mode=""></image>
+									<image v-if="item.nodeState==4"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+										mode=""></image>
+									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20rpx;">
 									<view class="plan-left">
@@ -174,37 +225,51 @@
 										计划完成时间:无
 									</view>
 								</view>
-								<view class="statusList">
-									{{item.expireStatus==0?'未开始/未涉及':''}}
-									{{item.expireStatus==1?'正在进行中':''}}
-									{{item.expireStatus==2?'已完成':''}}
-									{{item.expireStatus==3?'超期未完成':''}}
-									{{item.expireStatus==4?'超期已完成':''}}
-									{{item.expireStatus==5?'未超期已完成':''}}
+								<!-- 未涉及/未进行 -->
+								<view v-if="item.nodeState==0">
+									<view class="statusList" v-if="item.nodeState==3">
+										超期{{item.threeTime}}未完成
+									</view>
+									<view class="statusList" v-if="item.nodeState==4">
+										超期{{item.fourTime}}已完成
+									</view>
+									<view class="statusList" v-if="item.nodeState==0">
+										未开始/未涉及
+									</view>
+									<view class="statusList" v-if="item.nodeState==1">
+										正在进行中
+									</view>
+									<view class="statusList" v-if="item.nodeState==2">
+										已完成
+									</view>
+									<view class="statusList" v-if="item.nodeState==5">
+										未超期已完成
+									</view>
 								</view>
+								
+								
 							</view>
 						</view>
 					</view>
+					<!-- 未超期已完成 -->
 					<view class="progress" v-if="currentIndex==3">
-						<view class="plan" style="display: flex; " v-for="item in overundone" :key="item.id">
-							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
-							</view>
+						<view class="plan" style="display: flex; " v-for="item in noovercomplete" :key="item.id">
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="item.taskName=='拆完外架'" style="width: 38rpx;height:38rpx;"
-										src="../../static/projectdetail/red.png" mode=""></image>
-									<image v-if="item.taskName=='外装饰完成'" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
 										src="../../static/projectdetail/hui.png" mode=""></image>
+									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
-										v-if="item.taskName=='精装启动会'||item.taskName=='策划方案审批完成'||item.taskName=='总包监理招标完成'||item.taskName=='取得施工证'||item.taskName=='项目出零米' "
+										v-if="item.nodeState==1"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										mode=""></image>
+									<image v-if="item.nodeState==4"
 										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="item.taskName=='幕墙园林进场'||item.taskName=='主体全封顶' "
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/green.png"
-										mode=""></image>
-									<image v-if="item.taskName=='召开工程启动会'" style="width: 38rpx;height:38rpx;"
-										src="../../static/projectdetail/zise.png" mode=""></image>
+									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20rpx;">
 									<view class="plan-left">
@@ -217,37 +282,47 @@
 										计划完成时间:无
 									</view>
 								</view>
-								<view class="statusList">
-									{{item.expireStatus==0?'未开始/未涉及':''}}
-									{{item.expireStatus==1?'正在进行中':''}}
-									{{item.expireStatus==2?'已完成':''}}
-									{{item.expireStatus==3?'超期未完成':''}}
-									{{item.expireStatus==4?'超期已完成':''}}
-									{{item.expireStatus==5?'未超期已完成':''}}
-								</view>
+							<view class="statusList" v-if="item.nodeState==3">
+								超期{{item.threeTime}}未完成
+							</view>
+							<view class="statusList" v-if="item.nodeState==4">
+								超期{{item.fourTime}}已完成
+							</view>
+							<view class="statusList" v-if="item.nodeState==0">
+								未开始/未涉及
+							</view>
+							<view class="statusList" v-if="item.nodeState==1">
+								正在进行中
+							</view>
+							<view class="statusList" v-if="item.nodeState==2">
+								已完成
+							</view>
+							<view class="statusList" v-if="item.nodeState==5">
+								未超期已完成
+							</view>
 							</view>
 						</view>
 					</view>
 					<view class="progress" v-if="currentIndex==4">
-						<view class="plan" style="display: flex; " v-for="item in overcomplete" :key="item.id">
-							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
-							</view>
+						<view class="plan" style="display: flex; " v-for="item in overundone" :key="item.id">
+							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
+							
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="item.taskName=='拆完外架'" style="width: 38rpx;height:38rpx;"
-										src="../../static/projectdetail/red.png" mode=""></image>
-									<image v-if="item.taskName=='外装饰完成'" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
 										src="../../static/projectdetail/hui.png" mode=""></image>
+									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
-										v-if="item.taskName=='精装启动会'||item.taskName=='策划方案审批完成'||item.taskName=='总包监理招标完成'||item.taskName=='取得施工证'||item.taskName=='项目出零米' "
+										v-if="item.nodeState==1"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										mode=""></image>
+									<image v-if="item.nodeState==4"
 										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="item.taskName=='幕墙园林进场'||item.taskName=='主体全封顶' "
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/green.png"
-										mode=""></image>
-									<image v-if="item.taskName=='召开工程启动会'" style="width: 38rpx;height:38rpx;"
-										src="../../static/projectdetail/zise.png" mode=""></image>
+									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20rpx;">
 									<view class="plan-left">
@@ -260,21 +335,31 @@
 										计划完成时间:无
 									</view>
 								</view>
-								<view class="statusList">
-									{{item.expireStatus==0?'未开始/未涉及':''}}
-									{{item.expireStatus==1?'正在进行中':''}}
-									{{item.expireStatus==2?'已完成':''}}
-									{{item.expireStatus==3?'超期未完成':''}}
-									{{item.expireStatus==4?'超期已完成':''}}
-									{{item.expireStatus==5?'未超期已完成':''}}
+								<view class="statusList" v-if="item.nodeState==3">
+									超期{{item.threeTime}}未完成
+								</view>
+								<view class="statusList" v-if="item.nodeState==4">
+									超期{{item.fourTime}}已完成
+								</view>
+								<view class="statusList" v-if="item.nodeState==0">
+									未开始/未涉及
+								</view>
+								<view class="statusList" v-if="item.nodeState==1">
+									正在进行中
+								</view>
+								<view class="statusList" v-if="item.nodeState==2">
+									已完成
+								</view>
+								<view class="statusList" v-if="item.nodeState==5">
+									未超期已完成
 								</view>
 							</view>
 						</view>
 					</view>
 					<view class="progress" v-if="currentIndex==5">
-						<view class="plan" style="display: flex; " v-for="item in noovercomplete" :key="item.id">
-							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
-							</view>
+						<view class="plan" style="display: flex; " v-for="item in overcomplete" :key="item.id">
+							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
+							
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
@@ -292,17 +377,23 @@
 										计划完成时间:无
 									</view>
 								</view>
-								<view class="statusList" v-if="item.expireStatus==3">
-									超期{{item.comtime}}未完成
+								<view class="statusList" v-if="item.nodeState==3">
+									超期{{item.threeTime}}未完成
 								</view>
-								<view class="statusList" v-else-if="item.expireStatus==4">
-									超期{{item.fourtime}}已完成
+								<view class="statusList" v-if="item.nodeState==4">
+									超期{{item.fourTime}}已完成
 								</view>
-								<view class="statusList" v-else>
-									{{item.expireStatus==0?'未开始/未涉及':''}}
-									{{item.expireStatus==1?'正在进行中':''}}
-									{{item.expireStatus==2?'已完成':''}}
-									{{item.expireStatus==5?'未超期已完成':''}}
+								<view class="statusList" v-if="item.nodeState==0">
+									未开始/未涉及
+								</view>
+								<view class="statusList" v-if="item.nodeState==1">
+									正在进行中
+								</view>
+								<view class="statusList" v-if="item.nodeState==2">
+									已完成
+								</view>
+								<view class="statusList" v-if="item.nodeState==5">
+									未超期已完成
 								</view>
 							</view>
 						</view>
@@ -332,7 +423,7 @@
 				projectInfo: {},
 				projectStatus: [],
 				ongoing: [], //正在进行中
-				complete: [], //已完成
+				complete: [], //未涉及/未进行
 				overundone: [], //超期未完成
 				overcomplete: [], //超期已完成
 				noovercomplete: [], //未超期已完成
@@ -368,21 +459,6 @@
 
 		},
 		methods: {
-			// plantime() {
-			// 	this.projectInfo.nodes.forEach(el => {
-			// 		console.log(el.expireStatus)
-			// 		// 计算时间差
-			// 		if (el.expireStatus == 3) {
-			// 			el.comtime = this.timeCalc(el.plannedTime, el.finishTime)
-			// 			console.log(el.comtime)
-			// 		}
-			// 		if (el.expireStatus == 4) {
-			// 			el.fourtime = this.timeCalc(el.plannedTime, el.finishTime)
-			// 			console.log(el.comtime)
-			// 		}
-			// 		console.log(el)
-			// 	})
-			// },
 			showStatus() {
 				this.isShow = false
 			},
@@ -411,24 +487,39 @@
 			getProject() {
 				this.$http('/project/plan/withStatus', 'POST', this.project).then(res => {
 					this.projectInfo = res.page[0]
+					// console.log(this.projectInfo.nodes)
 					this.projectInfo.nodes.forEach(item => {
-						if (item.expireStatus == 1) {
+						// 正在进行中
+						if (item.nodeState == 1) {
 							this.ongoing.push(item)
 						}
-						if (item.expireStatus == 2) {
+						// 未涉及/未进行
+						if (item.nodeState == 0) {
 							this.complete.push(item)
 						}
-						if (item.expireStatus == 3) {
+						// 未超期已完成
+						if (item.nodeState == 5) {
+							this.noovercomplete.push(item)
+						}
+						// 超期未完成
+						if (item.nodeState == 3) {
 							this.overundone.push(item)
 						}
-						if (item.expireStatus == 4) {
+						// 超期已完成
+						if (item.nodeState == 4) {
 							this.overcomplete.push(item)
-						}
-						if (item.expireStatus == 5) {
-							this.noovercomplete.push(item)
 						}
 					})
 					this.projectInfo.nodes.forEach(item => {
+						// 计算天数
+						if(item.nodeState==3){
+							item.threeTime= this.timeCalc(item.plannedTime, item.finishTime)+'天'
+							// console.log(item)
+						}
+						if(item.nodeState==4){
+							item.fourTime= this.timeCalc(item.plannedTime, item.finishTime)+'天'
+							// console.log(item)
+						}
 						// 项目进度信息时间判断
 						if (item.plannedTime && item.finishTime) {
 							let count = this.getDate(item.plannedTime, item.finishTime)
@@ -467,6 +558,7 @@
 					})
 				})
 			},
+		
 			/* 获得地址 */
 			getAddress(address) {
 				if (address) {
@@ -539,6 +631,7 @@
 	}
 
 	.status-tag-container .tags {
+		position: relative;
 		border: 2rpx solid #00B490;
 		font-size: 28rpx;
 		font-weight: 500;
@@ -550,6 +643,20 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+	
+	.tags .yuan{
+		position: absolute;
+		width: 32rpx;
+		height: 32rpx;
+		line-height: 32rpx;
+		top: -16rpx;
+		right: -16rpx;
+		font-size: 24rpx;
+		color: #FFFFFF;
+		text-align: center;
+		background: #E65749;
+		border-radius: 50%;
 	}
 
 	.status-tag-container {
@@ -613,12 +720,19 @@
 	}
 
 	.statusList {
-		width: 172rpx;
-		height: 23rpx;
-		margin: 24rpx 0 41rpx 32rpx;
+		height: 24rpx;
+		padding: 24rpx 0 41rpx 40rpx;
 		font-size: 24rpx;
+		line-height: 24rpx;
 		font-weight: bold;
 		color: #666666;
+	}
+	.progress .plan{
+		display: flex;
+		border-left: 1rpx dashed #7E7E7E;
+	}
+	.progress .plan:last-child{
+		border:none;
 	}
 
 	.title .unitag {
@@ -637,7 +751,7 @@
 	}
 
 	.title-time {
-		width: 296rpx;
+		width: 300rpx;
 		height: 24rpx;
 		font-size: 24rpx;
 		font-weight: bold;

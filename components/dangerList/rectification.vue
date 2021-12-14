@@ -65,7 +65,6 @@ export default {
 						if (this.dictLsit.length < res.data.totalCount) {
 							this.listBy.page++;
 							this.dictLsit = this.dictLsit.concat(res.data.list);
-							console.log(this.dictLsit);
 						} else {
 							console.log('444444');
 						}

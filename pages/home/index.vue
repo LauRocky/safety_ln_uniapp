@@ -233,9 +233,9 @@ export default {
 			box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.06);
 			border-radius: 16upx;
 			.main-scroll {
-				padding: 40upx 20upx;
+				padding: 40upx 20upx 0;
 				.scroll {
-					height: 30vh;
+					height: 500upx;
 				}
 				.main-all {
 					display: flex;
