@@ -208,21 +208,8 @@ export default {
 	mounted() {},
 	methods: {
 		handAdd() {
-			console.log({companyId: this.userAdd.companyId,
-					projectId: this.userAdd.projectId,
-					problemType: this.userAdd.problemType,
-					assessment: this.userAdd.assessment,
-					problemSolver: this.userAdd.problemSolver,
-					notifyPerson: this.userAdd.notifyPerson,
-					require: this.userAdd.require,
-					expireTime:Number(this.userAdd.period) + 10,
-					problemRequire: this.userAdd.Details,
-					areaDetail: this.userAdd.location,
-					images:this.userAdd.images,
-					location: this.userAdd.location,
-					source: 0,
-				})
-				
+			let expireTime=new Date();
+			expireTime=expireTime.getTime()+this.userAdd.period*24*60*60*1000;
 			this.$http('/problems','POST',
 				{companyId: this.userAdd.companyId,
 					projectId: this.userAdd.projectId,
@@ -231,7 +218,7 @@ export default {
 					problemSolver: this.userAdd.problemSolver,
 					notifyPerson: this.userAdd.notifyPerson,
 					require: this.userAdd.require,
-					expireTime:Number(this.userAdd.period) + 10,
+					expireTime:expireTime,
 					problemRequire: this.userAdd.Details,
 					areaDetail: this.userAdd.location,
 					images:this.userAdd.images,
@@ -314,6 +301,7 @@ export default {
 		},
 		handformpick() {
 			console.log('123123');
+		
 		},
 		submit() {
 			this.$refs.uForm
@@ -335,7 +323,7 @@ export default {
 		}
 	},
 	onNavigationBarButtonTap() {
-			console.log(Number(this.userAdd.period)+ 10)
+			
 		this.submit();
 	}
 };
