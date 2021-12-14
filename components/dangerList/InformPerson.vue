@@ -10,6 +10,7 @@
 			<view class="main">
 				<scroll-view class="scroll-a" @scrolltolower="handtolower" scroll-y v-if="dictLsit">
 					  <u-checkbox-group
+								class="group"
 					            v-model="checkboxValue1"
 					            placement="column"
 								iconPlacement="right" 
@@ -141,11 +142,13 @@ export default {
 		.scroll-a {
 			padding-top: 30upx;
 			height: 45vh;
-			.text-a {
-				padding: 20upx 0;
-				font-size: 28upx;
-				font-family: PingFang SC;
+			/deep/.u-checkbox-group{
 				font-weight: bold;
+				color: #333333;
+				font-family: PingFang SC;
+				span{
+					font-size: 28upx;
+				}
 			}
 			.active {
 				color: #00b490;

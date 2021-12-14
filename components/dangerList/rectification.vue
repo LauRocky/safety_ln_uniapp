@@ -11,8 +11,8 @@
 				</view> -->
 				<scroll-view class="scroll-a" @scrolltolower="handtolower" scroll-y>
 					<view class="text-a" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)" v-for="(val1, i1) in dictLsit" :key="i1">
-						<view class="t-a">{{ val1.fullname }}</view>
-						<view class="t-x">: {{ val1.mobile }}</view>
+						<view class="t-a">{{ val1.fullname }}  : </view>
+						<view class="t-x"> {{ val1.mobile }}</view>
 					</view>
 				</scroll-view>
 			</view>
@@ -98,8 +98,6 @@ export default {
 		.title2 {
 			font-size: 32upx;
 			font-family: PingFang SC;
-			font-weight: bold;
-			color: #333333;
 		}
 		.scroll-a {
 			padding-top: 30upx;
@@ -108,13 +106,12 @@ export default {
 				display: flex;
 				padding: 20upx 0;
 				font-size: 28upx;
-				font-family: PingFang SC;
 				font-weight: bold;
+				color: #333333;
+				font-family: PingFang SC;
 				.t-a {
-					flex: 2;
 				}
 				.t-x {
-					flex: 5;
 				}
 			}
 			.active {
