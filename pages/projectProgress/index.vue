@@ -48,6 +48,7 @@
 					projectId: '',
 					status:'',
 				},
+				rawList:[],
 				 projectList:[],
 				 searchList:[], //搜索展示的项目
 			}
@@ -55,15 +56,24 @@
 		methods: {
 			getProjectList(){
 				this.$http('project/plan/withStatus','POST',this.queryForm ,false).then(res=>{
-					this.projectList=res.page
+					this.rawList=res.page
+					this.projectList=this.rawList
 				})
 			},
 			handseach(val){
-				 this.projectList.forEach(el=>{
-					if(el.projectName==val){
-						this.searchList=el
-					}
-				})
+				if(val){
+					let result=[]
+					 this.projectList.forEach(e=>{
+						 let pName=e.projectName;
+						 if(pName.indexOf(val)>-1){
+							 result.push(e)
+						 }
+					 })
+					 this.projectList=result
+				}else{
+					this.projectList=this.rawList
+				}
+				
 			},
 			/* 根据项目id判断节点状态 返回有几个异常 */
 			getprocess(projectId){
@@ -84,6 +94,7 @@
 			
 			// searchprocess(projectId){
 			// 	let arr = []
+			
 			// 	if(this.searchList){
 			// 		this.searchList.forEach(item=>{
 			// 			if(item.projectId==projectId){
