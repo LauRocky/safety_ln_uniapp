@@ -18,33 +18,28 @@
 					</view>
 				</view>
 				<view class="list-foo">
-					<view class="foo-left">
-						{{val.gg}}
-					</view>
-					<view class="foo-time">
-						{{val.time}}
-					</view>
+					<view class="foo-left">{{ val.gg }}</view>
+					<view class="foo-time">{{ val.time }}</view>
 				</view>
-				
 			</view>
 		</scroll-view>
 		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
-		<mypicker :show="show" :rightList="rightList" @close='handclose' />
+		<mypicker :show="show" :rightList="rightList" @close="handclose" />
 	</view>
 </template>
 
 <script>
 import navBar from '../../components/navBar/navBar.vue';
-import mypicker from '../../components/mypicker/mypicker.vue'
+import mypicker from '../../components/mypicker/mypicker.vue';
 export default {
 	components: {
 		navBar,
-		mypicker 
+		mypicker
 	},
 	data() {
 		return {
 			title: '隐患列表',
-			show:false,
+			show: false,
 			btnnum: 0,
 			dangerName: '',
 			showTitle: true,
@@ -55,8 +50,8 @@ export default {
 					title: '北京顺义新城21街区项目',
 					ce: '请@XXX济南公司现成记录测试',
 					gai: '1',
-					gg:'济南公司',
-					time:'17:42'
+					gg: '济南公司',
+					time: '17:42'
 				},
 				{
 					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
@@ -64,8 +59,8 @@ export default {
 					title: '北京顺义新城21街区项目',
 					ce: '请@XXX济南公司现成记录测试',
 					gai: '1',
-					gg:'济南公司',
-					time:'17:42'
+					gg: '济南公司',
+					time: '17:42'
 				},
 				{
 					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
@@ -73,8 +68,8 @@ export default {
 					title: '北京顺义新城21街区项目',
 					ce: '请@XXX济南公司现成记录测试',
 					gai: '2',
-					gg:'济南公司',
-					time:'17:42'
+					gg: '济南公司',
+					time: '17:42'
 				},
 				{
 					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
@@ -89,8 +84,8 @@ export default {
 					title: '北京顺义新城21街区项目',
 					ce: '请@XXX济南公司现成记录测试',
 					gai: '1',
-					gg:'济南公司',
-					time:'17:42'
+					gg: '济南公司',
+					time: '17:42'
 				},
 				{
 					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
@@ -98,8 +93,8 @@ export default {
 					title: '北京顺义新城21街区项目',
 					ce: '请@XXX济南公司现成记录测试',
 					gai: '1',
-					gg:'济南公司',
-					time:'17:42'
+					gg: '济南公司',
+					time: '17:42'
 				},
 				{
 					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
@@ -107,17 +102,14 @@ export default {
 					title: '北京顺义新城21街区项目',
 					ce: '请@XXX济南公司现成记录测试',
 					gai: '1',
-					gg:'济南公司',
-					time:'17:42'
+					gg: '济南公司',
+					time: '17:42'
 				}
 			],
 			list1: [
 				{
 					name: '待整改',
-					value: '1',
-					badge: {
-						isDot: true
-					}
+					value: '1'
 				},
 				{
 					name: '待复核',
@@ -128,96 +120,117 @@ export default {
 					value: '3'
 				}
 			],
-			rightList:{
-				c:[{
-					name:'hqwdkj'
-				},
-				{
-					name:'hqwdkj'
-				},
-				{
-					name:'hqwdkj'
-				},
-				{
-					name:'hqwdkj'
-				},
-				{
-					name:'412'
-				},
-				{
-					name:'41231'
-				},
-				{
-					name:'41'
-				},
-				{
-					name:'56345345'
-				},
-				{
-					name:'123'
-				},
-				{
-					name:'3453453'
-				},
-				{
-					name:'hqwdkj'
-				}],
-				fu:[
+			rightList: {
+				c: [
 					{
-						name:'kijasdad',
-					},
-					
-					{
-						name:'kijasdad'
+						name: 'hqwdkj'
 					},
 					{
-						name:'kijasdad'
+						name: 'hqwdkj'
 					},
 					{
-						name:'kijasdad'
+						name: 'hqwdkj'
+					},
+					{
+						name: 'hqwdkj'
+					},
+					{
+						name: '412'
+					},
+					{
+						name: '41231'
+					},
+					{
+						name: '41'
+					},
+					{
+						name: '56345345'
+					},
+					{
+						name: '123'
+					},
+					{
+						name: '3453453'
+					},
+					{
+						name: 'hqwdkj'
 					}
 				],
-				ne:[
+				fu: [
 					{
-						name:'5674654645'
+						name: 'kijasdad'
+					},
+
+					{
+						name: 'kijasdad'
 					},
 					{
-						name:'5674654645'
+						name: 'kijasdad'
 					},
 					{
-						name:'5674654645'
+						name: 'kijasdad'
+					}
+				],
+				ne: [
+					{
+						name: '5674654645'
 					},
 					{
-						name:'5674654645'
+						name: '5674654645'
+					},
+					{
+						name: '5674654645'
+					},
+					{
+						name: '5674654645'
 					}
 				]
 			}
 		};
 	},
-	onLoad() {},
+	onLoad() {
+		this.handclick({value:1});
+	},
 	methods: {
-		handPush(){
+		handclick(v) {
+			if (v.value == 1) {
+				this.handDangerList({ problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
+			} else if (v.value == 2) {
+				this.handDangerList({ problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
+			} else {
+				this.handDangerList({ all: '1' });
+			}
+		},
+		handDangerList(obj) {
+			this.$http('/problem/app/list', 'POST', obj, false)
+				.then(res => {
+					if (res.code == 0) {
+						console.log(res);
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		handPush() {
 			uni.navigateTo({
-				url:'/pages/dangerList/add'
-			})
+				url: '/pages/dangerList/add'
+			});
 		},
-		handclose(){
-				this.show = false
+		handclose() {
+			this.show = false;
 		},
-		handtolower(){
-			
-		},
-		handclick() {},
+		handtolower() {},
+
 		handUpqie() {
-			this.show = true
+			this.show = true;
 		},
 		handseach(val) {
 			console.log(val, '1231231');
 		},
 		change(e) {
 			this.btnnum = e;
-		},
-		 
+		}
 	}
 };
 </script>
@@ -296,23 +309,22 @@ export default {
 					}
 				}
 			}
-			.list-foo{
-				
+			.list-foo {
 				display: flex;
 				align-items: center;
-				.foo-left{
+				.foo-left {
 					flex: 2;
 				}
-				.foo-time{
+				.foo-time {
 					padding: 20upx 0;
 					flex: 8;
 					text-align: right;
-					border-bottom:2upx solid #E9E9E9;
+					border-bottom: 2upx solid #e9e9e9;
 				}
 			}
 		}
 	}
-	.add{
+	.add {
 		position: fixed;
 		bottom: 100upx;
 		right: 10upx;
