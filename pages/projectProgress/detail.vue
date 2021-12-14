@@ -11,7 +11,7 @@
 				</u-tag>
 			</view>
 			<view class="msg-item">
-				<view class="name">项目名称</view>
+				1
 				<view class="container">{{projectInfo.projectName}}</view>
 			</view>
 			<view class="msg-item">
@@ -68,24 +68,25 @@
 					</view>
 					<!-- 竖形进度条 -->
 					<view class="progress" v-if="currentIndex==0">
-						<view class="plan" style="display: flex; " v-for="(item,index) in projectInfo.nodes" :key="item.id">
+						<view class="plan" style="display: flex; " v-for="(item,index) in projectInfo.nodes"
+							:key="item.id">
 							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
 							</view>
 							<view class="plan-border" style="position: relative;">
-								<view class="imgs" 
+								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="index==0||index==1||index==2||index==5||index==9" style="width: 38rpx;height:38rpx; " src="../../static/projectdetail/yuan.png"
+									<image v-if="index==0||index==1||index==2||index==5||index==9"
+										style="width: 38rpx;height:38rpx; " src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="index==3" style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+									<image v-if="index==3" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/zise.png" mode=""></image>
+									<image v-if="index==4||index==8||index==11||index==12||index==13||index==14"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/hui.png"
 										mode=""></image>
-									<image v-if="index==4||index==8||index==11||index==12||index==13||index==14" style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/hui.png"
-										mode=""></image>
-									<image v-if="index==6||index==10" style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/green.png"
-										mode=""></image>
-									<image v-if="index==7" style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/red.png"
-										mode=""></image>
-										
-										
+									<image v-if="index==6||index==10" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/green.png" mode=""></image>
+									<image v-if="index==7" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/red.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20rpx;">
 									<view class="plan-left">
@@ -108,7 +109,7 @@
 								</view>
 							</view>
 						</view>
-					</view>	
+					</view>
 					<view class="progress" v-if="currentIndex==1">
 						<view class="plan" style="display: flex; " v-for="item in ongoing" :key="item.id">
 							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
@@ -116,8 +117,19 @@
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+									<image v-if="item.taskName=='拆完外架'" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/red.png" mode=""></image>
+									<image v-if="item.taskName=='外装饰完成'" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/hui.png" mode=""></image>
+									<image
+										v-if="item.taskName=='精装启动会'||item.taskName=='策划方案审批完成'||item.taskName=='总包监理招标完成'||item.taskName=='取得施工证'||item.taskName=='项目出零米' "
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
+									<image v-if="item.taskName=='幕墙园林进场'||item.taskName=='主体全封顶' "
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/green.png"
+										mode=""></image>
+									<image v-if="item.taskName=='召开工程启动会'" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/zise.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20rpx;">
 									<view class="plan-left">
@@ -140,7 +152,7 @@
 								</view>
 							</view>
 						</view>
-					</view>	
+					</view>
 					<view class="progress" v-if="currentIndex==2">
 						<view class="plan" style="display: flex; " v-for="item in complete" :key="item.id">
 							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
@@ -172,7 +184,7 @@
 								</view>
 							</view>
 						</view>
-					</view>	
+					</view>
 					<view class="progress" v-if="currentIndex==3">
 						<view class="plan" style="display: flex; " v-for="item in overundone" :key="item.id">
 							<view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;">
@@ -180,8 +192,19 @@
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+									<image v-if="item.taskName=='拆完外架'" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/red.png" mode=""></image>
+									<image v-if="item.taskName=='外装饰完成'" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/hui.png" mode=""></image>
+									<image
+										v-if="item.taskName=='精装启动会'||item.taskName=='策划方案审批完成'||item.taskName=='总包监理招标完成'||item.taskName=='取得施工证'||item.taskName=='项目出零米' "
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
+									<image v-if="item.taskName=='幕墙园林进场'||item.taskName=='主体全封顶' "
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/green.png"
+										mode=""></image>
+									<image v-if="item.taskName=='召开工程启动会'" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/zise.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20rpx;">
 									<view class="plan-left">
@@ -212,16 +235,19 @@
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="item.taskName=='拆完外架'" style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/red.png"
+									<image v-if="item.taskName=='拆完外架'" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/red.png" mode=""></image>
+									<image v-if="item.taskName=='外装饰完成'" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/hui.png" mode=""></image>
+									<image
+										v-if="item.taskName=='精装启动会'||item.taskName=='策划方案审批完成'||item.taskName=='总包监理招标完成'||item.taskName=='取得施工证'||item.taskName=='项目出零米' "
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="item.taskName=='外装饰完成'" style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/hui.png"
+									<image v-if="item.taskName=='幕墙园林进场'||item.taskName=='主体全封顶' "
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/green.png"
 										mode=""></image>
-									<image v-if="item.taskName=='精装启动会'||item.taskName=='策划方案审批完成'||item.taskName=='总包监理招标完成'||item.taskName=='取得施工证'||item.taskName=='项目出零米' " style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
-											mode=""></image>
-									<image v-if="item.taskName=='幕墙园林进场'||item.taskName=='主体全封顶' " style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/green.png"
-											mode=""></image>
-									<image v-if="item.taskName=='召开工程启动会'" style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
-												mode=""></image>	
+									<image v-if="item.taskName=='召开工程启动会'" style="width: 38rpx;height:38rpx;"
+										src="../../static/projectdetail/zise.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20rpx;">
 									<view class="plan-left">
@@ -266,12 +292,16 @@
 										计划完成时间:无
 									</view>
 								</view>
-								<view class="statusList">
+								<view class="statusList" v-if="item.expireStatus==3">
+									超期{{item.comtime}}未完成
+								</view>
+								<view class="statusList" v-else-if="item.expireStatus==4">
+									超期{{item.fourtime}}已完成
+								</view>
+								<view class="statusList" v-else>
 									{{item.expireStatus==0?'未开始/未涉及':''}}
 									{{item.expireStatus==1?'正在进行中':''}}
 									{{item.expireStatus==2?'已完成':''}}
-									{{item.expireStatus==3?'超期未完成':''}}
-									{{item.expireStatus==4?'超期已完成':''}}
 									{{item.expireStatus==5?'未超期已完成':''}}
 								</view>
 							</view>
@@ -305,7 +335,7 @@
 				complete: [], //已完成
 				overundone: [], //超期未完成
 				overcomplete: [], //超期已完成
-				noovercomplete:[],//未超期已完成
+				noovercomplete: [], //未超期已完成
 				timeOver: [],
 				statusList: [{
 						code: '',
@@ -335,13 +365,24 @@
 			}
 		},
 		computed: {
-			plantime() {
-				this.projectInfo.nodes.forEach(el => {
-					console.log(el.expireStatus)
-				})
-			}
+
 		},
 		methods: {
+			// plantime() {
+			// 	this.projectInfo.nodes.forEach(el => {
+			// 		console.log(el.expireStatus)
+			// 		// 计算时间差
+			// 		if (el.expireStatus == 3) {
+			// 			el.comtime = this.timeCalc(el.plannedTime, el.finishTime)
+			// 			console.log(el.comtime)
+			// 		}
+			// 		if (el.expireStatus == 4) {
+			// 			el.fourtime = this.timeCalc(el.plannedTime, el.finishTime)
+			// 			console.log(el.comtime)
+			// 		}
+			// 		console.log(el)
+			// 	})
+			// },
 			showStatus() {
 				this.isShow = false
 			},
@@ -359,7 +400,6 @@
 				}
 			},
 			changeTags(index) {
-				console.log(index)
 				this.currentIndex = index
 			},
 			back() {
@@ -371,12 +411,10 @@
 			getProject() {
 				this.$http('/project/plan/withStatus', 'POST', this.project).then(res => {
 					this.projectInfo = res.page[0]
-					console.log(this.projectInfo)
 					this.projectInfo.nodes.forEach(item => {
 						if (item.expireStatus == 1) {
 							this.ongoing.push(item)
 						}
-						console.log(this.ongoing)
 						if (item.expireStatus == 2) {
 							this.complete.push(item)
 						}
@@ -386,7 +424,6 @@
 						if (item.expireStatus == 4) {
 							this.overcomplete.push(item)
 						}
-						console.log(this.overcomplete)
 						if (item.expireStatus == 5) {
 							this.noovercomplete.push(item)
 						}
@@ -427,9 +464,7 @@
 								})
 							}
 						}
-
 					})
-
 				})
 			},
 			/* 获得地址 */
@@ -450,13 +485,18 @@
 					}
 				})
 				return str
-				console.log(str)
 			},
-			
+			/* 将字符串转换为日期的方法 */
+			timeCalc(dateString1, dateString2) {
+				let time1 = dateString1.split("-")
+				let time2 = dateString2.split("-")
+				let startDate = new Date(time1[0], time1[1], time1[2])
+				let endDate = new Date(time2[0], time2[1], time2[2])
+				var days = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
+				return days;
+			},
 			/* 将字符串转换为日期的方法 */
 			getDate(dateString1, dateString2) {
-				/* var timeArr = str.split("-");
-				return new Date(timeArr[0],timeArr[1],timeArr[2]) */
 				let time1 = dateString1.split("-")
 				let time2 = dateString2.split("-")
 				let startDate = new Date(time1[0], time1[1], time1[2])

@@ -47,7 +47,6 @@
 		
 			getProjectList(){
 				this.$http('project/plan/withStatus','POST',this.queryForm ,false).then(res=>{
-					console.log(res)
 					this.projectList=res.page
 				})
 			},
