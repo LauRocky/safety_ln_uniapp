@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<nav-bar :title="company" @seach="handseach"></nav-bar>
-		<view class="project-container">
-			<view class="project" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="project.projectId">
+		<nav-bar :title="company" @seach="handseach"></nav-bar>		
+		<view class="project-container" v-if="this.searchList.length==0">
+			<view class="project" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">
 				<view class="title">
 					<text>{{project.projectName}}</text>
 					<u-icon color="#303133" :bold="true" name="arrow-right" @click="goDetail(project.projectId,project.projectName,project.companyId)"></u-icon>
@@ -13,14 +13,25 @@
 				</view>
 				<view class="status" v-else>
 					<u-tag style="margin-top: 8rpx;" size="mini" bgColor="#FF0000" color="#ffffff" text="进度异常"></u-tag>
-					<text style="margin-left: 20rpx;">项目{{getprocess(project.projectId)}}个环节进度异常</text>
+					<text style="margin-left: 20rpx;" >项目{{getprocess(project.projectId)}}个环节进度异常</text>
 				</view>
-				
 			</view>			
 		</view>
-				
+		
+		<!-- 搜索展示 -->
+		<!-- {{this.searchList}} -->
+		<!-- <view class="project-container">
+			<view class="searchshow" v-if="this.searchList.length!=0">
+				<view class="search-item" style="margin: 30rpx 20rpx 18rpx 20rpx;" v-for="item in searchList" :key="item.projectId">
+					<view class="title">
+						<text>{{item.projectName}}</text>
+						<u-icon color="#303133" :bold="true" name="arrow-right" @click="searchprocess(item.projectId,item.projectName,item.companyId)"></u-icon>
+					</view>
+				</view>
+			</view>
+		</view> -->
+		
 	</view>
-	
 </template>
 
 <script>
@@ -38,16 +49,20 @@
 					status:'',
 				},
 				 projectList:[],
+				 searchList:[], //搜索展示的项目
 			}
 		}, 
 		methods: {
-			handseach(){
-				console.log('搜索~~~')
-			},
-		
 			getProjectList(){
 				this.$http('project/plan/withStatus','POST',this.queryForm ,false).then(res=>{
 					this.projectList=res.page
+				})
+			},
+			handseach(val){
+				 this.projectList.forEach(el=>{
+					if(el.projectName==val){
+						this.searchList=el
+					}
 				})
 			},
 			/* 根据项目id判断节点状态 返回有几个异常 */
@@ -66,6 +81,22 @@
 				}
 				return arr.length
 			},
+			
+			// searchprocess(projectId){
+			// 	let arr = []
+			// 	if(this.searchList){
+			// 		this.searchList.forEach(item=>{
+			// 			if(item.projectId==projectId){
+			// 				item.nodes.forEach(node=>{
+			// 					if(node.nodeState == '3' || node.nodeState == '4'){
+			// 						arr.push(node)
+			// 					}
+			// 				})
+			// 			}
+			// 		})
+			// 	}
+			// 	return arr.length
+			// },
 			/* 跳转到详情页面 */
 			goDetail(projectId,projectName,companyId){
 				uni.navigateTo({
