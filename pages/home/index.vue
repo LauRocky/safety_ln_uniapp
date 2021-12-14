@@ -117,7 +117,13 @@ export default {
 	onShow() {},
 	methods: {
 		handscanCode() {
-			scanCode();
+			uni.scanCode({
+						onlyFromCamera: true,
+						success: function(res) {
+							console.log('条码内容：' + res.result);
+							
+						}
+					});
 		},
 		handtolower() {
 			console.log('12321312');
