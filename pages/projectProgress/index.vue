@@ -55,8 +55,8 @@
 		}, 
 		methods: {
 			getProjectList(){
-				this.$http('project/plan/withStatus','POST',this.queryForm ,false).then(res=>{
-					this.rawList=res.page
+				this.$http('project/plan/withStatusNew','POST',this.queryForm ,false).then(res=>{
+					this.rawList=res.page.list
 					this.projectList=this.rawList
 				})
 			},

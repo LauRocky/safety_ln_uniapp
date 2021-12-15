@@ -80,7 +80,26 @@ export default {
 	},
 	methods: {
 		handscanCode(){
-			scanCode();
+			const that = this;
+			uni.scanCode({
+				onlyFromCamera: true,
+				success: function(res) {
+					let userInfo = JSON.parse(uni.getStorageSync("userInfo"));
+					userInfo.cacheKey = res.result.split("|")[1];
+					that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
+						.then(resp => {
+							uni.showToast({
+								title:'登录成功',
+								duration:1500
+							})
+						}).catch(err => {
+							uni.showToast({
+								title:'登录失败，请刷新二维码或稍后重试',
+								duration:1500
+							})
+						})
+				}
+			})
 		},
 		scan() {
 			uni.showToast({
