@@ -2,7 +2,7 @@
 	<view class="danger">
 		<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>
 		<u-tabs lineColor="#00B490" lineWidth="120" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handclick"></u-tabs>
-		<view class="danger-list">4个隐患</view>
+		<view class="danger-list">{{totalCount}}个隐患</view>
 		<scroll-view class="lists" scroll-y @scrolltolower="handtolower" v-if="numsList.length !== 0">
 			<view class="list-1" v-for="(val, i) in numsList" :key="i">
 				<view class="list-top">
@@ -10,8 +10,8 @@
 					<view class="list-right">
 						<view class="list-top-1">
 							<view class="top-left">{{ val.problemType2 }}</view>
-							<view class="top-right" v-if="val.statusTime == 1">已超期</view>
-							<view class="top-right2" v-if="val.statusTime == 2">未超期</view>
+							<view class="top-right2" v-if="val.statusTime == 1">已超期</view>
+							<view class="top-right" v-if="val.statusTime == 2">未超期</view>
 						</view>
 						<view class="list-title" v-if="val.projectInfoEntity">{{ val.projectInfoEntity.projectName }}</view>
 						<view class="list-ce">请{{ val.problemSolverDisplay }}{{ val.problemRequire }}{{ val.notifyPersonDisplay }}</view>
@@ -39,15 +39,16 @@ export default {
 	},
 	data() {
 		return {
-			title: '隐患列表',
+			title: '所有城市',
 			show: false,
 			btnnum: 0,
 			dangerName: '',
 			showTitle: true,
 			dictLsit: [], //隐患等级列表
-			page: '1',
-			limit: '10',
+			page: 1,
+			limit: 10,
 			numsList: [],
+			totalCount:0,
 			list1: [
 				{
 					name: '待整改',
@@ -112,6 +113,7 @@ export default {
 							}
 						});
 						this.numsList = res.page.list;
+						this.totalCount = res.page.totalCount
 					}
 				})
 				.catch(err => {
