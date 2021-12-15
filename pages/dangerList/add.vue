@@ -90,7 +90,7 @@
 		<rectification :showR="showR" @closeR="showR = false" @handEndR="handEndR" />
 		<InformPerson :showP="showP" @closeP="showP = false" @handEndP="handEndP" />
 		<describe :showD="showD" @closeD="showD = false" @handEndD="handEndD">隐患详情描述</describe>
-		<describe :showD="showZ" @closeD="showD = false" @handEndD="handEndZ">整改要求</describe>
+		<describe :showD="showZ" @closeD="showZ = false" @handEndD="handEndZ">整改要求</describe>
 		<aderss :showA="showA" @closeA="showA = false" @handEndA="handEndA"></aderss>
 	</view>
 </template>
@@ -131,7 +131,7 @@ export default {
 			userAdd: {
 				name: '',
 				dagner: '',
-				type:'',
+				type: '',
 				rectification: '',
 				person: '',
 				Details: '',
@@ -142,7 +142,7 @@ export default {
 				companyId: '', //项目id
 				projectId: '', //隐患id
 				assessment: '', //隐患等级，参考字典值。取code
-				problemType:'',  //选择，隐患类型，参考字典值。取code
+				problemType: '', //选择，隐患类型，参考字典值。取code
 				problemSolver: '', //整改人
 				notifyPerson: '' //只会人
 			},
@@ -208,26 +208,38 @@ export default {
 	mounted() {},
 	methods: {
 		handAdd() {
-			let expireTime=new Date();
-			expireTime=expireTime.getTime()+this.userAdd.period*24*60*60*1000;
-			this.$http('/problems','POST',
-				{companyId: this.userAdd.companyId,
+			let expireTime = new Date();
+			expireTime = expireTime.getTime() + this.userAdd.period * 24 * 60 * 60 * 1000;
+			this.$http(
+				'/problems',
+				'POST',
+				{
+					companyId: this.userAdd.companyId,
 					projectId: this.userAdd.projectId,
 					problemType: this.userAdd.problemType,
 					assessment: this.userAdd.assessment,
 					problemSolver: this.userAdd.problemSolver,
 					notifyPerson: this.userAdd.notifyPerson,
-					require: this.userAdd.require,
-					expireTime:expireTime,
-					problemRequire: this.userAdd.Details,
+					expireTime: expireTime,
+					problemDesc: this.userAdd.Details,
+					problemRequire: this.userAdd.require,
 					areaDetail: this.userAdd.location,
-					images:this.userAdd.images,
+					images: this.userAdd.images,
 					location: this.userAdd.location,
-					source: 0,
-				},false).then(res => {
-					console.log('111111',res)
+					source: 0
+				},
+				false
+			).then(res => {
 					if (res.code == 0) {
-						console.log(res)
+						uni.showToast({
+							title: '创建成功',
+							duration: 1500
+						});
+						setTimeout(() => {
+							uni.navigateBack({
+								delta: -1
+							});
+						}, 1500);
 					}
 				})
 				.catch(err => {
@@ -255,7 +267,6 @@ export default {
 		},
 		handEnd(v) {
 			//项目
-			console.log(v);
 			this.userAdd.name = v.name;
 			this.userAdd.companyId = v.companyId;
 			this.userAdd.projectId = v.projectId;
@@ -269,12 +280,11 @@ export default {
 		},
 		handEndT(v) {
 			//隐患类型
-			console.log(v)
 			this.userAdd.type = v.value;
 			this.userAdd.problemType = v.code;
 			this.showT = false;
 		},
-		
+
 		handEndR(v) {
 			//整改
 			this.userAdd.rectification = v.fullname;
@@ -301,7 +311,6 @@ export default {
 		},
 		handformpick() {
 			console.log('123123');
-		
 		},
 		submit() {
 			this.$refs.uForm
@@ -311,10 +320,10 @@ export default {
 						return uni.$u.toast('请上传图片');
 					}
 					this.imgList.forEach(val => {
-						this.userAdd.images += val + "/";
+						this.userAdd.images += val + "|";
 					});
 					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
-					this.handAdd()
+					this.handAdd();
 					/* uni.$u.toast('校验通过'); */
 				})
 				.catch(errors => {
@@ -323,7 +332,6 @@ export default {
 		}
 	},
 	onNavigationBarButtonTap() {
-			
 		this.submit();
 	}
 };
@@ -332,6 +340,7 @@ export default {
 .add {
 	padding: 36upx 24upx;
 	.add-1 {
+		margin-right: 20upx;
 		display: flex;
 		align-items: center;
 		.add-t {
