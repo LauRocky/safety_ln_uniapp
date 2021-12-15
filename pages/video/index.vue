@@ -5,7 +5,6 @@
 			<view class="u-nav-left" slot="left">
 				视频名称
 			</view>
-
 			<view class="u-nav-right" slot="right">
 				<u-search @tap="searchss" shape="round" height="50" bgColor="#ffffff" :showAction="false"></u-search>
 			</view>
@@ -62,17 +61,7 @@
 					console.log(res)
 				})
 			},
-			// 2. 获取特定项目下的摄像头列表
-			// camera/project/show
-			// getProjectList(){
-			// 	this.$http('camera/project/show', 'POST', {
-			// 		companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
-			// 	}, false).then(res => {
-			// 		console.log(res)
-			// 	})
-			// },
 			
-
 			searchss() {
 				console.log(111)
 			},
