@@ -17,20 +17,6 @@
 				</view>
 			</view>			
 		</view>
-		
-		<!-- 搜索展示 -->
-		<!-- {{this.searchList}} -->
-		<!-- <view class="project-container">
-			<view class="searchshow" v-if="this.searchList.length!=0">
-				<view class="search-item" style="margin: 30rpx 20rpx 18rpx 20rpx;" v-for="item in searchList" :key="item.projectId">
-					<view class="title">
-						<text>{{item.projectName}}</text>
-						<u-icon color="#303133" :bold="true" name="arrow-right" @click="searchprocess(item.projectId,item.projectName,item.companyId)"></u-icon>
-					</view>
-				</view>
-			</view>
-		</view> -->
-		
 	</view>
 </template>
 
@@ -73,7 +59,6 @@
 				}else{
 					this.projectList=this.rawList
 				}
-				
 			},
 			/* 根据项目id判断节点状态 返回有几个异常 */
 			getprocess(projectId){
@@ -92,22 +77,6 @@
 				return arr.length
 			},
 			
-			// searchprocess(projectId){
-			// 	let arr = []
-			
-			// 	if(this.searchList){
-			// 		this.searchList.forEach(item=>{
-			// 			if(item.projectId==projectId){
-			// 				item.nodes.forEach(node=>{
-			// 					if(node.nodeState == '3' || node.nodeState == '4'){
-			// 						arr.push(node)
-			// 					}
-			// 				})
-			// 			}
-			// 		})
-			// 	}
-			// 	return arr.length
-			// },
 			/* 跳转到详情页面 */
 			goDetail(projectId,projectName,companyId){
 				uni.navigateTo({

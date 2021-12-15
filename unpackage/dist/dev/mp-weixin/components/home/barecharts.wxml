@@ -1,0 +1,1 @@
+<view style="width:100%;height:500rpx;" class="data-v-9b600e68"><l-echart vue-id="d0a0bc8c-1" data-ref="chart" class="data-v-9b600e68 vue-ref" bind:__l="__l"></l-echart></view>

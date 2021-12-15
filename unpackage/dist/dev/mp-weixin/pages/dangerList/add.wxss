@@ -1,0 +1,41 @@
+.add.data-v-03fdfe2c {
+  padding: 36rpx 24rpx;
+}
+.add .add-1.data-v-03fdfe2c {
+  display: flex;
+  align-items: center;
+}
+.add .add-1 .add-t.data-v-03fdfe2c {
+  display: flex;
+  align-items: center;
+}
+.add .add-1 .add-imgs.data-v-03fdfe2c {
+  margin-right: 10rpx;
+  width: 40rpx;
+  height: 40rpx;
+}
+.add .form-item .add-title.data-v-03fdfe2c {
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.add .form-item.data-v-03fdfe2c .u-form-item__body {
+  padding: 36rpx 0;
+}
+.add .form-item.data-v-03fdfe2c .u-form-item__body__right__message {
+  margin-left: 75vw !important;
+}
+.add .form-item2.data-v-03fdfe2c {
+  padding: 40rpx 0;
+}
+.add .form-item2 .add-title.data-v-03fdfe2c {
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.add .form-item2 .uploadImg.data-v-03fdfe2c {
+  margin: 20rpx 0;
+}
+

@@ -1,60 +1,68 @@
 <template>
 	<view>
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			
-			<view class="u-nav-left"slot="left">
+
+			<view class="u-nav-left" slot="left">
 				视频名称
 			</view>
-			
 			<view class="u-nav-right" slot="right">
-				 <u-search  @tap="searchss"  shape="round" height="50" bgColor="#ffffff" :showAction="false"></u-search>
+				<u-search @tap="searchss" shape="round" height="50" bgColor="#ffffff" :showAction="false"></u-search>
 			</view>
 		</u-navbar>
 		<view class="video">
 			<view class="video-item" v-for="(item,index) in dataList">
 				<view class="ball"><text>{{item.name.substring(0,1)}}</text></view>
 				<view class="main">
-					<view style="display: flex; align-items: center;justify-content: space-between; color: #737373;font-size: 33rpx;">
-							<text style="margin-left: 20rpx;font-weight: 900;">{{item.name}}</text>
-							<uni-icons size="20" color=" #737373" type="right"></uni-icons>
+					<view
+						style="display: flex; align-items: center;justify-content: space-between; color: #737373;font-size: 33rpx;">
+						<text style="margin-left: 20rpx;font-weight: 900;">{{item.name}}</text>
+						<uni-icons size="20" color=" #737373" type="right"></uni-icons>
 					</view>
 					<view style="margin-top: 15rpx;font-size: 28rpx;color: #7D7D7D;">
-						<text style="margin-left: 20rpx;"><uni-icons type="videocam-filled" color=" #7D7D7D;"></uni-icons>监控数量: {{item.videocam}}</text>
-						<text style="margin-left: 20rpx;"><uni-icons type="camera-filled" color=" #7D7D7D;"></uni-icons>单兵数量: {{item.camera}}</text>
+						<text style="margin-left: 20rpx;">
+							<uni-icons type="videocam-filled" color=" #7D7D7D;"></uni-icons>监控数量: {{item.videocam}}
+						</text>
+						<text style="margin-left: 20rpx;">
+							<uni-icons type="camera-filled" color=" #7D7D7D;"></uni-icons>单兵数量: {{item.camera}}
+						</text>
 					</view>
 				</view>
 			</view>
 		</view>
-		
 	</view>
-	
 </template>
 
 <script>
 	export default {
-		components:{},
-		data(){
+		components: {},
+		data() {
 			return {
-				dataList:[{
-					name:"鲁能领秀城花山峪B地块",
-					videocam:0,
-					camera:0
-				},{
-					name:"鲁能领秀城花山峪B地块",
-					videocam:0,
-					camera:0
-				},{
-					name:"鲁能领秀城花山峪B地块",
-					videocam:0,
-					camera:0
-				},]
+				dataList: [{
+					name: "鲁能领秀城花山峪B地块",
+					videocam: 0,
+					camera: 0
+				}, {
+					name: "鲁能领秀城花山峪B地块",
+					videocam: 0,
+					camera: 0
+				}, {
+					name: "鲁能领秀城花山峪B地块",
+					videocam: 0,
+					camera: 0
+				}, ]
 			}
 		},
-		onLoad() {
-			
-		},
 		methods: {
-			searchss(){
+			// 获取当前公司下所有项目
+			getCompanySelectData() {
+				this.$http('/getCompanyProjectWithCamera', 'POST', {
+					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
+				}, false).then(res => {
+					console.log(res)
+				})
+			},
+			
+			searchss() {
 				console.log(111)
 			},
 			search() {
@@ -63,22 +71,27 @@
 				})
 			},
 		},
-		
+		onLoad() {
+			this.getCompanySelectData()
+		},
 	}
 </script>
 
 <style scoped>
-	.u-nav-left{
+	.u-nav-left {
 		color: #FFFFFF;
 		font-weight: 550;
 	}
-	.video{
+
+	.video {
 		margin-top: 25rpx;
 	}
-	.main{
+
+	.main {
 		width: 80%;
 	}
-	.ball{
+
+	.ball {
 		background-color: #03B293;
 		width: 20%;
 		display: flex;
@@ -90,7 +103,8 @@
 		height: 100rpx;
 		border-radius: 50px;
 	}
-	.video-item{
+
+	.video-item {
 		display: flex;
 		padding: 40rpx;
 		padding-top: 20rpx;
