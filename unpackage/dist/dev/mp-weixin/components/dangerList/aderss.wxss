@@ -1,0 +1,25 @@
+.aderss .main.data-v-1a953033 {
+  width: 80vw;
+  padding: 40rpx 30rpx;
+}
+.aderss .main .titles.data-v-1a953033 {
+  text-align: center;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.aderss .main .text-a.data-v-1a953033 {
+  padding-top: 30rpx;
+}
+.aderss .main .text-a .aderss.data-v-1a953033 {
+  text-align: right;
+}
+.aderss .main .text-a .aderss .aderss-img.data-v-1a953033 {
+  width: 50rpx;
+  height: 50rpx;
+}
+

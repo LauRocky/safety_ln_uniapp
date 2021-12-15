@@ -59,6 +59,9 @@
 				})
 			},
 			handseach(val){
+				let projectkeys=val.slice(0,1)
+				console.log(projectkeys)
+				
 				 this.projectList.forEach(el=>{
 					if(el.projectName==val){
 						this.searchList=el
@@ -82,21 +85,6 @@
 				return arr.length
 			},
 			
-			// searchprocess(projectId){
-			// 	let arr = []
-			// 	if(this.searchList){
-			// 		this.searchList.forEach(item=>{
-			// 			if(item.projectId==projectId){
-			// 				item.nodes.forEach(node=>{
-			// 					if(node.nodeState == '3' || node.nodeState == '4'){
-			// 						arr.push(node)
-			// 					}
-			// 				})
-			// 			}
-			// 		})
-			// 	}
-			// 	return arr.length
-			// },
 			/* 跳转到详情页面 */
 			goDetail(projectId,projectName,companyId){
 				uni.navigateTo({

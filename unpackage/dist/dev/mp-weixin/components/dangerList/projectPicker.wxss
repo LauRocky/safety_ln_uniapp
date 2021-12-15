@@ -1,0 +1,91 @@
+.mypicker .titles.data-v-2af9fa94 {
+  position: relative;
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.mypicker .titles .icon.data-v-2af9fa94 {
+  position: absolute;
+  top: 30rpx;
+  right: 20rpx;
+}
+.mypicker .main .main-top.data-v-2af9fa94 {
+  padding: 60rpx 22rpx 0 70rpx;
+}
+.mypicker .main .main-top .main-1.data-v-2af9fa94 {
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mypicker .main .main-top .main-1 .main-2.data-v-2af9fa94 {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.mypicker .main .main-top .main-1 .main-2 .yuan.data-v-2af9fa94 {
+  position: relative;
+  margin-right: 58rpx;
+  width: 18rpx;
+  height: 18rpx;
+  background: #00b490;
+  border-radius: 50%;
+}
+.mypicker .main .main-top .main-1 .main-2 .yuan.data-v-2af9fa94::after {
+  display: block;
+  content: '';
+  width: 4rpx;
+  height: 85rpx;
+  background: #00b490;
+  position: absolute;
+  bottom: -85rpx;
+  left: 7rpx;
+}
+.mypicker .main .main-top .main-1 .main-2 .yuan2.data-v-2af9fa94 {
+  position: relative;
+  margin-right: 58rpx;
+  width: 18rpx;
+  height: 18rpx;
+  background: #00b490;
+  border-radius: 50%;
+}
+.mypicker .main .main-top .main-1 .main-2 .yuan1.data-v-2af9fa94 {
+  margin-right: 58rpx;
+  width: 17rpx;
+  height: 17rpx;
+  border: 2rpx solid #00b490;
+  border-radius: 50%;
+}
+.mypicker .main .heng.data-v-2af9fa94 {
+  height: 6rpx;
+  width: 100%;
+}
+.mypicker .main .main-cet.data-v-2af9fa94 {
+  padding: 60rpx 22rpx 0 70rpx;
+}
+.mypicker .main .main-cet .p-titles.data-v-2af9fa94 {
+  padding-bottom: 60rpx;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.mypicker .main .main-cet .scroll-a.data-v-2af9fa94 {
+  height: 40vh;
+}
+.mypicker .main .main-cet .scroll-a .text-a.data-v-2af9fa94 {
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+}
+.mypicker .main .main-cet .scroll-a .active.data-v-2af9fa94 {
+  color: #00b490;
+}
+

@@ -1,0 +1,10 @@
+{
+  "navigationBarBackgroundColor": "#11B38C",
+  "navigationBarTitleText": "",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-tabs": "/uview-ui/components/u-tabs/u-tabs",
+    "mypicker": "/components/mypicker/mypicker",
+    "nav-bar": "/components/navBar/navBar"
+  }
+}

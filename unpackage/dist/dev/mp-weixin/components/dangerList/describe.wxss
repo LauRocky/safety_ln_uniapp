@@ -1,0 +1,18 @@
+.describe .main.data-v-00d23c4e {
+  width: 80vw;
+  padding: 40rpx 30rpx;
+}
+.describe .main .titles.data-v-00d23c4e {
+  text-align: center;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.describe .main .text-a.data-v-00d23c4e {
+  padding-top: 30rpx;
+}
+

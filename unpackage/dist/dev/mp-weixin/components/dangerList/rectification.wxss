@@ -1,0 +1,44 @@
+.rectification .titles.data-v-6be33d07 {
+  position: relative;
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.rectification .titles .icon.data-v-6be33d07 {
+  position: absolute;
+  top: 30rpx;
+  right: 20rpx;
+}
+.rectification .main.data-v-6be33d07 {
+  padding: 20rpx 29rpx 0 64rpx;
+}
+.rectification .main .title2.data-v-6be33d07 {
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #333333;
+}
+.rectification .main .scroll-a.data-v-6be33d07 {
+  padding-top: 30rpx;
+  height: 40vh;
+}
+.rectification .main .scroll-a .text-a.data-v-6be33d07 {
+  display: flex;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+}
+.rectification .main .scroll-a .text-a .t-a.data-v-6be33d07 {
+  flex: 2;
+}
+.rectification .main .scroll-a .text-a .t-x.data-v-6be33d07 {
+  flex: 5;
+}
+.rectification .main .scroll-a .active.data-v-6be33d07 {
+  color: #00b490;
+}
+
