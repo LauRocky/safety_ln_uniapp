@@ -6,14 +6,14 @@
 		<scroll-view class="lists" scroll-y @scrolltolower="handtolower">
 			<view class="list-1" v-for="(val, i) in numsList" :key="i">
 				<view class="list-top">
-					<image class="list-imgs" :src="val.url" mode=""></image>
+					<image class="list-imgs" :src="val.images" mode=""></image>
 					<view class="list-right">
 						<view class="list-top-1">
-							<view class="top-left">{{ val.dan }}</view>
+							<view class="top-left">{{ val.problemType2 }}</view>
 							<view class="top-right" v-if="val.gai == '1'">未整改</view>
 							<view class="top-right2" v-if="val.gai == '2'">已超期</view>
 						</view>
-						<view class="list-title">{{ val.title }}</view>
+						<view class="list-title">{{  }}</view>
 						<view class="list-ce">{{ val.ce }}</view>
 					</view>
 				</view>
@@ -24,13 +24,14 @@
 			</view>
 		</scroll-view>
 		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
-		<mypicker :show="show" :rightList="rightList" @close="handclose" />
+		<mypicker :show="show" @handcompany="handcompany" @close="handclose" />
 	</view>
 </template>
 
 <script>
 import navBar from '../../components/navBar/navBar.vue';
 import mypicker from '../../components/mypicker/mypicker.vue';
+import { getDictList } from '../../utils/api.js';
 export default {
 	components: {
 		navBar,
@@ -43,6 +44,7 @@ export default {
 			btnnum: 0,
 			dangerName: '',
 			showTitle: true,
+			dictLsit:[],//隐患等级列表
 			numsList: [
 				{
 					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
@@ -53,58 +55,7 @@ export default {
 					gg: '济南公司',
 					time: '17:42'
 				},
-				{
-					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
-					dan: '安全事件隐患',
-					title: '北京顺义新城21街区项目',
-					ce: '请@XXX济南公司现成记录测试',
-					gai: '1',
-					gg: '济南公司',
-					time: '17:42'
-				},
-				{
-					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
-					dan: '安全事件隐患',
-					title: '北京顺义新城21街区项目',
-					ce: '请@XXX济南公司现成记录测试',
-					gai: '2',
-					gg: '济南公司',
-					time: '17:42'
-				},
-				{
-					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
-					dan: '安全事件隐患',
-					title: '北京顺义新城21街区项目',
-					ce: '请@XXX济南公司现成记录测试',
-					gai: '2'
-				},
-				{
-					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
-					dan: '安全事件隐患',
-					title: '北京顺义新城21街区项目',
-					ce: '请@XXX济南公司现成记录测试',
-					gai: '1',
-					gg: '济南公司',
-					time: '17:42'
-				},
-				{
-					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
-					dan: '安全事件隐患',
-					title: '北京顺义新城21街区项目',
-					ce: '请@XXX济南公司现成记录测试',
-					gai: '1',
-					gg: '济南公司',
-					time: '17:42'
-				},
-				{
-					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
-					dan: '安全事件隐患',
-					title: '北京顺义新城21街区项目',
-					ce: '请@XXX济南公司现成记录测试',
-					gai: '1',
-					gg: '济南公司',
-					time: '17:42'
-				}
+				
 			],
 			list1: [
 				{
@@ -190,6 +141,7 @@ export default {
 	},
 	onLoad() {
 		this.handclick({value:1});
+		this.handgETLIST()
 	},
 	methods: {
 		handclick(v) {
@@ -201,11 +153,29 @@ export default {
 				this.handDangerList({ all: '1' });
 			}
 		},
+		handcompany(v){
+			this.title = v
+			this.show = false
+		},
+		handgETLIST() {
+			getDictList('PROBLEMS_LEVEL_TYPE')
+				.then(res => {
+					this.dictLsit = res.dict
+				})
+				.catch(err => {
+					console.log(err)
+				});
+		},
 		handDangerList(obj) {
 			this.$http('/problem/app/list', 'POST', obj, false)
 				.then(res => {
 					if (res.code == 0) {
-						console.log(res);
+						res.page.list.forEach(val => {
+						let obj = {}
+						/* obj = this.dictLsit.filter(item => val.problemType == item.code)
+						val.problemType2 = obj[0].value */
+						})
+						this.numsList = res.page.list
 					}
 				})
 				.catch(err => {

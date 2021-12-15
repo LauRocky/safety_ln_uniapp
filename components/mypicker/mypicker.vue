@@ -7,11 +7,11 @@
 			</view>
 			<view class="main">
 				<view class="main-left">
-					<view class="left-1" @click="handleft(i)" :class="[leftIndex == i ? 'active' : '']" v-for="(val, i) in leftList" :key="i">{{ val.name }}</view>
+					<view class="left-1" @click="handleft(val,i)" :class="[leftIndex == i ? 'active' : '']" v-for="(val, i) in leftList" :key="i+'a'">{{ val }}</view>
 				</view>
 				<view class="main-right">
 					<scroll-view class="right-scroll" @scrolltolower="handtolower" scroll-y>
-						<view class="gg" :class="[ggIndex == i1 ? 'ggactive' : '']" @click="handGcompany(i1)" v-for="(val1, i1) in list" :key="i1">{{ val1.name }}</view>
+						<view class="gg" :class="[ggIndex == i1 ? 'ggactive' : '']" @click="handGcompany(val1,i1)" v-for="(val1, i1) in rightlist" :key="i1">{{ val1 }}</view>
 					</scroll-view>
 				</view>
 			</view>
@@ -21,53 +21,62 @@
 <script>
 export default {
 	name: '',
-	props: ['show', 'rightList'],
+	props: ['show'],
 	components: {},
 	data() {
 		return {
-			leftIndex: 0,
-			ggIndex: 0,
-			list: [],
-			leftList: [
-				{
-					name: '低碳城市',
-					value: 1
-				},
-				{
-					name: '绿色服务',
-					value: 1
-				},
-				{
-					name: '绿色能源',
-					value: 1
-				}
-			]
+			leftIndex: null,
+			ggIndex: null,
+			rightlist: [],
+			alldata:{},
+			leftList: []
 		};
 	},
 	onLoad() {},
 	//组件生命周期
 	created() {
-		this.list = this.rightList.c;
+		this.handSelectData()
 	},
 	mounted() {},
 	methods: {
 		handtolower() {},
-		handGcompany(val){
-			console.log(val)
+		handGcompany(v,val){
 			this.ggIndex = val
+			this.$emit('handcompany',v)
 		},
-		handleft(val) {
+		handleft(v,val) {
 			this.ggIndex = 0
 			this.leftIndex = val;
 			if (val == 0) {
-				this.list = this.rightList.c;
+				this.rightlist = this.alldata[v];
 			} else if (val == 1) {
-				this.list = this.rightList.fu;
+				this.rightlist = this.alldata[v];
 			} else if (val == 2) {
-				this.list = this.rightList.ne;
+				this.rightlist = this.alldata[v];
 			}
 		},
-		
+		handSelectData() {
+			//shujui  两级
+			this.$http(
+				'/lvxin/getCompanySelectData',
+				'GET',
+				{
+					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
+				},
+				false
+			)
+				.then(res => {
+					if (res.code == 0) {
+						this.alldata = res.data.second
+						this.leftList = res.data.first;
+						this.rightlist = res.data.second['低碳城市'];
+						console.log(this.leftlist)
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 		handIcon() {
 			this.$emit('close');
 		},
