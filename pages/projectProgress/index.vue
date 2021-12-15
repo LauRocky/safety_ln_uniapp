@@ -36,7 +36,6 @@
 				},
 				rawList:[],
 				 projectList:[],
-				 searchList:[], //搜索展示的项目
 			}
 		}, 
 		methods: {
