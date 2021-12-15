@@ -3,23 +3,23 @@
 		<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>
 		<u-tabs lineColor="#00B490" lineWidth="120" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handclick"></u-tabs>
 		<view class="danger-list">4个隐患</view>
-		<scroll-view class="lists" scroll-y @scrolltolower="handtolower">
+		<scroll-view class="lists" scroll-y @scrolltolower="handtolower" v-if="numsList.length !== 0">
 			<view class="list-1" v-for="(val, i) in numsList" :key="i">
 				<view class="list-top">
 					<image class="list-imgs" :src="val.images" mode=""></image>
 					<view class="list-right">
 						<view class="list-top-1">
 							<view class="top-left">{{ val.problemType2 }}</view>
-							<view class="top-right" v-if="val.gai == '1'">未整改</view>
-							<view class="top-right2" v-if="val.gai == '2'">已超期</view>
+							<view class="top-right" v-if="val.statusTime == 1">已超期</view>
+							<view class="top-right2" v-if="val.statusTime == 2">未超期</view>
 						</view>
-						<view class="list-title">{{  }}</view>
-						<view class="list-ce">{{ val.ce }}</view>
+						<view class="list-title" v-if="val.projectInfoEntity">{{ val.projectInfoEntity.projectName }}</view>
+						<view class="list-ce">请{{ val.problemSolverDisplay }}{{ val.problemRequire }}{{ val.notifyPersonDisplay }}</view>
 					</view>
 				</view>
 				<view class="list-foo">
-					<view class="foo-left">{{ val.gg }}</view>
-					<view class="foo-time">{{ val.time }}</view>
+					<view class="foo-left">{{ val.problemCreatorDisplay }}</view>
+					<view class="foo-time">{{ val.crtime }}</view>
 				</view>
 			</view>
 		</scroll-view>
@@ -44,19 +44,10 @@ export default {
 			btnnum: 0,
 			dangerName: '',
 			showTitle: true,
-			dictLsit:[],//隐患等级列表
-			numsList: [
-				{
-					url: 'https://img0.baidu.com/it/u=3436810468,4123553368&fm=26&fmt=auto',
-					dan: '安全事件隐患',
-					title: '北京顺义新城21街区项目',
-					ce: '请@XXX济南公司现成记录测试',
-					gai: '1',
-					gg: '济南公司',
-					time: '17:42'
-				},
-				
-			],
+			dictLsit: [], //隐患等级列表
+			page: '1',
+			limit: '10',
+			numsList: [],
 			list1: [
 				{
 					name: '待整改',
@@ -70,112 +61,57 @@ export default {
 					name: '全部',
 					value: '3'
 				}
-			],
-			rightList: {
-				c: [
-					{
-						name: 'hqwdkj'
-					},
-					{
-						name: 'hqwdkj'
-					},
-					{
-						name: 'hqwdkj'
-					},
-					{
-						name: 'hqwdkj'
-					},
-					{
-						name: '412'
-					},
-					{
-						name: '41231'
-					},
-					{
-						name: '41'
-					},
-					{
-						name: '56345345'
-					},
-					{
-						name: '123'
-					},
-					{
-						name: '3453453'
-					},
-					{
-						name: 'hqwdkj'
-					}
-				],
-				fu: [
-					{
-						name: 'kijasdad'
-					},
-
-					{
-						name: 'kijasdad'
-					},
-					{
-						name: 'kijasdad'
-					},
-					{
-						name: 'kijasdad'
-					}
-				],
-				ne: [
-					{
-						name: '5674654645'
-					},
-					{
-						name: '5674654645'
-					},
-					{
-						name: '5674654645'
-					},
-					{
-						name: '5674654645'
-					}
-				]
-			}
+			]
 		};
 	},
 	onLoad() {
-		this.handclick({value:1});
-		this.handgETLIST()
+		this.handclick({ value: 1 });
+		this.handgETLIST();
 	},
 	methods: {
 		handclick(v) {
 			if (v.value == 1) {
-				this.handDangerList({ problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
+				this.handDangerList({ page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
 			} else if (v.value == 2) {
-				this.handDangerList({ problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
+				this.handDangerList({ page: this.page, limit: this.limit, problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
 			} else {
-				this.handDangerList({ all: '1' });
+				this.handDangerList({ page: this.page, limit: this.limit, all: '1' });
 			}
 		},
-		handcompany(v){
-			this.title = v
-			this.show = false
+		handcompany(v) {
+			this.title = v;
+			this.show = false;
 		},
 		handgETLIST() {
 			getDictList('PROBLEMS_LEVEL_TYPE')
 				.then(res => {
-					this.dictLsit = res.dict
+					this.dictLsit = res.dict;
 				})
 				.catch(err => {
-					console.log(err)
+					console.log(err);
 				});
 		},
 		handDangerList(obj) {
+			var myDate = new Date('2021-12-25 13:17:02');
 			this.$http('/problem/app/list', 'POST', obj, false)
 				.then(res => {
 					if (res.code == 0) {
+						if(this.numsList.length){
+							
+						}
 						res.page.list.forEach(val => {
-						let obj = {}
-						/* obj = this.dictLsit.filter(item => val.problemType == item.code)
-						val.problemType2 = obj[0].value */
-						})
-						this.numsList = res.page.list
+							let obj = {};
+							obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
+							val.problemType2 = obj[0].value;
+							val.crtime = val.createTime.split(' ')[0];
+							var oDate2 = new Date(val.expireTime); //时间状态判断
+							if (myDate.getTime() > oDate2.getTime()) {
+								val.statusTime = 1; //超期
+							} else {
+								val.statusTime = 2; //未超期
+							}
+						});
+						this.numsList = res.page.list;
 					}
 				})
 				.catch(err => {
