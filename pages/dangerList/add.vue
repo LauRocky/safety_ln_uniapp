@@ -90,7 +90,7 @@
 		<rectification :showR="showR" @closeR="showR = false" @handEndR="handEndR" />
 		<InformPerson :showP="showP" @closeP="showP = false" @handEndP="handEndP" />
 		<describe :showD="showD" @closeD="showD = false" @handEndD="handEndD">隐患详情描述</describe>
-		<describe :showD="showZ" @closeD="showD = false" @handEndD="handEndZ">整改要求</describe>
+		<describe :showD="showZ" @closeD="showZ = false" @handEndD="handEndZ">整改要求</describe>
 		<aderss :showA="showA" @closeA="showA = false" @handEndA="handEndA"></aderss>
 	</view>
 </template>
@@ -217,9 +217,9 @@ export default {
 					assessment: this.userAdd.assessment,
 					problemSolver: this.userAdd.problemSolver,
 					notifyPerson: this.userAdd.notifyPerson,
-					require: this.userAdd.require,
-					expireTime:expireTime,
-					problemRequire: this.userAdd.Details,
+					expireTime:this.userAdd.expireTime,
+					problemDesc:this.userAdd.Detail,
+					problemRequire: this.userAdd.require,
 					areaDetail: this.userAdd.location,
 					images:this.userAdd.images,
 					location: this.userAdd.location,

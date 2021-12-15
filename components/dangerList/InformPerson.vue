@@ -93,7 +93,6 @@ export default {
 			this.$emit('closeP');
 		},
 		handlistByProjectId() {
-			console.log(this.listBy)
 			if(this.listBy.page >= 2){
 				uni.showLoading({ title: '加载中', mask: true });
 			}
