@@ -95,10 +95,12 @@
 										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
 										v-if="item.nodeState==1"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										style="width: 38rpx;height:38rpx;" 
+										src="../../static/projectdetail/zise.png"
 										mode=""></image>
 									<image v-if="item.nodeState==4"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+										style="width: 38rpx;height:38rpx;" 
+										src="../../static/projectdetail/yuan.png"
 										mode=""></image>
 									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
 										src="../../static/projectdetail/green.png" mode=""></image>

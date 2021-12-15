@@ -48,6 +48,7 @@
 					projectId: '',
 					status:'',
 				},
+				rawList:[],
 				 projectList:[],
 				 searchList:[], //搜索展示的项目
 			}
@@ -55,10 +56,12 @@
 		methods: {
 			getProjectList(){
 				this.$http('project/plan/withStatus','POST',this.queryForm ,false).then(res=>{
-					this.projectList=res.page
+					this.rawList=res.page
+					this.projectList=this.rawList
 				})
 			},
 			handseach(val){
+<<<<<<< HEAD
 				let projectkeys=val.slice(0,1)
 				console.log(projectkeys)
 				
@@ -67,6 +70,21 @@
 						this.searchList=el
 					}
 				})
+=======
+				if(val){
+					let result=[]
+					 this.projectList.forEach(e=>{
+						 let pName=e.projectName;
+						 if(pName.indexOf(val)>-1){
+							 result.push(e)
+						 }
+					 })
+					 this.projectList=result
+				}else{
+					this.projectList=this.rawList
+				}
+				
+>>>>>>> 64896ac07e8755cb3808ca6fdb39d17499dd701f
 			},
 			/* 根据项目id判断节点状态 返回有几个异常 */
 			getprocess(projectId){
@@ -85,6 +103,25 @@
 				return arr.length
 			},
 			
+<<<<<<< HEAD
+=======
+			// searchprocess(projectId){
+			// 	let arr = []
+			
+			// 	if(this.searchList){
+			// 		this.searchList.forEach(item=>{
+			// 			if(item.projectId==projectId){
+			// 				item.nodes.forEach(node=>{
+			// 					if(node.nodeState == '3' || node.nodeState == '4'){
+			// 						arr.push(node)
+			// 					}
+			// 				})
+			// 			}
+			// 		})
+			// 	}
+			// 	return arr.length
+			// },
+>>>>>>> 64896ac07e8755cb3808ca6fdb39d17499dd701f
 			/* 跳转到详情页面 */
 			goDetail(projectId,projectName,companyId){
 				uni.navigateTo({

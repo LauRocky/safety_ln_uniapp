@@ -208,6 +208,8 @@ export default {
 	mounted() {},
 	methods: {
 		handAdd() {
+			let expireTime=new Date();
+			expireTime=expireTime.getTime()+this.userAdd.period*24*60*60*1000;
 			this.$http('/problems','POST',
 				{companyId: this.userAdd.companyId,
 					projectId: this.userAdd.projectId,
@@ -216,7 +218,7 @@ export default {
 					problemSolver: this.userAdd.problemSolver,
 					notifyPerson: this.userAdd.notifyPerson,
 					require: this.userAdd.require,
-					expireTime:Number(this.userAdd.period) + 10,
+					expireTime:expireTime,
 					problemRequire: this.userAdd.Details,
 					areaDetail: this.userAdd.location,
 					images:this.userAdd.images,
@@ -299,6 +301,7 @@ export default {
 		},
 		handformpick() {
 			console.log('123123');
+		
 		},
 		submit() {
 			this.$refs.uForm
@@ -308,11 +311,9 @@ export default {
 						return uni.$u.toast('请上传图片');
 					}
 					this.imgList.forEach(val => {
-						this.userAdd.images += val + '/';
+						this.userAdd.images += val + "/";
 					});
 					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
-					
-					
 					this.handAdd()
 					/* uni.$u.toast('校验通过'); */
 				})
@@ -322,6 +323,7 @@ export default {
 		}
 	},
 	onNavigationBarButtonTap() {
+			
 		this.submit();
 	}
 };
