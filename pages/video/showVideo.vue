@@ -10,7 +10,8 @@
 			return {
 				projectId: '',
 				ehomeList: [],
-				etEznew: ''
+				etEznew: '',
+				showList: [],
 			};
 		},
 		methods: {
@@ -19,12 +20,31 @@
 				this.$http('camera/project/show', 'POST', {
 					'projectId': this.projectId
 				}, false).then(res => {
-					console.log(res)
-
+					// console.log(res)
+					this.showList = res.projectInfoEntities
+					console.log(this.showList)
 				})
 			},
-			// etEzNewLiveAddress/{deviceSerial}/{channelNo}/{ezvizAccountId}
-
+			ehome(){
+				if(this.showList){
+					this.showList.forEach(e => {
+					 e.cameraEntities.forEach(el=>{
+						 if (el.cameraIndexCode) {
+						 	this.$http(`ehome/camera/previewurl/${protocol}/${indexCode}`, 'POST', {
+						 		'protocol': 'hls',
+						 		'indexCode': e.cameraIndexCode
+						 	}).then(res => {
+						 		console.log(res)
+						 	})
+						 }
+					 })
+					})
+				}
+			},
+			//     萤石第一个参数 nvrDeviceSerial
+			//		channelNo 默认1
+			// ezvizAccountId  ezvizAccountId
+			// 3. 获取萤石云播放URL
 			// etEzNewLiveAddress() {
 			// 	let dev = deviceSerial
 			// 	let cha = channelNo
@@ -38,12 +58,19 @@
 			// 		console.log(res)
 			// 	})
 			// }
+
+			// 获取海康播放url   ehome/camera/previewurl/{protocol}/{indexCode
+			//  protocol 默认值
+			//  indexCode对应  cameraIndexCode
+
+
 		},
 		onLoad(options) {
 			console.log(options)
 			this.projectId = options.projectId;
 			console.log(this.projectId)
-			this.show()
+			this.show();
+			this.ehome();
 			// this.etEzNewLiveAddress()
 		}
 	}

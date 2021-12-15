@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<nav-bar :title="company" @seach="handseach"></nav-bar>		
-		<view class="project-container" v-if="this.searchList.length==0">
+		<view class="project-container">
 			<view class="project" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">
 				<view class="title">
 					<text>{{project.projectName}}</text>
@@ -17,14 +17,17 @@
 				</view>
 			</view>			
 		</view>
+		<!-- <mypicker></mypicker> -->
 	</view>
 </template>
 
 <script>
 	import navBar from '../../components/navBar/navBar.vue'
+	import mypicker from '../../components/mypicker/mypicker.vue'
 	export default {
 		components:{
-			navBar
+			navBar,
+			mypicker
 		},
 		data(){
 			return {
