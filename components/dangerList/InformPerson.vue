@@ -8,6 +8,7 @@
 			</view>
 			</scroll-view>
 			<view class="main">
+				<u-search placeholder="请输入" @clear="handclear" @search="handsearch" :show-action="false" :clearabled="true" v-model="listBy.searchKey"></u-search>
 				<scroll-view class="scroll-a" @scrolltolower="handtolower" scroll-y v-if="dictLsit">
 					  <u-checkbox-group
 								class="group"
@@ -46,7 +47,8 @@ export default {
 			cooindex:null,
 			listBy:{
 				page:1,
-				limit:10,
+				searchKey:'',
+				limit:20,
 				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 			}
 		};
@@ -60,6 +62,17 @@ export default {
 	},
 	mounted() {},
 	methods: {
+		handclear(){
+			this.dictLsit = []
+			this.listBy.page = 1
+			this.listBy.searchKey = '',
+			this.handlistByProjectId();
+		},
+		handsearch(){
+			this.dictLsit = []
+			this.listBy.page = 1
+			this.handlistByProjectId();
+		},
 		handtolower() {
 			this.handlistByProjectId();
 		},
@@ -141,7 +154,7 @@ export default {
 		}
 		.scroll-a {
 			padding-top: 30upx;
-			height: 45vh;
+			height: 70vh;
 			/deep/.u-checkbox-group{
 				font-weight: bold;
 				color: #333333;

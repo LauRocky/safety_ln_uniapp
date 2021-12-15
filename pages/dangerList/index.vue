@@ -2,16 +2,18 @@
 	<view class="danger">
 		<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>
 		<u-tabs lineColor="#00B490" lineWidth="120" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handclick"></u-tabs>
-		<view class="danger-list">{{totalCount}}个隐患</view>
+		<view class="danger-list">{{ totalCount }}个隐患</view>
 		<scroll-view class="lists" scroll-y @scrolltolower="handtolower" v-if="numsList.length !== 0">
-			<view class="list-1" v-for="(val, i) in numsList" :key="i">
+			<view class="list-1" v-for="(val, i) in numsList" :key="i" @click="handLsit(val.id)">
 				<view class="list-top">
 					<image class="list-imgs" :src="val.images" mode=""></image>
 					<view class="list-right">
 						<view class="list-top-1">
 							<view class="top-left">{{ val.problemType2 }}</view>
 							<view class="top-right2" v-if="val.statusTime == 1">已超期</view>
-							<view class="top-right" v-if="val.statusTime == 2">未超期</view>
+							<view class="top-right3" v-else-if="val.statusTime == 2">待整改</view>
+							<view class="top-right4" v-else-if="val.statusTime == 3">待复核</view>
+							<view class="top-right" v-else-if="val.statusTime == 4">已解决</view>
 						</view>
 						<view class="list-title" v-if="val.projectInfoEntity">{{ val.projectInfoEntity.projectName }}</view>
 						<view class="list-ce">请{{ val.problemSolverDisplay }}{{ val.problemRequire }}{{ val.notifyPersonDisplay }}</view>
@@ -49,6 +51,7 @@ export default {
 			limit: 10,
 			numsList: [],
 			totalCount:0,
+			status:'',   //状态值
 			list1: [
 				{
 					name: '待整改',
@@ -66,11 +69,27 @@ export default {
 		};
 	},
 	onLoad() {
+
+	},
+	onShow() {
 		this.handclick({ value: 1 });
 		this.handgETLIST();
 	},
 	methods: {
+		handLsit(id){
+			if(this.status== '1'){
+				uni.navigateTo({
+					url:'/pages/dangerList/hiddenDetails?id='+ id
+				})
+			}else if(this.status== '2'){
+
+			}else if(this.status== '3'){
+
+			}
+		},
 		handclick(v) {
+			this.status = v.value
+			this.numsList = []
 			if (v.value == 1) {
 				this.handDangerList({ page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
 			} else if (v.value == 2) {
@@ -93,26 +112,33 @@ export default {
 				});
 		},
 		handDangerList(obj) {
-			var myDate = new Date('2021-12-25 13:17:02');
+			var myDate = new Date();
 			this.$http('/problem/app/list', 'POST', obj, false)
 				.then(res => {
 					if (res.code == 0) {
-						if(this.numsList.length){
-							
+						if(this.numsList.length < res.page.totalCount){
+							res.page.list.forEach(val => {
+								let obj = {};
+								obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
+								val.problemType2 = obj[0].value;
+								val.crtime = val.createTime.split(' ')[0];
+									if(val.status == -1){
+										var oDate2 = new Date(val.expireTime); //时间状态判断
+										if (!myDate.getTime() > oDate2.getTime()) {
+											val.statusTime = 1; //超期
+										} else {
+											val.statusTime = 2; //未超期
+										}
+									}else if(val.status == 1){
+										val.statusTime = 3;   //待复核
+									}else if(val.status == 0){
+										val.statusTime = 4;   //已解决
+									}
+							});
+							this.numsList = this.numsList.concat(res.page.list);
+						}else{
+
 						}
-						res.page.list.forEach(val => {
-							let obj = {};
-							obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
-							val.problemType2 = obj[0].value;
-							val.crtime = val.createTime.split(' ')[0];
-							var oDate2 = new Date(val.expireTime); //时间状态判断
-							if (myDate.getTime() > oDate2.getTime()) {
-								val.statusTime = 1; //超期
-							} else {
-								val.statusTime = 2; //未超期
-							}
-						});
-						this.numsList = res.page.list;
 						this.totalCount = res.page.totalCount
 					}
 				})
@@ -128,7 +154,9 @@ export default {
 		handclose() {
 			this.show = false;
 		},
-		handtolower() {},
+		handtolower() {
+			this.handDangerList()
+		},
 
 		handUpqie() {
 			this.show = true;
@@ -184,8 +212,8 @@ export default {
 							font-size: 24upx;
 							font-family: PingFang SC;
 							font-weight: 500;
-							color: #666666;
-							&:after {
+							color: #00b490;
+							/* &:after {
 								content: ' ';
 								display: block;
 								margin-left: 10upx;
@@ -193,13 +221,25 @@ export default {
 								height: 20upx;
 								background: #ff0000;
 								border-radius: 50%;
-							}
+							} */
 						}
 						.top-right2 {
 							font-size: 24upx;
 							font-family: PingFang SC;
 							font-weight: bold;
 							color: #ff0000;
+						}
+						.top-right3 {
+							font-size: 24upx;
+							font-family: PingFang SC;
+							font-weight: bold;
+							color: #c3c334;
+						}
+						.top-right4 {
+							font-size: 24upx;
+							font-family: PingFang SC;
+							font-weight: bold;
+							color: #003fbd;
 						}
 					}
 					.list-title {
@@ -234,7 +274,7 @@ export default {
 	}
 	.add {
 		position: fixed;
-		bottom: 100upx;
+		bottom: 80upx;
 		right: 10upx;
 		width: 160upx;
 		height: 160upx;

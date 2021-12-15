@@ -111,9 +111,15 @@
 					}
 
 				}
-			}
-		}
-        
+			} 
+		},{
+            "path" : "pages/dangerList/hiddenDetails",
+            "style" :                                                                                    
+            {
+              "navigationBarBackgroundColor": "#11B38C",
+              "navigationBarTitleText": "隐患详情"
+            }  
+        }
     ],
 	"tabBar": {
 		"color": "#A9A9A9",
