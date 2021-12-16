@@ -3,7 +3,6 @@
 		<u-popup :show="show" :round="10" mode="bottom" @close="handIcon" :closeable="true" @open="open">
 			<view class="titles">
 				请选择所在公司
-				<!-- <u-icon class="icon" @click="handIcon" name="close" color="#b5b5b5 " size="28"></u-icon> -->
 			</view>
 			<view class="main">
 				<view class="main-left">
@@ -70,7 +69,7 @@ export default {
 						this.alldata = res.data.second;
 						this.leftList = res.data.first;
 						this.rightlist = res.data.second['低碳城市'];
-						console.log(this.leftlist);
+						// console.log(this.leftlist);
 					}
 				})
 				.catch(err => {

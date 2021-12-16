@@ -1,7 +1,7 @@
 <template>
 	<view class="detail">
 		<u-navbar :title="project.projectName" :fixed="true" :placeholder="true" :safeAreaInsetTop="true"
-			bgColor="#11B38C" @leftClick="back">
+			bgColor="#11B38C" color="#ffffff" @leftClick="back">
 		</u-navbar>
 		<view class="detail-container">
 			<view class="title">
@@ -11,7 +11,7 @@
 				</u-tag>
 			</view>
 			<view class="msg-item">
-				1
+				<view class="name">项目名称</view>
 				<view class="container">{{projectInfo.projectName}}</view>
 			</view>
 			<view class="msg-item">
@@ -28,17 +28,17 @@
 			</view>
 			<view class="msg-item">
 				<view class="name">总包</view>
-				<view class="container">{{projectInfo.unit?projectInfo.unit:''}}</view>
+				<view class="container">{{projectInfo.unit?projectInfo.unit:'无'}}</view>
 			</view>
 			<view class="msg-item">
 				<view class="name">项目经理（总包）</view>
-				<view class="container">{{projectInfo.partnerProjectManager}}
+				<view class="container">{{projectInfo.partnerProjectManager?projectInfo.partnerProjectManager:'无'}}
 					{{projectInfo.partnerProjectManagerMobile}}
 				</view>
 			</view>
 			<view class="msg-item">
 				<view class="name">项目经理（甲包）</view>
-				<view class="container">{{projectInfo.projectManager}} {{projectInfo.projectManagerMobile}}</view>
+				<view class="container">{{projectInfo.projectManager?projectInfo.projectManager:'无'}} {{projectInfo.projectManagerMobile}}</view>
 			</view>
 		</view>
 
@@ -95,12 +95,10 @@
 										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
 										v-if="item.nodeState==1"
-										style="width: 38rpx;height:38rpx;" 
-										src="../../static/projectdetail/zise.png"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
 										mode=""></image>
 									<image v-if="item.nodeState==4"
-										style="width: 38rpx;height:38rpx;" 
-										src="../../static/projectdetail/yuan.png"
+										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
 									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
 										src="../../static/projectdetail/green.png" mode=""></image>
@@ -256,6 +254,8 @@
 					<!-- 未超期已完成 -->
 					<view class="progress" v-if="currentIndex==3">
 						<view class="plan" style="display: flex; " v-for="item in noovercomplete" :key="item.id">
+							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
+						
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
 									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
@@ -487,9 +487,10 @@
 				});
 			},
 			getProject() {
-				this.$http('/project/plan/withStatus', 'POST', this.project).then(res => {
+				this.$http('/project/plan/withStatusNew', 'POST', this.project).then(res => {	
+					console.log(res)
 					this.projectInfo = res.page[0]
-					// console.log(this.projectInfo.nodes)
+					console.log(this.projectInfo)
 					this.projectInfo.nodes.forEach(item => {
 						// 正在进行中
 						if (item.nodeState == 1) {
@@ -507,8 +508,7 @@
 						if (item.nodeState == 3) {
 							this.overundone.push(item)
 						}
-						// 超期已完成
-						if (item.nodeState == 4) {
+						if (item.nodeState == 5) {
 							this.overcomplete.push(item)
 						}
 					})
@@ -606,9 +606,10 @@
 			}
 		},
 		onLoad: function(option) {
+			console.log(option)
 			this.project.projectId = option.projectId
-			this.project.projectName = option.projectName
 			this.project.companyId = option.companyId
+			this.project.projectName=option.projectName
 			this.getProject()
 			getDictList('PROJECT_STATUS').then(data => {
 				this.projectStatus = data.dict
@@ -667,7 +668,7 @@
 	}
 
 	.project-status {
-		margin-top: 35rpx;
+		margin-top: 60rpx;
 	}
 
 	/* 修改下箭头样式 */
@@ -723,7 +724,8 @@
 
 	.statusList {
 		height: 24rpx;
-		padding: 24rpx 0 41rpx 40rpx;
+		/* margin: 24rpx 0 41rpx 32rpx; */
+		padding: 23rpx 0 41rpx 31rpx;
 		font-size: 24rpx;
 		line-height: 24rpx;
 		font-weight: bold;

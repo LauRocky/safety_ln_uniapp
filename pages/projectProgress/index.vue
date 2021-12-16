@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<nav-bar :title="company" @seach="handseach"></nav-bar>		
-		<view class="project-container">
+		<nav-bar :title="title" @seach="handsearch" @Upqie="handUpqie"></nav-bar>
+		<view class="project-container" >
 			<view class="project" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">
 				<view class="title">
 					<text>{{project.projectName}}</text>
@@ -17,13 +17,13 @@
 				</view>
 			</view>			
 		</view>
-		<!-- <mypicker></mypicker> -->
+		<mypicker :show="show" @handcompany="handcompany" @close="handclose" />
 	</view>
 </template>
 
 <script>
 	import navBar from '../../components/navBar/navBar.vue'
-	import mypicker from '../../components/mypicker/mypicker.vue'
+	import mypicker from '../../components/mypicker/mypicker.vue';
 	export default {
 		components:{
 			navBar,
@@ -31,7 +31,8 @@
 		},
 		data(){
 			return {
-				company:"所有城市",
+				show: false,
+				title:"所有城市",
 				queryForm:{
 					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId,
 					projectId: '',
@@ -39,16 +40,28 @@
 				},
 				rawList:[],
 				 projectList:[],
+				
 			}
 		}, 
 		methods: {
+			handUpqie() {
+				this.show = true;
+			},
+			handclose() {
+				this.show = false;
+			},
+			handcompany(v) {
+				this.title = v;
+				this.show = false;
+			},
 			getProjectList(){
-				this.$http('project/plan/withStatus','POST',this.queryForm ,false).then(res=>{
+				this.$http('/project/plan/withStatusNew','POST',this.queryForm ,false).then(res=>{
+					console.log(res)
 					this.rawList=res.page
 					this.projectList=this.rawList
 				})
 			},
-			handseach(val){
+			handsearch(val){
 				if(val){
 					let result=[]
 					 this.projectList.forEach(e=>{
@@ -90,7 +103,7 @@
 			this.getProjectList()
 		},
 		onShow() {
-			
+			// this.getProjectList()
 		}
 		
 	}
