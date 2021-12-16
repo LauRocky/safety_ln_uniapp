@@ -12,6 +12,7 @@ import {request} from './utils/request.js'
 Vue.prototype.$http = request
 
 
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'
