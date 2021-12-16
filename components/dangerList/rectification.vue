@@ -6,9 +6,7 @@
 				<!-- <u-icon class="icon" @click="handIcon" name="close" color="#b5b5b5 " size="28"></u-icon> -->
 			</view>
 			<view class="main">
-				<!-- <view class="title2">
-					请选择隐患等级
-				</view> -->
+				<u-search placeholder="请输入" @clear="handclear" @search="handsearch" :show-action="false" :clearabled="true" v-model="listBy.searchKey"></u-search>
 				<scroll-view class="scroll-a" @scrolltolower="handtolower" scroll-y>
 					<view class="text-a" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)" v-for="(val1, i1) in dictLsit" :key="i1">
 						<view class="t-a">{{ val1.fullname }}  : </view>
@@ -31,7 +29,8 @@ export default {
 			cooindex: null,
 			listBy: {
 				page: 1,
-				limit: 10,
+				limit: 20,
+				searchKey:'',
 				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 			}
 		};
@@ -43,6 +42,17 @@ export default {
 	},
 	mounted() {},
 	methods: {
+		handclear(){
+			this.dictLsit = []
+			this.listBy.page = 1
+			this.listBy.searchKey = '',
+			this.handlistByProjectId();
+		},
+		handsearch(){
+			this.dictLsit = []
+			this.listBy.page = 1
+			this.handlistByProjectId();
+		},
 		handtolower() {
 			this.handlistByProjectId();
 		},
@@ -101,7 +111,7 @@ export default {
 		}
 		.scroll-a {
 			padding-top: 30upx;
-			height: 40vh;
+			height: 70vh;
 			.text-a {
 				display: flex;
 				padding: 20upx 0;
