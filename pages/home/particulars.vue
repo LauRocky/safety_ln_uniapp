@@ -5,13 +5,33 @@
 				<view class="tou">{{ val.title }}</view>
 				<view class="par-cet">
 					<view class="proname">{{ val.projectName }}</view>
-					<view class=""></view>
+					<view class="tags" v-if="status == 1">
+						<view class="tt" v-if="val.expireStatus == '1'">
+						【一般】<text>该项目节点超过7天未整改</text>
+						</view>
+						<view class="tt" v-else-if="val.expireStatus == '2'">
+							【较重】<text>该项目节点超过15天未整改</text>
+						</view>
+						<view class="tt" v-else-if="val.expireStatus == '3'">
+							【严重】<text>该项目节点超过30天未整改</text>
+						</view>
+						<view class="tt" v-else-if="val.expireStatus == '4'">
+							【特别严重】<text>该项目节点超过60天未整改</text>
+						</view>
+					</view>
+					<view class="tags" v-if="status == 2">
+						
+					</view>
+					<view class="tags" v-if="status == 3">
+						<view class="tt2">
+							【{{val.publisher}}】<text></text>
+						</view>
+					</view>
 				</view>
 			</view>
 			<view class="par-2">
-				<view class="times">
-					{{ val.time }}
-				</view>
+				<view class="times">{{ val.time }}</view>
+				<!-- <button class="btn">点击查看</button> -->
 			</view>
 		</view>
 	</view>
@@ -92,7 +112,8 @@ export default {
 				.then(res => {
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
-							val.title = val.content;
+							val.title = val.content.substr(0, 1);
+							val.projectName = val.content
 							let list = [];
 							list = val.createTime.split(' ');
 							val.time = list[0];
@@ -111,7 +132,8 @@ export default {
 				.then(res => {
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
-							val.title = val.newsName;
+							val.title = val.newsName.substr(0, 1);
+							val.projectName = val.newsName
 							let list = [];
 							list = val.createTime.split(' ');
 							val.time = list[0];
@@ -162,15 +184,33 @@ export default {
 					overflow: hidden;
 					text-overflow: ellipsis;
 				}
-				.par-2{
-					.times{
+				.tags{
+					width: 50vw;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					.tt{
+						margin-top: 20upx;
+						font-size: 24upx;
+						font-family: PingFang SC;
+						font-weight: bold;
+						color: #333333;
+						text{
+							font-size: 24upx;
+							font-family: PingFang SC;
+							font-weight: 400;
+							color: #8f8f8f;
+						}
+					}	
+				}
+				.par-2 {
+					.times {
 						font-size: 24upx;
 						font-family: PingFang SC;
 						font-weight: 500;
 						color: #666666;
 					}
 				}
-				
 			}
 		}
 	}
