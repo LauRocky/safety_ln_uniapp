@@ -7,7 +7,6 @@ BASE_URL = '/web'; //H5下将地址修改为/web
 // #endif
 // 
 export function request(url, type, date, tips) {
-	// console.log(url, type, date)
 	// 默认为开启错误提示
 	if (tips == undefined) {
 		tips = {

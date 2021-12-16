@@ -50,8 +50,8 @@ export default {
 			page: 1,
 			limit: 10,
 			numsList: [],
-			totalCount:0,
-			status:'',   //状态值
+			totalCount: 0,
+			status: '', //状态值
 			list1: [
 				{
 					name: '待整改',
@@ -69,27 +69,20 @@ export default {
 		};
 	},
 	onLoad() {
-
-	},
-	onShow() {
 		this.handclick({ value: 1 });
 		this.handgETLIST();
 	},
+	onShow() {
+	},
 	methods: {
-		handLsit(id){
-			if(this.status== '1'){
-				uni.navigateTo({
-					url:'/pages/dangerList/hiddenDetails?id='+ id
-				})
-			}else if(this.status== '2'){
-
-			}else if(this.status== '3'){
-
-			}
+		handLsit(id) {   //跳转详情
+			uni.navigateTo({
+				url: `/pages/dangerList/hiddenDetails?id=${id}&status=${this.status}`
+			});
 		},
-		handclick(v) {
-			this.status = v.value
-			this.numsList = []
+		handclick(v) {   //tab获取数据
+			this.status = v.value;
+			this.numsList = [];
 			if (v.value == 1) {
 				this.handDangerList({ page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
 			} else if (v.value == 2) {
@@ -98,11 +91,11 @@ export default {
 				this.handDangerList({ page: this.page, limit: this.limit, all: '1' });
 			}
 		},
-		handcompany(v) {
+		handcompany(v) {   //选择项目
 			this.title = v;
 			this.show = false;
 		},
-		handgETLIST() {
+		handgETLIST() {   //获取公司项目数据
 			getDictList('PROBLEMS_LEVEL_TYPE')
 				.then(res => {
 					this.dictLsit = res.dict;
@@ -111,42 +104,43 @@ export default {
 					console.log(err);
 				});
 		},
-		handDangerList(obj) {
+		handDangerList(obj) {  //列表数据
+			uni.showLoading({ title: '加载中', mask: true });
 			var myDate = new Date();
 			this.$http('/problem/app/list', 'POST', obj, false)
 				.then(res => {
+					uni.hideLoading();
 					if (res.code == 0) {
-						if(this.numsList.length < res.page.totalCount){
+						if (this.numsList.length < res.page.totalCount) {
 							res.page.list.forEach(val => {
 								let obj = {};
 								obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
 								val.problemType2 = obj[0].value;
 								val.crtime = val.createTime.split(' ')[0];
-									if(val.status == -1){
-										var oDate2 = new Date(val.expireTime); //时间状态判断
-										if (!myDate.getTime() > oDate2.getTime()) {
-											val.statusTime = 1; //超期
-										} else {
-											val.statusTime = 2; //未超期
-										}
-									}else if(val.status == 1){
-										val.statusTime = 3;   //待复核
-									}else if(val.status == 0){
-										val.statusTime = 4;   //已解决
+								if (val.status == -1) {
+									var oDate2 = new Date(val.expireTime); //时间状态判断
+									if (!myDate.getTime() > oDate2.getTime()) {
+										val.statusTime = 1; //超期
+									} else {
+										val.statusTime = 2; //未超期
 									}
+								} else if (val.status == 1) {
+									val.statusTime = 3; //待复核
+								} else if (val.status == 0) {
+									val.statusTime = 4; //已解决
+								}
 							});
 							this.numsList = this.numsList.concat(res.page.list);
-						}else{
-
+						} else {
 						}
-						this.totalCount = res.page.totalCount
+						this.totalCount = res.page.totalCount;
 					}
 				})
 				.catch(err => {
 					console.log(err);
 				});
 		},
-		handPush() {
+		handPush() {   //添加隐患
 			uni.navigateTo({
 				url: '/pages/dangerList/add'
 			});
@@ -155,7 +149,7 @@ export default {
 			this.show = false;
 		},
 		handtolower() {
-			this.handDangerList()
+			this.handDangerList();
 		},
 
 		handUpqie() {
