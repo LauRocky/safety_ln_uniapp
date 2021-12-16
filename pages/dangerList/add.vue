@@ -146,7 +146,7 @@ export default {
 				problemSolver: '', //整改人
 				notifyPerson: '' //只会人
 			},
-			control: true,
+			control: true,   //上传图片变量
 			columnNum: 4,
 			imgList: [],
 			rules: {
@@ -207,7 +207,7 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
-		handAdd() {
+		handAdd() {   //添加隐患
 			let expireTime = new Date();
 			expireTime = expireTime.getTime() + this.userAdd.period * 24 * 60 * 60 * 1000;
 			this.$http(
@@ -246,7 +246,7 @@ export default {
 					console.log(err);
 				});
 		},
-		chooseFile(list, v) {
+		chooseFile(list, v) {   //上传图片
 			uni.uploadFile({
 				url: BASE_URL + '/upload/image',
 				filePath: v,
@@ -297,15 +297,15 @@ export default {
 			this.userAdd.notifyPerson = v.value;
 			this.showP = false;
 		},
-		handEndD(v) {
+		handEndD(v) {   //xq
 			this.userAdd.Details = v;
 			this.showD = false;
 		},
-		handEndZ(v) {
+		handEndZ(v) {   //要求
 			this.userAdd.require = v;
 			this.showZ = false;
 		},
-		handEndA(v) {
+		handEndA(v) {  //地址
 			this.userAdd.location = v;
 			this.showA = false;
 		},

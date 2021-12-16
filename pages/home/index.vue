@@ -23,7 +23,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="look">查看更多 ({{ totalCount }})</view>
+				<view class="look" @click="handGp">查看更多 ({{ totalCount }})</view>
 			</view>
 			<view class="main-cet main-top">
 				<view class="title">隐患数据</view>
@@ -105,7 +105,7 @@ export default {
 					value: 3
 				}
 			],
-			status: 0, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
+			status: 1, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
 			totalCount: 0,
 			indexList: []
 		};
@@ -116,6 +116,11 @@ export default {
 	},
 	onShow() {},
 	methods: {
+		handGp(){
+			uni.navigateTo({
+				url:`/pages/home/particulars?status=${this.status}`
+			})
+		},
 		handscanCode() {
 			uni.scanCode({
 						onlyFromCamera: true,
@@ -165,7 +170,7 @@ export default {
 				.then(res => {
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
-							val.title = val.newsName;
+							val.title = val.content;
 							let list = [];
 							list = val.createTime.split(' ');
 							val.time = list[0];

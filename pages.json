@@ -103,22 +103,88 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
-							"text":"创建",
-							"fontSize":"30upx",
-							"fontWeight":"bold",
-							"width":"60"
+							"text": "创建",
+							"fontSize": "30upx",
+							"fontWeight": "bold",
+							"width": "60"
 						}]
 					}
 
 				}
-			} 
-		},{
-            "path" : "pages/dangerList/hiddenDetails",
+			}
+		}, {
+			"path": "pages/dangerList/hiddenDetails",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "隐患详情"
+			}
+		}, {
+			"path": "pages/dangerList/dangers",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "隐患整改",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "提交",
+							"fontSize": "30upx",
+							"fontWeight": "bold",
+							"width": "60"
+						}]
+					}
+
+				}
+			}
+		}, {
+			"path": "pages/dangerList/rejected",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "隐患驳回",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "提交",
+							"fontSize": "30upx",
+							"fontWeight": "bold",
+							"width": "60"
+						}]
+					}
+			
+				}
+			}
+			
+
+		}
+	    ,{
+            "path" : "pages/dangerList/review",
+           "style": {
+           	"navigationBarBackgroundColor": "#11B38C",
+           	"navigationBarTitleText": "隐患复核",
+           	"enablePullDownRefresh": false,
+           	"app-plus": {
+           		"titleNView": {
+           			"buttons": [{
+           				"text": "提交",
+           				"fontSize": "30upx",
+           				"fontWeight": "bold",
+           				"width": "60"
+           			}]
+           		}
+           
+           	}
+           }
+            
+        }
+        ,{
+            "path" : "pages/home/particulars",
             "style" :                                                                                    
             {
-              "navigationBarBackgroundColor": "#11B38C",
-              "navigationBarTitleText": "隐患详情"
-            }  
+               "navigationBarBackgroundColor": "#11B38C",
+               "navigationBarTitleText": ""
+            }
+            
         }
     ],
 	"tabBar": {
@@ -159,14 +225,12 @@
 			"visible": true
 		}]
 	},
-	"condition" : { //模式配置，仅开发期间生效
+	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-			{
-				"name": "", //模式名称
-				"path": "", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
-			}
-		]
+		"list": [{
+			"name": "", //模式名称
+			"path": "", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
 	}
 }
