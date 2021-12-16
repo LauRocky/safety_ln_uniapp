@@ -84,6 +84,18 @@
 			}
 		},
 		{
+			"path": "pages/video/detailVideo",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},
+		{
 			"path": "pages/my/index",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",

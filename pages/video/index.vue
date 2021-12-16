@@ -2,11 +2,11 @@
 	<view>
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
 			<view class="u-nav-right" slot="right">
-				<nav-bar :title="company" @seach="handseach"></nav-bar>
+				<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>
 			</view>
 		</u-navbar>
 		<view class="video">
-			<view class="video-item" v-for="(item,index) in videoList" :key="item.projectId" @tap="video(item)">
+			<view class="video-item" v-for="(item,index) in videoList" :key="item.projectId" @click="video(item)">
 				<view class="ball"><text>{{item.projectName.substring(0,1)}}</text></view>
 				<view class="main">
 					<view
@@ -28,27 +28,49 @@
 				</view>
 			</view>
 		</view>
+		<mypicker :show="show" @handcompany="handcompany" @close="handclose" />
 	</view>
 </template>
 
 <script>
 	import navBar from '../../components/navBar/navBar.vue'
+	import mypicker from '../../components/mypicker/mypicker.vue';
 	export default {
 		components:{
-			navBar
+			navBar,
+			mypicker
 		},
 		data() {
 			return {
-				company:"所有城市",
+				title:"所有城市",
+				show: false,
 				videoList: [],
 				dataList: []
 			}
 		},
 		methods: {
+			handUpqie() {
+				this.show = true;
+			},
+			handclose() {
+				this.show = false;
+			},
+			handcompany(v) {
+				this.title = v;
+				this.show = false;
+			},
 			video(e){
-				uni.navigateTo({
-					url: `/pages/video/showVideo?projectId=${e.projectId}`,
-				});
+				console.log(e)
+				if(e.cameraEntities.length!=0){
+					uni.navigateTo({
+						url: `/pages/video/showVideo?projectId=${e.projectId}&projectName=${e.projectName}`,
+					});
+				}else{
+					uni.showToast({
+						title:'当前没有监控',
+						icon:'none'
+					})
+				}
 			},
 			// 获取当前公司下所有项目
 			getCompanySelectData() {
@@ -87,11 +109,6 @@
 					this.videoList=this.dataList
 				}
 			},
-			// search() {
-			// 	uni.showToast({
-			// 		title: '搜索'
-			// 	})
-			// },
 		},
 		onLoad() {
 			this.getCompanySelectData()
