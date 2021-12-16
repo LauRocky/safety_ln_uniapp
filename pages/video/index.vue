@@ -1,5 +1,6 @@
 <template>
 	<view>
+		
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
 			<view class="u-nav-right" slot="right">
 				<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>
@@ -10,18 +11,18 @@
 				<view class="ball"><text>{{item.projectName.substring(0,1)}}</text></view>
 				<view class="main">
 					<view
-						style="display: flex; align-items: center;justify-content: space-between; color: #737373;font-size: 33rpx;">
-						<text style="margin-left: 20rpx;font-weight: 900;">{{item.projectName}}</text>
+						style="display: flex; align-items: center;justify-content: space-between; color: #737373;font-size: 33upx;">
+						<text style="margin-left: 20upx;font-weight: 900;">{{item.projectName}}</text>
 						<uni-icons size="20" color=" #737373" type="right"></uni-icons>
 					</view>
-					<view style="margin-top: 15rpx;font-size: 28rpx;color: #7D7D7D;">
-						<text style="margin-left: 20rpx;">
-							<image src="../../static/video/jiankong.png" mode="" style="width: 30rpx;height: 30rpx;">
+					<view style="margin-top: 15upx;font-size: 28upx;color: #7D7D7D;">
+						<text style="margin-left: 20upx;">
+							<image src="../../static/video/jiankong.png" mode="" style="width: 30upx;height: 30upx;">
 							</image>
 							监控数量: {{item.MonitorMumber}}
 						</text>
-						<text style="margin-left: 20rpx;">
-							<image src="../../static/video/danbing.png" mode="" style="width: 30rpx;height: 30rpx;">
+						<text style="margin-left: 20upx;">
+							<image src="../../static/video/danbing.png" mode="" style="width: 30upx;height: 30upx;">
 							</image>单兵数量: {{item.individual}}
 						</text>
 					</view>
@@ -122,9 +123,8 @@
 		color: #FFFFFF;
 		font-weight: 550;
 	}
-
 	.video {
-		margin-top: 25rpx;
+		margin-top: 25upx;
 	}
 
 	.main {
@@ -138,16 +138,16 @@
 		justify-content: center;
 		align-items: center;
 		color: #FFFFFF;
-		font-size: 40rpx;
-		width: 100rpx;
-		height: 100rpx;
-		border-radius: 50px;
+		font-size: 40upx;
+		width: 100upx;
+		height: 100upx;
+		border-radius: 50upx;
 	}
 
 	.video-item {
 		display: flex;
-		padding: 40rpx;
-		padding-top: 20rpx;
-		padding-right: 10rpx;
+		padding: 40upx;
+		padding-top: 20upx;
+		padding-right: 10upx;
 	}
 </style>
