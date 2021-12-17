@@ -106,7 +106,21 @@
 					"bounce": "none"
 				}
 			}
-		}, {
+		}, 
+		
+		{
+			"path": "pages/my/about",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},
+		{
 			"path": "pages/dangerList/add",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",

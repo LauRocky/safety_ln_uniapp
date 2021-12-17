@@ -56,8 +56,7 @@
 					this.$http('/loginApp','POST',this.loginForm,false).then(res=>{
 						if(res.code==0){
 							uni.setStorageSync('userInfo', res.user);
-							uni.setStorageSync('token', res.token);
-														
+							uni.setStorageSync('token', res.token);						
 							uni.switchTab({
 								url: '/pages/home/index'
 							});	

@@ -40,7 +40,9 @@
 			</view>
 			<view class="msg-item">
 				<view class="name">项目经理（甲包）</view>
-				<view class="container">{{projectInfo.projectManager?projectInfo.projectManager:'无'}} {{projectInfo.projectManagerMobile}}</view>
+				<view class="container">{{projectInfo.projectManager?projectInfo.projectManager:'无'}}
+					{{projectInfo.projectManagerMobile}}
+				</view>
 			</view>
 		</view>
 
@@ -57,7 +59,7 @@
 					{{item.taskName}}
 				</view>
 			</view>
-			
+
 			<view class="project-status">
 				<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
 				<view class="status-container" v-show="!isShow">
@@ -86,24 +88,19 @@
 					</view>
 					<!-- 竖形进度条 -->
 					<view class="progress" v-if="currentIndex==0">
-						<view class="plan"  v-for="(item,index) in projectInfo.nodes"
-							:key="item.id">
-							<!-- <view class="line" style="width: 1upx;  border-left: 1upx dashed #7E7E7E;"></view> -->
+						<view class="plan" v-for="(item,index) in projectInfo.nodes" :key="item.id">
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
-									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
+									>
+									<image v-if="item.nodeState==0" 
 										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
+									<image v-if="item.nodeState==3" 
 										src="../../static/projectdetail/red.png" mode=""></image>
-									<image
-										v-if="item.nodeState==1"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
-										mode=""></image>
-									<image v-if="item.nodeState==4"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
-										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
+									<image v-if="item.nodeState==1" 
+										src="../../static/projectdetail/zise.png" mode=""></image>
+									<image v-if="item.nodeState==4" 
+										src="../../static/projectdetail/yuan.png" mode=""></image>
+									<image v-if="item.nodeState==5" 
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
@@ -135,30 +132,24 @@
 								<view class="statusList" v-if="item.nodeState==5">
 									未超期已完成
 								</view>
-								
+
 							</view>
 						</view>
 					</view>
 					<!-- 正在进行中 -->
 					<view class="progress" v-if="currentIndex==1">
 						<view class="plan" style="display: flex; " v-for="item in ongoing" :key="item.id">
-							<!-- <view class="line" style="width: 1upx;  border-left: 1upx dashed #7E7E7E;"></view>-->
-						
 							<view class="plan-border" style="position: relative;">
-								<view class="imgs"
-									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
-										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
+								<view class="imgs">
+									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
+									</image>
+									<image v-if="item.nodeState==3" 
 										src="../../static/projectdetail/red.png" mode=""></image>
-									<image
-										v-if="item.nodeState==1"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
-										mode=""></image>
-									<image v-if="item.nodeState==4"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
-										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
+									<image v-if="item.nodeState==1" 
+										src="../../static/projectdetail/zise.png" mode=""></image>
+									<image v-if="item.nodeState==4" 
+										src="../../static/projectdetail/yuan.png" mode=""></image>
+									<image v-if="item.nodeState==5" 
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
@@ -192,29 +183,23 @@
 										未超期已完成
 									</view>
 								</view>
-							
+
 							</view>
 						</view>
-					</view>	
+					</view>
 					<view class="progress" v-if="currentIndex==2">
 						<view class="plan" style="display: flex; " v-for="item in complete" :key="item.id">
-							<!-- <view class="line" style="width: 1upx;  border-left: 1upx dashed #7E7E7E;"></view> -->
-							
 							<view class="plan-border" style="position: relative;">
-								<view class="imgs"
-									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
+								<view class="imgs">
+									<image v-if="item.nodeState==0" 
 										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
+									<image v-if="item.nodeState==3" 
 										src="../../static/projectdetail/red.png" mode=""></image>
-									<image
-										v-if="item.nodeState==1"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
-										mode=""></image>
-									<image v-if="item.nodeState==4"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
-										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
+									<image v-if="item.nodeState==1" 
+										src="../../static/projectdetail/zise.png" mode=""></image>
+									<image v-if="item.nodeState==4" 
+										src="../../static/projectdetail/yuan.png" mode=""></image>
+									<image v-if="item.nodeState==5" 
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
@@ -249,31 +234,25 @@
 										未超期已完成
 									</view>
 								</view>
-								
-								
+
+
 							</view>
 						</view>
 					</view>
 					<!-- 未超期已完成 -->
 					<view class="progress" v-if="currentIndex==3">
 						<view class="plan" style="display: flex; " v-for="item in noovercomplete" :key="item.id">
-							<!-- <view class="line" style="width: 1upx;  border-left: 1upx dashed #7E7E7E;"></view> -->
-						
 							<view class="plan-border" style="position: relative;">
-								<view class="imgs"
-									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
+								<view class="imgs">
+									<image v-if="item.nodeState==0" 
 										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
+									<image v-if="item.nodeState==3" 
 										src="../../static/projectdetail/red.png" mode=""></image>
-									<image
-										v-if="item.nodeState==1"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
-										mode=""></image>
-									<image v-if="item.nodeState==4"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
-										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
+									<image v-if="item.nodeState==1" 
+										src="../../static/projectdetail/zise.png" mode=""></image>
+									<image v-if="item.nodeState==4" 
+										src="../../static/projectdetail/yuan.png" mode=""></image>
+									<image v-if="item.nodeState==5" 
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
@@ -287,44 +266,40 @@
 										计划完成时间:无
 									</view>
 								</view>
-							<view class="statusList" v-if="item.nodeState==3">
-								超期{{item.threeTime}}未完成
-							</view>
-							<view class="statusList" v-if="item.nodeState==4">
-								超期{{item.fourTime}}已完成
-							</view>
-							<view class="statusList" v-if="item.nodeState==0">
-								未开始/未涉及
-							</view>
-							<view class="statusList" v-if="item.nodeState==1">
-								正在进行中
-							</view>
-							<view class="statusList" v-if="item.nodeState==2">
-								已完成
-							</view>
-							<view class="statusList" v-if="item.nodeState==5">
-								未超期已完成
-							</view>
+								<view class="statusList" v-if="item.nodeState==3">
+									超期{{item.threeTime}}未完成
+								</view>
+								<view class="statusList" v-if="item.nodeState==4">
+									超期{{item.fourTime}}已完成
+								</view>
+								<view class="statusList" v-if="item.nodeState==0">
+									未开始/未涉及
+								</view>
+								<view class="statusList" v-if="item.nodeState==1">
+									正在进行中
+								</view>
+								<view class="statusList" v-if="item.nodeState==2">
+									已完成
+								</view>
+								<view class="statusList" v-if="item.nodeState==5">
+									未超期已完成
+								</view>
 							</view>
 						</view>
 					</view>
 					<view class="progress" v-if="currentIndex==4">
 						<view class="plan" style="display: flex; " v-for="item in overundone" :key="item.id">
 							<view class="plan-border" style="position: relative;">
-								<view class="imgs"
-									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
+								<view class="imgs">
+									<image v-if="item.nodeState==0" 
 										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
+									<image v-if="item.nodeState==3" 
 										src="../../static/projectdetail/red.png" mode=""></image>
-									<image
-										v-if="item.nodeState==1"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
-										mode=""></image>
+									<image v-if="item.nodeState==1" 
+										src="../../static/projectdetail/zise.png" mode=""></image>
 									<image v-if="item.nodeState==4"
-										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
-										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
+										src="../../static/projectdetail/yuan.png" mode=""></image>
+									<image v-if="item.nodeState==5" 
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
@@ -360,11 +335,10 @@
 						</view>
 					</view>
 					<view class="progress" v-if="currentIndex==5">
-						<view class="plan" style="display: flex; " v-for="item in overcomplete" :key="item.id">					
+						<view class="plan" style="display: flex; " v-for="item in overcomplete" :key="item.id">
 							<view class="plan-border" style="position: relative;">
-								<view class="imgs"
-									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
-									<image style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
+								<view class="imgs">
+									<image src="../../static/projectdetail/yuan.png"
 										mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
@@ -486,7 +460,7 @@
 				});
 			},
 			getProject() {
-				this.$http('/project/plan/withStatusNew', 'POST', this.project).then(res => {	
+				this.$http('/project/plan/withStatusNew', 'POST', this.project).then(res => {
 					console.log(res)
 					this.projectInfo = res.page[0]
 					console.log(this.projectInfo)
@@ -513,12 +487,12 @@
 					})
 					this.projectInfo.nodes.forEach(item => {
 						// 计算天数
-						if(item.nodeState==3){
-							item.threeTime= this.timeCalc(item.plannedTime, item.finishTime)+'天'
+						if (item.nodeState == 3) {
+							item.threeTime = this.timeCalc(item.plannedTime, item.finishTime) + '天'
 							// console.log(item)
 						}
-						if(item.nodeState==4){
-							item.fourTime= this.timeCalc(item.plannedTime, item.finishTime)+'天'
+						if (item.nodeState == 4) {
+							item.fourTime = this.timeCalc(item.plannedTime, item.finishTime) + '天'
 							// console.log(item)
 						}
 						// 项目进度信息时间判断
@@ -559,7 +533,7 @@
 					})
 				})
 			},
-		
+
 			/* 获得地址 */
 			getAddress(address) {
 				if (address) {
@@ -608,7 +582,7 @@
 			console.log(option)
 			this.project.projectId = option.projectId
 			this.project.companyId = option.companyId
-			this.project.projectName=option.projectName
+			this.project.projectName = option.projectName
 			this.getProject()
 			getDictList('PROJECT_STATUS').then(data => {
 				this.projectStatus = data.dict
@@ -617,11 +591,11 @@
 	}
 </script>
 
-<style>
-	
-	.header ::v-deep span{
-			color: #FFFFFF;
-		}
+<style scoped>
+	.header ::v-deep span {
+		color: #FFFFFF;
+	}
+
 	.active-tags {
 		background: #00B490;
 		color: #FFFFFF !important;
@@ -634,6 +608,20 @@
 
 	.item-margin-top {
 		margin-top: 31upx !important;
+	}
+
+	.imgs {
+		width: 38upx;
+		height: 38upx;
+		background-color: #FFFFFF;
+		position: absolute;
+		left: -20upx;
+		overflow: hidden;
+	}
+
+	.imgs image {
+		width: 38upx;
+		height: 38upx;
 	}
 
 	.status-tag-container .tags {
@@ -650,8 +638,8 @@
 		justify-content: center;
 		align-items: center;
 	}
-	
-	.tags .yuan{
+
+	.tags .yuan {
 		position: absolute;
 		width: 32upx;
 		height: 32upx;
@@ -659,6 +647,7 @@
 		top: -16upx;
 		right: -16upx;
 		font-size: 24upx;
+		font-family: PingFang SC;
 		color: #FFFFFF;
 		text-align: center;
 		background: #E65749;
@@ -734,12 +723,14 @@
 		font-weight: bold;
 		color: #666666;
 	}
-	.progress .plan{
+
+	.progress .plan {
 		display: flex;
 		border-left: 1upx dashed #7E7E7E;
 	}
-	.progress .plan:last-child{
-		border:none;
+
+	.progress .plan:last-child {
+		border: none;
 	}
 
 	.title .unitag {
