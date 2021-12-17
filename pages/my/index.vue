@@ -89,8 +89,9 @@ export default {
 					that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
 						.then(resp => {
 							uni.showToast({
-								title:'登录成功',
-								duration:1500
+								icon: 'none',
+								title: '登录成功',
+								duration: 1500
 							})
 						}).catch(err => {
 							uni.showToast({
