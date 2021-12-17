@@ -15,7 +15,7 @@
 					</u-input>
 				</u-form-item>
 			</u--form>
-			<view class="lr">
+			<!-- <view class="lr">
 				<view class="l-1">
 					   <u-checkbox-group>
 					<u-checkbox v-model="radio" activeColor="#00B490"></u-checkbox>
@@ -24,7 +24,7 @@
 				</view>
 				
 				<view class="r-1">忘记密码?</view>
-			</view>
+			</view> -->
 			<button class="btn" @click="submit">登录</button>
 		</view>
 	</view>
@@ -131,6 +131,7 @@ export default {
 		}
 	}
 	.btn {
+		margin-top: 20upx;
 		font-size: 36upx;
 		font-family: PingFang SC;
 		font-weight: bold;
