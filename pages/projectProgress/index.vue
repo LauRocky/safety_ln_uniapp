@@ -103,7 +103,6 @@
 			this.getProjectList()
 		},
 		onShow() {
-			// this.getProjectList()
 		}
 		
 	}

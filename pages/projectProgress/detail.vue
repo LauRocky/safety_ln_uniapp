@@ -1,12 +1,14 @@
 <template>
 	<view class="detail">
-		<u-navbar :title="project.projectName" :fixed="true" :placeholder="true" :safeAreaInsetTop="true"
-			bgColor="#11B38C" color="#ffffff" @leftClick="back">
-		</u-navbar>
+		<view class="header">
+			<u-navbar :title="project.projectName" :fixed="true" :placeholder="true" :safeAreaInsetTop="true"
+				bgColor="#11B38C" @leftClick="back" color="#ffffff">
+			</u-navbar>
+		</view>
 		<view class="detail-container">
 			<view class="title">
 				<text>项目基本信息</text>
-				<u-tag style="font-size: 24rpx;" size="mini" :text="getProjectStatus(projectInfo.status)"
+				<u-tag style="font-size: 24upx;" size="mini" :text="getProjectStatus(projectInfo.status)"
 					borderColor="#00B490" bgColor="#00B490" color="#ffffff">
 				</u-tag>
 			</view>
@@ -44,7 +46,7 @@
 
 		<view class="process-container">
 			<view class="title">
-				<text style="margin-bottom: 14rpx;">项目进度信息</text>
+				<text style="margin-bottom: 14upx;">项目进度信息</text>
 			</view>
 			<view class="project-node" v-for="item in timeOver" :key=item.id>
 				<view class="node-tag">
@@ -55,10 +57,11 @@
 					{{item.taskName}}
 				</view>
 			</view>
+			
 			<view class="project-status">
 				<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
 				<view class="status-container" v-show="!isShow">
-					<view class="status-tag-container" style="margin-bottom: 60rpx;">
+					<view class="status-tag-container" style="margin-bottom: 60upx;">
 						<view v-for="(item,index) in statusList" :key=item.code :class="{
 								'no-margin-left':index==0||index==3,
 								'item-margin-top':index==3||index==4||index==5,
@@ -85,25 +88,25 @@
 					<view class="progress" v-if="currentIndex==0">
 						<view class="plan"  v-for="(item,index) in projectInfo.nodes"
 							:key="item.id">
-							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
+							<!-- <view class="line" style="width: 1upx;  border-left: 1upx dashed #7E7E7E;"></view> -->
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
-									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
+									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
+									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
 										v-if="item.nodeState==1"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
 										mode=""></image>
 									<image v-if="item.nodeState==4"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
-								<view class="plan-title" style="padding-left: 20rpx;">
+								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -139,26 +142,26 @@
 					<!-- 正在进行中 -->
 					<view class="progress" v-if="currentIndex==1">
 						<view class="plan" style="display: flex; " v-for="item in ongoing" :key="item.id">
-							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view>-->
+							<!-- <view class="line" style="width: 1upx;  border-left: 1upx dashed #7E7E7E;"></view>-->
 						
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
-									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
+									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
+									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
 										v-if="item.nodeState==1"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
 										mode=""></image>
 									<image v-if="item.nodeState==4"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
-								<view class="plan-title" style="padding-left: 20rpx;">
+								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -195,26 +198,26 @@
 					</view>	
 					<view class="progress" v-if="currentIndex==2">
 						<view class="plan" style="display: flex; " v-for="item in complete" :key="item.id">
-							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
+							<!-- <view class="line" style="width: 1upx;  border-left: 1upx dashed #7E7E7E;"></view> -->
 							
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
-									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
+									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
+									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
 										v-if="item.nodeState==1"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
 										mode=""></image>
 									<image v-if="item.nodeState==4"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
-								<view class="plan-title" style="padding-left: 20rpx;">
+								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -254,26 +257,26 @@
 					<!-- 未超期已完成 -->
 					<view class="progress" v-if="currentIndex==3">
 						<view class="plan" style="display: flex; " v-for="item in noovercomplete" :key="item.id">
-							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
+							<!-- <view class="line" style="width: 1upx;  border-left: 1upx dashed #7E7E7E;"></view> -->
 						
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
-									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
+									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
+									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
 										v-if="item.nodeState==1"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
 										mode=""></image>
 									<image v-if="item.nodeState==4"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
-								<view class="plan-title" style="padding-left: 20rpx;">
+								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -307,26 +310,24 @@
 					</view>
 					<view class="progress" v-if="currentIndex==4">
 						<view class="plan" style="display: flex; " v-for="item in overundone" :key="item.id">
-							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
-							
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
-									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image v-if="item.nodeState==0" style="width: 38rpx;height:38rpx;"
+									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
+									<image v-if="item.nodeState==0" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==3" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/red.png" mode=""></image>
 									<image
 										v-if="item.nodeState==1"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/zise.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/zise.png"
 										mode=""></image>
 									<image v-if="item.nodeState==4"
-										style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+										style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
-									<image v-if="item.nodeState==5" style="width: 38rpx;height:38rpx;"
+									<image v-if="item.nodeState==5" style="width: 38upx;height:38upx;"
 										src="../../static/projectdetail/green.png" mode=""></image>
 								</view>
-								<view class="plan-title" style="padding-left: 20rpx;">
+								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -359,16 +360,14 @@
 						</view>
 					</view>
 					<view class="progress" v-if="currentIndex==5">
-						<view class="plan" style="display: flex; " v-for="item in overcomplete" :key="item.id">
-							<!-- <view class="line" style="width: 1rpx;  border-left: 1rpx dashed #7E7E7E;"></view> -->
-							
+						<view class="plan" style="display: flex; " v-for="item in overcomplete" :key="item.id">					
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs"
-									style="width: 38rpx;height:38rpx;background-color: #FFFFFF; position: absolute;  left: -20rpx; overflow: hidden;">
-									<image style="width: 38rpx;height:38rpx;" src="../../static/projectdetail/yuan.png"
+									style="width: 38upx;height:38upx;background-color: #FFFFFF; position: absolute;  left: -20upx; overflow: hidden;">
+									<image style="width: 38upx;height:38upx;" src="../../static/projectdetail/yuan.png"
 										mode=""></image>
 								</view>
-								<view class="plan-title" style="padding-left: 20rpx;">
+								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -619,6 +618,10 @@
 </script>
 
 <style>
+	
+	.header ::v-deep span{
+			color: #FFFFFF;
+		}
 	.active-tags {
 		background: #00B490;
 		color: #FFFFFF !important;
@@ -630,19 +633,19 @@
 	}
 
 	.item-margin-top {
-		margin-top: 31rpx !important;
+		margin-top: 31upx !important;
 	}
 
 	.status-tag-container .tags {
 		position: relative;
-		border: 2rpx solid #00B490;
-		font-size: 28rpx;
+		border: 2upx solid #00B490;
+		font-size: 28upx;
 		font-weight: 500;
 		color: #333333;
-		border-radius: 6rpx;
-		margin-left: 35rpx;
-		width: 190rpx;
-		height: 56rpx;
+		border-radius: 6upx;
+		margin-left: 35upx;
+		width: 190upx;
+		height: 56upx;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -650,12 +653,12 @@
 	
 	.tags .yuan{
 		position: absolute;
-		width: 32rpx;
-		height: 32rpx;
-		line-height: 32rpx;
-		top: -16rpx;
-		right: -16rpx;
-		font-size: 24rpx;
+		width: 32upx;
+		height: 32upx;
+		line-height: 32upx;
+		top: -16upx;
+		right: -16upx;
+		font-size: 24upx;
 		color: #FFFFFF;
 		text-align: center;
 		background: #E65749;
@@ -668,30 +671,30 @@
 	}
 
 	.project-status {
-		margin-top: 60rpx;
+		margin-top: 60upx;
 	}
 
 	/* 修改下箭头样式 */
 	>>>.project-status .u-icon__icon[data-v-6e20bb40] {
-		font-size: 40rpx !important;
+		font-size: 40upx !important;
 		font-weight: bold !important;
 		color: #333333 !important;
 		margin: 0 auto;
 	}
 
 	.node-info {
-		margin-left: 119rpx;
+		margin-left: 119upx;
 	}
 
 	.node-info1 {
-		margin-left: 70rpx;
+		margin-left: 70upx;
 	}
 
 	.project-node {
 		display: flex;
-		font-size: 28rpx;
+		font-size: 28upx;
 		align-items: center;
-		margin-top: 20rpx;
+		margin-top: 20upx;
 	}
 
 	.name {
@@ -706,13 +709,13 @@
 
 	.msg-item {
 		display: flex;
-		margin-top: 27rpx;
-		font-size: 27rpx;
+		margin-top: 27upx;
+		font-size: 27upx;
 		font-weight: bold;
 	}
 
 	.title text {
-		font-size: 32rpx;
+		font-size: 32upx;
 		font-weight: bold;
 	}
 
@@ -723,17 +726,17 @@
 	}
 
 	.statusList {
-		height: 24rpx;
-		/* margin: 24rpx 0 41rpx 32rpx; */
-		padding: 23rpx 0 41rpx 31rpx;
-		font-size: 24rpx;
-		line-height: 24rpx;
+		height: 24upx;
+		/* margin: 24upx 0 41upx 32upx; */
+		padding: 23upx 0 41upx 31upx;
+		font-size: 24upx;
+		line-height: 24upx;
 		font-weight: bold;
 		color: #666666;
 	}
 	.progress .plan{
 		display: flex;
-		border-left: 1rpx dashed #7E7E7E;
+		border-left: 1upx dashed #7E7E7E;
 	}
 	.progress .plan:last-child{
 		border:none;
@@ -747,36 +750,36 @@
 	}
 
 	.plan-title {
-		width: 685rpx;
-		margin-left: 20rpx;
+		width: 685upx;
+		margin-left: 20upx;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
 	}
 
 	.title-time {
-		width: 300rpx;
-		height: 24rpx;
-		font-size: 24rpx;
+		width: 300upx;
+		height: 24upx;
+		font-size: 24upx;
 		font-weight: bold;
-		margin-right: 72rpx;
+		margin-right: 72upx;
 		color: #666666;
 	}
 
 	.plan-left {
-		width: 224rpx;
-		height: 28rpx;
-		font-size: 28rpx;
+		width: 224upx;
+		height: 28upx;
+		font-size: 28upx;
 		font-weight: bold;
 		color: #333333;
 	}
 
 	.detail-container,
 	.process-container {
-		margin: 20rpx;
-		padding: 20rpx;
-		border-radius: 10rpx;
-		box-shadow: 0rpx 0rpx 50rpx 0rpx rgba(0, 0, 0, 0.06);
+		margin: 20upx;
+		padding: 20upx;
+		border-radius: 10upx;
+		box-shadow: 0upx 0upx 50upx 0upx rgba(0, 0, 0, 0.06);
 		background-color: #FFFFFF;
 	}
 
