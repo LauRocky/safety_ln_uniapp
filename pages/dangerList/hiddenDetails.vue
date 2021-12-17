@@ -250,7 +250,7 @@ export default {
 			font-size: 28upx;
 			font-family: PingFang SC;
 			font-weight: 500;
-			background: #c3c334;
+			background: #999999;
 			color: #ffffff;
 			border-radius: 6upx;
 			padding: 10upx 15upx;
@@ -259,7 +259,7 @@ export default {
 			font-size: 28upx;
 			font-family: PingFang SC;
 			font-weight: 500;
-			background: #003fbd;
+			background: #FF6C00;
 			color: #ffffff;
 			border-radius: 6upx;
 			padding: 10upx 15upx;

@@ -238,7 +238,7 @@ export default {
 							font-size: 24upx;
 							font-family: PingFang SC;
 							font-weight: bold;
-							color: #003fbd;
+							color: #FF6C00;
 						}
 					}
 					.list-title {

@@ -3,7 +3,7 @@
 		<image class="login-imgs" src="../../static/user/banners.png" mode=""></image>
 		<image class="login-tou" src="../../static/logo.png"></image>
 		<view class="login-form">
-			<u--form labelPosition="left" :model="form" :rules="rules" ref="uForm">
+			<u--form  :model="form" :rules="rules" ref="uForm">
 				<u-form-item prop="username">
 					<u--input v-model="form.username" placeholder="请输入用户名" prefixIconStyle="font-size: 25px;color: #b0b0b0" prefixIcon="account"></u--input>
 				</u-form-item>
@@ -63,7 +63,7 @@ export default {
 	methods: {
 		handIcon() {
 			this.type = this.type == 'password' ? 'text' : 'password';
-			this.icon = this.type ? 'eye-off' : 'eye-fill';
+			this.icon =  this.type == 'password' ? 'eye-off' : 'eye-fill';
 		},
 		submit() {
 			this.$refs.uForm
@@ -107,14 +107,17 @@ export default {
 		width: 95px;
 		height: 95px;
 		margin-top: -95upx;
-		margin-bottom: 75rpx;
+		margin-bottom: 75upx;
 		border-radius: 20upx;
 	}
 	.login-form {
-		margin-top: 50rpx;
+		margin-top: 50upx ;
 		padding: 0 75upx;
 		.u-input {
 			border-radius: 50upx;
+		}
+		/deep/.u-form-item__body__right__message{
+			margin-left:420upx!important;
 		}
 	}
 	.lr {
@@ -131,7 +134,7 @@ export default {
 		}
 	}
 	.btn {
-		margin-top: 20upx;
+		margin-top: 30upx;
 		font-size: 36upx;
 		font-family: PingFang SC;
 		font-weight: bold;
