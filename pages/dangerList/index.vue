@@ -259,6 +259,9 @@ export default {
 			.list-foo {
 				display: flex;
 				align-items: center;
+				font-size: 24upx;
+				font-family: PingFang SC;
+				color: #666666;
 				.foo-left {
 					flex: 2;
 				}
