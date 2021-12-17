@@ -111,17 +111,10 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "新增隐患",
-				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"text": "创建",
-							"fontSize": "30upx",
-							"fontWeight": "bold",
-							"width": "60"
-						}]
-					}
-
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
 		}, {
@@ -135,17 +128,10 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "隐患整改",
-				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"text": "提交",
-							"fontSize": "30upx",
-							"fontWeight": "bold",
-							"width": "60"
-						}]
-					}
-
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
 		}, {
@@ -153,52 +139,35 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "隐患驳回",
-				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
 				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"text": "提交",
-							"fontSize": "30upx",
-							"fontWeight": "bold",
-							"width": "60"
-						}]
-					}
-			
+					"titleNView": false,
+					"bounce": "none"
 				}
 			}
-			
+
+
+		}, {
+			"path": "pages/dangerList/review",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "隐患复核",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+
+		}, {
+			"path": "pages/home/particulars",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "首页列表"
+			}
 
 		}
-	    ,{
-            "path" : "pages/dangerList/review",
-           "style": {
-           	"navigationBarBackgroundColor": "#11B38C",
-           	"navigationBarTitleText": "隐患复核",
-           	"enablePullDownRefresh": false,
-           	"app-plus": {
-           		"titleNView": {
-           			"buttons": [{
-           				"text": "提交",
-           				"fontSize": "30upx",
-           				"fontWeight": "bold",
-           				"width": "60"
-           			}]
-           		}
-           
-           	}
-           }
-            
-        }
-        ,{
-            "path" : "pages/home/particulars",
-            "style" :                                                                                    
-            {
-               "navigationBarBackgroundColor": "#11B38C",
-               "navigationBarTitleText": ""
-            }
-            
-        }
-    ],
+	],
 	"tabBar": {
 		"color": "#A9A9A9",
 		"selectedColor": "#00B490",

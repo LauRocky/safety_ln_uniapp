@@ -1,6 +1,7 @@
 <template>
 	<view class="rejected">
-		<u--form labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
+		 <TwoNavbar :name="twoname" :rightText="rightText" @rightcilck="submit" />
+		<u--form class="rejected-form" labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
 			<u-form-item class="form-item" prop="name" @click="show = true" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/danger/wei.png" mode=""></image>
@@ -19,15 +20,19 @@
 </template>
 <script>
 import uploadImg from '../../components/xiaohuang-uploadImg/uploadImg.vue';
+import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
 import { BASE_URL } from '../../utils/request.js';
 export default {
 	name: 'rejected',
 	props: [],
 	components: {
 		uploadImg,
+		TwoNavbar
 	},
 	data() {
 		return {
+			twoname:'隐患驳回',
+			rightText:"提交",
 			showR:false,
 			userAdd: {
 				name: '',
@@ -120,14 +125,15 @@ export default {
 				});
 		}
 	},
-	onNavigationBarButtonTap() {
-		this.submit();
-	}
+	
 };
 </script>
 <style lang="less" scoped>
 .rejected {
-	padding: 10upx 24upx;
+	
+	.rejected-form{
+		padding: 10upx 24upx;
+	}
 	.form-item {
 		.add-title {
 			font-size: 28upx;

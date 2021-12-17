@@ -1,6 +1,7 @@
 <template>
 	<view class="add">
-		<u--form labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
+		 <TwoNavbar :name="twoname" :rightText="rightText" @rightcilck="submit" />
+		<u--form class="add-form" labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
 			<u-form-item class="form-item" prop="name" @click="show = true" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/xiangmu.png" mode=""></image>
@@ -103,12 +104,14 @@ import InformPerson from '../../components/dangerList/InformPerson.vue';
 import describe from '../../components/dangerList/describe.vue';
 import aderss from '../../components/dangerList/aderss.vue';
 import uploadImg from '../../components/xiaohuang-uploadImg/uploadImg.vue';
+import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
 import { BASE_URL } from '../../utils/request.js';
 
 export default {
 	name: 'add',
 	props: [],
 	components: {
+		TwoNavbar,
 		projectPicker,
 		levelPicker,
 		levelType,
@@ -120,6 +123,8 @@ export default {
 	},
 	data() {
 		return {
+			twoname:'新增隐患',
+			rightText:"创建",
 			show: false, //项目显隐
 			showl: false, //等级
 			showT: false, //类型
@@ -331,14 +336,20 @@ export default {
 				});
 		}
 	},
-	onNavigationBarButtonTap() {
-		this.submit();
-	}
 };
 </script>
 <style lang="less" scoped>
 .add {
-	padding: 36upx 24upx;
+	background: #FFFFFF;
+	.add-form{
+		padding: 36upx 24upx;
+		.u-form-item__body{
+			background: #FFFFFF;
+		}
+		/deep/.u-input__content{
+			background: #FFFFFF;
+		}
+	}
 	.add-1 {
 		margin-right: 20upx;
 		display: flex;

@@ -1,6 +1,7 @@
 <template>
 	<view class="review">
-		<u--form labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
+		 <TwoNavbar :name="twoname" :rightText="rightText" @rightcilck="submit" />
+		<u--form class="review-form" labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
 			<u-form-item class="form-item" prop="name" @click="show = true" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/danger/wei.png" mode=""></image>
@@ -19,15 +20,19 @@
 </template>
 <script>
 import uploadImg from '../../components/xiaohuang-uploadImg/uploadImg.vue';
+import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
 import { BASE_URL } from '../../utils/request.js';
 export default {
 	name: 'review',
 	props: [],
 	components: {
 		uploadImg,
+		TwoNavbar
 	},
 	data() {
 		return {
+			twoname:'隐患复核',
+			rightText:"提交",
 			showR:false,
 			userAdd: {
 				name: '',
@@ -41,7 +46,7 @@ export default {
 				name: [
 					{
 						required: true,
-						message: '请输入整改情况',
+						message: '请输入复核情况',
 						trigger: ['blur', 'change']
 					}
 				],
@@ -119,14 +124,14 @@ export default {
 				});
 		}
 	},
-	onNavigationBarButtonTap() {
-		this.submit();
-	}
 };
 </script>
 <style lang="less" scoped>
 .review {
-	padding: 10upx 24upx;
+	
+	.review-form{
+		padding: 10upx 24upx;
+	}
 	.form-item {
 		.add-title {
 			font-size: 28upx;
