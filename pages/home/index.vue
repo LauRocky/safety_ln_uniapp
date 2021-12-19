@@ -58,7 +58,7 @@
 							<view class="fa">超期</view>
 							<view class="nums">{{ problem.expireUnSolve }}</view>
 						</view>
-						<view class="zho-text">今日+</view>
+						<view class="zho-text"></view>
 					</view>
 				</view>
 			</view>
