@@ -1,8 +1,9 @@
 <template>
 	<view class="dangers">
-		<u--form labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
+		<TwoNavbar :name="twoname" :rightText="rightText" @rightcilck="submit" />
+		<u--form class="dangers-form" labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
 			<u-form-item class="form-item" prop="name" borderBottom>
-				<u--textarea height="100" border="none" v-model="userAdd.name" placeholder="请输入整改情况" ></u--textarea>
+				<u--textarea height="100" border="none" v-model="userAdd.name" placeholder="请输入整改情况"></u--textarea>
 			</u-form-item>
 			<view class="form-item2">
 				<view class="add-1">
@@ -12,29 +13,32 @@
 				<uploadImg class="uploadImg" ref="uploadImg" :mode="imgList" @chooseFile="chooseFile" @imgDelete="imgDelete" :control="control" :columnNum="columnNum" />
 			</view>
 		</u--form>
-		
 	</view>
 </template>
 <script>
 import uploadImg from '../../components/xiaohuang-uploadImg/uploadImg.vue';
+import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 import { BASE_URL } from '../../utils/request.js';
 export default {
 	name: 'dangers',
 	props: [],
 	components: {
 		uploadImg,
+		TwoNavbar
 	},
 	data() {
 		return {
-			showR:false,
+			twoname: '隐患整改',
+			rightText: '提交',
+			showR: false,
 			userAdd: {
 				name: '',
-				images:'',
+				images: ''
 			},
 			control: true,
 			columnNum: 4,
 			imgList: [],
-			objId:{},
+			objId: {},
 			rules: {
 				name: [
 					{
@@ -42,24 +46,29 @@ export default {
 						message: '请输入整改情况',
 						trigger: ['blur', 'change']
 					}
-				],
+				]
 			}
 		};
 	},
 	onLoad(val) {
-		this.objId = val
-		
+		this.objId = val;
 	},
 	//组件生命周期
 	created() {},
 	mounted() {},
 	methods: {
-		handReview(){   //提交
+		handReview() {
+			//提交
 			uni.showLoading({ title: '提交中', mask: true });
-			this.$http(`/problems/solve/${this.objId.id}`, 'POST', {
-				problemChecker:this.objId.problemChecker,
-				solutionImages:this.userAdd.images
-			}, false)
+			this.$http(
+				`/problems/solve/${this.objId.id}`,
+				'POST',
+				{
+					problemChecker: this.objId.problemChecker,
+					solutionImages: this.userAdd.images
+				},
+				false
+			)
 				.then(res => {
 					uni.hideLoading();
 					if (res.code == 0) {
@@ -69,19 +78,21 @@ export default {
 						});
 						setTimeout(() => {
 							uni.navigateBack({
-								delta:-1
-							})
-						},1500)
+								delta: 1
+							});
+						}, 1500);
 					}
 				})
 				.catch(err => {
 					console.log(err);
 				});
 		},
-		imgDelete(list, eq) {  //删除图片
+		imgDelete(list, eq) {
+			//删除图片
 			this.imgList.splice(eq, 1);
 		},
-		chooseFile(list, v) {   //上传图片
+		chooseFile(list, v) {
+			//上传图片
 			uni.uploadFile({
 				url: BASE_URL + '/upload/image',
 				filePath: v,
@@ -112,19 +123,18 @@ export default {
 					/* uni.$u.toast('校验通过'); */
 				})
 				.catch(err => {
-					console.log(err)
+					console.log(err);
 					/* uni.$u.toast('校验失败'); */
 				});
 		}
-	},
-	onNavigationBarButtonTap() {
-		this.submit();
 	}
 };
 </script>
 <style lang="less" scoped>
 .dangers {
-	padding: 10upx 24upx;
+	.dangers-form {
+		padding: 10upx 24upx;
+	}
 	.form-item {
 		.add-title {
 			font-size: 28upx;

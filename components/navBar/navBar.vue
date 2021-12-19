@@ -41,6 +41,7 @@ export default {
 		width: 200upx;
 		position: relative;
 		.left-1 {
+			font-size:32upx;
 			width: 190upx;
 			overflow: hidden;
 			white-space: nowrap;
@@ -57,7 +58,7 @@ export default {
 	/deep/.u-nav-right {
 		width: 450upx !important;
 		.u-icon__icon {
-			font-size: 28px !important;
+			font-size: 56upx !important;
 			color: #a5a5a5 !important;
 		}
 	}

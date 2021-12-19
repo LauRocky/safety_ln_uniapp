@@ -23,12 +23,12 @@
 			<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.imglist" :key="i"></image></view>
 			<view class="bot">
 				<view class="bot-1">
-					<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
+					<view class=""><image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image></view>
 					<view class="bot-w">整改到期：{{ problem.createTime }}</view>
 				</view>
-				<view class="bot-1">
-					<image class="bot-imgs" src="../../static/danger/adersstwo.png" mode=""></image>
-					<view class="bot-w">{{ problem.location }}</view>
+				<view class="bot-1 bot-top">
+					<view class="bot-flex"><image class="bot-imgs" src="../../static/danger/adersstwo.png" mode=""></image></view>
+					<view class="bot-w">{{ problem.location }}安康就是个大大概几点就卡给啊士大夫看见啊额风景区好玩的后期维护的大家卡给大家</view>
 				</view>
 			</view>
 		</view>
@@ -55,6 +55,7 @@
 			</view>
 		</template>
 		<template v-if="status == '3'">
+			<view class="names">复核信息：</view>
 			<view class="top">
 				<view class="top-1">
 					<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
@@ -67,13 +68,25 @@
 			</view>
 			<view class="main">
 				<view class="main-a">
-					<text class="textcoo">{{ problem.recheckDesc }}</text>:请
-					<text>@{{ problem.problemCheckerDisplay }}</text>,请重新进行整改;
+					<text class="textcoo">{{ problem.recheckDesc }}</text>
+					:请
+					<text>@{{ problem.problemCheckerDisplay }}</text>
+					,请重新进行整改;
 				</view>
 				<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
 			</view>
 		</template>
-		<uni-fab v-if="status == '2'" :pattern="pattern" :content="content" horizontal="right" vertical="bottom" direction="vertical" :popMenu="true" @trigger="trigger" @fabClick="fabClick" />
+		<uni-fab
+			v-if="status == '2'"
+			:pattern="pattern"
+			:content="content"
+			horizontal="right"
+			vertical="bottom"
+			direction="vertical"
+			:popMenu="true"
+			@trigger="trigger"
+			@fabClick="fabClick"
+		/>
 	</view>
 </template>
 <script>
@@ -129,7 +142,6 @@ export default {
 				uni.navigateTo({
 					url: `/pages/dangerList/review?id=${this.problem.id}`
 				});
-			
 			} else {
 				//驳回
 				uni.navigateTo({
@@ -143,12 +155,14 @@ export default {
 						icon: 'none'
 			}); */
 		},
-		handZgup() {  //整改页面
+		handZgup() {
+			//整改页面
 			uni.navigateTo({
 				url: `/pages/dangerList/dangers?id=${this.problem.id}&problemChecker=${this.problem.problemChecker}`
 			});
 		},
-		handgETLIST() {   //获取字典数据
+		handgETLIST() {
+			//获取字典数据
 			getDictList('PROBLEMS_LEVEL_TYPE')
 				.then(res => {
 					this.dictLsit = res.dict;
@@ -166,11 +180,11 @@ export default {
 						this.problem.imglist = [];
 						this.problem.imglist = res.problem.images.split('|');
 						//整改图片
-						res.problem.solutionImages?this.problem.solutionimglist = res.problem.solutionImages.split('|'):'';
-						res.problem.solutionTime?this.problem.solutionTime2 = res.problem.solutionTime.split(' ')[0]:'';
-						 //复核图片
-						res.problem.recheckImages?this.problem.recheckImages = res.problem.recheckImages.split('|'):'';
-						res.problem.recheckTime?this.problem.recheckTime2 = res.problem.recheckTime.split(' ')[0]:'';
+						res.problem.solutionImages ? (this.problem.solutionimglist = res.problem.solutionImages.split('|')) : '';
+						res.problem.solutionTime ? (this.problem.solutionTime2 = res.problem.solutionTime.split(' ')[0]) : '';
+						//复核图片
+						res.problem.recheckImages ? (this.problem.recheckImages = res.problem.recheckImages.split('|')) : '';
+						res.problem.recheckTime ? (this.problem.recheckTime2 = res.problem.recheckTime.split(' ')[0]) : '';
 						let obj = {};
 						obj = this.dictLsit.filter(item => this.problem.problemType == item.code); //判断安全等级对比
 						this.problem.problemType2 = obj[0].value;
@@ -250,7 +264,7 @@ export default {
 			font-size: 28upx;
 			font-family: PingFang SC;
 			font-weight: 500;
-			background: #c3c334;
+			background: #999999;
 			color: #ffffff;
 			border-radius: 6upx;
 			padding: 10upx 15upx;
@@ -259,7 +273,7 @@ export default {
 			font-size: 28upx;
 			font-family: PingFang SC;
 			font-weight: 500;
-			background: #003fbd;
+			background: #ff6c00;
 			color: #ffffff;
 			border-radius: 6upx;
 			padding: 10upx 15upx;
@@ -277,8 +291,8 @@ export default {
 			text {
 				color: #00b490;
 			}
-			.textcoo{
-				color: #FE0000;
+			.textcoo {
+				color: #fe0000;
 			}
 		}
 		.imgs {
@@ -292,7 +306,6 @@ export default {
 		.bot {
 			.bot-1 {
 				display: flex;
-				align-items: center;
 				font-size: 28upx;
 				font-family: PingFang SC;
 				font-weight: 500;
@@ -302,9 +315,15 @@ export default {
 					width: 40upx;
 					height: 40upx;
 				}
-				.bot-w {
-					width: 90vw;
+				.bot-flex {
+					margin-top: 4upx;
 				}
+				.bot-w {
+					width: 100%;
+				}
+			}
+			.bot-top {
+				margin-top: 10upx;
 			}
 		}
 	}

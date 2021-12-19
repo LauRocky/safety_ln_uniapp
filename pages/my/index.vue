@@ -73,7 +73,7 @@ export default {
 	components: {},
 	data() {
 		return {
-			user: JSON.parse(uni.getStorageSync('user'))
+			user: JSON.parse(uni.getStorageSync('userInfo'))
 		};
 	},
 	onLoad() {

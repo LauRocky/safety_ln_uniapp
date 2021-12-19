@@ -1,7 +1,7 @@
 <template>
 	<view class="home">
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			<view class="u-nav-left" slot="left" style="color: #FFFFFF;font-size: 36upx;font-weight: bold;">首页</view>
+			<view class="u-nav-left" slot="left" style="color: #FFFFFF;font-size: 32upx;font-weight: bold;">首页</view>
 			<view class="u-nav-right" slot="right">
 				<image @click="handscanCode" src="../../static/home/sao.png"
 					style="width: 50upx;height: 50upx;margin-top: 10upx;" mode=""></image>
@@ -9,9 +9,10 @@
 		</u-navbar>
 		<image class="home-img" src="../../static/banner.png" mode=""></image>
 		<view class="main">
+		Z
 			<view class="main-top">
 				<u-tabs lineColor="#00B490" lineWidth="80" :activeStyle="{ color: '#00B490' }" :scrollable="false"
-					:list="list1" @click="handtabs"></u-tabs>
+					:list="list1" @click="handtabs"></u-tabs>0
 				<view class="main-scroll">
 					<view class="scroll">
 						<view v-for="(item, index) in indexList" :key="index">
