@@ -92,11 +92,11 @@ export default {
 					this.two = this.three = ''
 				}
 				this.one = v.name;
-				this.cooindex = this.oneindex = val;
+				this.oneindex = val;  //取消选中下个下标选中的问题
 				this.list = this.allList.second2[v.name];
 			} else if (v.i == 1) {
 				this.two = v.name;
-				this.cooindex = this.twoindex = val;
+				this.twoindex = val;
 				this.handByCompanyName();
 			} else if (v.i == 2) {
 				this.three = v.name;

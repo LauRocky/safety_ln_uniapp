@@ -1,7 +1,7 @@
 <template>
 	<view class="home">
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			<view class="u-nav-left" slot="left" style="color: #FFFFFF;font-size: 36upx;font-weight: bold;">首页</view>
+			<view class="u-nav-left" slot="left" style="color: #FFFFFF;font-size: 32upx;font-weight: bold;">首页</view>
 			<view class="u-nav-right" slot="right">
 				<image @click="handscanCode" src="../../static/home/sao.png" style="width: 50upx;height: 50upx;margin-top: 10upx;" mode=""></image>
 			</view>
@@ -54,7 +54,7 @@
 							<view class="fa">超期</view>
 							<view class="nums">{{ problem.expireUnSolve }}</view>
 						</view>
-						<view class="zho-text">今日+</view>
+						<view class="zho-text"></view>
 					</view>
 				</view>
 			</view>
