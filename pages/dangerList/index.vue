@@ -84,11 +84,11 @@ export default {
 			this.status = v.value;
 			this.numsList = [];
 			if (v.value == 1) {
-				this.handDangerList({ page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
+				this.handDangerList({staus:'-1', page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
 			} else if (v.value == 2) {
-				this.handDangerList({ page: this.page, limit: this.limit, problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
+				this.handDangerList({staus:'1', page: this.page, limit: this.limit, problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
 			} else {
-				this.handDangerList({ page: this.page, limit: this.limit, all: '1' });
+				this.handDangerList({staus:'-1,1,0', page: this.page, limit: this.limit, all: '1' });
 			}
 		},
 		handcompany(v) {   //选择项目
@@ -114,12 +114,15 @@ export default {
 						if (this.numsList.length < res.page.totalCount) {
 							res.page.list.forEach(val => {
 								let obj = {};
-								obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
-								val.problemType2 = obj[0].value;
+								if(val.problemType){
+									obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
+									val.problemType2 = obj[0].value;
+								}
 								val.crtime = val.createTime.split(' ')[0];
 								if (val.status == -1) {
-									var oDate2 = new Date(val.expireTime); //时间状态判断
-									if (!myDate.getTime() > oDate2.getTime()) {
+									var oDate2 = new Date(val.expireTime.replace(/-/g, '/'));
+									oDate2 = new Date(oDate2); //时间状态判断
+									if (myDate.getTime() > oDate2.getTime()) {
 										val.statusTime = 1; //超期
 									} else {
 										val.statusTime = 2; //未超期
@@ -207,15 +210,7 @@ export default {
 							font-family: PingFang SC;
 							font-weight: 500;
 							color: #00b490;
-							/* &:after {
-								content: ' ';
-								display: block;
-								margin-left: 10upx;
-								width: 20upx;
-								height: 20upx;
-								background: #ff0000;
-								border-radius: 50%;
-							} */
+							
 						}
 						.top-right2 {
 							font-size: 24upx;
@@ -224,10 +219,20 @@ export default {
 							color: #ff0000;
 						}
 						.top-right3 {
+							display: flex;
+							align-items: center;
 							font-size: 24upx;
 							font-family: PingFang SC;
 							font-weight: bold;
-							color: #c3c334;
+							&:after {
+								content: ' ';
+								display: block;
+								margin-left: 10upx;
+								width: 20upx;
+								height: 20upx;
+								background: #ff0000;
+								border-radius: 50%;
+							}
 						}
 						.top-right4 {
 							font-size: 24upx;

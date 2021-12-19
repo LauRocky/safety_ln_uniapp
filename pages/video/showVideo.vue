@@ -102,11 +102,13 @@
 		.header{
 			::v-deep span {
 				color: #FFFFFF;
+				font-weight: bold;
 			}
 		}
 		.list {
 			.searchs{
-				width: 690upx;
+				width: 92vw;
+				margin: 0 auto;
 				height: 60upx;
 				background: #FFFFFF;
 				border: 1upx solid #333333;
@@ -115,7 +117,7 @@
 			}
 			.ipt {
 				margin: 30upx auto;
-				width: 690upx;
+				width: 92vw;
 				height: 60upx;
 				background: #FFFFFF;
 				padding-left: 24upx;
@@ -132,20 +134,18 @@
 			.videolist {
 				.item {
 					position: relative;
-					width: 729upx;
+					width: 97vw;
 					margin: 0 auto;
 					height: 379upx;
-
 					.imgs {
 						width: 100%;
 						height: 100%;
 					}
-
 					.mask {
 						position: absolute;
 						left: 19upx;
 						bottom: 20upx;
-						width: 690upx;
+						width: 92vw;
 						height: 60upx;
 						background: #000000;
 						opacity: 0.6;

@@ -59,7 +59,6 @@
 					{{item.taskName}}
 				</view>
 			</view>
-
 			<view class="project-status">
 				<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
 				<view class="status-container" v-show="!isShow">
@@ -90,8 +89,7 @@
 					<view class="progress" v-if="currentIndex==0">
 						<view class="plan" v-for="(item,index) in projectInfo.nodes" :key="item.id">
 							<view class="plan-border" style="position: relative;">
-								<view class="imgs"
-									>
+								<view class="imgs">
 									<image v-if="item.nodeState==0" 
 										src="../../static/projectdetail/hui.png" mode=""></image>
 									<image v-if="item.nodeState==3" 
@@ -594,6 +592,7 @@
 <style scoped>
 	.header ::v-deep span {
 		color: #FFFFFF;
+		font-weight: bold;
 	}
 
 	.active-tags {

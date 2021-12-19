@@ -1,6 +1,5 @@
 <template>
 	<view>
-
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
 			<view class="u-nav-right" slot="right">
 				<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>

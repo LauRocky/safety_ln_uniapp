@@ -42,12 +42,10 @@
 </script>
 <style lang="scss" scoped>
 	.about {
-
-		// position: relative;
 		.headerTop {
 			::v-deep span {
 				color: #FFFFFF;
-
+				font-weight: bold;
 			}
 		}
 

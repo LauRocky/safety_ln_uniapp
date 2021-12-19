@@ -8,7 +8,7 @@
 			</view>
 		</u-navbar>
 		<view class="my">
-			<view @click="info" class="info">
+			<view class="info">
 				<view class="info-item">
 					<image src="../../static/my/detailimg.png" mode=""></image>
 				</view>
@@ -24,25 +24,25 @@
 						公司总部生态安质部{{ user.position }}
 					</view>
 				</view>
-				<view class="name-right">
+				<!-- <view class="name-right">
 					<image src="../../static/my/fanhui.png" mode=""></image>
-				</view>
+				</view> -->
 			</view>
 
 			<view class="images">
-				<view class="image-item">
+				<view class="image-item" @click="warning">
 					<image class="image-imgs" src="../../static/my/project1.png" mode=""></image>
 					<view class="image-text">
 						项目预警
 					</view>
 				</view>
-				<view class="image-item">
+				<view class="image-item" @click="dangerNotice">
 					<image class="image-imgs" src="../../static/my/project2.png" mode=""></image>
 					<view class="image-text">
 						隐患通知
 					</view>
 				</view>
-				<view class="image-item">
+				<view class="image-item" @click="publicNotice">
 					<image class="image-imgs" src="../../static/my/project3.png" mode=""></image>
 					<view class="image-text">
 						公告
@@ -71,24 +71,24 @@
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
 						关于</view>
-					<image  class="about-img" src="../../static/my/fanhui.png" mode=""></image>
+					<image class="about-img" src="../../static/my/fanhui.png" mode=""></image>
 				</view>
 			</view>
 			<view class="exit" @click="quit" style="margin-top: 30upx;">
 				退出登录
 			</view>
 		</view>
-		<u-popup :show="show" @close="close" @open="center" mode="center" round="10"> 
+		<u-popup :show="show" @close="close" @open="center" mode="center" round="10">
 			<view class="mask">
 				<view class="mask-title">
 					技术支持
 				</view>
-				<image @click="back" class="mask-imgs1"  src="../../static/my/tuichu.png" mode=""></image>
-				<image class="mask-imgs2"  src="../../static/my/erji.png" mode=""></image>
+				<image @click="back" class="mask-imgs1" src="../../static/my/tuichu.png" mode=""></image>
+				<image class="mask-imgs2" src="../../static/my/erji.png" mode=""></image>
 				<view class="telephone">
 					电话:{{user.mobile}}
 				</view>
-				<view class="call">
+				<view class="call" @click="callphone">
 					拨打
 				</view>
 			</view>
@@ -105,13 +105,39 @@
 		data() {
 			return {
 				user: JSON.parse(uni.getStorageSync('userInfo')),
-				show: false
+				show: false,
+				status:1,
+				danger:2,
+				public:3
 			};
 		},
 		onLoad() {},
 		methods: {
+			// 跳转到项目预警
+			warning(){
+				uni.navigateTo({
+					url:`/pages/home/particulars?status=${this.status}`
+				})
+			},
+			dangerNotice(){
+				uni.navigateTo({
+					url:`/pages/home/particulars?status=${this.danger}`
+				})
+			},
+			publicNotice(){
+				uni.navigateTo({
+					url:`/pages/home/particulars?status=${this.public}`
+				})
+			},
+			// 拨打电话
+			callphone() {
+				uni.makePhoneCall({
+					phoneNumber: this.user.mobile.toString()
+				})
+			},
+
 			// 关闭模态框
-			back(){
+			back() {
 				this.show = false
 			},
 			// 个人信息
@@ -126,11 +152,12 @@
 			},
 			// 更新
 			check() {
+				uni.requireNativePlugin()
 				console.log(123)
 			},
 			//技术支持
 			skill() {
-			this.show = true
+				this.show = true
 			},
 			// 分享
 			share() {
@@ -180,28 +207,31 @@
 
 	.mask {
 		position: relative;
-		width:80vw;
+		width: 80vw;
 		background: url('../../static/my/jishuzhichi.png') no-repeat;
 		background-size: 100% 100%;
 		height: 60vh;
 		border-radius: 5upx;
 	}
-	.mask .mask-imgs1{
+
+	.mask .mask-imgs1 {
 		position: absolute;
-		top:26upx;
+		top: 26upx;
 		width: 26upx;
 		height: 26upx;
 		right: 26upx;
 	}
-	.mask .mask-imgs2{
+
+	.mask .mask-imgs2 {
 		position: absolute;
-		top:102upx;
-		left:50%;
+		top: 102upx;
+		left: 50%;
 		width: 164upx;
 		height: 184upx;
-		transform: translateX(-82upx);		
+		transform: translateX(-82upx);
 	}
-	.mask .mask-title{
+
+	.mask .mask-title {
 		margin-top: 26upx;
 		text-align: center;
 		font-size: 32upx;
@@ -210,7 +240,8 @@
 		color: #FFFFFF;
 		line-height: 24upx;
 	}
-	.mask .telephone{
+
+	.mask .telephone {
 		position: absolute;
 		left: 162upx;
 		bottom: 260upx;
@@ -220,7 +251,8 @@
 		color: #333333;
 		line-height: 24upx;
 	}
-	.mask .call{
+
+	.mask .call {
 		position: absolute;
 		left: 126upx;
 		bottom: 120upx;
@@ -235,6 +267,7 @@
 		font-weight: bold;
 		color: #45A28D;
 	}
+
 	.u-nav-left {
 		color: #FFFFFF;
 		font-size: 36upx;
@@ -313,7 +346,7 @@
 		display: flex;
 		justify-content: space-around;
 		color: #929292;
-		width: 710upx;
+		width: 90xw;
 		height: 240upx;
 		background: #FFFFFF;
 		box-shadow: 0px 0px 11upx 0px rgba(0, 0, 0, 0.06);
@@ -403,16 +436,14 @@
 	}
 
 	.app-plug {
-
 		background-color: #ffffff;
 		box-shadow: 0px 0px 11upx 0px rgba(0, 0, 0, 0.06);
 		padding: 30upx 0 45upx 35upx;
 		border-radius: 15upx;
 	}
-
-
 	.exit {
-		width: 710upx;
+		width: 90vw;
+		margin: 0 auto;
 		height: 100upx;
 		background: #FFFFFF;
 		box-shadow: 0px 0px 11upx 0upx rgba(0, 0, 0, 0.06);
