@@ -7,6 +7,7 @@
 		</view>
 		<view class="header" v-if="this.status.ezv==0">
 			<video class="vid" :src="monitorUrl" controls></video>
+			<image class="zu_logo" :src="monitorUrl+ '?x-oss-process=video/snapshot,t_0,f_jpg'" mode=""></image>
 		</view>
 		<view class="header" v-if="this.status.ezv==1">
 			<video class="vid" :src="yinshiyun" controls></video>

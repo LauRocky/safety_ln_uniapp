@@ -6,9 +6,7 @@
 				<!-- <u-icon class="icon" @click="handIcon" name="close" color="#b5b5b5 " size="28"></u-icon> -->
 			</view>
 			<view class="main">
-				<view class="title2">
-					请选择隐患类型
-				</view>
+				<view class="title2">请选择隐患类型</view>
 				<scroll-view class="scroll-a" scroll-y>
 					<view class="text-a" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)" v-for="(val1, i1) in dictLsit" :key="i1">{{ val1.value }}</view>
 				</scroll-view>
@@ -24,33 +22,48 @@ export default {
 	components: {},
 	data() {
 		return {
-			dictLsit:[],
-			cooindex:null,
+			dictLsit: [],
+			cooindex: null,
+			obj: {}
 		};
 	},
-	onLoad() {
-		
-	},
+	onLoad() {},
 	//组件生命周期
 	created() {
 		this.handgETLIST();
+		let obj = uni.getStorageSync('levelType');
+		if (obj) {
+			//缓存下标
+			this.cooindex = obj.cooindex;
+			this.$emit('handEndl', obj);
+		}
 	},
 	mounted() {},
 	methods: {
-		handcoo(val, v){
-			this.cooindex = val
-			this.$emit('handEndl',v)
+		handcoo(val, v) {
+			this.cooindex = val;
+			this.obj.cooindex = val;
+			this.obj.value = v.value;
+			this.obj.code = v.code;
+			this.$emit('handEndl', v);
 		},
-		handIcon(){
+		handcache() {
+			//缓存数据
+			if (this.obj.value) {
+				//判断有新选择的存储
+				uni.setStorageSync('levelType', this.obj);
+			}
+		},
+		handIcon() {
 			this.$emit('closeL');
 		},
 		handgETLIST() {
 			getDictList('PROBLEM_TYPE')
 				.then(res => {
-					this.dictLsit = res.dict
+					this.dictLsit = res.dict;
 				})
 				.catch(err => {
-					console.log(err)
+					console.log(err);
 				});
 		}
 	}
@@ -72,9 +85,9 @@ export default {
 			right: 20upx;
 		}
 	}
-	.main{
+	.main {
 		padding: 20upx 29upx 0 64upx;
-		.title2{
+		.title2 {
 			font-size: 32upx;
 			font-family: PingFang SC;
 			font-weight: bold;
@@ -94,6 +107,5 @@ export default {
 			}
 		}
 	}
-	
 }
 </style>
