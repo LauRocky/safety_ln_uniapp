@@ -1,6 +1,6 @@
 <template>
 	<view class="add">
-		 <TwoNavbar :name="twoname" :rightText="rightText" @rightcilck="submit" />
+		<TwoNavbar :name="twoname" :rightText="rightText" @rightcilck="submit" />
 		<u--form class="add-form" labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
 			<u-form-item class="form-item" prop="name" @click="show = true" borderBottom>
 				<view class="add-1">
@@ -85,14 +85,14 @@
 				<uploadImg class="uploadImg" ref="uploadImg" :mode="imgList" @chooseFile="chooseFile" @imgDelete="imgDelete" :control="control" :columnNum="columnNum" />
 			</view>
 		</u--form>
-		<projectPicker :show="show" @close="show = false" @handEnd="handEnd" />
-		<levelPicker :showl="showl" @closeL="showl = false" @handEndl="handEndl" />
-		<levelType :showl="showT" @closeL="showT = false" @handEndl="handEndT" />
-		<rectification :showR="showR" @closeR="showR = false" @handEndR="handEndR" />
-		<InformPerson :showP="showP" @closeP="showP = false" @handEndP="handEndP" />
+		<projectPicker ref="projectPicker" :show="show"  @close="show = false" @handEnd="handEnd" />
+		<levelPicker ref="levelPicker" :showl="showl"  @closeL="showl = false" @handEndl="handEndl" />
+		<levelType ref="levelType" :showl="showT" @closeL="showT = false" @handEndl="handEndT" />
+		<rectification ref="rectification" :showR="showR" @closeR="showR = false" @handEndR="handEndR" />
+		<InformPerson ref="InformPerson" :showP="showP" @closeP="showP = false" @handEndP="handEndP" />
 		<describe :showD="showD" @closeD="showD = false" @handEndD="handEndD">隐患详情描述</describe>
 		<describe :showD="showZ" @closeD="showZ = false" @handEndD="handEndZ">整改要求</describe>
-		<aderss :showA="showA" @closeA="showA = false" @handEndA="handEndA"></aderss>
+		<aderss ref="aderssA" :showA="showA" @closeA="showA = false" @handEndA="handEndA"></aderss>
 	</view>
 </template>
 <script>
@@ -104,7 +104,7 @@ import InformPerson from '../../components/dangerList/InformPerson.vue';
 import describe from '../../components/dangerList/describe.vue';
 import aderss from '../../components/dangerList/aderss.vue';
 import uploadImg from '../../components/xiaohuang-uploadImg/uploadImg.vue';
-import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
+import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 import { BASE_URL } from '../../utils/request.js';
 
 export default {
@@ -123,8 +123,8 @@ export default {
 	},
 	data() {
 		return {
-			twoname:'新增隐患',
-			rightText:"创建",
+			twoname: '新增隐患',
+			rightText: '创建',
 			show: false, //项目显隐
 			showl: false, //等级
 			showT: false, //类型
@@ -151,7 +151,7 @@ export default {
 				problemSolver: '', //整改人
 				notifyPerson: '' //只会人
 			},
-			control: true,   //上传图片变量
+			control: true, //上传图片变量
 			columnNum: 4,
 			imgList: [],
 			rules: {
@@ -207,12 +207,18 @@ export default {
 			}
 		};
 	},
-	onLoad() {},
+	onLoad() {
+
+	},
+	onShow() {
+		
+	},
 	//组件生命周期
 	created() {},
 	mounted() {},
 	methods: {
-		handAdd() {   //添加隐患
+		handAdd() {
+			//添加隐患
 			let expireTime = new Date();
 			expireTime = expireTime.getTime() + this.userAdd.period * 24 * 60 * 60 * 1000;
 			this.$http(
@@ -234,8 +240,11 @@ export default {
 					source: 0
 				},
 				false
-			).then(res => {
+			)
+				.then(res => {
+					console.log(res)
 					if (res.code == 0) {
+						this.handAllcatch();
 						uni.showToast({
 							title: '创建成功',
 							duration: 1500
@@ -251,7 +260,16 @@ export default {
 					console.log(err);
 				});
 		},
-		chooseFile(list, v) {   //上传图片
+		handAllcatch() {
+			this.$refs.projectPicker.handcache();
+			this.$refs.levelPicker.handcache();
+			this.$refs.levelType.handcache();
+			this.$refs.rectification.handcache();
+			this.$refs.InformPerson.handcache();
+			this.$refs.aderssA.handcache();
+		},
+		chooseFile(list, v) {
+			//上传图片
 			uni.uploadFile({
 				url: BASE_URL + '/upload/image',
 				filePath: v,
@@ -278,7 +296,7 @@ export default {
 			this.show = false;
 		},
 		handEndl(v) {
-			//隐患
+			//隐患等级
 			this.userAdd.dagner = v.value;
 			this.userAdd.assessment = v.code;
 			this.showl = false;
@@ -302,15 +320,18 @@ export default {
 			this.userAdd.notifyPerson = v.value;
 			this.showP = false;
 		},
-		handEndD(v) {   //xq
+		handEndD(v) {
+			//xq
 			this.userAdd.Details = v;
 			this.showD = false;
 		},
-		handEndZ(v) {   //要求
+		handEndZ(v) {
+			//要求
 			this.userAdd.require = v;
 			this.showZ = false;
 		},
-		handEndA(v) {  //地址
+		handEndA(v) {
+			//地址
 			this.userAdd.location = v;
 			this.showA = false;
 		},
@@ -325,7 +346,7 @@ export default {
 						return uni.$u.toast('请上传图片');
 					}
 					this.imgList.forEach(val => {
-						this.userAdd.images += val + "|";
+						this.userAdd.images += val + '|';
 					});
 					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
 					this.handAdd();
@@ -335,19 +356,19 @@ export default {
 					uni.$u.toast('校验失败');
 				});
 		}
-	},
+	}
 };
 </script>
 <style lang="less" scoped>
 .add {
-	background: #FFFFFF;
-	.add-form{
+	background: #ffffff;
+	.add-form {
 		padding: 36upx 24upx;
-		.u-form-item__body{
-			background: #FFFFFF;
+		.u-form-item__body {
+			background: #ffffff;
 		}
-		/deep/.u-input__content{
-			background: #FFFFFF;
+		/deep/.u-input__content {
+			background: #ffffff;
 		}
 	}
 	.add-1 {

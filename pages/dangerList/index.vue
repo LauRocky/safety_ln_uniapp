@@ -181,7 +181,7 @@ export default {
 	}
 	.lists {
 		width: 100vw;
-		height: calc(100vh - 400upx);
+		height: calc(100vh - 300upx);
 		.list-1 {
 			padding: 27upx 20upx 0;
 			.list-top {

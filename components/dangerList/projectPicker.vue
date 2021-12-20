@@ -48,8 +48,8 @@
 </template>
 <script>
 export default {
-	name: '',
-	props: ['show'],
+	name: 'projectPicker',
+	props: ['show', 'objDataP'],
 	components: {},
 	data() {
 		return {
@@ -62,21 +62,54 @@ export default {
 			titles: '选择所在项目',
 			list: [],
 			cooindex: null,
-			allList: {} //所有数据
+			allList: {}, //所有数据
+			companyId: '',
+			projectId: ''
 		};
 	},
 	onLoad() {},
 	//组件生命周期
 	created() {
 		this.handSelectData();
+		let obj = uni.getStorageSync('projectPicker');
+		if (obj) {
+			//缓存获取上次数据
+			this.one = obj.one;
+			this.two = obj.two;
+			this.oneindex = obj.oneindex;
+			this.twoindex = obj.twoindex;
+			this.three = obj.three;
+			this.companyId =  obj.companyId,
+			this.projectId = obj.projectId
+			this.cooindex = this.threeindex = obj.threeindex;
+			this.handByCompanyName();
+			this.$emit('handEnd', obj);
+		}
 	},
 	mounted() {},
 	methods: {
+		handcache() {  //缓存数据
+			let obj = {
+				one: this.one,
+				two: this.two,
+				three: this.three,
+				name: this.three,
+				oneindex: this.oneindex,
+				twoindex: this.twoindex,
+				threeindex: this.threeindex,
+				companyId: this.companyId,
+				projectId: this.projectId
+			};
+			
+			uni.setStorageSync('projectPicker', obj);
+		},
 		handthree() {
+			//点击公司
 			this.cooindex = this.threeindex;
 			this.handByCompanyName();
 		},
 		handtwo() {
+			//点击项目
 			this.cooindex = this.twoindex;
 			this.list = this.allList.second2[this.one];
 		},
@@ -88,11 +121,11 @@ export default {
 		handcoo(val, v) {
 			//点击下面的选项;
 			if (v.i == 0) {
-				if(this.one !== v.name){
-					this.two = this.three = ''
+				if (this.one !== v.name) {
+					this.two = this.three = '';
 				}
 				this.one = v.name;
-				this.oneindex = val;  //取消选中下个下标选中的问题
+				this.oneindex = val; //取消选中下个下标选中的问题
 				this.list = this.allList.second2[v.name];
 			} else if (v.i == 1) {
 				this.two = v.name;
@@ -100,8 +133,10 @@ export default {
 				this.handByCompanyName();
 			} else if (v.i == 2) {
 				this.three = v.name;
+				this.companyId = v.companyId; //缓存数据
+				this.projectId = v.projectId;
 				this.cooindex = this.threeindex = val;
-				this.$emit('handEnd',v)
+				this.$emit('handEnd', v);
 			}
 		},
 		handtolower() {},

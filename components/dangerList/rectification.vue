@@ -9,8 +9,8 @@
 				<u-search placeholder="请输入" @clear="handclear" @search="handsearch" :show-action="false" :clearabled="true" v-model="listBy.searchKey"></u-search>
 				<scroll-view class="scroll-a" @scrolltolower="handtolower" scroll-y>
 					<view class="text-a" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)" v-for="(val1, i1) in dictLsit" :key="i1">
-						<view class="t-a">{{ val1.fullname }}  : </view>
-						<view class="t-x"> {{ val1.mobile }}</view>
+						<view class="t-a">{{ val1.fullname }} :</view>
+						<view class="t-x">{{ val1.mobile }}</view>
 					</view>
 				</scroll-view>
 			</view>
@@ -18,7 +18,6 @@
 	</view>
 </template>
 <script>
-
 export default {
 	name: 'rectification',
 	props: ['showR'],
@@ -30,27 +29,41 @@ export default {
 			listBy: {
 				page: 1,
 				limit: 20,
-				searchKey:'',
+				searchKey: '',
 				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
-			}
+			},
+			obj: {}
 		};
 	},
 	onLoad() {},
 	//组件生命周期
 	created() {
 		this.handlistByProjectId();
+		let obj = uni.getStorageSync('rectification');
+		if (obj) {
+			//缓存下标
+			this.cooindex = obj.cooindex;
+			this.$emit('handEndR', obj);
+		}
 	},
 	mounted() {},
 	methods: {
-		handclear(){
-			this.dictLsit = []
-			this.listBy.page = 1
-			this.listBy.searchKey = '',
+		handclear() {
+			this.dictLsit = [];
+			this.listBy.page = 1;
+			this.listBy.searchKey = '';
 			this.handlistByProjectId();
+			
 		},
-		handsearch(){
-			this.dictLsit = []
-			this.listBy.page = 1
+		handcache() {
+			//缓存数据
+			if (this.obj.fullname) {
+				uni.setStorageSync('rectification', this.obj);
+			}
+		},
+		handsearch() {
+			this.dictLsit = [];
+			this.listBy.page = 1;
 			this.handlistByProjectId();
 		},
 		handtolower() {
@@ -58,13 +71,16 @@ export default {
 		},
 		handcoo(val, v) {
 			this.cooindex = val;
+			this.obj.cooindex = val;
+			this.obj.fullname = v.fullname;
+			this.obj.userId = v.userId;
 			this.$emit('handEndR', v);
 		},
 		handIcon() {
 			this.$emit('closeR');
 		},
 		handlistByProjectId() {
-			if(this.listBy.page >= 2){
+			if (this.listBy.page >= 2) {
 				uni.showLoading({ title: '加载中', mask: true });
 			}
 			//renyuan人员列表

@@ -24,15 +24,30 @@ export default {
 		return {
 			addressList:[],
 			address:'',
+			obj:{}
 		};
 	},
 	onLoad() {},
 	//组件生命周期
-	created() {},
+	created() {
+		let obj = uni.getStorageSync('address');
+		if (obj.address) {
+			this.address = obj.address
+			this.$emit('handEndA', obj.address);
+		}
+	},
 	mounted() {},
 	methods: {
 		handcoo() {
+			this.obj.address =  this.address
 			this.$emit('handEndA', this.address);
+		},
+		handcache() {
+			//缓存数据
+			if (this.obj.address) {
+				//判断有新选择的存储
+				uni.setStorageSync('address', this.obj);
+			}
 		},
 		handIcon() {
 			this.$emit('closeA');
