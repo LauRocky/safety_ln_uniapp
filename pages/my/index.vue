@@ -14,14 +14,14 @@
 				</view>
 				<view class="name">
 					<view class="name-item">
-						{{ user.fullname }}（生态安质部）
+						{{ user.fullname }}
 						<text v-if="user.role" style="font-size: 32upx;"> （{{ user.role }})</text>
 					</view>
 					<view class="iphone">
 						手机:{{user.mobile}}
 					</view>
 					<view class="company">
-						公司总部生态安质部{{ user.position }}
+						{{deptNames}}
 					</view>
 				</view>
 				<!-- <view class="name-right">
@@ -106,14 +106,27 @@ export default {
 			show: false,
 			status:1,
 			danger:2,
-			public:3
+			public:3,
+			deptNames:"",
 		};
 	},
-	onLoad() {
-	},
 	methods: {
-	
-		
+		// 3. 获取登录人部门信息
+			deptInfo(){
+			this.$http('/lvxin/deptInfo','POST',{
+				'parentId':this.user.companyId
+			},false).then(res=>{
+			let deptName='';
+			let array=	res.data.reverse();
+			for (var i = 0; i < array.length; i++) {
+				if(i==0){
+					continue;
+				}
+				deptName+=array[i].name;
+			}
+			this.deptNames=deptName;
+			})
+			},
 			// 跳转到项目预警
 			warning(){
 				uni.navigateTo({
@@ -218,7 +231,10 @@ export default {
 					}
 				})
 			},
-		}
+		},
+		onLoad() {
+			this.deptInfo()
+		},
 	};
 </script>
 
@@ -466,7 +482,6 @@ export default {
 		border-radius: 15upx;
 	}
 	.exit {
-		width: 90vw;
 		margin: 0 auto;
 		height: 100upx;
 		background: #FFFFFF;
