@@ -84,11 +84,11 @@ export default {
 			this.status = v.value;
 			this.numsList = [];
 			if (v.value == 1) {
-				this.handDangerList({staus:'-1', page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
+				this.handDangerList({status:'-1', page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
 			} else if (v.value == 2) {
-				this.handDangerList({staus:'1', page: this.page, limit: this.limit, problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
+				this.handDangerList({status:'1', page: this.page, limit: this.limit, problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
 			} else {
-				this.handDangerList({staus:'-1,1,0', page: this.page, limit: this.limit, all: '1' });
+				this.handDangerList({status:'-1,1,0', page: this.page, limit: this.limit, all: '1' });
 			}
 		},
 		handcompany(v) {   //选择项目

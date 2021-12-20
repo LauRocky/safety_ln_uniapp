@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <template>
 	<view class="login">
 		<image class="login-imgs" src="../../static/user/banners.png" mode=""></image>
