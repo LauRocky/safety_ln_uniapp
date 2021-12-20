@@ -1,6 +1,8 @@
 // 在公司的默认地址
-export var BASE_URL = 'http://192.168.133.2:12002/safety-server/api'
+
+export var BASE_URL = 'http://192.168.133.13:12002/safety-server/api'
 // 回家看的数据
+
 // export var BASE_URL = 'http://59.110.136.159:12002/safety-server/api'
 // #ifdef H5
 BASE_URL = '/web'; //H5下将地址修改为/web 

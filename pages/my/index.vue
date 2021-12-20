@@ -97,22 +97,23 @@
 </template>
 
 <script>
-	import {
-		scanCode
-	} from '../../utils/utils.js';
-	export default {
-		components: {},
-		data() {
-			return {
-				user: JSON.parse(uni.getStorageSync('userInfo')),
-				show: false,
-				status:1,
-				danger:2,
-				public:3
-			};
-		},
-		onLoad() {},
-		methods: {
+	import { scanCode } from '../../utils/utils.js';
+export default {
+	components: {},
+	data() {
+		return {
+			user: JSON.parse(uni.getStorageSync('userInfo')),
+			show: false,
+			status:1,
+			danger:2,
+			public:3
+		};
+	},
+	onLoad() {
+	},
+	methods: {
+	
+		
 			// 跳转到项目预警
 			warning(){
 				uni.navigateTo({
@@ -193,7 +194,30 @@
 						}
 					}
 				});
-			}
+			},
+			handscanCode(){
+				const that = this;
+				uni.scanCode({
+					onlyFromCamera: true,
+					success: function(res) {
+						let userInfo = JSON.parse(uni.getStorageSync("userInfo"));
+						userInfo.cacheKey = res.result.split("|")[1];
+						that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
+							.then(resp => {
+								uni.showToast({
+									icon: 'none',
+									title: '登录成功',
+									duration: 1500
+								})
+							}).catch(err => {
+								uni.showToast({
+									title:'登录失败，请刷新二维码或稍后重试',
+									duration:1500
+								})
+							})
+					}
+				})
+			},
 		}
 	};
 </script>

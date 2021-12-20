@@ -53,10 +53,11 @@ export default {
 			}
 		};
 	},
-	onLoad() {
-		
-	},
 	//组件生命周期
+	onShow(){this.handlistByProjectId()},
+	onLoad(){
+		this.handlistByProjectId()
+	},
 	created() {
 		this.handlistByProjectId()
 	},
