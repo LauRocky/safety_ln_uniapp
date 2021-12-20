@@ -2,18 +2,22 @@
 	<view>
 		<nav-bar :title="title" @seach="handsearch" @Upqie="handUpqie"></nav-bar>
 		<view class="project-container" >
-			<view class="project" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">
+			<view class="project" @click="goDetail(project.projectId,project.projectName,project.companyId)" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">
 				<view class="title">
 					<text>{{project.projectName}}</text>
-					<u-icon color="#303133" :bold="true" name="arrow-right" @click="goDetail(project.projectId,project.projectName,project.companyId)"></u-icon>
+					<u-icon color="#303133" :bold="true" name="arrow-right" ></u-icon>
 				</view>
 				<view class="status" v-if="getprocess(project.projectId) == 0">
-					<u-tag style="margin-top: 8rpx;" size="mini" bgColor="#00B490" color="#ffffff" text="进度正常"></u-tag>
-					<text style="margin-left: 20rpx;">项目各个环节进度正常</text>
+					<view class="status-item" style="background: #00B490;">
+						进度正常
+					</view>
+					<text style="margin-left: 23rpx;">项目各个环节进度正常</text>
 				</view>
 				<view class="status" v-else>
-					<u-tag style="margin-top: 8rpx;" size="mini" bgColor="#FF0000" color="#ffffff" text="进度异常"></u-tag>
-					<text style="margin-left: 20rpx;" >项目{{getprocess(project.projectId)}}个环节进度异常</text>
+					<view class="status-item" style="background: #FF0000;">
+						进度异常
+					</view>
+					<text style="margin-left: 23rpx;" >项目{{getprocess(project.projectId)}}个环节进度异常</text>
 				</view>
 			</view>			
 		</view>
@@ -119,9 +123,13 @@
 		display: flex;
 		align-items: center;
 	}
-	.status text{
-		font-size: 28rpx;
-		font-weight: 500;
+	.status-item{
+		text-align: center;
+		border-radius: 6upx;
+		font-size: 24upx;
+		color: #FFFFFF;
+		font-family: PingFang SC;
+		padding: 10upx 22upx;
 	}
 	.project{
 		margin: 20rpx;

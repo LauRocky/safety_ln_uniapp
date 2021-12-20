@@ -54,10 +54,11 @@ export default {
 			obj:{}
 		};
 	},
-	onLoad() {
-		
-	},
 	//组件生命周期
+	onShow(){this.handlistByProjectId()},
+	onLoad(){
+		this.handlistByProjectId()
+	},
 	created() {
 		this.handlistByProjectId()
 		let obj = uni.getStorageSync('InformPerson');

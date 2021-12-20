@@ -1,6 +1,6 @@
 {
     "name" : "safety_ln_app",
-    "appid" : "__UNI__077A732",
+    "appid" : "__UNI__98968F4",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -114,10 +114,17 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
+<<<<<<< .mine
                     //在公司使用
                     // "target" : "http://192.168.133.2:12002/safety-server/api", //实际请求服务器地址 */
                     // 回家使用
                     "target" : "http://59.110.136.159:12002/safety-server/api",
+=======
+					//在公司使用
+                    "target" : "http://192.168.133.13:12002/safety-server/api", //实际请求服务器地址
+					// 回家使用
+					// "target" : "http://59.110.136.159:12002/safety-server/api", 
+>>>>>>> .theirs
                     "changeOrigin" : true,
                     "secure" : true,
                     "pathRewrite" : {

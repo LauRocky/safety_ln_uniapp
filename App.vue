@@ -1,5 +1,15 @@
 <script>
 	export default {
+		// onLaunch:function(){
+		// 	// #ifdef APP-PLUS
+		// 	push.runtime.getProperty(plus.runtime.appid,(wgtinfo)=>{
+		// 		console.log(JSON.stringify(wgtinfo))
+		// 	})
+		// 	// #endif
+		// },
+		// onShow:function(){
+		// 	console.log('App show')
+		// }
 	}
 </script>
 
