@@ -78,7 +78,7 @@
 				退出登录
 			</view>
 		</view>
-		<u-popup :show="show" @close="close" @open="center" mode="center" round="10">
+		<u-popup :show="show" @close="close" mode="center" round="10">
 			<view class="mask">
 				<view class="mask-title">
 					技术支持
