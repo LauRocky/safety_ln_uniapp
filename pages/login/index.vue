@@ -94,7 +94,6 @@ export default {
 	}
 };
 </script>
-
 <style lang="less" scoped>
 .login {
 	height: 100vh;

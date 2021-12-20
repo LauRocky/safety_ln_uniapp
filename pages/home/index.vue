@@ -9,10 +9,9 @@
 		</u-navbar>
 		<image class="home-img" src="../../static/banner.png" mode=""></image>
 		<view class="main">
-		Z
 			<view class="main-top">
 				<u-tabs lineColor="#00B490" lineWidth="80" :activeStyle="{ color: '#00B490' }" :scrollable="false"
-					:list="list1" @click="handtabs"></u-tabs>0
+					:list="list1" @click="handtabs"></u-tabs>
 				<view class="main-scroll">
 					<view class="scroll">
 						<view v-for="(item, index) in indexList" :key="index">
