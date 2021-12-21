@@ -72,9 +72,14 @@
 			},
 			// 获取当前公司下所有项目
 			getCompanySelectData() {
+				uni.showLoading({
+					title:'加载中',
+					mask:true
+				})
 				this.$http('/getCompanyProjectWithCamera', 'POST', {
 					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 				}, false).then(res => {
+					uni.hideLoading();
 					res.data.forEach(el => {
 						el.individual = 0;
 						el.MonitorMumber = 0;
@@ -87,6 +92,7 @@
 							}
 						})
 					})
+					
 					this.dataList = res.data
 					this.videoList = this.dataList
 				})
@@ -110,7 +116,6 @@
 		},
 		onLoad() {
 			this.getCompanySelectData()
-
 		},
 	}
 </script>

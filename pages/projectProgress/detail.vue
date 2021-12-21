@@ -1,9 +1,9 @@
 <template>
 	<view class="detail">
 		<view class="header">
-			<u-navbar :title="project.projectName" :fixed="true" :placeholder="true" :safeAreaInsetTop="true"
+			<!-- <u-navbar :title="project.projectName" :fixed="true" :placeholder="true" :safeAreaInsetTop="true"
 				bgColor="#11B38C" @leftClick="back" color="#ffffff">
-			</u-navbar>
+			</u-navbar> -->
 		</view>
 		<view class="detail-container">
 			<view class="title">
@@ -386,6 +386,7 @@
 		components: {},
 		data() {
 			return {
+				// title:'',
 				currentIndex: 0,
 				isShow: true,
 				project: {
@@ -582,6 +583,9 @@
 			this.project.companyId = option.companyId
 			this.project.projectName = option.projectName
 			this.getProject()
+			uni.setNavigationBarTitle({
+				title:this.project.projectName
+			})
 			getDictList('PROJECT_STATUS').then(data => {
 				this.projectStatus = data.dict
 			})
@@ -590,11 +594,6 @@
 </script>
 
 <style scoped>
-	.header ::v-deep span {
-		color: #FFFFFF;
-		font-weight: bold;
-	}
-
 	.active-tags {
 		background: #00B490;
 		color: #FFFFFF !important;

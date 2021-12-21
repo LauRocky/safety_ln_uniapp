@@ -1,15 +1,18 @@
 <template>
-	<view>
+	
+	<view class="detailVideo" style="position: relative;">
 		<view class="headerTop">
 			<u-navbar :title="status.names" :fixed="true" :show-fullscreen-btn="isIOS" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C"
 				@leftClick="back" color="#ffffff">
 			</u-navbar>
 		</view>
 		<view class="header" v-if="this.status.ezv==0">
-			<video class="vid" id="myVideo"  @error="videoErrorCallback"  :src="monitorUrl" controls></video>
+			
+			<video class="vid" id="myVideo" @error="videoErrorCallback"  :src="monitorUrl" controls></video>
 		</view>
 		<view class="header" v-if="this.status.ezv==1">
-			<video class="vid" id="myVideo"  @error="videoErrorCallback" :src="yinshiyun" controls></video>
+			
+			<video class="vid" id="myVideo" @error="videoErrorCallback" :src="yinshiyun" controls></video>
 		</view>
 		<view class="mask">
 			<view class="left" @click="address">
@@ -31,7 +34,8 @@
 				<view class="middle-body11" @click="address">
 					<image src="../../static/video/address1.png" mode=""></image>
 				</view>
-				<view class="middle-body11">
+				
+				<view class="middle-body11" @click="recording">
 					<image src="../../static/video/shexiang1.png" mode=""></image>
 				</view>
 			</view>
@@ -103,13 +107,6 @@
 			},
 			fullscreenchange(e){
 				console.log(e)
-				this.videoContext=uni.createVideoContext("myVideo",this);
-				if(this.devicesIsAndroid()){
-					this.videoContext.requestFullScreen();
-					this.isIOS=false
-				}else{
-					this.isIOS=true;
-				}
 			},
 			videoErrorCallback(){
 				
@@ -119,15 +116,7 @@
 				this.videoContext=uni.createVideoContext("myVideo",this);
 				this.videoContext.showStatusBar()   //显示状态栏,仅在ios全屏下有效
 				this.videoContext.requestFullScreen()
-				// this.videoContext=uni.createVideoContext("myVideo",this);
-				// console.log(this.videoContext)
-				// if(this.devicesIsAndroid()){
-				// 	this.videoContext.requestFullScreen();
-				// 	this.isIOS=false
-				// }else{
-				// 	this.isIOS=true;
-				// }
-				// this.fullscreenchange();
+				// exitFullScreen
 			},
 			// 截屏
 			screenshots(){
@@ -196,6 +185,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.Fullheader{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100vw;
+		height: 80upx;
+		background-color: #FFFFFF;
+	}
 	.headerTop {
 		::v-deep span {
 			color: #FFFFFF;
@@ -294,5 +291,6 @@
 				}
 			}
 		}
-	}
+	}		
+
 </style>

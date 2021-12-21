@@ -50,7 +50,8 @@ export default {
 				searchKey:'',
 				limit:20,
 				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
-			}
+			},
+			obj:{}
 		};
 	},
 	//组件生命周期
@@ -60,6 +61,12 @@ export default {
 	},
 	created() {
 		this.handlistByProjectId()
+		let obj = uni.getStorageSync('InformPerson');
+		if (obj) {
+			//缓存下标
+			this.checkboxValue1 = obj.checkboxValue1;
+			this.$emit('handEndP', obj);
+		}
 	},
 	mounted() {},
 	methods: {
@@ -68,6 +75,12 @@ export default {
 			this.listBy.page = 1
 			this.listBy.searchKey = '',
 			this.handlistByProjectId();
+		},
+		handcache() {
+			//缓存数据
+			if (this.obj.value) {     //判断有新选择的存储
+				uni.setStorageSync('InformPerson', this.obj);
+			}
 		},
 		handsearch(){
 			this.dictLsit = []
@@ -101,6 +114,10 @@ export default {
 			})
 			obj.titlelist=obj.titlelist.slice(0,obj.titlelist.length-1)
 			obj.value=obj.value.slice(0,obj.value.length-1)
+			this.obj.titlelist = obj.titlelist
+			this.obj.value = obj.value
+			this.obj.checkboxValue1 = this.checkboxValue1
+			
 			this.$emit('handEndP',obj)
 		},
 		handIcon(){

@@ -60,41 +60,15 @@ export default {
 						trigger: ['blur']
 					}
 				],
-				myEventManager:null,
-				eventManager:null,
-				myListener:null
+		
 			}
 		};
 	},
 	onLoad() {
-		this.addListener();
+		
 	},
 	methods: {
-		addListener(){
-			this.myEventManager = plus.android.importClass("com.ln.safety.EventListenerManager");  
-			this.eventManager = this.myEventManager.getMyEventManager(); 
-			//新建监听器  
-			this.myListener = plus.android.implements("com.ln.safety.LXLoginListener", {  
-			"onChange":function(event){  
-			                     //导入类  
-			         plus.android.importClass(event);  
-			                    //获取数据  
-			        console.log(event.getData());  
-			                    //获取来源  
-			        console.log(event.getSource());  
-			            }  
-			        }); 
-							//添加监听器    
-			 this.eventManager.addListener("onShow",this.myListener);    
-		},
-		onShow(){
-			let msg={
-				data:"data",
-				source:"source",
-				trigger:"trigger"
-			};
-			this.myEventManager.postMsg(msg,"onShow");  
-		},
+		
 		handIcon() {
 			this.type = this.type == 'password' ? 'text' : 'password';
 			this.icon =  this.type == 'password' ? 'eye-off' : 'eye-fill';

@@ -3,15 +3,19 @@
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	{
-	    "path" : "pages/lx_login/lx_login",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false
-	    }
-	    
-	},
+		{
+			"path": "pages/lx_login/lx_login",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "登陆",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+
+		},
 		{
 			"path": "pages/login/index",
 			"style": {
@@ -63,11 +67,11 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				"navigationBarTextStyle": "white"
+				// "app-plus": {
+				// 	"titleNView": false,
+				// 	"bounce": "none"
+				// }
 			}
 		}, {
 			"path": "pages/video/index",
@@ -85,11 +89,12 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				"navigationBarTextStyle": "white"
+				// "navigationStyle": "custom"
+				// "app-plus": {
+				// 	"titleNView": false,
+				// 	"bounce": "none"
+				// }
 			}
 		},
 		{
@@ -115,7 +120,7 @@
 					"bounce": "none"
 				}
 			}
-		}, 
+		},
 		{
 			"path": "pages/my/personal",
 			"style": {
@@ -127,7 +132,7 @@
 					"bounce": "none"
 				}
 			}
-		}, 
+		},
 		{
 			"path": "pages/my/about",
 			"style": {
@@ -201,15 +206,15 @@
 			}
 
 		}
-	    
-    ],
+
+	],
 	"tabBar": {
 		"color": "#A9A9A9",
 		"selectedColor": "#00B490",
 		"borderStyle": "#F8F8F8",
 		"blurEffect": "dark",
 		"backgroundColor": "#f8f8f8",
-		"fontSize":"12px",
+		"fontSize": "12px",
 		"list": [{
 			"pagePath": "pages/home/index",
 			"text": "首页",
