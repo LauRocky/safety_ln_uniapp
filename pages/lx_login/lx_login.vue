@@ -2,9 +2,6 @@
 	<view class="login">
 		<image class="login-imgs" src="../../static/user/banners.png" mode=""></image>
 		<image class="login-tou" src="../../static/logo.png"></image>
-
-
-
 	</view>
 </template>
 
@@ -21,7 +18,6 @@
 				uni.sendNativeEvent(data,res=>{
 					console.log(res)
 				});
-				
 				that.getCode(JSON.parse(data).code);
 				
 			})
