@@ -3,6 +3,10 @@
 		<image class="login-imgs" src="../../static/user/banners.png" mode=""></image>
 		<image class="login-tou" src="../../static/logo.png"></image>
 		<view class="login-form">
+			
+			
+			
+			
 			<u--form  :model="form" :rules="rules" ref="uForm">
 				<u-form-item prop="username">
 					<u--input v-model="form.username" placeholder="请输入用户名" prefixIconStyle="font-size: 25px;color: #b0b0b0" prefixIcon="account"></u--input>
@@ -55,12 +59,16 @@ export default {
 						message: '请输入密码',
 						trigger: ['blur']
 					}
-				]
+				],
+		
 			}
 		};
 	},
-	onLoad() {},
+	onLoad() {
+		
+	},
 	methods: {
+		
 		handIcon() {
 			this.type = this.type == 'password' ? 'text' : 'password';
 			this.icon =  this.type == 'password' ? 'eye-off' : 'eye-fill';

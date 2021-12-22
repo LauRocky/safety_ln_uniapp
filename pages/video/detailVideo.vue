@@ -564,7 +564,6 @@
 					width: 96upx;
 					height: 96upx;
 				}
-
 				.zoom1-text {
 					font-size: 30upx;
 					color: #666666;

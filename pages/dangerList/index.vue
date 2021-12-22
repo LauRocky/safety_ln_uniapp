@@ -72,30 +72,34 @@ export default {
 		this.handclick({ value: 1 });
 		this.handgETLIST();
 	},
-	onShow() {
-	},
+	onShow() {},
 	methods: {
-		handLsit(id) {   //跳转详情
+		handLsit(id) {
+			//跳转详情
 			uni.navigateTo({
 				url: `/pages/dangerList/hiddenDetails?id=${id}&status=${this.status}`
 			});
 		},
-		handclick(v) {   //tab获取数据
+		handclick(v) {
+			//tab获取数据
+			this.page = 1;
 			this.status = v.value;
 			this.numsList = [];
-			if (v.value == 1) {
-				this.handDangerList({staus:'-1', page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
-			} else if (v.value == 2) {
-				this.handDangerList({staus:'1', page: this.page, limit: this.limit, problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
+			if (v.value == '1') {
+				this.handDangerList({ status: '-1', page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
+			} else if (v.value == '2') {
+				this.handDangerList({ status: '1', page: this.page, limit: this.limit, problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
 			} else {
-				this.handDangerList({staus:'-1,1,0', page: this.page, limit: this.limit, all: '1' });
+				this.handDangerList({ status: '-1,1,0', page: this.page, limit: this.limit, all: '1' });
 			}
 		},
-		handcompany(v) {   //选择项目
+		handcompany(v) {
+			//选择项目
 			this.title = v;
 			this.show = false;
 		},
-		handgETLIST() {   //获取公司项目数据
+		handgETLIST() {
+			//获取公司项目数据
 			getDictList('PROBLEMS_LEVEL_TYPE')
 				.then(res => {
 					this.dictLsit = res.dict;
@@ -104,7 +108,8 @@ export default {
 					console.log(err);
 				});
 		},
-		handDangerList(obj) {  //列表数据
+		handDangerList(obj) {
+			//列表数据
 			uni.showLoading({ title: '加载中', mask: true });
 			var myDate = new Date();
 			this.$http('/problem/app/list', 'POST', obj, false)
@@ -112,9 +117,10 @@ export default {
 					uni.hideLoading();
 					if (res.code == 0) {
 						if (this.numsList.length < res.page.totalCount) {
+							this.page++;
 							res.page.list.forEach(val => {
 								let obj = {};
-								if(val.problemType){
+								if (val.problemType) {
 									obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
 									val.problemType2 = obj[0].value;
 								}
@@ -143,7 +149,8 @@ export default {
 					console.log(err);
 				});
 		},
-		handPush() {   //添加隐患
+		handPush() {
+			//添加隐患
 			uni.navigateTo({
 				url: '/pages/dangerList/add'
 			});
@@ -152,7 +159,13 @@ export default {
 			this.show = false;
 		},
 		handtolower() {
-			this.handDangerList();
+			if (this.status == '1') {
+				this.handDangerList({ status: '-1', page: this.page, limit: this.limit, problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId });
+			} else if (this.status == '2') {
+				this.handDangerList({ status: '1', page: this.page, limit: this.limit, problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId });
+			} else {
+				this.handDangerList({ status: '-1,1,0', page: this.page, limit: this.limit, all: '1' });
+			}
 		},
 
 		handUpqie() {
@@ -210,7 +223,6 @@ export default {
 							font-family: PingFang SC;
 							font-weight: 500;
 							color: #00b490;
-							
 						}
 						.top-right2 {
 							font-size: 24upx;
@@ -238,7 +250,7 @@ export default {
 							font-size: 24upx;
 							font-family: PingFang SC;
 							font-weight: bold;
-							color: #FF6C00;
+							color: #ff6c00;
 						}
 					}
 					.list-title {

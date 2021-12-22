@@ -59,7 +59,6 @@
 				this.show = false;
 			},
 			video(e) {
-				console.log(e)
 				if (e.cameraEntities.length != 0) {
 					uni.navigateTo({
 						url: `/pages/video/showVideo?projectId=${e.projectId}&projectName=${e.projectName}`,

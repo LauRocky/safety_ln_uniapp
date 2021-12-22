@@ -78,7 +78,7 @@
 				退出登录
 			</view>
 		</view>
-		<u-popup :show="show" @close="close" @open="center" mode="center" round="10">
+		<u-popup :show="show" @close="close" mode="center" round="10">
 			<view class="mask">
 				<view class="mask-title">
 					技术支持
@@ -97,7 +97,7 @@
 </template>
 
 <script>
-	import { scanCode } from '../../utils/utils.js';
+	import { scanCode } from '../../utils/utils.js'
 export default {
 	components: {},
 	data() {
@@ -166,11 +166,7 @@ export default {
 			},
 			// 更新
 			check() {
-				// uni.requireNativePlugin()
-				// console.log(123)
-				uni.navigateTo({
-					url:'/pages/my/videodemo'
-				})
+				
 			},
 			//技术支持
 			skill() {
