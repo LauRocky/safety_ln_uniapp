@@ -27,7 +27,6 @@
 				}
 			}
 		},
-<<<<<<< HEAD
 		// ……其他页面配置
 		{
 			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
@@ -45,9 +44,6 @@
 				}
 			}
 		},
-=======
-		
->>>>>>> 6843d3707db292ec5ad55091715a548d9fbb92fa
 		{
 			"path": "pages/home/index",
 			"style": {
