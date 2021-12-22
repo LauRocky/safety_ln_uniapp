@@ -1,7 +1,6 @@
 <template>
 	<view>
 		<nav-bar :title="title" @seach="handsearch" @Upqie="handUpqie"></nav-bar>
-		
 		<view class="project-container" >
 			<view class="project" @click="goDetail(project.projectId,project.projectName,project.companyId)" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">
 				<view class="title">
@@ -65,7 +64,7 @@
 					mask:true
 				})
 				this.$http('/project/plan/withStatusNew','POST',this.queryForm ,false).then(res=>{
-					
+					uni.hideLoading()
 					this.rawList=res.page
 					this.projectList=this.rawList
 				})
