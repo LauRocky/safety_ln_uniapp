@@ -3,11 +3,23 @@
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	{
+		"path": "pages/login/index",
+		"style": {
+			"navigationBarBackgroundColor": "#11B38C",
+			"navigationBarTitleText": "登录",
+			"navigationStyle": "custom",
+			"app-plus": {
+				"titleNView": false,
+				"bounce": "none"
+			}
+		}
+	},
 		{
-			"path": "pages/login/index",
+			"path": "pages/lx_login/lx_login",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "登录",
+				"navigationBarTitleText": "登陆",
 				"navigationStyle": "custom",
 				"app-plus": {
 					"titleNView": false,
@@ -15,6 +27,7 @@
 				}
 			}
 		},
+<<<<<<< HEAD
 		// ……其他页面配置
 		{
 			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
@@ -32,6 +45,9 @@
 				}
 			}
 		},
+=======
+		
+>>>>>>> 6843d3707db292ec5ad55091715a548d9fbb92fa
 		{
 			"path": "pages/home/index",
 			"style": {
@@ -71,11 +87,11 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				"navigationBarTextStyle": "white"
+				// "app-plus": {
+				// 	"titleNView": false,
+				// 	"bounce": "none"
+				// }
 			}
 		}, {
 			"path": "pages/video/index",
@@ -93,11 +109,12 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				"navigationBarTextStyle": "white"
+				// "navigationStyle": "custom"
+				// "app-plus": {
+				// 	"titleNView": false,
+				// 	"bounce": "none"
+				// }
 			}
 		},
 		{
@@ -209,6 +226,7 @@
 			}
 
 		}
+
 	],
 	"tabBar": {
 		"color": "#A9A9A9",

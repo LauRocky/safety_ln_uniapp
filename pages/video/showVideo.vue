@@ -1,11 +1,6 @@
 <template>
 	<view class="video">
 		<!-- 视频展示 -->
-		<view class="header">
-			<u-navbar :title="project.projectName" :fixed="true" :placeholder="true" :safeAreaInsetTop="true"
-				bgColor="#11B38C" @leftClick="back" color="#ffffff">
-			</u-navbar>
-		</view>
 		<view class="list">
 			<!-- 搜索框 -->
 			<view style="padding:30upx 30upx 0">
@@ -90,6 +85,9 @@
 		onLoad(options) {
 			this.project.projectId = options.projectId;
 			this.project.projectName = options.projectName;
+			uni.setNavigationBarTitle({
+				title:this.project.projectName
+			})
 		},
 		onShow() {
 			this.show();
@@ -99,12 +97,6 @@
 
 <style lang="scss" scoped>
 	.video {
-		.header{
-			::v-deep span {
-				color: #FFFFFF;
-				font-weight: bold;
-			}
-		}
 		.list {
 			.searchs{
 				width: 92vw;

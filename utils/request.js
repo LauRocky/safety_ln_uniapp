@@ -1,6 +1,11 @@
 // 在公司的默认地址
 export var BASE_URL = 'http://192.168.133.13:12002/safety-server/api'
+<<<<<<< HEAD
 /* 	export var BASE_URL = 'http://59.110.136.159:12002/safety-server/api' */
+=======
+
+// export var BASE_URL = 'http://59.110.136.159:12002/safety-server/api'
+>>>>>>> 6843d3707db292ec5ad55091715a548d9fbb92fa
 
 
 // #ifdef H5

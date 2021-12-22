@@ -1,5 +1,6 @@
 <template>
-	<view>
+	
+	<view class="detailVideo" style="position: relative;">
 		<view class="headerTop">
 			<u-navbar :title="status.names" :fixed="true" :show-fullscreen-btn="isIOS" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C"
 				@leftClick="back" color="#ffffff">
@@ -31,7 +32,8 @@
 				<view class="middle-body11" @click="address">
 					<image src="../../static/video/address1.png" mode=""></image>
 				</view>
-				<view class="middle-body11">
+				
+				<view class="middle-body11" @click="recording">
 					<image src="../../static/video/shexiang1.png" mode=""></image>
 				</view>
 			</view>
@@ -103,13 +105,6 @@
 			},
 			fullscreenchange(e){
 				console.log(e)
-				this.videoContext=uni.createVideoContext("myVideo",this);
-				if(this.devicesIsAndroid()){
-					this.videoContext.requestFullScreen();
-					this.isIOS=false
-				}else{
-					this.isIOS=true;
-				}
 			},
 			videoErrorCallback(){
 				
@@ -119,15 +114,7 @@
 				this.videoContext=uni.createVideoContext("myVideo",this);
 				this.videoContext.showStatusBar()   //显示状态栏,仅在ios全屏下有效
 				this.videoContext.requestFullScreen()
-				// this.videoContext=uni.createVideoContext("myVideo",this);
-				// console.log(this.videoContext)
-				// if(this.devicesIsAndroid()){
-				// 	this.videoContext.requestFullScreen();
-				// 	this.isIOS=false
-				// }else{
-				// 	this.isIOS=true;
-				// }
-				// this.fullscreenchange();
+				// exitFullScreen
 			},
 			// 截屏
 			screenshots(){
@@ -190,13 +177,20 @@
 		},
 		onLoad(option) {
 			this.status = option
-			console.log(this.status)
 			this.videodetail()
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.Fullheader{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100vw;
+		height: 80upx;
+		background-color: #FFFFFF;
+	}
 	.headerTop {
 		::v-deep span {
 			color: #FFFFFF;
@@ -295,5 +289,6 @@
 				}
 			}
 		}
-	}
+	}		
+
 </style>
