@@ -15,19 +15,18 @@
 			}
 		}
 	},
-		{
-			"path": "pages/lx_login/lx_login",
-			"style": {
-				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "登陆",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
-			}
-		},
-<<<<<<< HEAD
+		// {
+		// 	"path": "pages/lx_login/lx_login",
+		// 	"style": {
+		// 		"navigationBarBackgroundColor": "#11B38C",
+		// 		"navigationBarTitleText": "登陆",
+		// 		"navigationStyle": "custom",
+		// 		"app-plus": {
+		// 			"titleNView": false,
+		// 			"bounce": "none"
+		// 		}
+		// 	}
+		// },
 		// ……其他页面配置
 		{
 			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
@@ -45,9 +44,6 @@
 				}
 			}
 		},
-=======
-		
->>>>>>> 6843d3707db292ec5ad55091715a548d9fbb92fa
 		{
 			"path": "pages/home/index",
 			"style": {

@@ -116,12 +116,10 @@
 				showScanLogin: false
 			};
 		},
-<<<<<<< HEAD
 		onLoad() {
 			upApp()
-=======
+			},
 		mounted:function(){
->>>>>>> 6843d3707db292ec5ad55091715a548d9fbb92fa
 			this.handbacklog();
 			this.handdetailByUser();
 		},
