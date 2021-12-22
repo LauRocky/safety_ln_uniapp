@@ -116,11 +116,10 @@
 				showScanLogin: false
 			};
 		},
-		onLoad() {
+		mounted:function(){
 			this.handbacklog();
 			this.handdetailByUser();
 		},
-		onShow() {},
 		methods: {
 
 			handscanCode() {
