@@ -166,8 +166,11 @@ export default {
 			},
 			// 更新
 			check() {
-				uni.requireNativePlugin()
-				console.log(123)
+				// uni.requireNativePlugin()
+				// console.log(123)
+				uni.navigateTo({
+					url:'/pages/my/videodemo'
+				})
 			},
 			//技术支持
 			skill() {
