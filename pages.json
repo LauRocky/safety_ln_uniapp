@@ -15,6 +15,23 @@
 				}
 			}
 		},
+		// ……其他页面配置
+		{
+			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
+			"style": {
+				"disableScroll": true,
+				"app-plus": {
+					"backgroundColorTop": "transparent",
+					"background": "transparent",
+					"titleNView": false,
+					"scrollIndicator": false,
+					"popGesture": "none",
+					"animationType": "fade-in",
+					"animationDuration": 200
+
+				}
+			}
+		},
 		{
 			"path": "pages/home/index",
 			"style": {
@@ -106,7 +123,7 @@
 					"bounce": "none"
 				}
 			}
-		}, 
+		},
 		{
 			"path": "pages/my/personal",
 			"style": {
@@ -118,7 +135,7 @@
 					"bounce": "none"
 				}
 			}
-		}, 
+		},
 		{
 			"path": "pages/my/about",
 			"style": {
@@ -199,7 +216,7 @@
 		"borderStyle": "#F8F8F8",
 		"blurEffect": "dark",
 		"backgroundColor": "#f8f8f8",
-		"fontSize":"12px",
+		"fontSize": "12px",
 		"list": [{
 			"pagePath": "pages/home/index",
 			"text": "首页",

@@ -75,7 +75,7 @@
 		scanCode
 	} from '../../utils/utils.js';
 	import barecharts from '../../components/home/barecharts.vue';
-
+	import upApp  from '@/uni_modules/uni-upgrade-center-app/utils/check-update.js'
 	export default {
 		components: {
 			barecharts
@@ -117,6 +117,7 @@
 			};
 		},
 		onLoad() {
+			upApp()
 			this.handbacklog();
 			this.handdetailByUser();
 		},

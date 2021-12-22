@@ -98,6 +98,7 @@
 
 <script>
 	import { scanCode } from '../../utils/utils.js';
+	import upApp  from '@/uni_modules/uni-upgrade-center-app/utils/check-update.js'
 export default {
 	components: {},
 	data() {
@@ -153,8 +154,7 @@ export default {
 			},
 			// 更新
 			check() {
-				uni.requireNativePlugin()
-				console.log(123)
+				upApp()
 			},
 			//技术支持
 			skill() {

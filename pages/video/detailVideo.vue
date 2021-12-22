@@ -6,11 +6,10 @@
 			</u-navbar>
 		</view>
 		<view class="header" v-if="this.status.ezv==0">
-			<video class="vid" id="myVideo" @fullscreenchange="fullscreenchange" @error="videoErrorCallback"  :src="monitorUrl" controls></video>
-			<image class="zu_logo" :src="monitorUrl+ '?x-oss-process=video/snapshot,t_0,f_jpg'" mode=""></image>
+			<video class="vid" id="myVideo" @error="videoErrorCallback"  :src="monitorUrl" controls></video>
 		</view>
 		<view class="header" v-if="this.status.ezv==1">
-			<video class="vid" id="myVideo" @fullscreenchange="fullscreenchange" @error="videoErrorCallback" :src="yinshiyun" controls></video>
+			<video class="vid" id="myVideo" @error="videoErrorCallback" :src="yinshiyun" controls></video>
 		</view>
 		<view class="mask">
 			<view class="left" @click="address">
