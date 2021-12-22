@@ -112,11 +112,12 @@ export default {
 		};
 	},
 
-	onLoad() {},
-	mounted: function() {
-		upApp();
+	onLoad() {
 		this.handbacklog();
 		this.handdetailByUser();
+	},
+	mounted() {
+		upApp();
 	},
 	methods: {
 		handGp() {
