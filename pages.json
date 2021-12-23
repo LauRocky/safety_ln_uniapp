@@ -14,19 +14,7 @@
 					"bounce": "none"
 				}
 			}
-		},{
-			"path": "pages/lx_login/lx_login",
-			"style": {
-				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "登陆",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
-			}
-		}, 
-		// ……其他页面配置
+		},
 		{
 			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
 			"style": {
@@ -43,6 +31,7 @@
 				}
 			}
 		},
+
 		{
 			"path": "pages/home/index",
 			"style": {

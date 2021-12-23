@@ -1,15 +1,13 @@
 <template>
 	<view class="detailVideo" style="position: relative;">
 		<view class="header" v-if="this.status.ezv==0">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" controls>
-				<!-- <cover-view style="color: #FFFFFF;">123</cover-view> -->
+			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false">
 			</video>
 		</view>
-		<view class="header" v-if="this.status.ezv==1">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun"  controls>
-				<!-- <cover-view style="color: #FFFFFF;">123</cover-view> -->
+		<!-- <view class="header" v-if="this.status.ezv==1">
+			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun"  :controls="false">
 			</video>
-		</view>
+		</view> -->
 		<view class="mask">
 			<view class="left">
 				<!-- <image style="width: 60upx;height: 60upx;" src="../../static/video/xunjiandian.png" mode=""></image> -->
@@ -447,6 +445,7 @@
 			}
 		},
 		onLoad(option) {
+			console.log(option)
 			uni.setNavigationBarTitle({
 				title:option.names
 			})
@@ -517,7 +516,8 @@
 
 			.right-img3 {
 				text-align: center;
-				// width: 60upx;
+				font-size: 28upx;
+				width: 100upx;
 				height: 60upx;
 				font-size: 28upx;
 				line-height: 60upx;
@@ -525,7 +525,6 @@
 			}
 		}
 	}
-
 	.middle {
 		overflow: hidden;
 		.middle-content {

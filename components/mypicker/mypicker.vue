@@ -12,7 +12,7 @@
 				<view class="main-right">
 					<scroll-view class="right-scroll" @scrolltolower="handtolower" scroll-y>
 						<view class="gg" :class="[ggIndex == i1 ? 'ggactive' : '']" @click="handGcompany(val1, i1)"
-							v-for="(val1, i1) in rightlist" :key="i1">{{ val1 }}</view>
+							v-for="(val1, i1) in rightlist" :key="i1">{{ val1.name }}</view>
 					</scroll-view>
 				</view>
 			</view>
@@ -30,7 +30,7 @@
 				ggIndex: null,
 				rightlist: [],
 				alldata: {},
-				leftList: []
+				leftList: [],
 			};
 		},
 		onLoad() {},
@@ -42,8 +42,10 @@
 		methods: {
 			handtolower() {},
 			handGcompany(v, val) {
+				console.log(v,val)
 				this.ggIndex = val;
-				this.$emit('handcompany', v);
+				this.$emit('handcompany', v.name);
+				this.$emit('companyId',v.id)
 			},
 			handleft(v, val) {
 				this.ggIndex = 0;
@@ -59,13 +61,14 @@
 			handSelectData() {
 				//shujui  两级
 				this.$http(
-						'/lvxin/getCompanySelectData',
+						'/lvxin/getCompanySelectDataNew',
 						'GET', {
 							companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 						},
 						false
 					)
 					.then(res => {
+						console.log(res)
 						if (res.code == 0) {
 							this.alldata = res.data.second;
 							this.leftList = res.data.first;

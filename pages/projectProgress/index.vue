@@ -21,7 +21,7 @@
 				</view>
 			</view>			
 		</view>
-		<mypicker :show="show" @handcompany="handcompany" @close="handclose" />
+		<mypicker ref="myProject" :show="show" @handcompany="handcompany" @companyId="companyIds" @close="handclose" />
 	</view>
 </template>
 
@@ -54,18 +54,32 @@
 			handclose() {
 				this.show = false;
 			},
+			companyIds(v){
+				console.log("41546",v)
+				this.$http('/project/plan/withStatusNew','POST',{
+					companyId:v,
+					projectId:'',
+					status:'',
+				} ,false).then(res=>{
+					console.log(res)
+					this.rawList=res.page
+					this.projectList=this.rawList
+				})
+			},
 			handcompany(v) {
 				this.title = v;
 				this.show = false;
 				console.log(v)
-				this.$http('/lvxin/getCompanyProjectByCompanyName','POST',{
-					companyName:v
-				},false).then(res=>{
-					console.log(res)
-					this.projectList=res.data		
-				})
+				// this.$http('/lvxin/getCompanyProjectByCompanyName','POST',{
+				// 	companyName:v
+				// },false).then(res=>{
+				// 	console.log(res)
+				// 	this.projectList=res.data		
+				// })
 			},
+			//获取项目进度项目
 			getProjectList(){
+				// console.log(this.$refs.myProject)
 				uni.showLoading({
 					title:'加载中',
 					mask:true

@@ -35,17 +35,21 @@
 				etEznew: '',
 				showList: [],
 				rawList:[],
+				ceshis:[]
 			};
 		},
 		methods: {
 			handsearch(val) {
+				if(this.rawList){
+					this.showList=JSON.parse(JSON.stringify(this.rawList))
+				}
 				if(val){
 					let result=[]
 					this.showList.cameraEntities.forEach(e=>{
 						let pName=e.ipcName;
 						if(pName.indexOf(val)>-1){
 							result.push(e)
-							console.log(result)
+							// console.log(result)
 						}
 					})
 					this.showList.cameraEntities=result
@@ -57,7 +61,8 @@
 				if (item.cameraIndexCode) {
 					console.log(item)
 					uni.navigateTo({
-						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}`
+						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&ipcType=${item.ipcType}`
+						// url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}`
 					})	
 				}else if (item.ezvizAccountId) {
 					uni.navigateTo({
@@ -76,7 +81,7 @@
 					'projectId': this.project.projectId
 				}, false).then(res => {
 					this.rawList=JSON.parse(JSON.stringify(res.projectInfoEntities[0]))
-					this.showList = JSON.parse(JSON.stringify(res.projectInfoEntities[0]))
+					this.showList=JSON.parse(JSON.stringify(res.projectInfoEntities[0]))
 				})
 			},
 			// 传值方式  this.$http(`/ehome/camera/previewurl/hls/${el.cameraIndexCode}`,'POST',{},false)
