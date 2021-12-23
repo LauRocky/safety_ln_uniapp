@@ -5,7 +5,7 @@
 				<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>
 			</view>
 		</u-navbar>
-		<view class="video">
+		<view class="video" v-if="videoList.length!=0">
 			<view class="video-item" v-for="(item,index) in videoList" :key="item.projectId" @click="video(item)">
 				<view class="ball"><text>{{item.projectName.substring(0,1)}}</text></view>
 				<view class="main">
@@ -25,6 +25,12 @@
 						</text>
 					</view>
 				</view>
+			</view>
+		</view>
+		<view v-else>
+			<!-- 用来判断当前页面如果没有数据,所展示的页面 -->
+			<view class="nodata">
+				
 			</view>
 		</view>
 		<mypicker :show="show" @handcompany="handcompany" @close="handclose" />
@@ -57,6 +63,13 @@
 			handcompany(v) {
 				this.title = v;
 				this.show = false;
+				this.$http('/lvxin/getCompanyProjectByCompanyName','POST',{
+					companyName:v
+				},false).then(res=>{
+					console.log(res)
+				this.dataList = res.data
+				this.videoList = this.dataList
+				})
 			},
 			video(e) {
 				if (e.cameraEntities.length != 0) {
@@ -87,12 +100,12 @@
 							if (e.ipcType == 3) {
 								el.individual += 1;
 							}
-							if (e.ipcType == 1) {
+							else if (e.ipcType == 1) {
 								el.MonitorMumber += 1;
 							}
 						})
-					})
-					
+					})	
+					console.log(res)
 					this.dataList = res.data
 					this.videoList = this.dataList
 				})
@@ -100,6 +113,7 @@
 
 			//模糊查询
 			handseach(val) {
+				this.videoList = this.dataList
 				if (val) {
 					let result = []
 					this.videoList.forEach(e => {
@@ -109,9 +123,7 @@
 						}
 					})
 					this.videoList = result
-				} else {
-					this.videoList = this.dataList
-				}
+				} 
 			},
 		},
 		onLoad() {

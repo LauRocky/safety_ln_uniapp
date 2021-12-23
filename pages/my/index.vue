@@ -48,19 +48,19 @@
 						公告
 					</view>
 				</view>
-				<view class="image-item" @click="skill">
+				<!-- <view class="image-item" @click="skill">
 					<image class="image-imgs" src="../../static/my/project4.png" mode=""></image>
 					<view class="image-text">
 						技术支持
 					</view>
-				</view>
+				</view> -->
 			</view>
 
 			<view class="app-plug" style="margin-top: 20upx;">
-				<view class="update" @click="check">
+			<!-- 	<view class="update" @click="check">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/gengxin.png" mode=""></image>
 					<view class="updata-font">检查更新</view>
-				</view>
+				</view> -->
 				<view class="share" @click="share">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/fenxiang.png" mode=""></image>
 					<view class="share-font">
@@ -78,7 +78,7 @@
 				退出登录
 			</view>
 		</view>
-		<u-popup :show="show" @close="close" mode="center" round="10">
+		<!-- <u-popup :show="show" @close="close" mode="center" round="10">
 			<view class="mask">
 				<view class="mask-title">
 					技术支持
@@ -92,7 +92,7 @@
 					拨打
 				</view>
 			</view>
-		</u-popup>
+		</u-popup> -->
 	</view>
 </template>
 
@@ -144,11 +144,11 @@ export default {
 				})
 			},
 			// 拨打电话
-			callphone() {
-				uni.makePhoneCall({
-					phoneNumber: this.user.mobile.toString()
-				})
-			},
+			// callphone() {
+			// 	uni.makePhoneCall({
+			// 		phoneNumber: this.user.mobile.toString()
+			// 	})
+			// },
 
 			// 关闭模态框
 			back() {

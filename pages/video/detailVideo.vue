@@ -1,16 +1,13 @@
 <template>
 	<view class="detailVideo" style="position: relative;">
-		<view class="headerTop">
-			<u-navbar :title="status.names" :fixed="true" :show-fullscreen-btn="isIOS" :placeholder="true"
-				:safeAreaInsetTop="true" bgColor="#11B38C" @leftClick="back" color="#ffffff">
-			</u-navbar>
-		</view>
 		<view class="header" v-if="this.status.ezv==0">
 			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" controls>
+				<!-- <cover-view style="color: #FFFFFF;">123</cover-view> -->
 			</video>
 		</view>
 		<view class="header" v-if="this.status.ezv==1">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun" controls>
+			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun"  controls>
+				<!-- <cover-view style="color: #FFFFFF;">123</cover-view> -->
 			</video>
 		</view>
 		<view class="mask">
@@ -72,7 +69,7 @@
 	import navBar from '../../components/navBar/navBar.vue'
 	export default {
 		components: {
-			navBar
+			navBar,
 		},
 		data() {
 			return {
@@ -450,9 +447,13 @@
 			}
 		},
 		onLoad(option) {
+			uni.setNavigationBarTitle({
+				title:option.names
+			})
 			this.status = option
 			console.log(this.status)
 			this.videodetail()
+			
 		}
 	}
 </script>
@@ -515,8 +516,10 @@
 			}
 
 			.right-img3 {
-				width: 60upx;
+				text-align: center;
+				// width: 60upx;
 				height: 60upx;
+				font-size: 28upx;
 				line-height: 60upx;
 				color: #FFFFFF;
 			}

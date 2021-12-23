@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<nav-bar :title="title" @seach="handsearch" @Upqie="handUpqie"></nav-bar>
-		<view class="project-container" >
+		<view class="project-container">
 			<view class="project" @click="goDetail(project.projectId,project.projectName,project.companyId)" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">
 				<view class="title">
 					<text>{{project.projectName}}</text>
@@ -43,7 +43,7 @@
 					status:'',
 				},
 				rawList:[],
-				 projectList:[],
+				projectList:[],
 				
 			}
 		}, 
@@ -57,6 +57,13 @@
 			handcompany(v) {
 				this.title = v;
 				this.show = false;
+				console.log(v)
+				this.$http('/lvxin/getCompanyProjectByCompanyName','POST',{
+					companyName:v
+				},false).then(res=>{
+					console.log(res)
+					this.projectList=res.data		
+				})
 			},
 			getProjectList(){
 				uni.showLoading({
@@ -70,6 +77,7 @@
 				})
 			},
 			handsearch(val){
+				this.projectList=this.rawList
 				if(val){
 					let result=[]
 					 this.projectList.forEach(e=>{
@@ -79,8 +87,6 @@
 						 }
 					 })
 					 this.projectList=result
-				}else{
-					this.projectList=this.rawList
 				}
 			},
 			/* 根据项目id判断节点状态 返回有几个异常 */
