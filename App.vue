@@ -6,9 +6,57 @@
 				console.log(JSON.stringify(wgtinfo))
 			})
 			// #endif
+			
 		},
 		onShow:function(){
 			console.log('App show')
+		},
+		mounted:function(){
+			
+		},
+		methods:{
+			toLogin() {
+				uni.navigateTo({
+					url: "/pages/login/index"
+				})
+			},
+			getCode(code) {
+				uni.showLoading({
+					title:"正在登陆中"
+				});
+				this.$http(
+					'/lvxin/loginByCode',
+					'POST', {
+						"code": code
+					}
+				).then(res => {
+					uni.hideLoading();
+					console.log(res);
+					if (res.code == 0) {
+						uni.setStorageSync('userInfo', res.user);
+						uni.setStorageSync('token', res.token);
+			
+						uni.switchTab({
+							url: '/pages/home/index'
+						});
+					}else{
+						uni.showToast({
+							icon:"error",
+							duration:1500,
+							title:"登录失败"
+						});
+					}
+				}).catch(err => {
+					uni.hideLoading();
+					console.log(err)
+					uni.hideLoading();
+					uni.showToast({
+						icon:"error",
+						duration:1500,
+						title:"登录失败"
+					});
+				})
+			}
 		}
 	}
 </script>

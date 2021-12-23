@@ -23,11 +23,7 @@
 			})
 		},	
 		methods: {
-			toLogin() {
-				uni.navigateTo({
-					url: "/pages/login/index"
-				})
-			},
+			
 			getCode(code) {
 				uni.showLoading({
 					title:"正在登陆中"
