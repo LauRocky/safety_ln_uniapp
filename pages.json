@@ -14,7 +14,7 @@
 					"bounce": "none"
 				}
 			}
-		},{
+		}, {
 			"path": "pages/lx_login/lx_login",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -25,7 +25,7 @@
 					"bounce": "none"
 				}
 			}
-		}, 
+		},
 		// ……其他页面配置
 		{
 			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
@@ -82,13 +82,13 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "white"
-				// "app-plus": {
-				// 	"titleNView": false,
-				// 	"bounce": "none"
-				// }
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
 			}
-		}, {
+		},{
 			"path": "pages/video/index",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -99,7 +99,8 @@
 					"bounce": "none"
 				}
 			}
-		}, {
+		},
+		{
 			"path": "pages/video/showVideo",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -171,13 +172,15 @@
 					"bounce": "none"
 				}
 			}
-		}, {
+		},
+		{
 			"path": "pages/dangerList/hiddenDetails",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "隐患详情"
 			}
-		}, {
+		},
+		{
 			"path": "pages/dangerList/dangers",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -188,7 +191,8 @@
 					"bounce": "none"
 				}
 			}
-		}, {
+		},
+		{
 			"path": "pages/dangerList/rejected",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -201,7 +205,8 @@
 			}
 
 
-		}, {
+		},
+		{
 			"path": "pages/dangerList/review",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -213,7 +218,8 @@
 				}
 			}
 
-		}, {
+		},
+		{
 			"path": "pages/home/particulars",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
