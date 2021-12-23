@@ -6,11 +6,11 @@
 			</u-navbar>
 		</view>
 		<view class="header" v-if="this.status.ezv==0">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" controls>
+			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
 			</video>
 		</view>
 		<view class="header" v-if="this.status.ezv==1">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun" controls>
+			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
 			</video>
 		</view>
 		<view class="mask">
@@ -515,7 +515,9 @@
 			}
 
 			.right-img3 {
-				width: 60upx;
+				text-align: center;
+				font-size: 28upx;
+				width: 100upx;
 				height: 60upx;
 				line-height: 60upx;
 				color: #FFFFFF;

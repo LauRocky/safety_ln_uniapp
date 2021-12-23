@@ -100,18 +100,20 @@
 
 			//模糊查询
 			handseach(val) {
-				if (val) {
-					let result = []
-					this.videoList.forEach(e => {
-						let pName = e.projectName;
-						if (pName.indexOf(val) > -1) {
-							result.push(e)
-						}
-					})
-					this.videoList = result
-				} else {
+				if(this.dataList){
 					this.videoList = this.dataList
+					if (val) {
+						let result = []
+						this.videoList.forEach(e => {
+							let pName = e.projectName;
+							if (pName.indexOf(val) > -1) {
+								result.push(e)
+							}
+						})
+						this.videoList = result
+					} 
 				}
+			
 			},
 		},
 		onLoad() {
