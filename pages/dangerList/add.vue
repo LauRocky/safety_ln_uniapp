@@ -135,8 +135,8 @@ export default {
 			showA: false, //地址
 			userAdd: {
 				name: '',
-				dagner: '',
-				type: '',
+				dagner: '安全事件等级',
+				type: '建设施工',
 				rectification: '',
 				person: '',
 				Details: '',
@@ -146,8 +146,8 @@ export default {
 				images: '',
 				companyId: '', //项目id
 				projectId: '', //隐患id
-				assessment: '', //隐患等级，参考字典值。取code
-				problemType: '', //选择，隐患类型，参考字典值。取code
+				assessment: '4', //隐患等级，参考字典值。取code
+				problemType: '0', //选择，隐患类型，参考字典值。取code
 				problemSolver: '', //整改人
 				notifyPerson: '' //只会人
 			},
