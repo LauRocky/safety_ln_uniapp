@@ -2,6 +2,7 @@
 	<view class="mypicker">
 		<u-popup :show="show" :round="10" mode="bottom" @close="handIcon" :closeable="true" @open="open">
 			<view class="titles">
+				<view type="default" @click="clear">取消</view>
 				请选择所在公司
 			</view>
 			<view class="main">
@@ -38,10 +39,15 @@ export default {
 	},
 	mounted() {},
 	methods: {
+		clear(){
+			this.rightlist=""
+			 return false 
+		},
 		handtolower() {},
 		handGcompany(v, val) {
 			this.ggIndex = val;
 			this.$emit('handcompany', v);
+			this.$emit('companyId',v.id)
 		},
 		handleft(v, val) {
 			this.ggIndex = 0;
@@ -57,7 +63,7 @@ export default {
 		handSelectData() {
 			//shujui  两级
 			this.$http(
-				'/lvxin/getCompanySelectData',
+				'/lvxin/getCompanySelectDataNew',
 				'GET',
 				{
 					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
@@ -71,6 +77,7 @@ export default {
 						this.rightlist = res.data.second['低碳城市'];
 						// console.log(this.leftlist);
 					}
+					
 				})
 				.catch(err => {
 					console.log(err);
