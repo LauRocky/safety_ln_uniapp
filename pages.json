@@ -107,11 +107,11 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				"navigationBarTextStyle": "white"
+				// "app-plus": {
+				// 	"titleNView": false,
+				// 	"bounce": "none"
+				// }
 			}
 		},
 		{

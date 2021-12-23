@@ -1,18 +1,13 @@
 <template>
 	<view class="detailVideo" style="position: relative;">
-		<view class="headerTop">
-			<u-navbar :title="status.names" :fixed="true" :show-fullscreen-btn="isIOS" :placeholder="true"
-				:safeAreaInsetTop="true" bgColor="#11B38C" @leftClick="back" color="#ffffff">
-			</u-navbar>
-		</view>
 		<view class="header" v-if="this.status.ezv==0">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
+			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false">
 			</video>
 		</view>
-		<view class="header" v-if="this.status.ezv==1">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
+		<!-- <view class="header" v-if="this.status.ezv==1">
+			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun"  :controls="false">
 			</video>
-		</view>
+		</view> -->
 		<view class="mask">
 			<view class="left">
 				<!-- <image style="width: 60upx;height: 60upx;" src="../../static/video/xunjiandian.png" mode=""></image> -->
@@ -72,7 +67,7 @@
 	import navBar from '../../components/navBar/navBar.vue'
 	export default {
 		components: {
-			navBar
+			navBar,
 		},
 		data() {
 			return {
@@ -450,9 +445,14 @@
 			}
 		},
 		onLoad(option) {
+			console.log(option)
+			uni.setNavigationBarTitle({
+				title:option.names
+			})
 			this.status = option
 			console.log(this.status)
 			this.videodetail()
+			
 		}
 	}
 </script>
@@ -519,12 +519,12 @@
 				font-size: 28upx;
 				width: 100upx;
 				height: 60upx;
+				font-size: 28upx;
 				line-height: 60upx;
 				color: #FFFFFF;
 			}
 		}
 	}
-
 	.middle {
 		overflow: hidden;
 		.middle-content {
