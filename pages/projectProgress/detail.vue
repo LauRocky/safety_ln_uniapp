@@ -60,7 +60,10 @@
 				</view>
 			</view>
 			<view class="project-status">
-				<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
+				<view style="margin: o auto;text-align: center;">
+					<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
+				</view>
+				
 				<view class="status-container" v-show="!isShow">
 					<view class="status-tag-container" style="margin-bottom: 60upx;">
 						<view v-for="(item,index) in statusList" :key=item.code :class="{
