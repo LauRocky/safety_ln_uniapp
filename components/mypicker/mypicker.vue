@@ -46,7 +46,7 @@ export default {
 		handtolower() {},
 		handGcompany(v, val) {
 			this.ggIndex = val;
-			this.$emit('handcompany', v);
+			this.$emit('handcompany', v.name);
 			this.$emit('companyId',v.id)
 		},
 		handleft(v, val) {
@@ -75,6 +75,7 @@ export default {
 						this.alldata = res.data.second;
 						this.leftList = res.data.first;
 						this.rightlist = res.data.second['低碳城市'];
+						
 						// console.log(this.leftlist);
 					}
 					
