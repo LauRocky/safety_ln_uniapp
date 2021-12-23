@@ -2,6 +2,7 @@
 	<view class="mypicker">
 		<u-popup :show="show" :round="10" mode="bottom" @close="handIcon" :closeable="true" @open="open">
 			<view class="titles">
+				<view type="default" @click="clear">取消</view>
 				请选择所在公司
 			</view>
 			<view class="main">
@@ -30,7 +31,7 @@
 				ggIndex: null,
 				rightlist: [],
 				alldata: {},
-				leftList: [],
+				leftList: []
 			};
 		},
 		onLoad() {},
@@ -40,12 +41,15 @@
 		},
 		mounted() {},
 		methods: {
+			clear() {
+				this.rightlist = ""
+				return false
+			},
 			handtolower() {},
 			handGcompany(v, val) {
-				console.log(v,val)
 				this.ggIndex = val;
 				this.$emit('handcompany', v.name);
-				this.$emit('companyId',v.id)
+				this.$emit('companyId', v.id)
 			},
 			handleft(v, val) {
 				this.ggIndex = 0;
@@ -68,13 +72,13 @@
 						false
 					)
 					.then(res => {
-						console.log(res)
 						if (res.code == 0) {
 							this.alldata = res.data.second;
 							this.leftList = res.data.first;
 							this.rightlist = res.data.second['低碳城市'];
 							// console.log(this.leftlist);
 						}
+
 					})
 					.catch(err => {
 						console.log(err);
@@ -84,7 +88,7 @@
 				this.$emit('close');
 			},
 			open() {
-				// console.log('open');
+
 			},
 			close() {
 				this.$emit('close');

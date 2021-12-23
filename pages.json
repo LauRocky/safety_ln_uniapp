@@ -71,13 +71,13 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "white"
-				// "app-plus": {
-				// 	"titleNView": false,
-				// 	"bounce": "none"
-				// }
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
 			}
-		}, {
+		},{
 			"path": "pages/video/index",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -88,17 +88,18 @@
 					"bounce": "none"
 				}
 			}
-		}, {
+		},
+		{
 			"path": "pages/video/showVideo",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
 				// "navigationStyle": "custom"
-				// "app-plus": {
-				// 	"titleNView": false,
-				// 	"bounce": "none"
-				// }
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
 			}
 		},
 		{
@@ -160,13 +161,19 @@
 					"bounce": "none"
 				}
 			}
-		}, {
+		},
+		{
 			"path": "pages/dangerList/hiddenDetails",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "隐患详情"
+				"navigationBarTitleText": "隐患详情",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
 			}
-		}, {
+		},
+		{
 			"path": "pages/dangerList/dangers",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -177,7 +184,8 @@
 					"bounce": "none"
 				}
 			}
-		}, {
+		},
+		{
 			"path": "pages/dangerList/rejected",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -190,7 +198,8 @@
 			}
 
 
-		}, {
+		},
+		{
 			"path": "pages/dangerList/review",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -202,11 +211,16 @@
 				}
 			}
 
-		}, {
+		},
+		{
 			"path": "pages/home/particulars",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "首页列表"
+				"navigationBarTitleText": "首页列表",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
 			}
 
 		}
