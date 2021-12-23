@@ -92,13 +92,6 @@
 						});
 						uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
 						uni.setStorageSync('token', res.data.token.token);
-						uni.sendNativeEvent(uni.getStorageSync("userInfo"), rest => {
-							console.log(rest)
-						});
-						uni.sendNativeEvent(uni.getStorageSync("token"), rest => {
-							console.log(rest)
-						});
-						
 						this.toHome();
 						
 					} else {

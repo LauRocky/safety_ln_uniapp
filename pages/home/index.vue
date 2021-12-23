@@ -25,7 +25,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="look">查看更多 ({{ totalCount }})</view>
+				<view class="look" @click="handGp">查看更多 ({{ totalCount }})</view>
 			</view>
 			<view class="main-cet main-top">
 				<view class="title">隐患数据</view>
@@ -66,7 +66,6 @@
 				<barecharts />
 			</view>
 		</view>
-
 	</view>
 </template>
 
@@ -75,7 +74,7 @@
 		scanCode
 	} from '../../utils/utils.js';
 	import barecharts from '../../components/home/barecharts.vue';
-	import upApp  from '@/uni_modules/uni-upgrade-center-app/utils/check-update.js'
+	import upApp from '@/uni_modules/uni-upgrade-center-app/utils/check-update.js';
 	export default {
 		components: {
 			barecharts
@@ -116,37 +115,43 @@
 				showScanLogin: false
 			};
 		},
+
 		onLoad() {
 			upApp()
-			},
-		mounted:function(){
+		},
+		mounted: function() {
 			this.handbacklog();
 			this.handdetailByUser();
 		},
 		methods: {
-
+			handGp() {
+				uni.navigateTo({
+					url: `/pages/home/particulars?status=${this.status}`
+				});
+			},
 			handscanCode() {
 				const that = this;
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
-						let userInfo = JSON.parse(uni.getStorageSync("userInfo"));
-						userInfo.cacheKey = res.result.split("|")[1];
+						let userInfo = JSON.parse(uni.getStorageSync('userInfo'));
+						userInfo.cacheKey = res.result.split('|')[1];
 						that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
 							.then(resp => {
 								uni.showToast({
 									icon: 'none',
 									title: '登录成功',
 									duration: 1500
-								})
-							}).catch(err => {
+								});
+							})
+							.catch(err => {
 								uni.showToast({
 									title: '登录失败，请刷新二维码或稍后重试',
 									duration: 1500
-								})
-							})
+								});
+							});
 					}
-				})
+				});
 			},
 			handtolower() {},
 			handtabs(val) {
@@ -175,21 +180,18 @@
 							this.indexList = res.page.slice(0, 6);
 							this.totalCount = res.page.length;
 						}
-					}).catch(err => {
-						console.log(err);
 					})
+					.catch(err => {
+						console.log(err);
+					});
 			},
-
-
-
-
 			handmsglist() {
 				//隐患通知
 				this.$http('/msg/list', 'POST', this.backlog, false)
 					.then(res => {
 						if (res.code == 0) {
 							res.page.list.forEach(val => {
-								val.title = val.newsName;
+								val.title = val.content;
 								let list = [];
 								list = val.createTime.split(' ');
 								val.time = list[0];
@@ -234,7 +236,6 @@
 					});
 			}
 		}
-
 	};
 </script>
 
