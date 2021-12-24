@@ -59,7 +59,7 @@
 				this.show = false;
 			},
 			handcompany(v) {
-				this.title = v;
+				this.title = v.name;
 				this.show = false;
 			},
 			getProjectList(){
