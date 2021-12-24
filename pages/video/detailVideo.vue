@@ -1,5 +1,6 @@
 <template>
 	<view class="detailVideo" style="position: relative;">
+		<TwoNavbar :name="status.names"></TwoNavbar>
 		<view class="header" v-if="this.status.ezv==0">
 			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false">
 			</video>
@@ -65,9 +66,11 @@
 </template>
 <script>
 	import navBar from '../../components/navBar/navBar.vue'
+	import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
 	export default {
 		components: {
 			navBar,
+			TwoNavbar
 		},
 		data() {
 			return {
@@ -454,9 +457,9 @@
 		},
 		onLoad(option) {
 			console.log(option)
-			uni.setNavigationBarTitle({
-				title: option.names
-			})
+			// uni.setNavigationBarTitle({
+			// 	title: option.names
+			// })
 			this.status = option
 			console.log(this.status)
 			this.videodetail()
