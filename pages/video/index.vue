@@ -27,7 +27,7 @@
 				</view>
 			</view>
 		</view>
-		<mypicker :show="show" @handcompany="handcompany" @close="handclose" />
+		<mypicker :show="show" @handcompany="handcompany" @close="handclose" @deSelect="deSelect"/>
 	</view>
 </template>
 
@@ -48,6 +48,10 @@
 			}
 		},
 		methods: {
+			deSelect(){
+				this.title="所有城市";
+				this.show = false;
+			},
 			handUpqie() {
 				this.show = true;
 			},
