@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<nav-bar :title="title" @seach="handsearch" @Upqie="handUpqie"></nav-bar>
+		<nav-bar  :title="title" @seach="handsearch" @Upqie="handUpqie"></nav-bar>
 		<view class="project-container">
 			<view class="project" @click="goDetail(project.projectId,project.projectName,project.companyId)"
 				:class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">

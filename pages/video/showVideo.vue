@@ -99,19 +99,10 @@
 </script>
 
 <style lang="scss" scoped>
-	/deep/.u-navbar {
-		.u-icon--right {
-			.u-icon__icon {
-				color: #ffffff !important;
-			}
-		}
-		.u-navbar__content__title,
-		.u-navbar__content__right {
-			color: #ffffff !important;
-		}
-	}
 	.video {	
+		overflow: hidden;
 		.list {
+			margin-top: 100upx;
 			.searchs{
 				width: 92vw;
 				margin: 0 auto;

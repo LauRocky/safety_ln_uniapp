@@ -6,7 +6,7 @@
 			</u-navbar> -->
 			<TwoNavbar :name="project.projectName"></TwoNavbar>
 		</view>
-		<view class="detail-container">
+		<view class="detail-container" style="margin-top: 140upx;">
 			<view class="title">
 				<text>项目基本信息</text>
 				<u-tag style="font-size: 24upx;" size="mini" :text="getProjectStatus(projectInfo.status)"
@@ -63,9 +63,7 @@
 			<view class="project-status">
 				<view style="margin: o auto;text-align: center;">
 					<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
-					<u-icon v-show="!isShow" name="arrow-up" @click="noShowStatus" style="padding-bottom: 20rpx;"></u-icon>
 				</view>
-				
 				<view class="status-container" v-show="!isShow">
 					<view class="status-tag-container" style="margin-bottom: 60upx;">
 						<view v-for="(item,index) in statusList" :key=item.code :class="{
@@ -377,6 +375,7 @@
 						</view>
 					</view>
 				</view>
+				<u-icon v-show="!isShow" name="arrow-up" @click="noShowStatus" style="padding-bottom: 20rpx;"></u-icon>
 			</view>
 		</view>
 	</view>
@@ -593,9 +592,6 @@
 			this.project.companyId = option.companyId
 			this.project.projectName = option.projectName
 			this.getProject()
-			// uni.setNavigationBarTitle({
-			// 	title:this.project.projectName
-			// })
 			getDictList('PROJECT_STATUS').then(data => {
 				this.projectStatus = data.dict
 			})

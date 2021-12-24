@@ -1,11 +1,6 @@
 <template>
-	<view class="detailVideo" style="position: relative;">
+	<view class="detailVideo">
 		<TwoNavbar :name="status.names"></TwoNavbar>
-	<!-- 	<view class="headerTop">
-			<u-navbar :title="status.names" :fixed="true" :show-fullscreen-btn="isIOS" :placeholder="true"
-				:safeAreaInsetTop="true" bgColor="#11B38C" @leftClick="back" color="#ffffff">
-			</u-navbar>
-		</view> -->
 		<view class="header" v-if="this.status.ezv==0">
 			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
 			</video>
@@ -314,8 +309,11 @@
 				this.img = -1
 			},
 			playerFullScreen(e) {
-				console.log(e)
-				if (e.detail.fullScreen) {} else {
+				console.log('full screen',e)
+				if (e.detail.fullScreen) {
+					this.videoContext.showStatusBar(); //显示状态栏,仅在ios全屏下有效
+					
+				} else {
 					this.screen = false;
 					this.fullControl = false
 				}
@@ -426,8 +424,7 @@
 			// 全屏
 			full() {
 				this.videoContext = uni.createVideoContext("myVideo", this);
-				this.videoContext.showStatusBar() //显示状态栏,仅在ios全屏下有效
-				this.videoContext.requestFullScreen()
+				this.videoContext.requestFullScreen();
 				// exitFullScreen
 			},
 			// 截屏
@@ -469,32 +466,18 @@
 </script>
 
 <style lang="scss" scoped>
-	.Fullheader {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100vw;
-		height: 80upx;
-		background-color: #FFFFFF;
-	}
-
-	.headerTop {
-		::v-deep span {
-			color: #FFFFFF;
-			font-weight: bold;
-		}
-	}
-
+.detailVideo{
+	height: 100vh;
+	overflow: hidden;
 	.header {
 		width: 100vw;
 		height: 40vh;
-
+		margin-top: 100upx;
 		.vid {
 			width: 100%;
 			height: 100%;
 		}
 	}
-
 	.mask {
 		display: flex;
 		align-items: center;
@@ -502,29 +485,29 @@
 		width: 100vw;
 		height: 100upx;
 		background: #464950;
-
+	
 		.left {
 			margin: 20upx 0 20upx 27upx;
 		}
-
+	
 		.right {
 			margin-right: 15upx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-
+	
 			.right-img1 {
 				width: 60upx;
 				height: 60upx;
 				margin-right: 28upx;
 			}
-
+	
 			.right-img2 {
 				width: 60upx;
 				height: 60upx;
 				margin-right: 24upx;
 			}
-
+	
 			.right-img3 {
 				text-align: center;
 				font-size: 28upx;
@@ -535,28 +518,27 @@
 			}
 		}
 	}
-
+	
 	.middle {
 		overflow: hidden;
-
 		.middle-content {
 			width: 360upx;
 			height: 360upx;
 			display: flex;
 			justify-content: center;
 			margin: 10upx auto 0;
-
+	
 			.content-1 {
 				width: fit-content;
 				height: fit-content;
 				position: absolute;
 				transform-origin: center 180upx;
-
+	
 				.a {
 					width: 230upx;
 					height: 130upx;
 				}
-
+	
 				.b {
 					width: 50upx;
 					height: 52upx;
@@ -567,22 +549,22 @@
 				}
 			}
 		}
-
+	
 		.soleBase {
 			margin: 50upx 50upx 10upx;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-
+	
 			.zoom1 {
 				width: 96upx;
 				height: 135upx;
-
+	
 				image {
 					width: 96upx;
 					height: 96upx;
 				}
-
+	
 				.zoom1-text {
 					font-size: 30upx;
 					color: #666666;
@@ -592,4 +574,7 @@
 			}
 		}
 	}
+	
+}
+	
 </style>
