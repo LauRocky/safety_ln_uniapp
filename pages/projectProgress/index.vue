@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<nav-bar :title="title" @seach="handsearch" @Upqie="handUpqie"></nav-bar>
-		<view class="project-container">
+		<view class="project-container" >
 			<view class="project" @click="goDetail(project.projectId,project.projectName,project.companyId)" :class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">
 				<view class="title">
 					<text>{{project.projectName}}</text>
@@ -21,7 +21,7 @@
 				</view>
 			</view>			
 		</view>
-		<mypicker ref="myProject" :show="show" @handcompany="handcompany" @companyId="companyIds" @close="handclose" />
+		<mypicker :show="show" @handcompany="handcompany" @close="handclose" @deSelect="deSelect"/>
 	</view>
 </template>
 
@@ -43,43 +43,26 @@
 					status:'',
 				},
 				rawList:[],
-				projectList:[],
+				 projectList:[],
 				
 			}
 		}, 
 		methods: {
+			deSelect(){
+				this.title="所有城市";
+				this.show = false;
+			},
 			handUpqie() {
 				this.show = true;
 			},
 			handclose() {
 				this.show = false;
 			},
-			companyIds(v){
-				console.log("41546",v)
-				this.$http('/project/plan/withStatusNew','POST',{
-					companyId:v,
-					projectId:'',
-					status:'',
-				} ,false).then(res=>{
-					console.log(res)
-					this.rawList=res.page
-					this.projectList=this.rawList
-				})
-			},
 			handcompany(v) {
 				this.title = v;
 				this.show = false;
-				console.log(v)
-				// this.$http('/lvxin/getCompanyProjectByCompanyName','POST',{
-				// 	companyName:v
-				// },false).then(res=>{
-				// 	console.log(res)
-				// 	this.projectList=res.data		
-				// })
 			},
-			//获取项目进度项目
 			getProjectList(){
-				// console.log(this.$refs.myProject)
 				uni.showLoading({
 					title:'加载中',
 					mask:true
@@ -91,7 +74,6 @@
 				})
 			},
 			handsearch(val){
-				this.projectList=this.rawList
 				if(val){
 					let result=[]
 					 this.projectList.forEach(e=>{
@@ -101,6 +83,8 @@
 						 }
 					 })
 					 this.projectList=result
+				}else{
+					this.projectList=this.rawList
 				}
 			},
 			/* 根据项目id判断节点状态 返回有几个异常 */

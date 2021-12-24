@@ -1,9 +1,9 @@
 <template>
 	<view class="mypicker">
 		<u-popup :show="show" :round="10" mode="bottom" @close="handIcon" :closeable="true" @open="open">
-			<view class="titles">
-				<view type="default" @click="clear">取消</view>
-				请选择所在公司
+			<view class="titles" style="display: flex;">
+				<view type="default" style="flex: 1; color: #24A98A;"  @click="DeSelect">取消选择</view>
+				<view style="flex: 2;">请选择所在公司</view>
 			</view>
 			<view class="main">
 				<view class="main-left">
@@ -20,7 +20,7 @@
 		</u-popup>
 	</view>
 </template>
-<script>
+<script>	
 	export default {
 		name: '',
 		props: ['show'],
@@ -34,6 +34,12 @@
 				leftList: []
 			};
 		},
+		handtolower() {},
+		handGcompany(v, val) {
+			this.ggIndex = val;
+			this.$emit('handcompany', v.name);
+			this.$emit('companyId',v.id)
+			},
 		onLoad() {},
 		//组件生命周期
 		created() {
@@ -41,9 +47,9 @@
 		},
 		mounted() {},
 		methods: {
-			clear() {
-				this.rightlist = ""
-				return false
+			DeSelect() {
+				this.$emit('deSelect');
+				// return false
 			},
 			handtolower() {},
 			handGcompany(v, val) {
@@ -93,6 +99,39 @@
 			close() {
 				this.$emit('close');
 			}
+		},
+		handSelectData() {
+			//shujui  两级
+			this.$http(
+				'/lvxin/getCompanySelectDataNew',
+				'GET',
+				{
+					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
+				},
+				false
+			)
+				.then(res => {
+					if (res.code == 0) {
+						this.alldata = res.data.second;
+						this.leftList = res.data.first;
+						this.rightlist = res.data.second['低碳城市'];
+						
+						// console.log(this.leftlist);
+					}
+					
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		handIcon() {
+			this.$emit('close');
+		},
+		open() {
+			// console.log('open');
+		},
+		close() {
+			this.$emit('close');
 		}
 	};
 </script>

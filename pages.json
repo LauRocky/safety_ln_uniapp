@@ -107,11 +107,11 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "white"
-				// "app-plus": {
-				// 	"titleNView": false,
-				// 	"bounce": "none"
-				// }
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
 			}
 		},
 		{
@@ -214,7 +214,10 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "首页列表"
-				
+				// "app-plus": {
+				// 	"titleNView": false,
+				// 	"bounce": "none"
+				// }
 			}
 
 		}

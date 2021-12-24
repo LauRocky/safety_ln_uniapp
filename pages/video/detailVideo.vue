@@ -1,13 +1,18 @@
 <template>
 	<view class="detailVideo" style="position: relative;">
+		<view class="headerTop">
+			<u-navbar :title="status.names" :fixed="true" :show-fullscreen-btn="isIOS" :placeholder="true"
+				:safeAreaInsetTop="true" bgColor="#11B38C" @leftClick="back" color="#ffffff">
+			</u-navbar>
+		</view>
 		<view class="header" v-if="this.status.ezv==0">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false">
+			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
 			</video>
 		</view>
-		<!-- <view class="header" v-if="this.status.ezv==1">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun"  :controls="false">
+		<view class="header" v-if="this.status.ezv==1">
+			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
 			</video>
-		</view> -->
+		</view>
 		<view class="mask">
 			<view class="left">
 				<!-- <image style="width: 60upx;height: 60upx;" src="../../static/video/xunjiandian.png" mode=""></image> -->
@@ -26,7 +31,7 @@
 			<!-- 中间图片 -->
 			<view class="middle-content">
 				<view @touchstart="down(index)" @touchend="up" class="content-1" v-for="(item,index) in Content"
-					:key="index"  :style="`transform: rotate(${90*index}deg);`">
+					:key="index" :style="`transform: rotate(${90*index}deg);`">
 					<image v-if="index!=img" class="a" src="../../static/video/a.png" mode="">
 					</image>
 					<image class="a" v-else src="../../static/video/c.png" mode=""></image>
@@ -67,7 +72,7 @@
 	import navBar from '../../components/navBar/navBar.vue'
 	export default {
 		components: {
-			navBar,
+			navBar
 		},
 		data() {
 			return {
@@ -87,109 +92,117 @@
 			down(index) {
 				this.img = index
 				console.log(index)
-				if(index==0){
+				if (index == 0) {
 					// 云台控制 上
 					let onControl = 0;
-					let ehomeControl='UP';
+					let ehomeControl = 'UP';
 					if (this.status.ezv == 0) {
-						this.$http(`/ehome/ptzOption/${this.status.camera}/${ehomeControl}`, "POST", {}, false).then(res => {
+						this.$http(`/ehome/ptzOption/${this.status.camera}/${ehomeControl}`, "POST", {}, false).then(
+						res => {
 							console.log(res)
 						})
 					} else {
 						let channel = 1;
-						this.$http(`/ptzOption/${this.status.nvr}/${channel}/${onControl}`, "POST", {}, false).then(res => {
+						this.$http(`/ptzOption/${this.status.nvr}/${channel}/${onControl}`, "POST", {}, false).then(
+						res => {
 							console.log(res)
-							if(!res.data){
+							if (!res.data) {
 								console.log(res.msg)
 								uni.showToast({
-									title:res.msg,
-									icon:'none'
+									title: res.msg,
+									icon: 'none'
 								})
-							}else {
+							} else {
 								uni.showToast({
-									title:res.data.msg,
-									icon:'none'
+									title: res.data.msg,
+									icon: 'none'
 								})
 							}
 						})
 					}
-				}else if(index==2){
-						// 云台控制 下
+				} else if (index == 2) {
+					// 云台控制 下
 					let downControl = 1;
-					let ehomeControl1='DOWN';
+					let ehomeControl1 = 'DOWN';
 					if (this.status.ezv == 0) {
-						this.$http(`/ehome/ptzOption/${this.status.camera}/${ehomeControl1}`, "POST", {}, false).then(res => {
-							console.log(res)
-						})
+						this.$http(`/ehome/ptzOption/${this.status.camera}/${ehomeControl1}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+							})
 					} else {
 						let channel = 1;
-						this.$http(`/ptzOption/${this.status.nvr}/${channel}/${downControl}`, "POST", {}, false).then(res => {
-							console.log(res)
-							if(!res.data){
-								console.log(res.msg)
-								uni.showToast({
-									title:res.msg,
-									icon:'none'
-								})
-							}else {
-								uni.showToast({
-									title:res.data.msg,
-									icon:'none'
-								})
-							}
-						})
+						this.$http(`/ptzOption/${this.status.nvr}/${channel}/${downControl}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+								if (!res.data) {
+									console.log(res.msg)
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								} else {
+									uni.showToast({
+										title: res.data.msg,
+										icon: 'none'
+									})
+								}
+							})
 					}
-				}else if(index==3){
+				} else if (index == 3) {
 					// 云台控制 左
 					let leftControl = 2;
-					let ehomeControl2='LEFT';
+					let ehomeControl2 = 'LEFT';
 					if (this.status.ezv == 0) {
-						this.$http(`/ehome/ptzOption/${this.status.camera}/${ehomeControl2}`, "POST", {}, false).then(res => {
-							console.log(res)
-						})
+						this.$http(`/ehome/ptzOption/${this.status.camera}/${ehomeControl2}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+							})
 					} else {
 						let channel = 1;
-						this.$http(`/ptzOption/${this.status.nvr}/${channel}/${leftControl}`, "POST", {}, false).then(res => {
-							console.log(res)
-							if(!res.data){
-								console.log(res.msg)
-								uni.showToast({
-									title:res.msg,
-									icon:'none'
-								})
-							}else {
-								uni.showToast({
-									title:res.data.msg,
-									icon:'none'
-								})
-							}
-						})
+						this.$http(`/ptzOption/${this.status.nvr}/${channel}/${leftControl}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+								if (!res.data) {
+									console.log(res.msg)
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								} else {
+									uni.showToast({
+										title: res.data.msg,
+										icon: 'none'
+									})
+								}
+							})
 					}
-				}else if(index==1){
+				} else if (index == 1) {
 					// 云台控制 右
 					let rightControl = 3;
-					let ehomeControl3='RIGHT';
+					let ehomeControl3 = 'RIGHT';
 					if (this.status.ezv == 0) {
-						this.$http(`/ehome/ptzOption/${this.status.camera}/${ehomeControl3}`, "POST", {}, false).then(res => {
-							console.log(res)
-						})
+						this.$http(`/ehome/ptzOption/${this.status.camera}/${ehomeControl3}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+							})
 					} else {
 						let channel = 1;
-						this.$http(`/ptzOption/${this.status.nvr}/${channel}/${rightControl}`, "POST", {}, false).then(res => {
-							console.log(res)
-							if(!res.data){
-								console.log(res.msg)
-								uni.showToast({
-									title:res.msg,
-									icon:'none'
-								})
-							}else {
-								uni.showToast({
-									title:res.data.msg,
-									icon:'none'
-								})
-							}
-						})
+						this.$http(`/ptzOption/${this.status.nvr}/${channel}/${rightControl}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+								if (!res.data) {
+									console.log(res.msg)
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								} else {
+									uni.showToast({
+										title: res.data.msg,
+										icon: 'none'
+									})
+								}
+							})
 					}
 				}
 				// else if(index==1){
@@ -316,7 +329,7 @@
 				// 萤石云是1,
 				// 海康是0
 				let bianbei = 8;
-				let ehomebianbei='ZOOM_IN';
+				let ehomebianbei = 'ZOOM_IN';
 				if (this.status.ezv == 0) {
 					this.$http(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
@@ -445,14 +458,11 @@
 			}
 		},
 		onLoad(option) {
-			console.log(option)
-			uni.setNavigationBarTitle({
-				title:option.names
-			})
 			this.status = option
-			console.log(this.status)
 			this.videodetail()
-			
+			uni.setNavigationBarTitle({
+				title: option.names
+			})
 		}
 	}
 </script>
@@ -519,29 +529,33 @@
 				font-size: 28upx;
 				width: 100upx;
 				height: 60upx;
-				font-size: 28upx;
 				line-height: 60upx;
 				color: #FFFFFF;
 			}
 		}
 	}
+
 	.middle {
 		overflow: hidden;
+
 		.middle-content {
 			width: 360upx;
 			height: 360upx;
 			display: flex;
 			justify-content: center;
 			margin: 10upx auto 0;
+
 			.content-1 {
 				width: fit-content;
 				height: fit-content;
 				position: absolute;
 				transform-origin: center 180upx;
-				.a{
+
+				.a {
 					width: 230upx;
 					height: 130upx;
 				}
+
 				.b {
 					width: 50upx;
 					height: 52upx;
@@ -552,6 +566,7 @@
 				}
 			}
 		}
+
 		.soleBase {
 			margin: 50upx 50upx 10upx;
 			display: flex;
@@ -566,6 +581,7 @@
 					width: 96upx;
 					height: 96upx;
 				}
+
 				.zoom1-text {
 					font-size: 30upx;
 					color: #666666;
