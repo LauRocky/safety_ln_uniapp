@@ -26,7 +26,7 @@
 			</view>
 		</scroll-view>
 		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
-		<mypicker :show="show" @handcompany="handcompany" @close="handclose" />
+		<mypicker :show="show" @handcompany="handcompany" @close="handclose"  @deSelect="deSelect"/>
 	</view>
 </template>
 
@@ -74,6 +74,10 @@ export default {
 	},
 	onShow() {},
 	methods: {
+		deSelect(){
+			this.title="所有城市";
+			this.show = false;
+		},
 		handLsit(id) {
 			//跳转详情
 			uni.navigateTo({

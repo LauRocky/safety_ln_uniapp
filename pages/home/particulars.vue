@@ -1,5 +1,6 @@
 <template>
 	<view class="particulars">
+		<TwoNavbar :name="titles" />
 		<view class="par" v-for="(val, i) in indexList" :key="i">
 			<view class="par-1">
 				<view class="tou">{{ val.title }}</view>
@@ -7,24 +8,27 @@
 					<view class="proname">{{ val.projectName }}</view>
 					<view class="tags" v-if="status == 1">
 						<view class="tt" v-if="val.expireStatus == '1'">
-						【一般】<text>该项目节点超过7天未整改</text>
+							【一般】
+							<text>该项目节点超过7天未整改</text>
 						</view>
 						<view class="tt" v-else-if="val.expireStatus == '2'">
-							【较重】<text>该项目节点超过15天未整改</text>
+							【较重】
+							<text>该项目节点超过15天未整改</text>
 						</view>
 						<view class="tt" v-else-if="val.expireStatus == '3'">
-							【严重】<text>该项目节点超过30天未整改</text>
+							【严重】
+							<text>该项目节点超过30天未整改</text>
 						</view>
 						<view class="tt" v-else-if="val.expireStatus == '4'">
-							【特别严重】<text>该项目节点超过60天未整改</text>
+							【特别严重】
+							<text>该项目节点超过60天未整改</text>
 						</view>
 					</view>
-					<view class="tags" v-if="status == 2">
-						
-					</view>
+					<view class="tags" v-if="status == 2"></view>
 					<view class="tags" v-if="status == 3">
 						<view class="tt2">
-							【{{val.publisher}}】<text></text>
+							【{{ val.publisher }}】
+							<text></text>
 						</view>
 					</view>
 				</view>
@@ -37,13 +41,17 @@
 	</view>
 </template>
 <script>
+import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
 export default {
 	name: 'particulars',
 	props: [],
-	components: {},
+	components: {
+		TwoNavbar
+	},
 	data() {
 		return {
 			totalCount: 0,
+			titles: '',
 			indexList: [],
 			project: {
 				projectName: '',
@@ -64,21 +72,15 @@ export default {
 	},
 	onLoad(val) {
 		if (val.status == 1) {
-			uni.setNavigationBarTitle({
-				title: '项目预警'
-			});
+			this.titles = '项目预警';
 			this.status = 1;
 			this.handbacklog();
 		} else if (val.status == 2) {
-			uni.setNavigationBarTitle({
-				title: '隐患通知'
-			});
+			this.titles = '隐患通知';
 			this.status = 2;
 			this.handmsglist();
 		} else if (val.status == 3) {
-			uni.setNavigationBarTitle({
-				title: '公告'
-			});
+			this.titles = '公告';
 			this.status = 3;
 			this.handquerylist();
 		}
@@ -87,6 +89,11 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
+		leftClick() {
+			uni.navigateBack({
+				delta: 1
+			});
+		},
 		handbacklog() {
 			//项目预警
 			this.$http('/project/plan/page', 'POST', this.project, false)
@@ -113,7 +120,7 @@ export default {
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
 							val.title = val.content.substr(0, 1);
-							val.projectName = val.content
+							val.projectName = val.content;
 							let list = [];
 							list = val.createTime.split(' ');
 							val.time = list[0];
@@ -133,7 +140,7 @@ export default {
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
 							val.title = val.newsName.substr(0, 1);
-							val.projectName = val.newsName
+							val.projectName = val.newsName;
 							let list = [];
 							list = val.createTime.split(' ');
 							val.time = list[0];
@@ -151,8 +158,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .particulars {
-	padding: 0 20upx;
 	.par {
+		padding: 0 20upx;
 		margin: 35upx 0;
 		display: flex;
 		justify-content: space-between;
@@ -184,24 +191,24 @@ export default {
 					overflow: hidden;
 					text-overflow: ellipsis;
 				}
-				.tags{
+				.tags {
 					width: 50vw;
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
-					.tt{
+					.tt {
 						margin-top: 20upx;
 						font-size: 24upx;
 						font-family: PingFang SC;
 						font-weight: bold;
 						color: #333333;
-						text{
+						text {
 							font-size: 24upx;
 							font-family: PingFang SC;
 							font-weight: 400;
 							color: #8f8f8f;
 						}
-					}	
+					}
 				}
 				.par-2 {
 					.times {
