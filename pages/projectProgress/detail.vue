@@ -62,6 +62,7 @@
 			<view class="project-status">
 				<view style="margin: o auto;text-align: center;">
 					<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
+					<u-icon v-show="!isShow" name="arrow-up" @click="noShowStatus" style="padding-bottom: 20rpx;"></u-icon>
 				</view>
 				
 				<view class="status-container" v-show="!isShow">
@@ -436,6 +437,9 @@
 
 		},
 		methods: {
+			noShowStatus(){
+				this.isShow = true
+			},
 			showStatus() {
 				this.isShow = false
 			},

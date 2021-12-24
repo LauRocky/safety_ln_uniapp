@@ -1,61 +1,7 @@
 <template>
 	<view class="hiddenDetails">
-		<view class="top">
-			<view class="top-1">
-				<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
-				<view class="cet">
-					<view class="title">{{ problem.problemCreatorDisplay }}</view>
-					<view class="title-1">{{ problem.problemType2 }}</view>
-				</view>
-			</view>
-			<view class="top-right2" v-if="problem.statusTime == 1">已超期</view>
-			<view class="top-right3" v-else-if="problem.statusTime == 2">待整改</view>
-			<view class="top-right4" v-else-if="problem.statusTime == 3">待复核</view>
-			<view class="top-right" v-else-if="problem.statusTime == 4">已解决</view>
-		</view>
-		<view class="main">
-			<view class="main-a">
-				{{ problem.problemDesc }}:请
-				<text>@{{ problem.problemSolverDisplay }}</text>
-				{{ problem.problemRequire }}
-			</view>
-			<view class="main-a">通知@{{ problem.notifyPersonDisplay }}</view>
-			<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.imglist" :key="i"></image></view>
-			<view class="bot">
-				<view class="bot-1">
-					<view class=""><image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image></view>
-					<view class="bot-w">整改到期：{{ problem.createTime }}</view>
-				</view>
-				<view class="bot-1 bot-top">
-					<view class="bot-flex"><image class="bot-imgs" src="../../static/danger/adersstwo.png" mode=""></image></view>
-					<view class="bot-w">{{ problem.location }}安康就是个大大概几点就卡给啊士大夫看见啊额风景区好玩的后期维护的大家卡给大家</view>
-				</view>
-			</view>
-		</view>
-		<image class="xuan-imgsa" v-if="status == '1'" @click="handZgup" src="../../static/danger/xuan.png" mode=""></image>
-		<template v-if="status == '2' || status == '3'">
-			<view class="names">整改信息：</view>
-			<view class="top">
-				<view class="top-1">
-					<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
-					<view class="cet">
-						<view class="title">{{ problem.problemSolverDisplay }}</view>
-						<view class="title-1">{{ problem.problemType2 }}</view>
-					</view>
-				</view>
-				<view class="top-r">{{ problem.solutionTime2 }}</view>
-			</view>
-			<view class="main">
-				<view class="main-a">
-					{{ problem.solutionDesc }}:请
-					<text>@{{ problem.problemCheckerDisplay }}</text>
-					请进行复核
-				</view>
-				<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
-			</view>
-		</template>
-		<template v-if="status == '3'">
-			<view class="names">复核信息：</view>
+		<TwoNavbar :name="titles" />
+		<view class="all">
 			<view class="top">
 				<view class="top-1">
 					<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
@@ -64,18 +10,76 @@
 						<view class="title-1">{{ problem.problemType2 }}</view>
 					</view>
 				</view>
-				<view class="top-r">{{ problem.recheckTime2 }}</view>
+				<view class="top-right2" v-if="problem.statusTime == 1">已超期</view>
+				<view class="top-right3" v-else-if="problem.statusTime == 2">待整改</view>
+				<view class="top-right4" v-else-if="problem.statusTime == 3">待复核</view>
+				<view class="top-right" v-else-if="problem.statusTime == 4">已解决</view>
 			</view>
 			<view class="main">
 				<view class="main-a">
-					<text class="textcoo">{{ problem.recheckDesc }}</text>
-					:请
-					<text>@{{ problem.problemCheckerDisplay }}</text>
-					,请重新进行整改;
+					{{ problem.problemDesc }}:请
+					<text>@{{ problem.problemSolverDisplay }}</text>
+					{{ problem.problemRequire }}
 				</view>
-				<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
+				<view class="main-a">通知@{{ problem.notifyPersonDisplay }}</view>
+				<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.imglist" :key="i"></image></view>
+				<view class="bot">
+					<view class="bot-1">
+						<view class=""><image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image></view>
+						<view class="bot-w">整改到期：{{ problem.createTime }}</view>
+					</view>
+					<view class="bot-1 bot-top">
+						<view class="bot-flex"><image class="bot-imgs" src="../../static/danger/adersstwo.png" mode=""></image></view>
+						<view class="bot-w">{{ problem.location }}安康就是个大大概几点就卡给啊士大夫看见啊额风景区好玩的后期维护的大家卡给大家</view>
+					</view>
+				</view>
 			</view>
-		</template>
+			<image class="xuan-imgsa" v-if="status == '1'" @click="handZgup" src="../../static/danger/xuan.png" mode=""></image>
+			<template v-if="status == '2' || status == '3'">
+				<view class="names">整改信息：</view>
+				<view class="top">
+					<view class="top-1">
+						<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
+						<view class="cet">
+							<view class="title">{{ problem.problemSolverDisplay }}</view>
+							<view class="title-1">{{ problem.problemType2 }}</view>
+						</view>
+					</view>
+					<view class="top-r">{{ problem.solutionTime2 }}</view>
+				</view>
+				<view class="main">
+					<view class="main-a">
+						{{ problem.solutionDesc }}:请
+						<text>@{{ problem.problemCheckerDisplay }}</text>
+						请进行复核
+					</view>
+					<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
+				</view>
+			</template>
+			<template v-if="status == '3'">
+				<view class="names">复核信息：</view>
+				<view class="top">
+					<view class="top-1">
+						<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
+						<view class="cet">
+							<view class="title">{{ problem.problemCreatorDisplay }}</view>
+							<view class="title-1">{{ problem.problemType2 }}</view>
+						</view>
+					</view>
+					<view class="top-r">{{ problem.recheckTime2 }}</view>
+				</view>
+				<view class="main">
+					<view class="main-a">
+						<text class="textcoo">{{ problem.recheckDesc }}</text>
+						:请
+						<text>@{{ problem.problemCheckerDisplay }}</text>
+						,请重新进行整改;
+					</view>
+					<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
+				</view>
+			</template>
+		</view>
+		
 		<uni-fab
 			v-if="status == '2'"
 			:pattern="pattern"
@@ -91,13 +95,16 @@
 </template>
 <script>
 import { getDictList } from '../../utils/api.js';
-
+import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
 export default {
 	name: 'hiddenDetails',
 	props: [],
-	components: {},
+	components: {
+		TwoNavbar
+	},
 	data() {
 		return {
+			titles:'隐患详情',
 			id: '',
 			problem: {},
 			dictLsit: [],
@@ -211,7 +218,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .hiddenDetails {
-	padding: 27upx 20upx;
+	.all{
+		padding: 27upx 20upx;
+	}
 	.top {
 		display: flex;
 		justify-content: space-between;

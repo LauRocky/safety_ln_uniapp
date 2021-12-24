@@ -166,8 +166,12 @@
 			"path": "pages/dangerList/hiddenDetails",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "隐患详情"
-				
+				"navigationBarTitleText": "隐患详情",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
 			}
 		},
 		{
@@ -213,11 +217,12 @@
 			"path": "pages/home/particulars",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "首页列表"
-				// "app-plus": {
-				// 	"titleNView": false,
-				// 	"bounce": "none"
-				// }
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
 			}
 
 		}
