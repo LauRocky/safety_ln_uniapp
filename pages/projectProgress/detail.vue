@@ -52,15 +52,17 @@
 			</view>
 			<view class="project-node" v-for="item in timeOver" :key=item.id>
 				<view class="node-tag">
-					<u-tag size="mini" :borderColor="bgColor(item.type)" :bgColor="bgColor(item.type)" color="#ffffff"
-						:text="item.value"></u-tag>
+					<u-tag size="mini" :borderColor="bgColor(item.type)" :bgColor="bgColor(item.type)" color="#ffffff" :text="item.value">
+					</u-tag>
 				</view>
 				<view :class="{'node-info' : item.value.length==2,'node-info1' : item.value.length==4,}">
 					{{item.taskName}}
 				</view>
 			</view>
 			<view class="project-status">
-				<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
+				<view style="margin: 0 auto; text-align: center;">
+					<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
+				</view>
 				<view class="status-container" v-show="!isShow">
 					<view class="status-tag-container" style="margin-bottom: 60upx;">
 						<view v-for="(item,index) in statusList" :key=item.code :class="{

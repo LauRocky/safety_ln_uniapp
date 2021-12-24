@@ -5,7 +5,7 @@
 				<nav-bar :title="title" @seach="handseach" @Upqie="handUpqie"></nav-bar>
 			</view>
 		</u-navbar>
-		<view class="video">
+		<view class="video" v-if="videoList.length!=0">
 			<view class="video-item" v-for="(item,index) in videoList" :key="item.projectId" @click="video(item)">
 				<view class="ball"><text>{{item.projectName.substring(0,1)}}</text></view>
 				<view class="main">
@@ -27,7 +27,13 @@
 				</view>
 			</view>
 		</view>
-		<mypicker :show="show" @handcompany="handcompany" @close="handclose" />
+		<view v-else>
+			<!-- 用来判断当前页面如果没有数据,所展示的页面 -->
+			<view class="nodata">
+				
+			</view>
+		</view>
+		<mypicker :show="show" @handcompany="handcompany" @companyId="companyIds" @close="handclose" />
 	</view>
 </template>
 
@@ -54,9 +60,42 @@
 			handclose() {
 				this.show = false;
 			},
+			companyIds(v){
+				uni.showLoading({
+					title:'加载中',
+					mask:true
+				})
+				this.$http('/getCompanyProjectWithCamera', 'POST', {
+					companyId: v
+				}, false).then(res => {
+					uni.hideLoading();
+					res.data.forEach(el => {
+						el.individual = 0;
+						el.MonitorMumber = 0;
+						el.cameraEntities.forEach(e => {
+							if (e.ipcType == 3) {
+								el.individual += 1;
+							}
+							else if (e.ipcType == 1) {
+								el.MonitorMumber += 1;
+							}
+						})
+					})	
+					console.log(res)
+					this.dataList = res.data
+					this.videoList = this.dataList
+				})
+			},
 			handcompany(v) {
 				this.title = v;
 				this.show = false;
+				// this.$http('/lvxin/getCompanyProjectByCompanyName','POST',{
+				// 	companyName:v
+				// },false).then(res=>{
+				// 	console.log(res)
+				// this.dataList = res.data
+				// this.videoList = this.dataList
+				// })
 			},
 			video(e) {
 				if (e.cameraEntities.length != 0) {
@@ -87,12 +126,12 @@
 							if (e.ipcType == 3) {
 								el.individual += 1;
 							}
-							if (e.ipcType == 1) {
+							else if (e.ipcType == 1) {
 								el.MonitorMumber += 1;
 							}
 						})
-					})
-					
+					})	
+					console.log(res)
 					this.dataList = res.data
 					this.videoList = this.dataList
 				})
@@ -100,17 +139,18 @@
 
 			//模糊查询
 			handseach(val) {
-				if (val) {
-					let result = []
-					this.videoList.forEach(e => {
-						let pName = e.projectName;
-						if (pName.indexOf(val) > -1) {
-							result.push(e)
-						}
-					})
-					this.videoList = result
-				} else {
+				if(this.dataList){
 					this.videoList = this.dataList
+					if (val) {
+						let result = []
+						this.videoList.forEach(e => {
+							let pName = e.projectName;
+							if (pName.indexOf(val) > -1) {
+								result.push(e)
+							}
+						})
+						this.videoList = result
+					} 
 				}
 			},
 		},
