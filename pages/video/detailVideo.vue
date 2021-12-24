@@ -11,12 +11,8 @@
 		</view>
 		<view class="mask">
 			<view class="left">
-				<!-- <image style="width: 60upx;height: 60upx;" src="../../static/video/xunjiandian.png" mode=""></image> -->
 			</view>
 			<view class="right">
-				<!-- <image @click="recording" class="right-img1" src="../../static/video/shexiangji.png" mode=""></image> -->
-				<!-- <image @click="screenshots" class="right-img2" src="../../static/video/jiandao.png" mode=""></image> -->
-				<!-- <image @click="full" class="right-img3" src="../../static/video/last.png" mode=""></image> -->
 				<view class="right-img3" @click="full">
 					全屏
 				</view>
@@ -470,7 +466,6 @@
 	overflow: hidden;
 	.header {
 		height: 40vh;
-		// margin-top: 100upx;
 		.vid {
 			width: 100%;
 			height: 100%;
