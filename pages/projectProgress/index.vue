@@ -22,8 +22,7 @@
 				</view>
 			</view>
 		</view>
-		<mypicker :show="show" @handcompany="handcompany" @companyId="companyIds" @close="handclose"
-			@deSelect="deSelect" />
+		<mypicker :show="show" @handcompany="handcompany" @close="handclose" @deSelect="deSelect" />
 	</view>
 </template>
 
@@ -53,18 +52,7 @@
 			deSelect() {
 				this.title = "所有城市";
 				this.show = false;
-			},
-			companyIds(v) {
-				console.log("41546", v)
-				this.$http('/project/plan/withStatusNew', 'POST', {
-					companyId: v,
-					projectId: '',
-					status: '',
-				}, false).then(res => {
-					console.log(res)
-					this.rawList = res.page
-					this.projectList = this.rawList
-				})
+				this.getProjectList();
 			},
 			handUpqie() {
 				this.show = true;
@@ -73,7 +61,17 @@
 				this.show = false;
 			},
 			handcompany(v) {
-				this.title = v;
+				console.log(v)
+				this.title = v.name;
+				this.$http('/project/plan/withStatusNew', 'POST', {
+					companyId: v.companyId,
+					projectId: '',
+					status: '',
+				}, false).then(res => {
+					console.log(res)
+					this.rawList = res.page
+					this.projectList = this.rawList
+				})
 				this.show = false;
 			},
 			getProjectList() {

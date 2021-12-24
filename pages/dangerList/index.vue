@@ -99,7 +99,7 @@ export default {
 		},
 		handcompany(v) {
 			//选择项目
-			this.title = v;
+			this.title = v.name;
 			this.show = false;
 		},
 		handgETLIST() {

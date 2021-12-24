@@ -1,8 +1,9 @@
 <template>
 	<view class="mypicker">
 		<u-popup :show="show" :round="10" mode="bottom" @close="handIcon" :closeable="true" @open="open">
-			<view class="titles">
-				请选择所在公司
+			<view class="titles" style="display: flex;">
+				<view type="default" style="flex: 1; color: #24A98A;" @click="DeSelect">取消选择</view>
+				<view style="flex: 2;">请选择所在公司</view>
 			</view>
 			<view class="main">
 				<view class="main-left">
@@ -10,7 +11,7 @@
 				</view>
 				<view class="main-right">
 					<scroll-view class="right-scroll" @scrolltolower="handtolower" scroll-y>
-						<view class="gg" :class="[ggIndex == i1 ? 'ggactive' : '']" @click="handGcompany(val1, i1)" v-for="(val1, i1) in rightlist" :key="i1">{{ val1 }}</view>
+						<view class="gg" :class="[ggIndex == i1 ? 'ggactive' : '']" @click="handGcompany(val1, i1)" v-for="(val1, i1) in rightlist" :key="i1">{{ val1.name }}</view>
 					</scroll-view>
 				</view>
 			</view>
@@ -31,6 +32,7 @@ export default {
 			leftList: []
 		};
 	},
+
 	onLoad() {},
 	//组件生命周期
 	created() {
@@ -38,10 +40,14 @@ export default {
 	},
 	mounted() {},
 	methods: {
+		DeSelect() {
+			this.$emit('deSelect');
+			// return false
+		},
 		handtolower() {},
 		handGcompany(v, val) {
 			this.ggIndex = val;
-			this.$emit('handcompany', v.name);
+			this.$emit('handcompany', { name: v.name, companyId: v.id });
 		},
 		handleft(v, val) {
 			this.ggIndex = 0;
@@ -59,8 +65,8 @@ export default {
 			this.$http(
 				'/lvxin/getCompanySelectDataNew',
 				'GET',
-				{
-					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
+			{
+						companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 				},
 				false
 			)
@@ -79,9 +85,7 @@ export default {
 		handIcon() {
 			this.$emit('close');
 		},
-		open() {
-			// console.log('open');
-		},
+		open() {},
 		close() {
 			this.$emit('close');
 		}
@@ -98,17 +102,21 @@ export default {
 		font-family: PingFang SC;
 		font-weight: bold;
 		color: #333333;
+
 		.icon {
 			position: absolute;
 			top: 30upx;
 			right: 20upx;
 		}
 	}
+
 	.main {
 		display: flex;
+
 		.main-left {
 			text-align: center;
 			width: 30vw;
+
 			.left-1 {
 				height: 100upx;
 				line-height: 100upx;
@@ -117,16 +125,20 @@ export default {
 				font-weight: bold;
 				color: #333333;
 			}
+
 			.active {
 				background: #f6f7f8;
 				color: #00b490;
 			}
 		}
+
 		.main-right {
 			width: 70vw;
 			background: #f6f7f8;
+
 			.right-scroll {
 				height: 50vh;
+
 				.gg {
 					padding: 0 40upx;
 					height: 100upx;
@@ -135,6 +147,7 @@ export default {
 					white-space: nowrap;
 					text-overflow: ellipsis;
 				}
+
 				.ggactive {
 					color: #00b490;
 				}
