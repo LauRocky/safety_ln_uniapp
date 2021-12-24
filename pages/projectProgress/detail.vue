@@ -6,7 +6,7 @@
 			</u-navbar> -->
 			<TwoNavbar :name="project.projectName"></TwoNavbar>
 		</view>
-		<view class="detail-container" style="margin-top: 120upx;">
+		<view class="detail-container">
 			<view class="title">
 				<text>项目基本信息</text>
 				<u-tag style="font-size: 24upx;" size="mini" :text="getProjectStatus(projectInfo.status)"
@@ -600,7 +600,9 @@
 </script>
 
 <style scoped>
-
+	.detail{
+		overflow: hidden;
+	}
 	.active-tags {
 		background: #00B490;
 		color: #FFFFFF !important;

@@ -1,5 +1,5 @@
 <template>
-	<view class="two-nav"><u-navbar :fixed="true" :safeAreaInsetTop="true" class="navbar-coo" safeAreaInsetTop  :title="name" :rightText="rightText" @rightClick="rightClick" bgColor="#11B38C" @leftClick="leftClick"></u-navbar></view>
+	<view class="two-nav"><u-navbar class="navbar-coo" :fixed="true" :placeholder="true" safeAreaInsetTop :title="name" :rightText="rightText" @rightClick="rightClick" bgColor="#11B38C" @leftClick="leftClick"></u-navbar></view>
 </template>
 <script>
 export default {

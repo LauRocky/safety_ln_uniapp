@@ -428,8 +428,6 @@
 				// exitFullScreen
 			},
 			// 截屏
-
-
 			back() {
 				uni.navigateBack({
 					delta: 1
@@ -467,12 +465,12 @@
 
 <style lang="scss" scoped>
 .detailVideo{
+	width: 100vw;
 	height: 100vh;
 	overflow: hidden;
 	.header {
-		width: 100vw;
 		height: 40vh;
-		margin-top: 100upx;
+		// margin-top: 100upx;
 		.vid {
 			width: 100%;
 			height: 100%;

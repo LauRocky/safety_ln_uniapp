@@ -102,7 +102,6 @@
 	.video {	
 		overflow: hidden;
 		.list {
-			margin-top: 100upx;
 			.searchs{
 				width: 92vw;
 				margin: 0 auto;
