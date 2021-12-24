@@ -148,7 +148,9 @@
 									if (val.assessment) {
 										let obj = [];
 										obj = this.dictLsit.filter(item => val.assessment == item.code); //判断安全等级对比
-										val.problemType2 = obj[0].value;
+										if(obj[0]){
+											val.problemType2 = obj[0].value;
+										}
 									}
 									val.crtime = val.createTime.split(' ')[0];
 									if (val.status == -1) {

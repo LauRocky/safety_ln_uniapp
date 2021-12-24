@@ -71,11 +71,11 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "white",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				"navigationBarTextStyle": "white"
+				// "app-plus": {
+				// 	"titleNView": false,
+				// 	"bounce": "none"
+				// }
 			}
 		},{
 			"path": "pages/video/index",
@@ -94,12 +94,12 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "white",
+				"navigationBarTextStyle": "white"
 				// "navigationStyle": "custom"
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				// "app-plus": {
+				// 	"titleNView": false,
+				// 	"bounce": "none"
+				// }
 			}
 		},
 		{
@@ -166,11 +166,8 @@
 			"path": "pages/dangerList/hiddenDetails",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "隐患详情",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				"navigationBarTitleText": "隐患详情"
+				
 			}
 		},
 		{
@@ -216,11 +213,8 @@
 			"path": "pages/home/particulars",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "首页列表",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				"navigationBarTitleText": "首页列表"
+				
 			}
 
 		}
