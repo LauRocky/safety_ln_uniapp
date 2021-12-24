@@ -1,5 +1,6 @@
 <template>
 	<view class="video">
+			<twoNavbar :name="project.projectName"></twoNavbar>
 		<!-- 视频展示 -->
 		<view class="list">
 			<!-- 搜索框 -->
@@ -19,9 +20,11 @@
 </template>
 <script>
 	import navBar from '../../components/navBar/navBar.vue'
+	import twoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
 	export default {
 		components: {
 			navBar,
+			twoNavbar
 		},
 		data() {
 			return {
@@ -85,9 +88,9 @@
 		onLoad(options) {
 			this.project.projectId = options.projectId;
 			this.project.projectName = options.projectName;
-			uni.setNavigationBarTitle({
-				title:this.project.projectName
-			})
+			// uni.setNavigationBarTitle({
+			// 	title:this.project.projectName
+			// })
 		},
 		onShow() {
 			this.show();
@@ -96,8 +99,10 @@
 </script>
 
 <style lang="scss" scoped>
-	.video {
+	.video {	
+		overflow: hidden;
 		.list {
+			margin-top: 100upx;
 			.searchs{
 				width: 92vw;
 				margin: 0 auto;

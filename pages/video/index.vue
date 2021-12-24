@@ -27,7 +27,7 @@
 				</view>
 			</view>
 		</view>
-		<mypicker :show="show" @handcompany="handcompany" @close="handclose" @deSelect="deSelect"/>
+		<mypicker :show="show" @handcompany="handcompany" @close="handclose" @deSelect="deSelect" />
 	</view>
 </template>
 
@@ -48,9 +48,10 @@
 			}
 		},
 		methods: {
-			deSelect(){
-				this.title="所有城市";
+			deSelect() {
+				this.title = "所有城市";
 				this.show = false;
+				this.getCompanySelectData();
 			},
 			handUpqie() {
 				this.show = true;
@@ -61,6 +62,29 @@
 			handcompany(v) {
 				this.title = v.name;
 				this.show = false;
+				uni.showLoading({
+					title: '加载中',
+					mask: true
+				})
+				this.$http('/getCompanyProjectWithCamera', 'POST', {
+					companyId: v.companyId
+				}, false).then(res => {
+					uni.hideLoading();
+					res.data.forEach(el => {
+						el.individual = 0;
+						el.MonitorMumber = 0;
+						el.cameraEntities.forEach(e => {
+							if (e.ipcType == 3) {
+								el.individual += 1;
+							}
+							if (e.ipcType == 1) {
+								el.MonitorMumber += 1;
+							}
+						})
+					})
+					this.dataList = res.data
+					this.videoList = this.dataList
+				})
 			},
 			video(e) {
 				if (e.cameraEntities.length != 0) {
@@ -77,8 +101,8 @@
 			// 获取当前公司下所有项目
 			getCompanySelectData() {
 				uni.showLoading({
-					title:'加载中',
-					mask:true
+					title: '加载中',
+					mask: true
 				})
 				this.$http('/getCompanyProjectWithCamera', 'POST', {
 					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
@@ -96,7 +120,7 @@
 							}
 						})
 					})
-					
+
 					this.dataList = res.data
 					this.videoList = this.dataList
 				})
@@ -104,7 +128,7 @@
 
 			//模糊查询
 			handseach(val) {
-				if(this.dataList){
+				if (this.dataList) {
 					this.videoList = this.dataList
 					if (val) {
 						let result = []
@@ -115,9 +139,9 @@
 							}
 						})
 						this.videoList = result
-					} 
+					}
 				}
-			
+
 			},
 		},
 		onLoad() {

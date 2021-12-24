@@ -1,5 +1,5 @@
 <template>
-	<view class="navbar">
+	<view class="navbar">	
 		<u-navbar :fixed="true" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
 			<view class="u-nav-left" @click="handUpqie" slot="left" style="color: #FFFFFF;font-size: 36upx;font-weight: bold;">
 				<view class="left-1">{{ title }}</view>
