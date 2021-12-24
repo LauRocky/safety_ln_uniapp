@@ -216,11 +216,11 @@
 			"path": "pages/home/particulars",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "首页列表",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
+				"navigationBarTitleText": "首页列表"
+				// "app-plus": {
+				// 	"titleNView": false,
+				// 	"bounce": "none"
+				// }
 			}
 
 		}
