@@ -87,7 +87,7 @@ export default {
 				});
 		},
 		imgDelete(list, eq) {
-			this.imgList.splice(eq, 1);
+			this.imgList = list
 		},
 		chooseFile(list, v) {
 			uni.uploadFile({
@@ -101,7 +101,7 @@ export default {
 				},
 				success: res => {
 					const imgRes = JSON.parse(res.data);
-					this.imgList.push(imgRes.data.file_full_url);
+					this.$set(this.imgList,this.imgList.length,imgRes.data.file_full_url)
 				}
 			});
 		},
