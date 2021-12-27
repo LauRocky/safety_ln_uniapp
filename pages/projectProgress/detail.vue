@@ -4,6 +4,7 @@
 			<!-- <u-navbar :title="project.projectName" :fixed="true" :placeholder="true" :safeAreaInsetTop="true"
 				bgColor="#11B38C" @leftClick="back" color="#ffffff">
 			</u-navbar> -->
+			<TwoNavbar :name="project.projectName"></TwoNavbar>
 		</view>
 		<view class="detail-container">
 			<view class="title">
@@ -385,9 +386,11 @@
 	import {
 		getDictList
 	} from '../../utils/api.js'
-
+	import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
 	export default {
-		components: {},
+		components: {
+			TwoNavbar
+		},
 		data() {
 			return {
 				// title:'',
@@ -590,9 +593,9 @@
 			this.project.companyId = option.companyId
 			this.project.projectName = option.projectName
 			this.getProject()
-			uni.setNavigationBarTitle({
-				title:this.project.projectName
-			})
+			// uni.setNavigationBarTitle({
+			// 	title:this.project.projectName
+			// })
 			getDictList('PROJECT_STATUS').then(data => {
 				this.projectStatus = data.dict
 			})
@@ -601,6 +604,7 @@
 </script>
 
 <style scoped>
+
 	.active-tags {
 		background: #00B490;
 		color: #FFFFFF !important;

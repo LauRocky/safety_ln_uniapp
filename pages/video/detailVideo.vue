@@ -1,10 +1,11 @@
 <template>
 	<view class="detailVideo" style="position: relative;">
-		<view class="headerTop">
+		<TwoNavbar :name="status.names"></TwoNavbar>
+	<!-- 	<view class="headerTop">
 			<u-navbar :title="status.names" :fixed="true" :show-fullscreen-btn="isIOS" :placeholder="true"
 				:safeAreaInsetTop="true" bgColor="#11B38C" @leftClick="back" color="#ffffff">
 			</u-navbar>
-		</view>
+		</view> -->
 		<view class="header" v-if="this.status.ezv==0">
 			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
 			</video>
@@ -70,9 +71,11 @@
 </template>
 <script>
 	import navBar from '../../components/navBar/navBar.vue'
+	import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
 	export default {
 		components: {
-			navBar
+			navBar,
+			TwoNavbar
 		},
 		data() {
 			return {
@@ -459,10 +462,8 @@
 		},
 		onLoad(option) {
 			this.status = option
+			console.log(this.status)
 			this.videodetail()
-			uni.setNavigationBarTitle({
-				title: option.names
-			})
 		}
 	}
 </script>
