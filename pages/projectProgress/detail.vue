@@ -1,11 +1,6 @@
 <template>
 	<view class="detail">
-		<view class="header">
-			<!-- <u-navbar :title="project.projectName" :fixed="true" :placeholder="true" :safeAreaInsetTop="true"
-				bgColor="#11B38C" @leftClick="back" color="#ffffff">
-			</u-navbar> -->
-			<TwoNavbar :name="project.projectName"></TwoNavbar>
-		</view>
+		<TwoNavbar :name="project.projectName"></TwoNavbar>
 		<view class="detail-container">
 			<view class="title">
 				<text>项目基本信息</text>
@@ -63,9 +58,7 @@
 			<view class="project-status">
 				<view style="margin: o auto;text-align: center;">
 					<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
-					<u-icon v-show="!isShow" name="arrow-up" @click="noShowStatus" style="padding-bottom: 20rpx;"></u-icon>
 				</view>
-				
 				<view class="status-container" v-show="!isShow">
 					<view class="status-tag-container" style="margin-bottom: 60upx;">
 						<view v-for="(item,index) in statusList" :key=item.code :class="{
@@ -95,16 +88,16 @@
 						<view class="plan" v-for="(item,index) in projectInfo.nodes" :key="item.id">
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs">
-									<image v-if="item.nodeState==0" 
-										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" 
-										src="../../static/projectdetail/red.png" mode=""></image>
-									<image v-if="item.nodeState==1" 
-										src="../../static/projectdetail/zise.png" mode=""></image>
-									<image v-if="item.nodeState==4" 
-										src="../../static/projectdetail/yuan.png" mode=""></image>
-									<image v-if="item.nodeState==5" 
-										src="../../static/projectdetail/green.png" mode=""></image>
+									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
+									</image>
+									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
+									</image>
+									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
+									</image>
+									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
+									</image>
+									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
+									</image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
@@ -146,14 +139,14 @@
 								<view class="imgs">
 									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
 									</image>
-									<image v-if="item.nodeState==3" 
-										src="../../static/projectdetail/red.png" mode=""></image>
-									<image v-if="item.nodeState==1" 
-										src="../../static/projectdetail/zise.png" mode=""></image>
-									<image v-if="item.nodeState==4" 
-										src="../../static/projectdetail/yuan.png" mode=""></image>
-									<image v-if="item.nodeState==5" 
-										src="../../static/projectdetail/green.png" mode=""></image>
+									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
+									</image>
+									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
+									</image>
+									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
+									</image>
+									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
+									</image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
@@ -194,16 +187,16 @@
 						<view class="plan" style="display: flex; " v-for="item in complete" :key="item.id">
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs">
-									<image v-if="item.nodeState==0" 
-										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" 
-										src="../../static/projectdetail/red.png" mode=""></image>
-									<image v-if="item.nodeState==1" 
-										src="../../static/projectdetail/zise.png" mode=""></image>
-									<image v-if="item.nodeState==4" 
-										src="../../static/projectdetail/yuan.png" mode=""></image>
-									<image v-if="item.nodeState==5" 
-										src="../../static/projectdetail/green.png" mode=""></image>
+									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
+									</image>
+									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
+									</image>
+									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
+									</image>
+									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
+									</image>
+									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
+									</image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
@@ -247,16 +240,16 @@
 						<view class="plan" style="display: flex; " v-for="item in noovercomplete" :key="item.id">
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs">
-									<image v-if="item.nodeState==0" 
-										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" 
-										src="../../static/projectdetail/red.png" mode=""></image>
-									<image v-if="item.nodeState==1" 
-										src="../../static/projectdetail/zise.png" mode=""></image>
-									<image v-if="item.nodeState==4" 
-										src="../../static/projectdetail/yuan.png" mode=""></image>
-									<image v-if="item.nodeState==5" 
-										src="../../static/projectdetail/green.png" mode=""></image>
+									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
+									</image>
+									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
+									</image>
+									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
+									</image>
+									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
+									</image>
+									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
+									</image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
@@ -294,16 +287,16 @@
 						<view class="plan" style="display: flex; " v-for="item in overundone" :key="item.id">
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs">
-									<image v-if="item.nodeState==0" 
-										src="../../static/projectdetail/hui.png" mode=""></image>
-									<image v-if="item.nodeState==3" 
-										src="../../static/projectdetail/red.png" mode=""></image>
-									<image v-if="item.nodeState==1" 
-										src="../../static/projectdetail/zise.png" mode=""></image>
-									<image v-if="item.nodeState==4"
-										src="../../static/projectdetail/yuan.png" mode=""></image>
-									<image v-if="item.nodeState==5" 
-										src="../../static/projectdetail/green.png" mode=""></image>
+									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
+									</image>
+									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
+									</image>
+									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
+									</image>
+									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
+									</image>
+									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
+									</image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
@@ -341,8 +334,7 @@
 						<view class="plan" style="display: flex; " v-for="item in overcomplete" :key="item.id">
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs">
-									<image src="../../static/projectdetail/yuan.png"
-										mode=""></image>
+									<image src="../../static/projectdetail/yuan.png" mode=""></image>
 								</view>
 								<view class="plan-title" style="padding-left: 20upx;">
 									<view class="plan-left">
@@ -377,6 +369,7 @@
 						</view>
 					</view>
 				</view>
+				<u-icon v-show="!isShow" name="arrow-up" @click="noShowStatus" style="padding-bottom: 20rpx;"></u-icon>
 			</view>
 		</view>
 	</view>
@@ -440,7 +433,7 @@
 
 		},
 		methods: {
-			noShowStatus(){
+			noShowStatus() {
 				this.isShow = true
 			},
 			showStatus() {
@@ -593,9 +586,6 @@
 			this.project.companyId = option.companyId
 			this.project.projectName = option.projectName
 			this.getProject()
-			// uni.setNavigationBarTitle({
-			// 	title:this.project.projectName
-			// })
 			getDictList('PROJECT_STATUS').then(data => {
 				this.projectStatus = data.dict
 			})
@@ -604,6 +594,9 @@
 </script>
 
 <style scoped>
+	.detail {
+		overflow: hidden;
+	}
 
 	.active-tags {
 		background: #00B490;

@@ -1,6 +1,6 @@
 <template>
 	<view class="video">
-			<twoNavbar :name="project.projectName"></twoNavbar>
+		<twoNavbar :name="project.projectName"></twoNavbar>
 		<!-- 视频展示 -->
 		<view class="list">
 			<!-- 搜索框 -->
@@ -99,18 +99,8 @@
 </script>
 
 <style lang="scss" scoped>
-	/deep/.u-navbar {
-		.u-icon--right {
-			.u-icon__icon {
-				color: #ffffff !important;
-			}
-		}
-		.u-navbar__content__title,
-		.u-navbar__content__right {
-			color: #ffffff !important;
-		}
-	}
 	.video {	
+		overflow: hidden;
 		.list {
 			.searchs{
 				width: 92vw;
