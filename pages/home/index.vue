@@ -109,7 +109,7 @@
 						value: 3
 					}
 				],
-				status: 0, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
+				status: 1, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
 				totalCount: 0,
 				indexList: [],
 				showScanLogin: false
