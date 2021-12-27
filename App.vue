@@ -9,7 +9,7 @@
 			
 		},
 		onShow:function(){
-			console.log('App show')
+		
 		},
 		mounted:function(){
 			

@@ -48,12 +48,12 @@
 						公告
 					</view>
 				</view>
-				<view class="image-item" @click="skill">
+				<!-- <view class="image-item" @click="skill">
 					<image class="image-imgs" src="../../static/my/project4.png" mode=""></image>
 					<view class="image-text">
 						技术支持
 					</view>
-				</view>
+				</view> -->
 			</view>
 
 			<view class="app-plug" style="margin-top: 20upx;">
@@ -61,12 +61,13 @@
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/gengxin.png" mode=""></image>
 					<view class="updata-font">检查更新</view>
 				</view>
-				<view class="share" @click="share">
+				<!-- <view class="share" @click="share">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/fenxiang.png" mode=""></image>
 					<view class="share-font">
 						分享</view>
 					<image class="share-img" src="../../static/my/erweima.png" mode=""></image>
-				</view>
+				</view> -->
+				<u-line ></u-line>
 				<view class="about" @click="about">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
@@ -166,7 +167,11 @@ export default {
 			},
 			// 更新
 			check() {
-				
+			
+				//android 更新
+				uni.sendNativeEvent("checkUpdate", res => {
+					console.log(res)
+				});
 			},
 			//技术支持
 			skill() {

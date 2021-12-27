@@ -125,17 +125,35 @@
 				this.$refs.uForm
 					.validate()
 					.then(res => {
+						uni.showToast({
+							title:"正在登录",
+							icon:"loading",
+							duration:30000
+						})
 						this.$http('/loginApp', 'POST', this.form, false)
 							.then(res => {
 								if (res.code == 0) {
+									uni.hideToast();
 									uni.setStorageSync('userInfo', res.user);
 									uni.setStorageSync('token', res.token);
-									this.toHome();
-									
+									uni.switchTab({
+										url: '/pages/home/index'
+									});
+								}else{
+									uni.showToast({
+										title:"登录失败",
+										duration:2000,
+										icon:"error"
+									})
 								}
 							})
 							.catch(err => {
 								console.log(err);
+								uni.showToast({
+									title:"登录失败",
+									duration:2000,
+									icon:"error"
+								})
 							});
 					})
 					.catch(err => {

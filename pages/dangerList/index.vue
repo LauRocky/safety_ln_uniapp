@@ -297,3 +297,4 @@ export default {
 		height: 160upx;
 	}
 }
+</style>
