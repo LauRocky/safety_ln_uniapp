@@ -1,6 +1,6 @@
 <template>
 	<view class="video">
-			<twoNavbar :name="project.projectName"></twoNavbar>
+		<twoNavbar :name="project.projectName"></twoNavbar>
 		<!-- 视频展示 -->
 		<view class="list">
 			<!-- 搜索框 -->
@@ -102,7 +102,6 @@
 	.video {	
 		overflow: hidden;
 		.list {
-			margin-top: 100upx;
 			.searchs{
 				width: 92vw;
 				margin: 0 auto;
