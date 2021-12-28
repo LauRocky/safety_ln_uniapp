@@ -2,11 +2,17 @@
 	<view class="detailVideo">
 		<TwoNavbar :name="status.names"></TwoNavbar>
 		<view class="header" v-if="this.status.ezv==0">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="monitorUrl" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
+			<video class="vid"  @fullscreenchange="playerFullScreen" :autoplay="zidong" id="myVideo" :src="monitorUrl" :controls="pmgressbar" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
+				<cover-view>
+					
+				</cover-view>
 			</video>
 		</view>
 		<view class="header" v-if="this.status.ezv==1">
-			<video class="vid" @fullscreenchange="playerFullScreen" id="myVideo" :src="yinshiyun" :controls="false" :show-play-btn="false" :show-fullscreen-btn="false">
+			<video class="vid"  @fullscreenchange="playerFullScreen" id="myVideo" :autoplay="zidong" :src="yinshiyun" :controls="pmgressbar" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
+				<cover-view>
+					
+				</cover-view>
 			</video>
 		</view>
 		<view class="mask">
@@ -66,10 +72,12 @@
 	export default {
 		components: {
 			navBar,
-			TwoNavbar
+			TwoNavbar,
 		},
 		data() {
 			return {
+				zidong:false,
+				pmgressbar:false,
 				screen: true,
 				currentSelect: '',
 				fullControl: false,
@@ -199,107 +207,6 @@
 							})
 					}
 				}
-				// else if(index==1){
-				// 	//云台控制  右上
-				// 	let OnrightControl = 6;
-				// 	if (this.status.ezv == 0) {
-				// 		this.$http(`/ehome/ptzOption/${this.status.camera}/${OnrightControl}`, "POST", {}, false).then(res => {
-				// 			console.log(res)
-				// 		})
-				// 	} else {
-				// 		let channel = 1;
-				// 		this.$http(`/ptzOption/${this.status.nvr}/${channel}/${OnrightControl}`, "POST", {}, false).then(res => {
-				// 			console.log(res)
-				// 			if(!res.data){
-				// 				console.log(res.msg)
-				// 				uni.showToast({
-				// 					title:res.msg,
-				// 					icon:'none'
-				// 				})
-				// 			}else {
-				// 				uni.showToast({
-				// 					title:res.data.msg,
-				// 					icon:'none'
-				// 				})
-				// 			}
-				// 		})
-				// 	}
-				// }else if(index==3){
-				// 	//云台控制  右下
-				// 	let DownrightControl = 7;
-				// 	if (this.status.ezv == 0) {
-				// 		this.$http(`/ehome/ptzOption/${this.status.camera}/${DownrightControl}`, "POST", {}, false).then(res => {
-				// 			console.log(res)
-				// 		})
-				// 	} else {
-				// 		let channel = 1;
-				// 		this.$http(`/ptzOption/${this.status.nvr}/${channel}/${DownrightControl}`, "POST", {}, false).then(res => {
-				// 			console.log(res)
-				// 			if(!res.data){
-				// 				console.log(res.msg)
-				// 				uni.showToast({
-				// 					title:res.msg,
-				// 					icon:'none'
-				// 				})
-				// 			}else {
-				// 				uni.showToast({
-				// 					title:res.data.msg,
-				// 					icon:'none'
-				// 				})
-				// 			}
-				// 		})
-				// 	}
-				// }else if(index==5){
-				// 	//云台控制  左下
-				// 	let DownLeftControl = 5;
-				// 	if (this.status.ezv == 0) {
-				// 		this.$http(`/ehome/ptzOption/${this.status.camera}/${DownLeftControl}`, "POST", {}, false).then(res => {
-				// 			console.log(res)
-				// 		})
-				// 	} else {
-				// 		let channel = 1;
-				// 		this.$http(`/ptzOption/${this.status.nvr}/${channel}/${DownLeftControl}`, "POST", {}, false).then(res => {
-				// 			console.log(res)
-				// 			if(!res.data){
-				// 				console.log(res.msg)
-				// 				uni.showToast({
-				// 					title:res.msg,
-				// 					icon:'none'
-				// 				})
-				// 			}else {
-				// 				uni.showToast({
-				// 					title:res.data.msg,
-				// 					icon:'none'
-				// 				})
-				// 			}
-				// 		})
-				// 	}
-				// }else if(index==7){
-				// 	//云台控制  左上
-				// 	let OnLeftControl = 4;
-				// 	if (this.status.ezv == 0) {
-				// 		this.$http(`/ehome/ptzOption/${this.status.camera}/${OnLeftControl}`, "POST", {}, false).then(res => {
-				// 			console.log(res)
-				// 		})
-				// 	} else {
-				// 		let channel = 1;
-				// 		this.$http(`/ptzOption/${this.status.nvr}/${channel}/${OnLeftControl}`, "POST", {}, false).then(res => {
-				// 			console.log(res)
-				// 			if(!res.data){
-				// 				console.log(res.msg)
-				// 				uni.showToast({
-				// 					title:res.msg,
-				// 					icon:'none'
-				// 				})
-				// 			}else {
-				// 				uni.showToast({
-				// 					title:res.data.msg,
-				// 					icon:'none'
-				// 				})
-				// 			}
-				// 		})
-				// 	}
-				// }
 			},
 			up() {
 				this.img = -1
@@ -307,11 +214,14 @@
 			playerFullScreen(e) {
 				console.log('full screen',e)
 				if (e.detail.fullScreen) {
+					this.videoContext = uni.createVideoContext("myVideo", this);
 					this.videoContext.showStatusBar(); //显示状态栏,仅在ios全屏下有效
+					this.pmgressbar=true;
 					
 				} else {
 					this.screen = false;
 					this.fullControl = false
+					this.pmgressbar=false;
 				}
 			},
 			// 录屏
@@ -407,21 +317,17 @@
 					})
 				}
 			},
-			devicesIsAndroid() {
-				var res = uni.getSystemInfoSync();
-				var platform = res.platform;
-				return (platform == 'android');
-			},
 			// 退出全屏
 			exitFull() {
 				this.videoContext = uni.createVideoContext("myVideo", this);
 				this.videoContext.exitFullScreen()
+				this.zidong=false
 			},
 			// 全屏
 			full() {
 				this.videoContext = uni.createVideoContext("myVideo", this);
 				this.videoContext.requestFullScreen();
-				// exitFullScreen
+				this.zidong=true
 			},
 			// 截屏
 			back() {
@@ -494,7 +400,7 @@
 				height: 60upx;
 				margin-right: 28upx;
 			}
-	
+
 			.right-img2 {
 				width: 60upx;
 				height: 60upx;

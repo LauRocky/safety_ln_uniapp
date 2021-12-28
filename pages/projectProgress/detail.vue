@@ -8,7 +8,7 @@
 					borderColor="#00B490" bgColor="#00B490" color="#ffffff">
 				</u-tag>
 			</view>
-			<view class="msg-item">
+			<view class="msg-item ">
 				<view class="name">项目名称</view>
 				<view class="container">{{projectInfo.projectName}}</view>
 			</view>
@@ -20,24 +20,43 @@
 				<view class="name">计划竣工时间</view>
 				<view class="container">{{projectInfo.finishTime}}</view>
 			</view>
-			<view class="msg-item">
-				<view class="name">地址</view>
-				<view class="container">{{getAddress(projectInfo.shortAddress)}}</view>
-			</view>
-			<view class="msg-item">
-				<view class="name">总包</view>
-				<view class="container">{{projectInfo.unit?projectInfo.unit:'无'}}</view>
-			</view>
-			<view class="msg-item">
-				<view class="name">项目经理（总包）</view>
-				<view class="container">{{projectInfo.partnerProjectManager?projectInfo.partnerProjectManager:'无'}}
-					{{projectInfo.partnerProjectManagerMobile}}
+			<view class="pull-down" v-if="isPullDown">
+				<view class="msg-item">
+					<view class="name">地址</view>
+					<view class="container">{{getAddress(projectInfo.shortAddress)}}</view>
+				</view>
+				<view class="msg-item">
+					<view class="name">总包</view>
+					<view class="container">{{projectInfo.unit?projectInfo.unit:'无'}}</view>
 				</view>
 			</view>
-			<view class="msg-item">
-				<view class="name">项目经理（甲包）</view>
-				<view class="container">{{projectInfo.projectManager?projectInfo.projectManager:'无'}}
-					{{projectInfo.projectManagerMobile}}
+			<!-- 查看 -->
+			<view class="gradual-one" v-show="isPullDown">
+				<view class="button">
+					<!-- <u-button @click="showPullDown()" color="#00B490">查看</u-button> -->
+					<view @click="showPullDown()">查看更多</view>
+				</view>
+			</view>
+			<view class="pull-down" v-if="!isPullDown">
+				<view class="msg-item">
+					<view class="name">地址</view>
+					<view class="container">{{getAddress(projectInfo.shortAddress)}}</view>
+				</view>
+				<view class="msg-item">
+					<view class="name">总包</view>
+					<view class="container">{{projectInfo.unit?projectInfo.unit:'无'}}</view>
+				</view>
+				<view class="msg-item">
+					<view class="name">项目经理（总包）</view>
+					<view class="container">{{projectInfo.partnerProjectManager?projectInfo.partnerProjectManager:'无'}}
+						{{projectInfo.partnerProjectManagerMobile}}
+					</view>
+				</view>
+				<view class="msg-item">
+					<view class="name">项目经理（甲包）</view>
+					<view class="container">{{projectInfo.projectManager?projectInfo.projectManager:'无'}}
+						{{projectInfo.projectManagerMobile}}
+					</view>
 				</view>
 			</view>
 		</view>
@@ -45,6 +64,14 @@
 		<view class="process-container">
 			<view class="title">
 				<text style="margin-bottom: 14upx;">项目进度信息</text>
+				<view style="margin: o auto;text-align: center;">
+					<view v-show="isShow" @click="showStatus" style="display: flex;flex-wrap: nowrap;">查看<u-icon
+							name="arrow-down"></u-icon>
+					</view>
+					<view v-show="!isShow" @click="noShowStatus" style="display: flex;flex-wrap: nowrap;">收起<u-icon
+							name="arrow-up"></u-icon>
+					</view>
+				</view>
 			</view>
 			<view class="project-node" v-for="item in timeOver" :key=item.id>
 				<view class="node-tag">
@@ -56,9 +83,6 @@
 				</view>
 			</view>
 			<view class="project-status">
-				<view style="margin: o auto;text-align: center;">
-					<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
-				</view>
 				<view class="status-container" v-show="!isShow">
 					<view class="status-tag-container" style="margin-bottom: 60upx;">
 						<view v-for="(item,index) in statusList" :key=item.code :class="{
@@ -66,20 +90,30 @@
 								'item-margin-top':index==3||index==4||index==5,
 								'active-tags':currentIndex==index}" class="tags" @click="changeTags(index)">
 							<text> {{item.name}} </text>
-							<view class="yuan" v-if="index==1">
-								{{ongoing.length}}
+							<view v-if="ongoing.length!=0">
+								<view class="yuan" v-if="index==1">
+									{{ongoing.length}}
+								</view>
 							</view>
-							<view class="yuan" v-if="index==2">
-								{{complete.length}}
+							<view v-if="complete.length!=0">
+								<view class="yuan" v-if="index==2">
+									{{complete.length}}
+								</view>
 							</view>
-							<view class="yuan" v-if="index==3">
-								{{noovercomplete.length}}
+							<view v-if="noovercomplete.length!=0">
+								<view class="yuan" v-if="index==3">
+									{{noovercomplete.length}}
+								</view>
 							</view>
-							<view class="yuan" v-if="index==4">
-								{{overundone.length}}
+							<view v-if="overundone.length!=0">
+								<view class="yuan" v-if="index==4">
+									{{overundone.length}}
+								</view>
 							</view>
-							<view class="yuan" v-if="index==5">
-								{{overcomplete.length}}
+							<view v-if="overcomplete.length!=0">
+								<view class="yuan" v-if="index==5">
+									{{overcomplete.length}}
+								</view>
 							</view>
 						</view>
 					</view>
@@ -369,7 +403,7 @@
 						</view>
 					</view>
 				</view>
-				<u-icon v-show="!isShow" name="arrow-up" @click="noShowStatus" style="padding-bottom: 20rpx;"></u-icon>
+
 			</view>
 		</view>
 	</view>
@@ -389,6 +423,7 @@
 				// title:'',
 				currentIndex: 0,
 				isShow: true,
+				isPullDown: true,
 				project: {
 					projectId: '',
 					projectName: '',
@@ -433,6 +468,12 @@
 
 		},
 		methods: {
+			noshowPullDown() {
+				this.isPullDown = true
+			},
+			showPullDown() {
+				this.isPullDown = false
+			},
 			noShowStatus() {
 				this.isShow = true
 			},
@@ -483,7 +524,7 @@
 						if (item.nodeState == 3) {
 							this.overundone.push(item)
 						}
-						if (item.nodeState == 5) {
+						if (item.nodeState == 4) {
 							this.overcomplete.push(item)
 						}
 					})
@@ -594,6 +635,31 @@
 </script>
 
 <style scoped>
+	/* 查看 */
+	.gradual-one {
+		width: 90%;
+		height: 164upx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-image: linear-gradient(#ffffff40, #ffffff) !important;
+		position: absolute;
+		bottom: 0;
+	}
+
+	.gradual {
+		/* background-image: linear-gradient(#0000001a, #ffffff); */
+		text-align: center;
+	}
+
+	.button {
+		height: 30upx;
+		background-color: #00B490;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
 	.detail {
 		overflow: hidden;
 	}
@@ -774,6 +840,7 @@
 		border-radius: 10upx;
 		box-shadow: 0upx 0upx 50upx 0upx rgba(0, 0, 0, 0.06);
 		background-color: #FFFFFF;
+		position: relative;
 	}
 
 	.u-icon__icon[data-v-6e20bb40] {

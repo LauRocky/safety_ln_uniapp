@@ -48,12 +48,12 @@
 						公告
 					</view>
 				</view>
-				<view class="image-item" @click="skill">
+				<!-- <view class="image-item" @click="skill">
 					<image class="image-imgs" src="../../static/my/project4.png" mode=""></image>
 					<view class="image-text">
 						技术支持
 					</view>
-				</view>
+				</view> -->
 			</view>
 
 			<view class="app-plug" style="margin-top: 20upx;">
@@ -80,9 +80,9 @@
 		</view>
 		<u-popup :show="show" @close="close" mode="center" round="10">
 			<view class="mask">
-				<view class="mask-title">
+				<!-- <view class="mask-title">
 					技术支持
-				</view>
+				</view> -->
 				<image @click="back" class="mask-imgs1" src="../../static/my/tuichu.png" mode=""></image>
 				<image class="mask-imgs2" src="../../static/my/erji.png" mode=""></image>
 				<view class="telephone">
@@ -169,12 +169,27 @@ export default {
 				
 			},
 			//技术支持
-			skill() {
-				this.show = true
-			},
+			// skill() {
+			// 	this.show = true
+			// },
 			// 分享
 			share() {
 				console.log(111)
+				uni.share({
+    provider: "weixin",
+    scene: "WXSceneSession",
+    type: 0,
+    href: "http://uniapp.dcloud.io/",
+    title: "uni-app分享",
+    summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
+    imageUrl: "https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/d8590190-4f28-11eb-b680-7980c8a877b8.png",
+    success: function (res) {
+        console.log("success:" + JSON.stringify(res));
+    },
+    fail: function (err) {
+        console.log("fail:" + JSON.stringify(err));
+    }
+});
 			},
 			// 关于
 			about() {
@@ -183,7 +198,14 @@ export default {
 				})
 			},
 			handscanCode() {
-				scanCode();
+				// scanCode();
+				// 允许从相机和相册扫码
+				uni.scanCode({
+				    success: function (res) {
+				        console.log('条码类型：' + res.scanType);
+				        console.log('条码内容：' + res.result);
+				    }
+				});
 			},
 			scan() {
 				uni.showToast({
@@ -196,7 +218,7 @@ export default {
 					content: '确定要退出当前用户？',
 					success: function(res) {
 						if (res.confirm) {
-							uni.removeStorageSync('user');
+							uni.removeStorageSync('userInfo');
 							uni.removeStorageSync('token');
 							uni.navigateTo({
 								url: '../login/index'
@@ -234,6 +256,10 @@ export default {
 		onLoad() {
 			this.deptInfo()
 		},
+		onShow() {
+			//刷新用户数据
+			this.user=JSON.parse(uni.getStorageSync('userInfo'))
+		}
 	};
 </script>
 
