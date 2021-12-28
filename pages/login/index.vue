@@ -73,8 +73,7 @@
 
 			})
 		},
-		methods: {
-			
+		methods: {		
 			getCode(code) {
 				uni.showLoading({
 					title: "正在登陆中"

@@ -48,19 +48,13 @@
 						公告
 					</view>
 				</view>
-				<view class="image-item" @click="skill">
-					<image class="image-imgs" src="../../static/my/project4.png" mode=""></image>
-					<view class="image-text">
-						技术支持
-					</view>
-				</view>
 			</view>
 
 			<view class="app-plug" style="margin-top: 20upx;">
-				<view class="update" @click="check">
+				<!-- <view class="update" @click="check">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/gengxin.png" mode=""></image>
 					<view class="updata-font">检查更新</view>
-				</view>
+				</view> -->
 				<view class="share" @click="share">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/fenxiang.png" mode=""></image>
 					<view class="share-font">
@@ -78,21 +72,6 @@
 				退出登录
 			</view>
 		</view>
-		<u-popup :show="show" @close="close" mode="center" round="10">
-			<view class="mask">
-				<view class="mask-title">
-					技术支持
-				</view>
-				<image @click="back" class="mask-imgs1" src="../../static/my/tuichu.png" mode=""></image>
-				<image class="mask-imgs2" src="../../static/my/erji.png" mode=""></image>
-				<view class="telephone">
-					电话:{{user.mobile}}
-				</view>
-				<view class="call" @click="callphone">
-					拨打
-				</view>
-			</view>
-		</u-popup>
 	</view>
 </template>
 
@@ -168,10 +147,6 @@ export default {
 			check() {
 				
 			},
-			//技术支持
-			skill() {
-				this.show = true
-			},
 			// 分享
 			share() {
 				console.log(111)
@@ -190,23 +165,7 @@ export default {
 					title: '扫码'
 				});
 			},
-			quit() {
-				uni.showModal({
-					title: '提示',
-					content: '确定要退出当前用户？',
-					success: function(res) {
-						if (res.confirm) {
-							uni.removeStorageSync('user');
-							uni.removeStorageSync('token');
-							uni.navigateTo({
-								url: '../login/index'
-							});
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}
-				});
-			},
+			quit() {0},
 			handscanCode(){
 				const that = this;
 				uni.scanCode({

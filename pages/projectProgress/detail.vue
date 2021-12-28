@@ -1,6 +1,7 @@
 <template>
 	<view class="detail">
 		<TwoNavbar :name="project.projectName"></TwoNavbar>
+		
 		<view class="detail-container">
 			<view class="title">
 				<text>项目基本信息</text>
@@ -20,6 +21,7 @@
 				<view class="name">计划竣工时间</view>
 				<view class="container">{{projectInfo.finishTime}}</view>
 			</view>
+			
 			<view class="msg-item">
 				<view class="name">地址</view>
 				<view class="container">{{getAddress(projectInfo.shortAddress)}}</view>
@@ -66,20 +68,30 @@
 								'item-margin-top':index==3||index==4||index==5,
 								'active-tags':currentIndex==index}" class="tags" @click="changeTags(index)">
 							<text> {{item.name}} </text>
-							<view class="yuan" v-if="index==1">
-								{{ongoing.length}}
+							<view v-if="ongoing.length!=0">
+								<view class="yuan" v-if="index==1">
+									{{ongoing.length}}
+								</view>
 							</view>
-							<view class="yuan" v-if="index==2">
-								{{complete.length}}
+							<view v-if="complete.length!=0">
+								<view class="yuan" v-if="index==2">
+									{{complete.length}}
+								</view>
 							</view>
-							<view class="yuan" v-if="index==3">
-								{{noovercomplete.length}}
+							<view v-if="noovercomplete.length!=0">
+								<view class="yuan" v-if="index==3">
+									{{noovercomplete.length}}
+								</view>
 							</view>
-							<view class="yuan" v-if="index==4">
-								{{overundone.length}}
+							<view v-if="overundone.length!=0">
+								<view class="yuan" v-if="index==4">
+									{{overundone.length}}
+								</view>
 							</view>
-							<view class="yuan" v-if="index==5">
-								{{overcomplete.length}}
+							<view v-if="overcomplete.length!=0">
+								<view class="yuan" v-if="index==5">
+									{{overcomplete.length}}
+								</view>
 							</view>
 						</view>
 					</view>
@@ -483,7 +495,7 @@
 						if (item.nodeState == 3) {
 							this.overundone.push(item)
 						}
-						if (item.nodeState == 5) {
+						if (item.nodeState == 4) {
 							this.overcomplete.push(item)
 						}
 					})
@@ -597,7 +609,7 @@
 	.detail {
 		overflow: hidden;
 	}
-
+	
 	.active-tags {
 		background: #00B490;
 		color: #FFFFFF !important;
@@ -775,8 +787,11 @@
 		box-shadow: 0upx 0upx 50upx 0upx rgba(0, 0, 0, 0.06);
 		background-color: #FFFFFF;
 	}
+	.detail-container{
+		position: relative;
+	}
 
-	.u-icon__icon[data-v-6e20bb40] {
+	.u-icon__icon[dta-v-6e20bb40] {
 		color: #FFFFFF !important;
 		font-weight: 900 !important;
 	}
