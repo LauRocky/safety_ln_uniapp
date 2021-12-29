@@ -1,47 +1,52 @@
 <template>
 	<view class="particulars">
 		<TwoNavbar :name="titles" />
-		<view class="par" v-for="(val, i) in indexList" :key="i">
-			<view class="par-1">
-				<view class="tou">{{ val.title }}</view>
-				<view class="par-cet">
-					<view class="proname">{{ val.projectName }}</view>
-					<view class="tags" v-if="status == 1">
-						<view class="tt" v-if="val.expireStatus == '1'">
-							【一般】
-							<text>该项目节点超过7天未整改</text>
+		<template v-if="indexList.length !== 0">
+			<view class="par" v-for="(val, i) in indexList" :key="i" @click="handXq(val)">
+				<view class="par-1">
+					<view class="tou">{{ val.title }}</view>
+					<view class="par-cet">
+						<view class="proname">{{ val.projectName }}</view>
+						<view class="tags" v-if="status == 1">
+							<view class="tt" v-if="val.expireStatus == '1'">
+								【一般】
+								<text>该项目节点超过7天未整改</text>
+							</view>
+							<view class="tt" v-else-if="val.expireStatus == '2'">
+								【较重】
+								<text>该项目节点超过15天未整改</text>
+							</view>
+							<view class="tt" v-else-if="val.expireStatus == '3'">
+								【严重】
+								<text>该项目节点超过30天未整改</text>
+							</view>
+							<view class="tt" v-else-if="val.expireStatus == '4'">
+								【特别严重】
+								<text>该项目节点超过60天未整改</text>
+							</view>
 						</view>
-						<view class="tt" v-else-if="val.expireStatus == '2'">
-							【较重】
-							<text>该项目节点超过15天未整改</text>
-						</view>
-						<view class="tt" v-else-if="val.expireStatus == '3'">
-							【严重】
-							<text>该项目节点超过30天未整改</text>
-						</view>
-						<view class="tt" v-else-if="val.expireStatus == '4'">
-							【特别严重】
-							<text>该项目节点超过60天未整改</text>
-						</view>
-					</view>
-					<view class="tags" v-if="status == 2"></view>
-					<view class="tags" v-if="status == 3">
-						<view class="tt2">
-							【{{ val.publisher }}】
-							<text></text>
+						<view class="tags" v-if="status == 2"></view>
+						<view class="tags" v-if="status == 3">
+							<view class="tt2">
+								【{{ val.publisher }}】
+								<text></text>
+							</view>
 						</view>
 					</view>
 				</view>
+				<view class="par-2">
+					<view class="times">{{ val.time }}</view>
+					<!-- <button class="btn">点击查看</button> -->
+				</view>
 			</view>
-			<view class="par-2">
-				<view class="times">{{ val.time }}</view>
-				<!-- <button class="btn">点击查看</button> -->
-			</view>
-		</view>
+		</template>
+		<template v-else>
+			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
+		</template>
 	</view>
 </template>
 <script>
-import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
+import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 export default {
 	name: 'particulars',
 	props: [],
@@ -89,11 +94,48 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
+		handXq(v) {
+			if (this.status == 1) {
+				uni.navigateTo({
+					url: `/pages/projectProgress/detail?projectId=${v.projectId}&projectName=${v.projectName}&companyId=${v.companyId}`
+				});
+			} else if (this.status == 2) {
+				this.handProblemsId(v);
+			}else if (this.status == 3) {
+				uni.navigateTo({
+					url: `/pages/home/affiche?text=${v.newsText}}&title=${v.newsName}`
+				});
+			}
+		},
+		handProblemsId(val) {
+			//获取隐患类型
+			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
+				.then(res => {
+					if (res.code == 0) {
+						switch (res.problem.status) {
+							case -1:
+								uni.navigateTo({
+									url: `/pages/dangerList/hiddenDetails?id=${res.problem.id}&status=1`
+								});
+								break;
+							case 1:
+								uni.navigateTo({
+									url: `/pages/dangerList/hiddenDetails?id=${res.problem.id}&status=2`
+								});
+								break;
+						}
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 		leftClick() {
 			uni.navigateBack({
 				delta: 1
 			});
 		},
+		
 		handbacklog() {
 			//项目预警
 			this.$http('/project/plan/page', 'POST', this.project, false)
@@ -220,6 +262,12 @@ export default {
 				}
 			}
 		}
+	}
+	.kong {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 }
 </style>

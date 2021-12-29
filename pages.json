@@ -107,7 +107,7 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom",		
 				"app-plus": {
 					"titleNView": false,
 					"bounce": "none"
@@ -226,6 +226,19 @@
 
 		}
 
+		, {
+			"path": "pages/home/affiche",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "首页公告",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+
+		}
 	],
 	"tabBar": {
 		"color": "#A9A9A9",

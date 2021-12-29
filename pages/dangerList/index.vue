@@ -25,6 +25,9 @@
 				</view>
 			</view>
 		</scroll-view>
+		<template v-else>
+			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
+		</template>
 		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
 		<mypicker :show="show" @handcompany="handcompany" @close="handclose"  @deSelect="deSelect"/>
 	</view>
@@ -296,5 +299,12 @@ export default {
 		width: 160upx;
 		height: 160upx;
 	}
+	.kong{
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+	}
 }
+
 </style>
