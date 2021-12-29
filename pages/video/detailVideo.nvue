@@ -10,13 +10,13 @@
 		<video class="vid" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
 			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
-				<image @click="recording" class="images1" src="http://lvfa.newerait.cn/shexiangji.png" mode=""></image>
+				<image @click="recording" class="images1" src="../../static/video/shexiangji.png" mode=""></image>
 				<image @click="screenshots" class="images2" src="../../static/video/jiandao.png" mode=""></image>
 				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
 			</cover-view>
 		</video>
 		<view class="mask">
-			<image @click="full" class="mask-img" src="http://lvfa.newerait.cn/last.png" mode=""></image>
+			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
 		</view>
 		<view class="middle">
 			<view class="middle-content">
