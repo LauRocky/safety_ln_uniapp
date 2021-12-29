@@ -120,7 +120,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
-                    "target" : "https://esq.ln2.ink/safety-server/api", //aliyun
+                    "target" : "https://esq.ln2.ink/api", //aliyun
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
