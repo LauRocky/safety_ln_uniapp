@@ -2,8 +2,8 @@
     "name" : "safety_ln_app",
     "appid" : "__UNI__A9A3937",
     "description" : "",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "1.0.28",
+    "versionCode" : 1028,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -43,7 +43,9 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "idfa" : false
+            },
             /* SDK配置 */
             "sdkConfigs" : {
                 "share" : {
@@ -118,8 +120,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
-                    // "target" : "http://192.168.133.12:12002/safety-server/api", //测试
-                    "target" : "http://59.110.136.159:12002/safety-server/api", //在线
+                    "target" : "https://esq.ln2.ink/safety-server/api", //aliyun
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

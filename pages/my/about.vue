@@ -15,7 +15,7 @@
 				http://www.cgdg.com/
 			</view>
 			<view class="version">
-				Version 1.0.8
+					Version  {{getVersion()}}
 			</view>
 		</view>
 
@@ -37,6 +37,9 @@
 					delta: 1
 				});
 			},
+			getVersion() {
+				return plus.runtime.versionCode;
+			}
 		}
 	}
 </script>
@@ -54,24 +57,28 @@
 			margin: 0 auto;
 			margin-top: 188upx;
 			text-align: center;
-			.body-img{
+
+			.body-img {
 				width: 171upx;
 				height: 171upx;
 			}
-			.body-title{
-			font-size: 40upx;
-			font-family: PingFang SC;
-			font-weight: bold;
-			color: #333333;	
+
+			.body-title {
+				font-size: 40upx;
+				font-family: PingFang SC;
+				font-weight: bold;
+				color: #333333;
 			}
-			.about-http{
+
+			.about-http {
 				margin-top: 18upx;
 				font-size: 30upx;
 				font-family: PingFang SC;
 				font-weight: 500;
 				color: #666666;
 			}
-			.version{
+
+			.version {
 				margin-top: 18upx;
 				font-size: 30upx;
 				font-family: PingFang SC;
