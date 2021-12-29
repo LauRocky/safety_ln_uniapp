@@ -68,6 +68,8 @@
 					<image class="share-img" src="../../static/my/erweima.png" mode=""></image>
 				</view> -->
 				<!-- <u-line ></u-line> -->
+				<!-- 分割线 -->
+				<view class="divider" style="width: 90%;" ><u-divider lineColor="#b9b9b9" hairline="false"></u-divider></view>
 				<view class="about" @click="about">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
