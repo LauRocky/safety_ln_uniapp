@@ -10,13 +10,13 @@
 		<video class="vid" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
 			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
-				<image @click="recording" class="images1" src="http://lvfa.newerait.cn/shexiangji.png" mode=""></image>
+				<image @click="recording" class="images1" src="../../static/video/shexiangji.png" mode=""></image>
 				<image @click="screenshots" class="images2" src="../../static/video/jiandao.png" mode=""></image>
 				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
 			</cover-view>
 		</video>
 		<view class="mask">
-			<image @click="full" class="mask-img" src="http://lvfa.newerait.cn/last.png" mode=""></image>
+			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
 		</view>
 		<view class="middle">
 			<view class="middle-content">
@@ -71,9 +71,9 @@
 				videoUrl: '',
 				zidong: false,
 				pmgressbar: false,
-				screen: true,
+				// screen: true,
 				currentSelect: '',
-				fullControl: false,
+				// fullControl: false,
 				isIOS: false,
 				videoContext: null,
 				status: {},
@@ -119,16 +119,17 @@
 				})
 			},
 			fullScreenEvent(e) {
-				// console.log(e)
+				console.log(e)
 				if (e.detail.fullScreen) { //全屏
+					this.isShow = true;
 					this.videoContext = uni.createVideoContext("myVideo", this);
 					this.videoContext.showStatusBar(); //显示状态栏,仅在ios全屏下有效
 					this.pmgressbar = true;
-					this.isShow = true
 				} else { // 非全屏
 					this.isShow = false
+					this.isShow = false;
 					this.screen = false;
-					this.fullControl = false
+					this.fullControl = false;
 					this.pmgressbar = false;
 				}
 			},
@@ -504,7 +505,7 @@
 		width: 360upx;
 		height: 360upx;
 		position: relative;
-		margin: 20upx auto 0;
+		// margin: 20upx auto 0;
 		transform: translateX(50%);
 	}
 
@@ -543,14 +544,6 @@
 		height: 230upx;
 		transform: translateY(-50%);
 	}
-
-	.content-1 {
-		width: fit-content;
-		height: fit-content;
-		position: absolute;
-		transform-origin: center 180upx;
-	}
-
 	.a {
 		width: 230upx;
 		height: 130upx;
