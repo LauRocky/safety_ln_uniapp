@@ -1,0 +1,584 @@
+<template>
+	<view class="detailVideo">
+		<view class="headerTitle" :style="{height:iStatusBarHeight+'upx'}">
+		</view>
+		<view class="header-top">
+			<image @click="getBack" class="img" src="../../static/video/back.png" mode=""></image>
+			<text class="header-item">{{status.names}}</text>
+			<text class="header-items"></text>
+		</view>
+		<video class="vid" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
+			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
+			<cover-view v-if="isShow" class="container">
+				<image @click="recording" class="images1" src="http://lvfa.newerait.cn/shexiangji.png" mode=""></image>
+				<image @click="screenshots" class="images2" src="../../static/video/jiandao.png" mode=""></image>
+				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
+			</cover-view>
+		</video>
+		<view class="mask">
+			<image @click="full" class="mask-img" src="http://lvfa.newerait.cn/last.png" mode=""></image>
+		</view>
+		<view class="middle">
+			<view class="middle-content">
+				<image @touchstart="down(1)" @touchend="up(1)" class="content-img" src="../../static/video/shadowon.png"
+					mode=""></image>
+				<image v-if="discolor" class="content-img" src="../../static/video/brighton.png" mode=""></image>
+				<image @touchstart="down(2)" @touchend="up(2)" class="content-img1"
+					src="../../static/video/shadowright.png" mode=""></image>
+				<image v-if="discolor2" class="content-img1" src="../../static/video/brightright.png" mode=""></image>
+				<image @touchstart="down(3)" @touchend="up(3)" class="content-img2"
+					src="../../static/video/shadowdown.png" mode=""></image>
+				<image v-if="discolor3" class="content-img2" src="../../static/video/brightdown.png" mode=""></image>
+				<image @touchstart="down(4)" @touchend="up(4)" class="content-img3"
+					src="../../static/video/shadowleft.png" mode=""></image>
+				<image v-if="discolor4" class="content-img3" src="../../static/video/brightleft.png" mode=""></image>
+			</view>
+			<!-- 底部照片 -->
+			<view class="soleBase">
+				<view class="zoom1" @click="bianbeijia">
+					<image class="zoom1-img" src="../../static/video/bianbei.png" mode=""></image>
+					<text class="zoom1-text">变倍+</text>
+				</view>
+				<view class="zoom1" @click="bianbeijian">
+					<image class="zoom1-img" src="../../static/video/bianbei1.png" mode=""></image>
+					<text class="zoom1-text">变倍-</text>
+				</view>
+				<view class="zoom1" @click="bianjiaojia">
+					<image class="zoom1-img" src="../../static/video/bianjiao1.png" mode=""></image>
+					<text class="zoom1-text">变焦+</text>
+				</view>
+				<view class="zoom1" @click="bianjiaojian">
+					<image class="zoom1-img" src="../../static/video/bianjiao2.png" mode=""></image>
+					<text class="zoom1-text">变焦-</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		request
+	} from '../../utils/request.js'
+	export default {
+		data() {
+			return {
+				discolor2: false,
+				discolor3: false,
+				discolor4: false,
+				discolor: false,
+				isShow: false,
+				videoUrl: '',
+				zidong: false,
+				pmgressbar: false,
+				// screen: true,
+				currentSelect: '',
+				// fullControl: false,
+				isIOS: false,
+				videoContext: null,
+				status: {},
+				img: -1,
+			};
+		},                                          
+		methods: {
+			capture() {
+				var pages = getCurrentPages();
+				var page = pages[pages.length - 1];
+				console.log("当前页" + pages.length - 1);
+				var bitmap = null;
+				var currentWebview = page.$getAppWebview();
+				bitmap = new plus.nativeObj.Bitmap('amway_img');
+				// 将webview内容绘制到Bitmap对象中  
+				currentWebview.draw(bitmap, function() {
+					console.log('截屏绘制图片成功');
+					bitmap.save("_doc/a.jpg", {}, function(i) {
+						console.log('保存图片成功：' + JSON.stringify(i));
+						uni.saveImageToPhotosAlbum({
+							filePath: i.target,
+							success: function() {
+								bitmap.clear(); //销毁Bitmap图片  
+								uni.showToast({
+									title: '保存图片成功',
+									mask: false,
+									duration: 1500
+								});
+							}
+						});
+					}, function(e) {
+						console.log('保存图片失败：' + JSON.stringify(e));
+					});
+				}, function(e) {
+					console.log('截屏绘制图片失败：' + JSON.stringify(e));
+				});
+				//currentWebview.append(amway_bit);    
+			},
+			// 导航栏返回
+			getBack() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			fullScreenEvent(e) {
+				// console.log(e)
+				if (e.detail.fullScreen) { //全屏
+					this.videoContext = uni.createVideoContext("myVideo", this);
+					this.videoContext.showStatusBar(); //显示状态栏,仅在ios全屏下有效
+					this.pmgressbar = true;
+					this.isShow = true
+				} else { // 非全屏
+					this.isShow = false
+					this.pmgressbar = false;
+				}
+			},
+			down(e) {
+				console.log(e)
+				if (e == 1) {
+					// 云台控制 上
+					this.discolor = true;
+					let onControl = 0;
+					let ehomeControl = 'UP';
+					if (this.status.ezv == 0) {
+						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+							})
+					} else {
+						let channel = 1;
+						request(`/ptzOption/${this.status.nvr}/${channel}/${onControl}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+								if (!res.data) {
+									console.log(res.msg)
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								} else {
+									uni.showToast({
+										title: res.data.msg,
+										icon: 'none'
+									})
+								}
+							})
+					}
+				} else if (e == 2) {
+					// 云台控制 右
+					this.discolor2 = true;
+					let rightControl = 3;
+					let ehomeControl3 = 'RIGHT';
+					if (this.status.ezv == 0) {
+						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl3}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+							})
+					} else {
+						let channel = 1;
+						request(`/ptzOption/${this.status.nvr}/${channel}/${rightControl}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+								if (!res.data) {
+									console.log(res.msg)
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								} else {
+									uni.showToast({
+										title: res.data.msg,
+										icon: 'none'
+									})
+								}
+							})
+					}
+				} else if (e == 3) {
+					this.discolor3 = true;
+					// 云台控制 下
+					let downControl = 1;
+					let ehomeControl1 = 'DOWN';
+					if (this.status.ezv == 0) {
+						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl1}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+							})
+					} else {
+						let channel = 1;
+						request(`/ptzOption/${this.status.nvr}/${channel}/${downControl}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+								if (!res.data) {
+									console.log(res.msg)
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								} else {
+									uni.showToast({
+										title: res.data.msg,
+										icon: 'none'
+									})
+								}
+							})
+					}
+				} else if (e == 4) {
+					// 云台控制 左
+					this.discolor4 = true;
+					let leftControl = 2;
+					let ehomeControl2 = 'LEFT';
+					if (this.status.ezv == 0) {
+						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl2}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+							})
+					} else {
+						let channel = 1;
+						request(`/ptzOption/${this.status.nvr}/${channel}/${leftControl}`, "POST", {}, false).then(
+							res => {
+								console.log(res)
+								if (!res.data) {
+									console.log(res.msg)
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								} else {
+									uni.showToast({
+										title: res.data.msg,
+										icon: 'none'
+									})
+								}
+							})
+					}
+				}
+			},
+			up(e) {
+				console.log(e)
+				if (e == 1) {
+					this.discolor = false;
+				} else if (e == 2) {
+					this.discolor2 = false;
+				} else if (e == 3) {
+					this.discolor3 = false;
+				} else if (e == 4) {
+					this.discolor4 = false;
+				}
+			},
+
+			// 录屏
+			recording() {
+				uni.showToast({
+					title: '暂不支持',
+					icon: 'none',
+				})
+			},
+			// 变倍+
+			bianbeijia() {
+				// 萤石云是1,
+				// 海康是0
+				let bianbei = 8;
+				let ehomebianbei = 'ZOOM_IN';
+				if (this.status.ezv == 0) {
+					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei}`, "POST", {}, false).then(res => {
+						console.log(res)
+					})
+				} else {
+					let channel = 1;
+					request(`/ptzOption/${this.status.nvr}/${channel}/${bianbei}`, "POST", {}, false).then(res => {
+						console.log(res)
+						if (res.code == 0) {
+							uni.showToast({
+								title: res.msg,
+								icon: "none"
+							})
+						}
+					})
+				}
+			},
+			// 变倍-
+			bianbeijian() {
+				let bianbei = 9;
+				let ehomebianbei1 = 'ZOOM_OUT';
+				if (this.status.ezv == 0) {
+					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei1}`, "POST", {}, false).then(res => {
+						console.log(res)
+					})
+				} else {
+					let channel = 1;
+					request(`/ptzOption/${this.status.nvr}/${channel}/${bianbei}`, "POST", {}, false).then(res => {
+						console.log(res)
+						if (res.code == 0) {
+							uni.showToast({
+								title: res.msg,
+								icon: "none"
+							})
+						}
+					})
+				}
+			},
+			// 变焦+
+			bianjiaojia() {
+				let bianbei = 11;
+				let ehomebianbei2 = 'FOCUS_FAR';
+				if (this.status.ezv == 0) {
+					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei2}`, "POST", {}, false).then(res => {
+						console.log(res)
+					})
+				} else {
+					let channel = 1;
+					request(`/ptzOption/${this.status.nvr}/${channel}/${bianbei}`, "POST", {}, false).then(res => {
+						console.log(res)
+						if (res.code == 0) {
+							uni.showToast({
+								title: res.msg,
+								icon: "none"
+							})
+						}
+					})
+				}
+			},
+			// 变焦-
+			bianjiaojian() {
+				let bianbei = 10;
+				let ehomebianbei3 = 'FOCUS_NEAR';
+				if (this.status.ezv == 0) {
+					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei3}`, "POST", {}, false).then(res => {
+						console.log(res)
+					})
+				} else {
+					let channel = 1;
+					request(`/ptzOption/${this.status.nvr}/${channel}/${bianbei}`, "POST", {}, false).then(res => {
+						console.log(res)
+						if (res.code == 0) {
+							uni.showToast({
+								title: res.msg,
+								icon: "none"
+							})
+						}
+					})
+				}
+			},
+			// 退出全屏
+			exitFull() {
+				this.videoContext = uni.createVideoContext("myVideo", this);
+				this.videoContext.exitFullScreen();
+				this.zidong = false
+			},
+			// 全屏
+			full() {
+				this.videoContext = uni.createVideoContext("myVideo", this);
+				this.videoContext.requestFullScreen();
+				this.zidong = true
+			},
+			// 截屏
+			screenshots() {
+				uni.showToast({
+					title: '暂不支持',
+					icon: 'none',
+				})
+			},
+			back() {
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			videodetail() {
+				if (this.status.ezv == 0) {
+					// 如果为0则是海康
+					request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
+							'POST', {}, false)
+						.then(res => {
+							let apiUrl = 'http://140.249.223.78:12003/'
+							this.videoUrl = apiUrl + res.url
+						})
+				} else {
+					let channel = 1;
+					// 获取萤石云播放url
+					let url = `/getEzNewLiveAddress/${this.status.nvr}/${channel}/${this.status.ezviz}`;
+					// console.log(url)
+					request(url,
+							'POST', {}, false)
+						.then(res => {
+							this.videoUrl = res.result.data.url
+						})
+				}
+			}
+		},
+		onLoad(option) {
+			console.log(option)
+			this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2
+			this.status = option
+			console.log(this.status)
+			this.videodetail()
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.headerTitle {
+		width: 750upx;
+		background-color: #00B48F;
+	}
+
+	.header-top {
+		background-color: #00B48F;
+		width: 750upx;
+		height: 92upx;
+		padding: 0 20upx;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.img {
+		width: 40upx;
+		height: 40upx;
+	}
+
+	.header-top .header-item {
+		color: white;
+		font-size: 32upx;
+		font-family: PingFang SC;
+		font-weight: bold;
+	}
+
+	.header-items {
+		color: white;
+		width: 50upx;
+	}
+
+	.vid {
+		width: 750upx;
+		height: 500upx;
+	}
+
+	.container {
+		position: absolute;
+		top: 100upx;
+		right: 10upx;
+	}
+
+	.mask {
+		width: 750upx;
+		height: 100upx;
+		position: relative;
+		background-color: #464950;
+	}
+
+	.images1 {
+		width: 36upx;
+		height: 36upx;
+		transform: translateX(5%);
+		margin-bottom: 40upx;
+	}
+
+	.images2 {
+		width: 40upx;
+		height: 40upx;
+		margin-bottom: 40upx;
+	}
+
+	.images3 {
+		width: 40upx;
+		height: 40upx;
+	}
+
+	.mask-img {
+		position: absolute;
+		right: 20upx;
+		bottom: 20upx;
+		font-size: 28upx;
+		width: 60upx;
+		height: 60upx;
+		color: #FFFFFF;
+	}
+
+	.middle {
+		width: 750upx;
+		// height: 360upx;
+		text-align: center;
+	}
+
+	.middle .middle-content {
+		width: 360upx;
+		height: 360upx;
+		position: relative;
+		// margin: 20upx auto 0;
+		transform: translateX(50%);
+	}
+
+	.middle-content .content-img {
+		position: absolute;
+		left: 180upx;
+		top: 0;
+		width: 230upx;
+		height: 130upx;
+		transform: translateX(-50%);
+	}
+
+	.middle-content .content-img1 {
+		position: absolute;
+		right: 0;
+		top: 180upx;
+		width: 130upx;
+		height: 230upx;
+		transform: translateY(-50%);
+	}
+
+	.middle-content .content-img2 {
+		position: absolute;
+		left: 180upx;
+		bottom: 0;
+		width: 230upx;
+		height: 130upx;
+		transform: translateX(-50%);
+	}
+
+	.middle-content .content-img3 {
+		position: absolute;
+		left: 0;
+		top: 180upx;
+		width: 130upx;
+		height: 230upx;
+		transform: translateY(-50%);
+	}
+
+	.a {
+		width: 230upx;
+		height: 130upx;
+	}
+
+	.b {
+		width: 50upx;
+		height: 52upx;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -70%);
+	}
+
+	.soleBase {
+		width: 750upx;
+		// margin: 50upx 50upx 10upx;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
+	}
+
+	.soleBase .zoom1 {
+		width: 96upx;
+		height: 135upx;
+	}
+
+	.zoom1 .zoom1-img {
+		width: 96upx;
+		height: 96upx;
+	}
+
+	.zoom1 .zoom1-text {
+		font-size: 30upx;
+		color: #666666;
+		text-align: center;
+		font-family: PingFang SC;
+	}
+</style>

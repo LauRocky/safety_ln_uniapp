@@ -65,10 +65,12 @@
 			<view class="title">
 				<text style="margin-bottom: 14upx;">项目进度信息</text>
 				<view style="margin: o auto;text-align: center;">
-					<view v-show="isShow" @click="showStatus" style="display: flex;flex-wrap: nowrap;">查看<u-icon
+					<view v-show="isShow" @click="showStatus" style="display: flex;flex-wrap: nowrap;font-size: 32upx;
+		font-weight: bold;">查看<u-icon
 							name="arrow-down"></u-icon>
 					</view>
-					<view v-show="!isShow" @click="noShowStatus" style="display: flex;flex-wrap: nowrap;">收起<u-icon
+					<view v-show="!isShow" @click="noShowStatus" style="display: flex;flex-wrap: nowrap;font-size: 32upx;
+		font-weight: bold;">收起<u-icon
 							name="arrow-up"></u-icon>
 					</view>
 				</view>
@@ -653,8 +655,8 @@
 	}
 
 	.button {
-		width: 50%;
-		height: 30upx;
+		width: 40%;
+		height: 40upx;
 		background-color: #00B490;
 		display: flex;
 		justify-content: center;

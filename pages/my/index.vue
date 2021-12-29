@@ -97,50 +97,52 @@
 </template>
 
 <script>
-	import { scanCode } from '../../utils/utils.js'
-export default {
-	components: {},
-	data() {
-		return {
-			user: JSON.parse(uni.getStorageSync('userInfo')),
-			show: false,
-			status:1,
-			danger:2,
-			public:3,
-			deptNames:"",
-		};
-	},
-	methods: {
-		// 3. 获取登录人部门信息
-			deptInfo(){
-			this.$http('/lvxin/deptInfo','POST',{
-				'parentId':this.user.companyId
-			},false).then(res=>{
-			let deptName='';
-			let array=	res.data.reverse();
-			for (var i = 0; i < array.length; i++) {
-				if(i==0){
-					continue;
-				}
-				deptName+=array[i].name;
-			}
-			this.deptNames=deptName;
-			})
+	import {
+		scanCode
+	} from '../../utils/utils.js'
+	export default {
+		components: {},
+		data() {
+			return {
+				user: JSON.parse(uni.getStorageSync('userInfo')),
+				show: false,
+				status: 1,
+				danger: 2,
+				public: 3,
+				deptNames: "",
+			};
+		},
+		methods: {
+			// 3. 获取登录人部门信息
+			deptInfo() {
+				this.$http('/lvxin/deptInfo', 'POST', {
+					'parentId': this.user.companyId
+				}, false).then(res => {
+					let deptName = '';
+					let array = res.data.reverse();
+					for (var i = 0; i < array.length; i++) {
+						if (i == 0) {
+							continue;
+						}
+						deptName += array[i].name;
+					}
+					this.deptNames = deptName;
+				})
 			},
 			// 跳转到项目预警
-			warning(){
+			warning() {
 				uni.navigateTo({
-					url:`/pages/home/particulars?status=${this.status}`
+					url: `/pages/home/particulars?status=${this.status}`
 				})
 			},
-			dangerNotice(){
+			dangerNotice() {
 				uni.navigateTo({
-					url:`/pages/home/particulars?status=${this.danger}`
+					url: `/pages/home/particulars?status=${this.danger}`
 				})
 			},
-			publicNotice(){
+			publicNotice() {
 				uni.navigateTo({
-					url:`/pages/home/particulars?status=${this.public}`
+					url: `/pages/home/particulars?status=${this.public}`
 				})
 			},
 			// 拨打电话
@@ -166,7 +168,7 @@ export default {
 			},
 			// 更新
 			check() {
-				
+
 			},
 			//技术支持
 			// skill() {
@@ -176,20 +178,20 @@ export default {
 			share() {
 				console.log(111)
 				uni.share({
-    provider: "weixin",
-    scene: "WXSceneSession",
-    type: 0,
-    href: "http://uniapp.dcloud.io/",
-    title: "uni-app分享",
-    summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
-    imageUrl: "https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/d8590190-4f28-11eb-b680-7980c8a877b8.png",
-    success: function (res) {
-        console.log("success:" + JSON.stringify(res));
-    },
-    fail: function (err) {
-        console.log("fail:" + JSON.stringify(err));
-    }
-});
+					provider: "weixin",
+					scene: "WXSceneSession",
+					type: 0,
+					href: "http://uniapp.dcloud.io/",
+					title: "uni-app分享",
+					summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
+					imageUrl: "https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/d8590190-4f28-11eb-b680-7980c8a877b8.png",
+					success: function(res) {
+						console.log("success:" + JSON.stringify(res));
+					},
+					fail: function(err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+				});
 			},
 			// 关于
 			about() {
@@ -201,10 +203,10 @@ export default {
 				// scanCode();
 				// 允许从相机和相册扫码
 				uni.scanCode({
-				    success: function (res) {
-				        console.log('条码类型：' + res.scanType);
-				        console.log('条码内容：' + res.result);
-				    }
+					success: function(res) {
+						console.log('条码类型：' + res.scanType);
+						console.log('条码内容：' + res.result);
+					}
 				});
 			},
 			scan() {
@@ -229,7 +231,7 @@ export default {
 					}
 				});
 			},
-			handscanCode(){
+			handscanCode() {
 				const that = this;
 				uni.scanCode({
 					onlyFromCamera: true,
@@ -245,8 +247,8 @@ export default {
 								})
 							}).catch(err => {
 								uni.showToast({
-									title:'登录失败，请刷新二维码或稍后重试',
-									duration:1500
+									title: '登录失败，请刷新二维码或稍后重试',
+									duration: 1500
 								})
 							})
 					}
@@ -258,7 +260,7 @@ export default {
 		},
 		onShow() {
 			//刷新用户数据
-			this.user=JSON.parse(uni.getStorageSync('userInfo'))
+			this.user = JSON.parse(uni.getStorageSync('userInfo'))
 		}
 	};
 </script>
@@ -506,6 +508,7 @@ export default {
 		padding: 30upx 0 45upx 35upx;
 		border-radius: 15upx;
 	}
+
 	.exit {
 		margin: 0 auto;
 		height: 100upx;
