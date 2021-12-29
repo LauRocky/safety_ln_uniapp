@@ -120,7 +120,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
-                    "target" : "http://59.110.136.159:12002/safety-server/api", //在线
+                    "target" : "https://esq.ln2.ink/safety-server/api", //aliyun
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
