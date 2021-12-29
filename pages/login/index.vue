@@ -3,10 +3,6 @@
 		<image class="login-imgs" src="../../static/user/banners.png" mode=""></image>
 		<image class="login-tou" src="../../static/logo.png"></image>
 		<view class="login-form">
-
-
-
-
 			<u--form :model="form" :rules="rules" ref="uForm">
 				<u-form-item prop="username">
 					<u--input v-model="form.username" placeholder="请输入用户名"
