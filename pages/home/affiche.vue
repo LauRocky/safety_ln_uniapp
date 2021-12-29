@@ -23,7 +23,6 @@ export default {
 		};
 	},
 	onLoad(v) {
-		console.log(v);
 		this.id = v.id;
 		this.handInfo();
 	},
