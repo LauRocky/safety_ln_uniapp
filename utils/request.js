@@ -1,6 +1,6 @@
 // 在公司的默认地址
 // export var BASE_URL = 'http://192.168.133.12:12002/safety-server/api'
-export var BASE_URL = 'https://esq.ln2.ink/safety-server/api'//aliyun
+export var BASE_URL = 'https://esq.ln2.ink/api'//aliyun
 
 // #ifdef H5
 BASE_URL = '/web'; //H5下将地址修改为/web 
