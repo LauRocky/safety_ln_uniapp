@@ -71,7 +71,7 @@ export default {
 				page: 1,
 				limit: 10
 			},
-			status: 0
+			status: 1
 		};
 	},
 	onLoad(val) {
@@ -156,17 +156,24 @@ export default {
 		},
 		handmsglist() {
 			//隐患通知
+			uni.showLoading({
+				title: '正在加载'
+			});
 			this.$http('/msg/list', 'POST', this.backlog, false)
 				.then(res => {
+					uni.hideLoading();
 					if (res.code == 0) {
-						res.page.list.forEach(val => {
-							val.title = val.content.substr(0, 1);
-							val.projectName = val.content;
-							let list = [];
-							list = val.createTime.split(' ');
-							val.time = list[0];
-						});
-						this.indexList = res.page.list;
+						if (this.indexList.length < res.page.totalCount) {
+							this.backlog.page++;
+							res.page.list.forEach(val => {
+								val.title = val.content.substr(0, 1);
+								val.projectName = val.content;
+								let list = [];
+								list = val.createTime.split(' ');
+								val.time = list[0];
+							});
+							this.indexList = this.indexList.concat(res.page.list);
+						}
 						this.totalCount = res.page.totalCount;
 					}
 				})
@@ -176,24 +183,38 @@ export default {
 		},
 		handquerylist() {
 			//公告
+			uni.showLoading({
+				title: '正在加载'
+			});
 			this.$http('/news/all/list', 'GET', this.receiver, false)
 				.then(res => {
+					uni.hideLoading();
 					if (res.code == 0) {
-						res.page.list.forEach(val => {
-							val.title = val.newsName.substr(0, 1);
-							val.projectName = val.newsName;
-							let list = [];
-							list = val.createTime.split(' ');
-							val.time = list[0];
-							val.content = removeTag(val.newsText);
-						});
-						this.indexList = res.page.list;
+						if (this.indexList.length < res.page.totalCount) {
+							this.receiver.page++;
+							res.page.list.forEach(val => {
+								val.title = val.newsName.substr(0, 1);
+								val.projectName = val.newsName;
+								let list = [];
+								list = val.createTime.split(' ');
+								val.time = list[0];
+								val.content = removeTag(val.newsText);
+							});
+							this.indexList = this.indexList.concat(res.page.list);
+						}
 						this.totalCount = res.page.totalCount;
 					}
 				})
 				.catch(err => {
 					console.log(err);
 				});
+		}
+	},
+	onReachBottom() {
+		if (this.status == 2) {
+			this.handmsglist();
+		} else if (this.status == 3) {
+			this.handquerylist();
 		}
 	}
 };
@@ -263,14 +284,14 @@ export default {
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						-webkit-line-clamp: 2; //多行在这里修改数字即可
-						overflow:hidden;
+						overflow: hidden;
 						-webkit-box-orient: vertical;
 						font-size: 28upx;
 						font-family: PingFang SC;
 						font-weight: 500;
 						color: #666666;
 					}
-					.times{
+					.times {
 						text-align: right;
 						font-size: 28upx;
 						font-family: PingFang SC;
