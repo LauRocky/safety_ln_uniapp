@@ -120,7 +120,7 @@ export default {
 		}
 	}
 	.main {
-		padding: 20upx 29upx 0 64upx;
+		padding: 20upx 54upx 0 54upx;
 		.title2 {
 			font-size: 32upx;
 			font-family: PingFang SC;
