@@ -224,9 +224,7 @@
 				}
 			}
 
-		}
-
-		, {
+		}, {
 			"path": "pages/home/affiche",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -239,7 +237,7 @@
 			}
 
 		}
-	],
+    ],
 	"tabBar": {
 		"color": "#A9A9A9",
 		"selectedColor": "#00B490",
