@@ -118,8 +118,8 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
-                    // "target" : "http://192.168.133.12:12002/safety-server/api", //测试
-                    "target" : "http://59.110.136.159:12002/safety-server/api", //在线
+                    "target" : "http://192.168.133.12:12002/safety-server/api", //测试
+                    // "target" : "http://59.110.136.159:12002/safety-server/api", //在线
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
