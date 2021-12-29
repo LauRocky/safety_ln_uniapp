@@ -281,12 +281,14 @@ export default {
 				},
 				success: res => {
 					const imgRes = JSON.parse(res.data);
-					this.imgList.push(imgRes.data.file_full_url);
+					this.$set(this.imgList,this.imgList.length,imgRes.data.file_full_url)
+					
 				}
 			});
 		},
 		imgDelete(list, eq) {
-			this.imgList.splice(eq, 1);
+			//删除图片
+			this.imgList = list
 		},
 		handEnd(v) {
 			//项目

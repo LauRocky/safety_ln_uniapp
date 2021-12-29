@@ -1,7 +1,6 @@
 <template>
 	<view class="detail">
 		<TwoNavbar :name="project.projectName"></TwoNavbar>
-		
 		<view class="detail-container">
 			<view class="title">
 				<text>项目基本信息</text>
@@ -9,7 +8,7 @@
 					borderColor="#00B490" bgColor="#00B490" color="#ffffff">
 				</u-tag>
 			</view>
-			<view class="msg-item">
+			<view class="msg-item ">
 				<view class="name">项目名称</view>
 				<view class="container">{{projectInfo.projectName}}</view>
 			</view>
@@ -21,25 +20,43 @@
 				<view class="name">计划竣工时间</view>
 				<view class="container">{{projectInfo.finishTime}}</view>
 			</view>
-			
-			<view class="msg-item">
-				<view class="name">地址</view>
-				<view class="container">{{getAddress(projectInfo.shortAddress)}}</view>
-			</view>
-			<view class="msg-item">
-				<view class="name">总包</view>
-				<view class="container">{{projectInfo.unit?projectInfo.unit:'无'}}</view>
-			</view>
-			<view class="msg-item">
-				<view class="name">项目经理（总包）</view>
-				<view class="container">{{projectInfo.partnerProjectManager?projectInfo.partnerProjectManager:'无'}}
-					{{projectInfo.partnerProjectManagerMobile}}
+			<view class="pull-down" v-if="isPullDown">
+				<view class="msg-item">
+					<view class="name">地址</view>
+					<view class="container">{{getAddress(projectInfo.shortAddress)}}</view>
+				</view>
+				<view class="msg-item">
+					<view class="name">总包</view>
+					<view class="container">{{projectInfo.unit?projectInfo.unit:'无'}}</view>
 				</view>
 			</view>
-			<view class="msg-item">
-				<view class="name">项目经理（甲包）</view>
-				<view class="container">{{projectInfo.projectManager?projectInfo.projectManager:'无'}}
-					{{projectInfo.projectManagerMobile}}
+			<!-- 查看 -->
+			<view class="gradual-one" v-show="isPullDown">
+				<view class="button">
+					<!-- <u-button @click="showPullDown()" color="#00B490">查看</u-button> -->
+					<view @click="showPullDown()">查看更多</view>
+				</view>
+			</view>
+			<view class="pull-down" v-if="!isPullDown">
+				<view class="msg-item">
+					<view class="name">地址</view>
+					<view class="container">{{getAddress(projectInfo.shortAddress)}}</view>
+				</view>
+				<view class="msg-item">
+					<view class="name">总包</view>
+					<view class="container">{{projectInfo.unit?projectInfo.unit:'无'}}</view>
+				</view>
+				<view class="msg-item">
+					<view class="name">项目经理（总包）</view>
+					<view class="container">{{projectInfo.partnerProjectManager?projectInfo.partnerProjectManager:'无'}}
+						{{projectInfo.partnerProjectManagerMobile}}
+					</view>
+				</view>
+				<view class="msg-item">
+					<view class="name">项目经理（甲包）</view>
+					<view class="container">{{projectInfo.projectManager?projectInfo.projectManager:'无'}}
+						{{projectInfo.projectManagerMobile}}
+					</view>
 				</view>
 			</view>
 		</view>
@@ -47,6 +64,14 @@
 		<view class="process-container">
 			<view class="title">
 				<text style="margin-bottom: 14upx;">项目进度信息</text>
+				<view style="margin: o auto;text-align: center;">
+					<view v-show="isShow" @click="showStatus" style="display: flex;flex-wrap: nowrap;">查看<u-icon
+							name="arrow-down"></u-icon>
+					</view>
+					<view v-show="!isShow" @click="noShowStatus" style="display: flex;flex-wrap: nowrap;">收起<u-icon
+							name="arrow-up"></u-icon>
+					</view>
+				</view>
 			</view>
 			<view class="project-node" v-for="item in timeOver" :key=item.id>
 				<view class="node-tag">
@@ -58,9 +83,6 @@
 				</view>
 			</view>
 			<view class="project-status">
-				<view style="margin: o auto;text-align: center;">
-					<u-icon v-show="isShow" name="arrow-down" @click="showStatus"></u-icon>
-				</view>
 				<view class="status-container" v-show="!isShow">
 					<view class="status-tag-container" style="margin-bottom: 60upx;">
 						<view v-for="(item,index) in statusList" :key=item.code :class="{
@@ -381,7 +403,7 @@
 						</view>
 					</view>
 				</view>
-				<u-icon v-show="!isShow" name="arrow-up" @click="noShowStatus" style="padding-bottom: 20rpx;"></u-icon>
+
 			</view>
 		</view>
 	</view>
@@ -401,6 +423,7 @@
 				// title:'',
 				currentIndex: 0,
 				isShow: true,
+				isPullDown: true,
 				project: {
 					projectId: '',
 					projectName: '',
@@ -445,6 +468,12 @@
 
 		},
 		methods: {
+			noshowPullDown() {
+				this.isPullDown = true
+			},
+			showPullDown() {
+				this.isPullDown = false
+			},
 			noShowStatus() {
 				this.isShow = true
 			},
@@ -606,10 +635,35 @@
 </script>
 
 <style scoped>
+	/* 查看 */
+	.gradual-one {
+		width: 90%;
+		height: 164upx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-image: linear-gradient(#ffffff40, #ffffff) !important;
+		position: absolute;
+		bottom: 0;
+	}
+
+	.gradual {
+		/* background-image: linear-gradient(#0000001a, #ffffff); */
+		text-align: center;
+	}
+
+	.button {
+		height: 30upx;
+		background-color: #00B490;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
 	.detail {
 		overflow: hidden;
 	}
-	
+
 	.active-tags {
 		background: #00B490;
 		color: #FFFFFF !important;
@@ -786,12 +840,10 @@
 		border-radius: 10upx;
 		box-shadow: 0upx 0upx 50upx 0upx rgba(0, 0, 0, 0.06);
 		background-color: #FFFFFF;
-	}
-	.detail-container{
 		position: relative;
 	}
 
-	.u-icon__icon[dta-v-6e20bb40] {
+	.u-icon__icon[data-v-6e20bb40] {
 		color: #FFFFFF !important;
 		font-weight: 900 !important;
 	}
