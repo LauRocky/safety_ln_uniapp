@@ -61,12 +61,15 @@
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/gengxin.png" mode=""></image>
 					<view class="updata-font">检查更新</view>
 				</view>
-				<view class="share" @click="share">
+				<!-- <view class="share" @click="share">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/fenxiang.png" mode=""></image>
 					<view class="share-font">
 						分享</view>
 					<image class="share-img" src="../../static/my/erweima.png" mode=""></image>
-				</view>
+				</view> -->
+				<!-- <u-line ></u-line> -->
+				<!-- 分割线 -->
+				<view class="divider" style="width: 90%;" ><u-divider lineColor="#b9b9b9" hairline="false"></u-divider></view>
 				<view class="about" @click="about">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
@@ -168,7 +171,11 @@
 			},
 			// 更新
 			check() {
-
+			
+				//android 更新
+				uni.sendNativeEvent("checkUpdate", res => {
+					console.log(res)
+				});
 			},
 			//技术支持
 			// skill() {
@@ -177,21 +184,6 @@
 			// 分享
 			share() {
 				console.log(111)
-				uni.share({
-					provider: "weixin",
-					scene: "WXSceneSession",
-					type: 0,
-					href: "http://uniapp.dcloud.io/",
-					title: "uni-app分享",
-					summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
-					imageUrl: "https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/d8590190-4f28-11eb-b680-7980c8a877b8.png",
-					success: function(res) {
-						console.log("success:" + JSON.stringify(res));
-					},
-					fail: function(err) {
-						console.log("fail:" + JSON.stringify(err));
-					}
-				});
 			},
 			// 关于
 			about() {
