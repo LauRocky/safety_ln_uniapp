@@ -121,6 +121,7 @@
             "proxy" : {
                 "/web" : {
                     "target" : "https://esq.ln2.ink/api", //aliyun
+					 // "target" : "http://192.168.133.12:12002/safety-server/api", //公司测试
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
