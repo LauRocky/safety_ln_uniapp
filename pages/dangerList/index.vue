@@ -174,7 +174,6 @@ export default {
 				this.handDangerList({ status: '-1,1,0', page: this.page, limit: this.limit, all: '1' });
 			}
 		},
-
 		handUpqie() {
 			this.show = true;
 		},
@@ -307,4 +306,5 @@ export default {
 		transform: translate(-50%,-50%);
 	}
 }
+
 </style>
