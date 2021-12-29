@@ -182,21 +182,6 @@
 			// 分享
 			share() {
 				console.log(111)
-				uni.share({
-					provider: "weixin",
-					scene: "WXSceneSession",
-					type: 0,
-					href: "http://uniapp.dcloud.io/",
-					title: "uni-app分享",
-					summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
-					imageUrl: "https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/d8590190-4f28-11eb-b680-7980c8a877b8.png",
-					success: function(res) {
-						console.log("success:" + JSON.stringify(res));
-					},
-					fail: function(err) {
-						console.log("fail:" + JSON.stringify(err));
-					}
-				});
 			},
 			// 关于
 			about() {
