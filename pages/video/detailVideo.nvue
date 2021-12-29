@@ -119,14 +119,17 @@
 				})
 			},
 			fullScreenEvent(e) {
-				// console.log(e)
+				console.log(e)
 				if (e.detail.fullScreen) { //全屏
+					this.isShow = true;
 					this.videoContext = uni.createVideoContext("myVideo", this);
 					this.videoContext.showStatusBar(); //显示状态栏,仅在ios全屏下有效
 					this.pmgressbar = true;
-					this.isShow = true
 				} else { // 非全屏
 					this.isShow = false
+					this.isShow = false;
+					this.screen = false;
+					this.fullControl = false;
 					this.pmgressbar = false;
 				}
 			},
@@ -541,7 +544,6 @@
 		height: 230upx;
 		transform: translateY(-50%);
 	}
-
 	.a {
 		width: 230upx;
 		height: 130upx;

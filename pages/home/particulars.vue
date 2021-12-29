@@ -4,7 +4,7 @@
 		<template v-if="indexList.length !== 0">
 			<view class="par" v-for="(val, i) in indexList" :key="i" @click="handXq(val)">
 				<view class="par-1">
-					<view class="tou">{{ val.title }}</view>
+					<view class="tou" v-if="status !== 3">{{ val.title }}</view>
 					<view class="par-cet">
 						<view class="proname">{{ val.projectName }}</view>
 						<view class="tags" v-if="status == 1">
@@ -26,15 +26,13 @@
 							</view>
 						</view>
 						<view class="tags" v-if="status == 2"></view>
-						<view class="tags" v-if="status == 3">
-							<view class="tt2">
-								【{{ val.publisher }}】
-								<text></text>
-							</view>
+						<view class="tags2" v-if="status == 3">
+							<view class="tag-text">{{ val.content }}</view>
+							<view class="times">{{ val.time }}</view>
 						</view>
 					</view>
 				</view>
-				<view class="par-2">
+				<view class="par-2" v-if="status !== 3">
 					<view class="times">{{ val.time }}</view>
 					<!-- <button class="btn">点击查看</button> -->
 				</view>
@@ -47,6 +45,7 @@
 </template>
 <script>
 import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
+import { removeTag } from '../../utils/utils.js';
 export default {
 	name: 'particulars',
 	props: [],
@@ -101,9 +100,9 @@ export default {
 				});
 			} else if (this.status == 2) {
 				this.handProblemsId(v);
-			}else if (this.status == 3) {
+			} else if (this.status == 3) {
 				uni.navigateTo({
-					url: `/pages/home/affiche?text=${v.newsText}}&title=${v.newsName}`
+					url: `/pages/home/affiche?id=${v.id}`
 				});
 			}
 		},
@@ -135,7 +134,7 @@ export default {
 				delta: 1
 			});
 		},
-		
+
 		handbacklog() {
 			//项目预警
 			this.$http('/project/plan/page', 'POST', this.project, false)
@@ -186,6 +185,7 @@ export default {
 							let list = [];
 							list = val.createTime.split(' ');
 							val.time = list[0];
+							val.content = removeTag(val.newsText);
 						});
 						this.indexList = res.page.list;
 						this.totalCount = res.page.totalCount;
@@ -200,15 +200,17 @@ export default {
 </script>
 <style lang="less" scoped>
 .particulars {
+	width: 100%;
+	height: 100vh;
+	padding: 15upx 0;
 	.par {
-		padding: 0 20upx;
-		margin: 35upx 0;
+		margin: 20upx;
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+		border-bottom: 2upx solid #dadada;
 		.par-1 {
+			padding-bottom: 20upx;
 			display: flex;
-			align-items: center;
 			.tou {
 				margin-right: 20upx;
 				width: 100upx;
@@ -223,6 +225,7 @@ export default {
 				color: #feffff;
 			}
 			.par-cet {
+				padding-top: 10upx;
 				.proname {
 					font-size: 32upx;
 					font-family: PingFang SC;
@@ -252,14 +255,38 @@ export default {
 						}
 					}
 				}
-				.par-2 {
-					.times {
-						font-size: 24upx;
+				.tags2 {
+					width: 95vw;
+					.tag-text {
+						padding-top: 20upx;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						display: -webkit-box;
+						-webkit-line-clamp: 2; //多行在这里修改数字即可
+						overflow:hidden;
+						-webkit-box-orient: vertical;
+						font-size: 28upx;
+						font-family: PingFang SC;
+						font-weight: 500;
+						color: #666666;
+					}
+					.times{
+						text-align: right;
+						font-size: 28upx;
 						font-family: PingFang SC;
 						font-weight: 500;
 						color: #666666;
 					}
 				}
+			}
+		}
+		.par-2 {
+			padding-top: 15upx;
+			.times {
+				font-size: 28upx;
+				font-family: PingFang SC;
+				font-weight: 500;
+				color: #666666;
 			}
 		}
 	}
