@@ -10,8 +10,9 @@
 		<video class="vid" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
 			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
-				<image @click="recording" class="images1" src="../../static/video/shexiangji.png" mode=""></image>
-				<image @click="screenshots" class="images2" src="../../static/video/jiandao.png" mode=""></image>
+				<!-- 当前图片截屏跟录屏图片暂未添加 -->
+				<image @click="recording" class="images1" src="" mode=""></image>
+				<image @click="screenshots" class="images2" src="" mode=""></image>
 				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
 			</cover-view>
 		</video>
@@ -114,7 +115,6 @@
 				})
 			},
 			fullScreenEvent(e) {
-				console.log(e)
 				if (e.detail.fullScreen) { //全屏
 					this.isShow = true;
 					this.videoContext = uni.createVideoContext("myVideo", this);
@@ -249,7 +249,6 @@
 				}
 			},
 			up(e) {
-				console.log(e)
 				if (e == 1) {
 					this.discolor = false;
 				} else if (e == 2) {
@@ -491,7 +490,6 @@
 
 	.middle {
 		width: 750upx;
-		// height: 360upx;
 		text-align: center;
 	}
 
@@ -500,7 +498,6 @@
 		width: 360upx;
 		height: 360upx;
 		position: relative;
-		// margin: 20upx auto 0;
 		transform: translateX(50%);
 	}
 
