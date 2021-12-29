@@ -11,7 +11,7 @@
 				</view>
 				<view class="main-right">
 					<scroll-view class="right-scroll" @scrolltolower="handtolower" scroll-y>
-						<view class="gg" :class="[ggIndex == i1 ? 'ggactive' : '']" @click="handGcompany(val1, i1)" v-for="(val1, i1) in rightlist" :key="i1">{{ val1.name }}</view>
+						<view class="gg" :class="[ggIndex == i1 ? 'ggactive' : '']" @click="handGcompany(val1, i1)" v-for="(val1, i1) in rightlist" :key="i1">{{!val1.shortName?val1.name:val1.shortName}}</view>
 					</scroll-view>
 				</view>
 			</view>
@@ -47,10 +47,11 @@ export default {
 		handtolower() {},
 		handGcompany(v, val) {
 			this.ggIndex = val;
-			this.$emit('handcompany', { name: v.name, companyId: v.id });
+			let Name=!v.shortName?v.name:v.shortName;
+			this.$emit('handcompany', { name:Name, companyId: v.id });
 		},
 		handleft(v, val) {
-			this.ggIndex = 0;
+			this.ggIndex = null;
 			this.leftIndex = val;
 			if (val == 0) {
 				this.rightlist = this.alldata[v];

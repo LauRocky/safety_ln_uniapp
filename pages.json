@@ -107,7 +107,7 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom",		
 				"app-plus": {
 					"titleNView": false,
 					"bounce": "none"
