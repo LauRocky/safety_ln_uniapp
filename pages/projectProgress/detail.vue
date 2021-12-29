@@ -653,11 +653,13 @@
 	}
 
 	.button {
+		width: 50%;
 		height: 30upx;
 		background-color: #00B490;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		border-radius: 6upx;
 	}
 
 	.detail {
