@@ -71,13 +71,8 @@
 				videoUrl: '',
 				zidong: false,
 				pmgressbar: false,
-				// screen: true,
-				currentSelect: '',
-				// fullControl: false,
-				isIOS: false,
 				videoContext: null,
 				status: {},
-				img: -1,
 			};
 		},                                          
 		methods: {
@@ -406,7 +401,6 @@
 			}
 		},
 		onLoad(option) {
-			console.log(option)
 			this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2
 			this.status = option
 			console.log(this.status)
@@ -502,6 +496,7 @@
 	}
 
 	.middle .middle-content {
+		margin: 20upx;
 		width: 360upx;
 		height: 360upx;
 		position: relative;
