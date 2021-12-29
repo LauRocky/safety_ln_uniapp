@@ -67,7 +67,7 @@
 						分享</view>
 					<image class="share-img" src="../../static/my/erweima.png" mode=""></image>
 				</view> -->
-				<u-line ></u-line>
+				<!-- <u-line ></u-line> -->
 				<view class="about" @click="about">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
