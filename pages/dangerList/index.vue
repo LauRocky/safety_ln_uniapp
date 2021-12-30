@@ -190,7 +190,7 @@ export default {
 <style lang="less" scoped>
 .danger {
 	width: 100vw;
-	height: 100%;
+	height: 100vh;
 	.danger-list {
 		padding: 20upx 20upx;
 		font-size: 28upx;
@@ -201,7 +201,6 @@ export default {
 	.lists {
 		width: 100vw;
 		height: calc(100vh - 21vh);
-		
 		.list-1 {
 			padding: 27upx 20upx 0;
 			.list-top {
