@@ -1,7 +1,7 @@
 // 在公司的默认地址
 // export var BASE_URL = 'http://192.168.133.12:12002/safety-server/api'
 // export var BASE_URL = "http://59.110.136.159:12002/safety-server/api",
-export var BASE_URL = 'https://esq.ln2.ink/api'//aliyun
+export var BASE_URL = 'https://esq.ln2.ink/api' //aliyun
 
 // #ifdef H5
 BASE_URL = '/web'; //H5下将地址修改为/web 
@@ -32,18 +32,13 @@ export function request(url, type, date, tips) {
 					 * showError: true,开启错误提示
 					 *  showError: false,关闭错误提示
 					 * */
-					if (tips.showError) {
-						showError(res);
-					}
+					showError(res);
 					resolve(res)
 				}
 			},
 			//失败调用reject，
 			fail: (err) => {
 				// 失败做处理
-				if (tips.showError) {
-					showError(res);
-				}
 				reject(err)
 			}
 		});
@@ -51,26 +46,18 @@ export function request(url, type, date, tips) {
 }
 
 // 错误处理
-const showError = (error) => {
-	// console.log(error)
-	if (error.data.msg == 'token失效_01') {
+const showError = (res) => {
+	if (res.data.code == 111 || res.data.code == 100) {
 		uni.removeStorage('token');
 		uni.showToast({
-			title: '请重新登录',
+			title: 'Token超期',
 			icon: 'none',
 			duration: 2000
 		});
 		setTimeout(() => {
 			uni.reLaunch({
-				url: ''
+				url: '/pages/login/index'
 			})
 		}, 2000)
-	} else {
-		uni.showToast({
-			title: error.data.msg,
-			icon: 'none',
-			duration: 1000
-		});
-
 	}
 }
