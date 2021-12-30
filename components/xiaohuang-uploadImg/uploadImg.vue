@@ -87,7 +87,6 @@ export default {
 				success: chooseImageRes => {
 					chooseImageRes.tempFilePaths.forEach(val => {
 						/* this.imgList.push(val); */
-						
 						this.isMaxNum();
 						this.$emit('chooseFile', this.imgList, val);
 					});
@@ -96,9 +95,7 @@ export default {
 		},
 		//删除图片
 		deleteImg(eq) {
-			console.log(eq)
 			let getUrl = this.handleImg();
-			console.log(getUrl)
 			uni.showModal({
 				title: '提示',
 				content: '您确定删除吗？',
