@@ -68,8 +68,7 @@
 					<image class="share-img" src="../../static/my/erweima.png" mode=""></image>
 				</view> -->
 				<!-- <u-line ></u-line> -->
-				<!-- 分割线 -->
-				<view class="divider" style="width: 90%;" ><u-divider lineColor="#b9b9b9" hairline="false"></u-divider></view>
+				<u-divider :dashed="false" :hairline="false"></u-divider>
 				<view class="about" @click="about">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
@@ -171,7 +170,7 @@
 			},
 			// 更新
 			check() {
-			
+
 				//android 更新
 				uni.sendNativeEvent("checkUpdate", res => {
 					console.log(res)
@@ -192,12 +191,35 @@
 				})
 			},
 			handscanCode() {
-				// scanCode();
-				// 允许从相机和相册扫码
+				const that = this;
 				uni.scanCode({
+					onlyFromCamera: true,
 					success: function(res) {
-						console.log('条码类型：' + res.scanType);
-						console.log('条码内容：' + res.result);
+						let userInfo = JSON.parse(uni.getStorageSync('userInfo'));
+						userInfo.cacheKey = res.result.split('|')[1];
+						that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
+							.then(resp => {
+								if (resp.code == 0) {
+									uni.showToast({
+										icon: 'none',
+										title: '登录成功',
+										duration: 1500
+									});
+								} else {
+									uni.showToast({
+										icon: 'none',
+										title: '登录失败，请刷新二维码或稍后重试' + resp.msg,
+										duration: 1500
+									});
+								}
+
+							})
+							.catch(err => {
+								uni.showToast({
+									title: '登录失败，请刷新二维码或稍后重试',
+									duration: 1500
+								});
+							});
 					}
 				});
 			},
@@ -222,29 +244,6 @@
 						}
 					}
 				});
-			},
-			handscanCode() {
-				const that = this;
-				uni.scanCode({
-					onlyFromCamera: true,
-					success: function(res) {
-						let userInfo = JSON.parse(uni.getStorageSync("userInfo"));
-						userInfo.cacheKey = res.result.split("|")[1];
-						that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
-							.then(resp => {
-								uni.showToast({
-									icon: 'none',
-									title: '登录成功',
-									duration: 1500
-								})
-							}).catch(err => {
-								uni.showToast({
-									title: '登录失败，请刷新二维码或稍后重试',
-									duration: 1500
-								})
-							})
-					}
-				})
 			},
 		},
 		onLoad() {
@@ -429,7 +428,6 @@
 	}
 
 	.update {
-		padding-bottom: 8px;
 		display: flex;
 	}
 
@@ -471,8 +469,8 @@
 	.about {
 		display: flex;
 		position: relative;
-		padding-bottom: 8px;
-		padding-top: 8px;
+		/* padding-bottom: 8px; */
+		/* padding-top: 8px; */
 	}
 
 
@@ -490,14 +488,14 @@
 		width: 40upx;
 		height: 40upx;
 		position: absolute;
-		right: 15upx;
-		top: 26upx;
+		right: 0upx;
+		top: 8upx;
 	}
 
 	.app-plug {
 		background-color: #ffffff;
 		box-shadow: 0px 0px 11upx 0px rgba(0, 0, 0, 0.06);
-		padding: 30upx 0 45upx 35upx;
+		padding: 26upx 30upx 30upx 35upx;
 		border-radius: 15upx;
 	}
 

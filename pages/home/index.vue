@@ -170,11 +170,20 @@ export default {
 					userInfo.cacheKey = res.result.split('|')[1];
 					that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
 						.then(resp => {
-							uni.showToast({
-								icon: 'none',
-								title: '登录成功',
-								duration: 1500
-							});
+							if(resp.code==0){
+								uni.showToast({
+									icon: 'none',
+									title: '登录成功',
+									duration: 1500
+								});
+							}else{
+								uni.showToast({
+									icon: 'none',
+									title: '登录失败，请刷新二维码或稍后重试'+resp.msg,
+									duration: 1500
+								});
+							}
+							
 						})
 						.catch(err => {
 							uni.showToast({
