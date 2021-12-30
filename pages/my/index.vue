@@ -234,6 +234,9 @@
 					content: '确定要退出当前用户？',
 					success: function(res) {
 						if (res.confirm) {
+							uni.sendNativeEvent("logout", c => {
+								console.log(c)
+							});
 							uni.removeStorageSync('userInfo');
 							uni.removeStorageSync('token');
 							uni.navigateTo({
