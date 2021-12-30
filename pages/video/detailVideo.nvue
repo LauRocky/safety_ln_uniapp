@@ -262,10 +262,7 @@
 
 			// 录屏
 			recording() {
-				uni.showToast({
-					title: '暂不支持',
-					icon: 'none',
-				})
+			
 			},
 			// 变倍+
 			bianbeijia() {
@@ -367,10 +364,7 @@
 			},
 			// 截屏
 			screenshots() {
-				uni.showToast({
-					title: '暂不支持',
-					icon: 'none',
-				})
+			
 			},
 			back() {
 				uni.navigateBack({
