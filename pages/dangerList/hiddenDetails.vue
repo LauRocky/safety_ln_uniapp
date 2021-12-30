@@ -30,7 +30,7 @@
 					</view>
 					<view class="bot-1 bot-top">
 						<view class="bot-flex"><image class="bot-imgs" src="../../static/danger/adersstwo.png" mode=""></image></view>
-						<view class="bot-w">{{ problem.location }}安康就是个大大概几点就卡给啊士大夫看见啊额风景区好玩的后期维护的大家卡给大家</view>
+						<view class="bot-w">{{ problem.location }}</view>
 					</view>
 				</view>
 			</view>
