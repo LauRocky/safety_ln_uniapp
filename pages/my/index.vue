@@ -67,8 +67,13 @@
 						分享</view>
 					<image class="share-img" src="../../static/my/erweima.png" mode=""></image>
 				</view> -->
+<<<<<<< HEAD
 				<!-- 分割线 -->
 				<view class="divider" style="width: 90%;" ><u-divider lineColor="#b9b9b9" hairline="false"></u-divider></view>
+=======
+				<!-- <u-line ></u-line> -->
+				<u-divider :dashed="false" :hairline="false"></u-divider>
+>>>>>>> f74e9584a2686e903d6c98999b68c9ee2826384a
 				<view class="about" @click="about">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
@@ -428,7 +433,6 @@
 	}
 
 	.update {
-		padding-bottom: 8px;
 		display: flex;
 	}
 
@@ -470,8 +474,8 @@
 	.about {
 		display: flex;
 		position: relative;
-		padding-bottom: 8px;
-		padding-top: 8px;
+		/* padding-bottom: 8px; */
+		/* padding-top: 8px; */
 	}
 
 
@@ -489,14 +493,14 @@
 		width: 40upx;
 		height: 40upx;
 		position: absolute;
-		right: 15upx;
-		top: 26upx;
+		right: 0upx;
+		top: 8upx;
 	}
 
 	.app-plug {
 		background-color: #ffffff;
 		box-shadow: 0px 0px 11upx 0px rgba(0, 0, 0, 0.06);
-		padding: 30upx 0 45upx 35upx;
+		padding: 26upx 30upx 30upx 35upx;
 		border-radius: 15upx;
 	}
 
