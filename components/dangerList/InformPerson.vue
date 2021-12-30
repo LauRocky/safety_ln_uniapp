@@ -55,11 +55,13 @@ export default {
 		};
 	},
 	//组件生命周期
-	onShow(){this.handlistByProjectId()},
+	onShow(){
+
+		},
 	onLoad(){
-		this.handlistByProjectId()
 	},
 	created() {
+		console.log('11111111')
 		this.handlistByProjectId()
 		let obj = uni.getStorageSync('InformPerson');
 		if (obj) {
@@ -130,6 +132,7 @@ export default {
 			//renyuan人员列表
 			this.$http('/users/pageByProjectId', 'POST', this.listBy, false)
 				.then(res => {
+					console.log(res,'222222222')
 					if (res.code == 0) {
 						uni.hideLoading();
 						if (this.dictLsit.length < res.data.totalCount) {
@@ -163,7 +166,7 @@ export default {
 		
 	}
 	.main{
-		padding: 20upx 29upx 0 64upx;
+		padding: 20upx 54upx 0 54upx;
 		.title2{
 			font-size: 32upx;
 			font-family: PingFang SC;

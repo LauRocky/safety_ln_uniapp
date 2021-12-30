@@ -1,8 +1,8 @@
 <template>
 	<view class="danger">
-		<u-navbar :fixed="true" style="display:flex;align-items: center;color: #FFFFFF;" :placeholder="true"
+		<u-navbar  :fixed="true" style="display:flex;align-items: center;color: #FFFFFF;" :placeholder="true"
 			:safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			<view class="u-nav-left" slot="left">隐患列表</view>
+			<view class="u-nav-left" style="color: #FFFFFF;font-size: 32upx;" slot="left">隐患列表</view>
 		</u-navbar>
 		<u-tabs lineColor="#00B490" lineWidth="120" :activeStyle="{ color: '#00B490' }" :scrollable="false"
 			:list="list1" @click="handclick"></u-tabs>
@@ -156,7 +156,7 @@
 									let obj = {};
 									if (val.problemType) {
 										obj = this.dictLsit.filter(item => val.problemType == item
-										.code); //判断安全等级对比
+											.code); //判断安全等级对比
 										val.problemType2 = obj[0].value;
 									}
 									val.crtime = val.createTime.split(' ')[0];
@@ -230,15 +230,9 @@
 </script>
 
 <style lang="less" scoped>
-	.u-nav-left {
-		color: #FFFFFF;
-		font-size: 32upx;
-		font-weight: bold;
-		font-family: PingFang SC;
-	}
 	.danger {
 		width: 100vw;
-		height: 100%;
+		height: 100vh;
 
 		.danger-list {
 			padding: 20upx 20upx;
@@ -250,7 +244,7 @@
 
 		.lists {
 			width: 100vw;
-			height: calc(100vh - 300upx);
+			height: calc(100vh - 21vh);
 
 			.list-1 {
 				padding: 27upx 20upx 0;

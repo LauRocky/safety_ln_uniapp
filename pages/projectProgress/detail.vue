@@ -640,7 +640,7 @@
 	/* 查看 */
 	.gradual-one {
 		width: 90%;
-		height: 164upx;
+		height: 170upx;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -656,8 +656,10 @@
 
 	.button {
 		width: 40%;
-		height: 40upx;
+		height: 36upx;
 		background-color: #00B490;
+		color: #FFFFFF;
+		font-size: 26upx;
 		display: flex;
 		justify-content: center;
 		align-items: center;
