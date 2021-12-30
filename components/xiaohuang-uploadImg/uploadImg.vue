@@ -76,7 +76,7 @@ export default {
 				return;
 				
 			}
-			this.showList = this.imgList;
+			/* this.showList = this.imgList; */
 		},
 		// 上传图片
 		uploadImg() {
@@ -86,7 +86,8 @@ export default {
 				count: this.maxCount,
 				success: chooseImageRes => {
 					chooseImageRes.tempFilePaths.forEach(val => {
-						this.imgList.push(val);
+						/* this.imgList.push(val); */
+						
 						this.isMaxNum();
 						this.$emit('chooseFile', this.imgList, val);
 					});
@@ -125,7 +126,7 @@ export default {
 		},
 		//判断图片数量是否已经到最大数量
 		isMaxNum() {
-			if (this.imgList.length >= this.maxCount) {
+			if (this.showList.length >= this.maxCount) {
 				this.showUploadControl = false;
 			} else {
 				this.showUploadControl = true;

@@ -22,7 +22,7 @@
 					{{ problem.problemRequire }}
 				</view>
 				<view class="main-a">通知@{{ problem.notifyPersonDisplay }}</view>
-				<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.imglist" :key="i"></image></view>
+				<view class="imgs"><image :src="val" mode="widthFix" v-for="(val, i) in problem.imglist" :key="i"></image></view>
 				<view class="bot">
 					<view class="bot-1">
 						<view class=""><image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image></view>
@@ -53,7 +53,7 @@
 						<text>@{{ problem.problemCheckerDisplay }}</text>
 						请进行复核
 					</view>
-					<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
+					<view class="imgs"><image :src="val"  mode="widthFix" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
 				</view>
 			</template>
 			<template v-if="status == '3'">
@@ -75,7 +75,7 @@
 						<text>@{{ problem.problemCheckerDisplay }}</text>
 						,请重新进行整改;
 					</view>
-					<view class="imgs"><image class="img-ist" :src="val" mode="" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
+					<view class="imgs"><image :src="val"  mode="widthFix" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
 				</view>
 			</template>
 		</view>
