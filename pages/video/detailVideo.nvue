@@ -273,6 +273,7 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
+						
 					})
 				} else {
 					let channel = 1;
