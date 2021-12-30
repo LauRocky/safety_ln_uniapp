@@ -32,9 +32,11 @@
 			</view>
 			<!-- 查看 -->
 			<view class="gradual-one" v-show="isPullDown">
-				<view class="button">
-					<!-- <u-button @click="showPullDown()" color="#00B490">查看</u-button> -->
-					<view @click="showPullDown()">查看更多</view>
+				<!-- <view class="button">
+					<view class="button-text" @click="showPullDown()">查看更多</view>
+				</view> -->
+				<view class="gradual-img" @click="showPullDown()" >
+					<image  style="width: 60upx;height: 60upx;" src="../../static/projectdetail/xiala.png" mode=""></image>
 				</view>
 			</view>
 			<view class="pull-down" v-if="!isPullDown">
@@ -65,13 +67,11 @@
 			<view class="title">
 				<text style="margin-bottom: 14upx;">项目进度信息</text>
 				<view style="margin: o auto;text-align: center;">
-					<view v-show="isShow" @click="showStatus" style="display: flex;flex-wrap: nowrap;font-size: 32upx;
-		font-weight: bold;">查看<u-icon
-							name="arrow-down"></u-icon>
+					<view v-show="isShow" @click="showStatus" style="display: flex; margin-bottom: 14upx;flex-wrap: nowrap;font-size: 28upx;
+		font-weight: bold;">展开<u-icon name="arrow-down" :bold="true"></u-icon>
 					</view>
-					<view v-show="!isShow" @click="noShowStatus" style="display: flex;flex-wrap: nowrap;font-size: 32upx;
-		font-weight: bold;">收起<u-icon
-							name="arrow-up"></u-icon>
+					<view v-show="!isShow" @click="noShowStatus" style="display: flex; margin-bottom: 14upx;flex-wrap: nowrap;font-size: 28upx;
+		font-weight: bold;">收起<u-icon name="arrow-up" :bold="true"></u-icon>
 					</view>
 				</view>
 			</view>
@@ -135,7 +135,7 @@
 									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
 									</image>
 								</view>
-								<view class="plan-title" style="padding-left: 20upx;">
+								<view class="plan-title">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -184,7 +184,7 @@
 									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
 									</image>
 								</view>
-								<view class="plan-title" style="padding-left: 20upx;">
+								<view class="plan-title">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -234,7 +234,7 @@
 									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
 									</image>
 								</view>
-								<view class="plan-title" style="padding-left: 20upx;">
+								<view class="plan-title">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -287,7 +287,7 @@
 									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
 									</image>
 								</view>
-								<view class="plan-title" style="padding-left: 20upx;">
+								<view class="plan-title">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -334,7 +334,7 @@
 									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
 									</image>
 								</view>
-								<view class="plan-title" style="padding-left: 20upx;">
+								<view class="plan-title">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -372,7 +372,7 @@
 								<view class="imgs">
 									<image src="../../static/projectdetail/yuan.png" mode=""></image>
 								</view>
-								<view class="plan-title" style="padding-left: 20upx;">
+								<view class="plan-title">
 									<view class="plan-left">
 										{{item.taskName}}
 									</view>
@@ -639,12 +639,12 @@
 <style scoped>
 	/* 查看 */
 	.gradual-one {
-		width: 90%;
+		width: 100%;
 		height: 170upx;
 		display: flex;
 		justify-content: center;
-		align-items: center;
-		background-image: linear-gradient(#ffffff40, #ffffff) !important;
+		align-items: flex-end;
+		background-image: linear-gradient(#ffffff40 ,40%, #ffffff) !important;
 		position: absolute;
 		bottom: 0;
 	}
@@ -655,16 +655,17 @@
 	}
 
 	.button {
-		width: 40%;
-		height: 36upx;
+		width: 30%;
+		height: 30upx;
+		padding: 20upx 24upx;
 		background-color: #00B490;
 		color: #FFFFFF;
-		font-size: 26upx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border-radius: 6upx;
+		font-size: 30upx;
+		line-height: 30upx;
+		text-align: center;
+		border-radius: 10upx;
 	}
+
 
 	.detail {
 		overflow: hidden;
@@ -727,7 +728,10 @@
 		background: #E65749;
 		border-radius: 50%;
 	}
-
+	.gradual-img{
+		width: 100upx;
+		margin-bottom: 10upx;
+	}
 	.status-tag-container {
 		display: flex;
 		flex-wrap: wrap;
@@ -784,23 +788,28 @@
 
 	.title {
 		display: flex;
+		align-items: flex-start;
 		align-items: center;
 		justify-content: space-between;
 	}
 
 	.statusList {
+		width: 100%;
 		height: 24upx;
-		/* margin: 24upx 0 41upx 32upx; */
-		padding: 23upx 0 41upx 31upx;
+		padding: 24upx 0 40upx 24upx;
 		font-size: 24upx;
 		line-height: 24upx;
 		font-weight: bold;
 		color: #666666;
 	}
-
+	.progress {
+		width: 90vw;
+	}
 	.progress .plan {
+		margin: 0 auto;
 		display: flex;
-		border-left: 1upx dashed #7E7E7E;
+		width: 94%;
+		border-left: 2upx dashed #7E7E7E;
 	}
 
 	.progress .plan:last-child {
@@ -815,19 +824,18 @@
 	}
 
 	.plan-title {
-		width: 685upx;
+		width: 100%;
 		margin-left: 20upx;
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: space-between;
+		justify-content: space-around;
 	}
 
 	.title-time {
-		width: 300upx;
+		margin-left: 80upx;
 		height: 24upx;
 		font-size: 24upx;
 		font-weight: bold;
-		margin-right: 72upx;
 		color: #666666;
 	}
 
