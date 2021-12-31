@@ -23,6 +23,7 @@
 <script>
 	let App = getApp()
 	export default {
+		
 		data() {
 			return {
 				about: {
@@ -37,6 +38,7 @@
 					delta: 1
 				});
 			},
+
 		},
 		onLoad() {
 		this.versions = App.globalData.version

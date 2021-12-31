@@ -24,12 +24,12 @@ export function compareVersion(v1, v2) {
 }
 
 export function wrapTouch(event) {
-  for (let i = 0; i < event.touches.length; ++i) {
-    const touch = event.touches[i];
-    touch.offsetX = touch.x;
-    touch.offsetY = touch.y;
-  }
-  return event;
+	for (let i = 0; i < event.touches.length; ++i) {
+		const touch = event.touches[i];
+		touch.offsetX = touch.x;
+		touch.offsetY = touch.y;
+	}
+	return event;
 }
 export const devicePixelRatio = uni.getSystemInfoSync().pixelRatio
 // #endif
@@ -44,12 +44,12 @@ export function base64ToPath(base64) {
 			}
 			const time = new Date().getTime();
 			const filePath = `_doc/uniapp_temp/${time}.${format}`
-			
-			bitmap.save(filePath, {}, 
+
+			bitmap.save(filePath, {},
 				() => {
 					bitmap.clear()
 					resolve(filePath)
-				}, 
+				},
 				(error) => {
 					bitmap.clear()
 					console.error(`${JSON.stringify(error)}`)
@@ -63,3 +63,4 @@ export function base64ToPath(base64) {
 	})
 }
 // #endif
+

@@ -305,6 +305,7 @@ export default {
 			}
 		}
 		.imgs {
+			text-align: center;
 			margin: 20upx 0;
 			text-align: center;
 			.img-ist {
