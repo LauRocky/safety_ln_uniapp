@@ -262,10 +262,7 @@
 
 			// 录屏
 			recording() {
-				uni.showToast({
-					title: '暂不支持',
-					icon: 'none',
-				})
+			
 			},
 			// 变倍+
 			bianbeijia() {
@@ -276,6 +273,7 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
+						
 					})
 				} else {
 					let channel = 1;
@@ -367,10 +365,7 @@
 			},
 			// 截屏
 			screenshots() {
-				uni.showToast({
-					title: '暂不支持',
-					icon: 'none',
-				})
+			
 			},
 			back() {
 				uni.navigateBack({

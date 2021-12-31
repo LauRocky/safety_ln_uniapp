@@ -268,9 +268,9 @@ export default {
 			this.$refs.InformPerson.handcache();
 			this.$refs.aderssA.handcache();
 		},
-		chooseFile(list, v) {
+	async chooseFile(list, v) {
 			//上传图片
-			uni.uploadFile({
+		await uni.uploadFile({
 				url: BASE_URL + '/upload/image',
 				filePath: v,
 				name: 'pic',

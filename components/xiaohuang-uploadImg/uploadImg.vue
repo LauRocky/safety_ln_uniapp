@@ -5,7 +5,7 @@
 			<icon size="18" type="cancel" class="cancelBtn" @click="deleteImg(index)" v-if="deleteBtn"></icon>
 		</view>
 		<!-- 上传控件 -->
-		<view :class="['imglistItem', columnNum == 3 ? 'column3' : 'column4']" @click="uploadImg" v-if="showUploadControl"><view class="itemImg uploadControl">+</view></view>
+		<view :class="['imglistItem', columnNum == 3 ? 'column3' : 'column4']" @click="uploadImg"><view class="itemImg uploadControl">+</view></view>
 		<view class="clear"></view>
 	</view>
 </template>
@@ -67,6 +67,7 @@ export default {
 		}
 	},
 	created() {
+		
 		this.init(this.mode);
 	},
 	methods: {
@@ -74,9 +75,8 @@ export default {
 			if (this.mode.length != 0) {
 				this.showList = v;
 				return;
-				
 			}
-			this.showList = this.imgList;
+			this.showList = this.imgList
 		},
 		// 上传图片
 		uploadImg() {
@@ -87,7 +87,6 @@ export default {
 				success: chooseImageRes => {
 					chooseImageRes.tempFilePaths.forEach(val => {
 						this.imgList.push(val);
-						this.isMaxNum();
 						this.$emit('chooseFile', this.imgList, val);
 					});
 				}
@@ -95,42 +94,38 @@ export default {
 		},
 		//删除图片
 		deleteImg(eq) {
-			console.log(eq)
-			let getUrl = this.handleImg();
-			console.log(getUrl)
 			uni.showModal({
 				title: '提示',
 				content: '您确定删除吗？',
 				success: res => {
 					if (res.confirm) {
-						getUrl.splice(eq, 1);
-						this.$emit('imgDelete', getUrl, eq);
-						this.isMaxNum();
+						this.showList.splice(eq, 1);
+						this.imgList.splice(eq, 1)
+						this.$emit('imgDelete', this.showList, eq);
 					}
 				}
 			});
 		},
 		// 预览图片
 		previewImage(eq) {
-			let getUrl = this.handleImg();
 			uni.previewImage({
-				current: getUrl[eq],
-				urls: getUrl
+				current: this.showList[eq],
+				urls: this.showList
 			});
 		},
 		//返回需要操作的图片数组
 		//如果是回调了则操作回填后的数组 否则操作临时路径的图片数组
-		handleImg() {
-			return this.mode.length > 0 ? this.showList : this.imgList;
-		},
+		// handleImg() {
+		// 	return this.mode.length > 0 ? this.showList : this.imgList;
+		// },
 		//判断图片数量是否已经到最大数量
-		isMaxNum() {
-			if (this.imgList.length >= this.maxCount) {
-				this.showUploadControl = false;
-			} else {
-				this.showUploadControl = true;
-			}
-		}
+		// isMaxNum() {
+		// 	if (this.showList.length >= this.maxCount) {
+		// 		this.showUploadControl = false;
+		// 	} else {
+		// 		this.showUploadControl = true;
+		// 	}
+		// }
 	}
 };
 </script>

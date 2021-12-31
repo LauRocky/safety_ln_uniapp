@@ -74,12 +74,14 @@ export default {
 		};
 	},
 	onLoad() {
+		
+	},
+	onShow() {
 		this.handclick({
 			value: 1
 		});
 		this.handgETLIST();
 	},
-	onShow() {},
 	methods: {
 		deSelect() {
 			this.title = '所有城市';
