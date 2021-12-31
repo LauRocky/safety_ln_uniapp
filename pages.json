@@ -151,6 +151,18 @@
 			}
 		},
 		{
+			"path": "pages/my/yijianfankui",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "隐患整改",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},
+		{
 			"path": "pages/dangerList/add",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",

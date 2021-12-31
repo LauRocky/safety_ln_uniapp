@@ -132,14 +132,13 @@ export default {
 			//renyuan人员列表
 			this.$http('/users/pageByProjectId', 'POST', this.listBy, false)
 				.then(res => {
-					console.log(res,'222222222')
 					if (res.code == 0) {
 						uni.hideLoading();
 						if (this.dictLsit.length < res.data.totalCount) {
 							this.listBy.page++;
 							this.dictLsit = this.dictLsit.concat(res.data.list);
 						} else {
-							console.log('444444');
+							console.log(res);
 						}
 					}
 				})
