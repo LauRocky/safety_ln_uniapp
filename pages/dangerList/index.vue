@@ -56,7 +56,7 @@ export default {
 			limit: 10,
 			numsList: [],
 			totalCount: 0,
-			status: '', //状态值
+			status: '1', //状态值
 			list1: [
 				{
 					name: '待整改',
@@ -77,8 +77,9 @@ export default {
 		
 	},
 	onShow() {
+		console.log(this.status)
 		this.handclick({
-			value: 1
+			value: this.status
 		});
 		this.handgETLIST();
 	},
@@ -94,6 +95,7 @@ export default {
 			});
 		},
 		handclick(v) {
+			console.log(v)
 			//tab获取数据
 			this.page = 1;
 			this.status = v.value;

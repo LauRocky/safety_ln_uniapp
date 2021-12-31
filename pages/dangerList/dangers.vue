@@ -72,15 +72,15 @@ export default {
 				.then(res => {
 					uni.hideLoading();
 					if (res.code == 0) {
+					setTimeout(() => {
 						uni.showToast({
 							title: '提交成功',
 							duration: 1500
 						});
-						setTimeout(() => {
-							uni.navigateBack({
-								delta: 1
-							});
-						}, 1500);
+					}, 1500);
+						uni.navigateBack({
+							delta: 1
+						});
 					}
 				})
 				.catch(err => {
@@ -120,12 +120,16 @@ export default {
 					});
 					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
 					this.handReview();
+					uni.navigateBack({
+						delta:1,
+					})
 					/* uni.$u.toast('校验通过'); */
 				})
 				.catch(err => {
 					console.log(err);
 					/* uni.$u.toast('校验失败'); */
 				});
+				
 		}
 	}
 };
