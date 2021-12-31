@@ -27,20 +27,12 @@
                 "permissions" : [
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
-                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
-                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
-                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>"
                 ]
             },
             /* ios打包配置 */
@@ -60,7 +52,13 @@
                         "UniversalLinks" : ""
                     }
                 },
-                "ad" : {}
+                "ad" : {},
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "f6edf6efed3af7bda37cfe3764d72a83",
+                        "appkey_android" : "f6edf6efed3af7bda37cfe3764d72a83"
+                    }
+                }
             },
             "icons" : {
                 "android" : {
@@ -127,8 +125,9 @@
             "proxy" : {
                 "/web" : {
                     // "target" : "https://esq.cgdg.com/api", //aliyun
-                    // "target" : "https://esq.ln2.ink/api", //aliyun
-                    "target" : "http://192.168.1.101:12002/safety-server/api", //公司测试
+                    "target" : "https://esq.ln2.ink/api", //aliyun
+
+                    // "target" : "http://192.168.1.101:12002/safety-server/api", //公司测试
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
