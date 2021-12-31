@@ -77,6 +77,7 @@ export default {
 		
 	},
 	onShow() {
+		console.log(this.status)
 		this.handclick({
 			value: this.status
 		});
