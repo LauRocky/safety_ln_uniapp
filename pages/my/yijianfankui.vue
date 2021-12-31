@@ -14,7 +14,6 @@
 		},
 		data() {
 			return {
-				bgColor: '#11B38C',
 				value1: '',
 				type: "",
 				name: "意见反馈"

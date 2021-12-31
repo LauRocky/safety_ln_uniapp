@@ -15,7 +15,7 @@
 				http://www.cgdg.com/
 			</view>
 			<view class="version">
-					Version  {{getVersion()}}
+					<!-- Version  {{getVersion()}} -->
 			</view>
 		</view>
 
@@ -37,9 +37,9 @@
 					delta: 1
 				});
 			},
-			getVersion() {
-				return plus.runtime.versionCode;
-			}
+			// getVersion() {
+			// 	return plus.runtime.versionCode;
+			// }
 		}
 	}
 </script>
