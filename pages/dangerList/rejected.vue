@@ -117,6 +117,9 @@ export default {
 					});
 					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
 					this.handReview();
+					uni.navigateBack({
+						delta:1
+					})
 					/* uni.$u.toast('校验通过'); */
 				})
 				.catch(err => {

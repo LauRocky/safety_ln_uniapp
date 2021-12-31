@@ -307,6 +307,7 @@ export default {
 		.imgs {
 			text-align: center;
 			margin: 20upx 0;
+			text-align: center;
 			.img-ist {
 				width: 100%;
 				height: 334upx;

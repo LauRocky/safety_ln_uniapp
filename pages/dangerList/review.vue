@@ -109,14 +109,17 @@ export default {
 			this.$refs.uForm
 				.validate()
 				.then(res => {
-					if (this.imgList.length == 0) {
-						return uni.$u.toast('请上传图片');
-					}
+					// if (this.imgList.length == 0) {
+					// 	return uni.$u.toast('请上传图片');
+					// }
 					this.imgList.forEach(val => {
 						this.userAdd.images += val + '|';
 					});
 					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
 					this.handReview();
+					uni.navigateBack({
+						delta:1
+					})
 					/* uni.$u.toast('校验通过'); */
 				})
 				.catch(err => {

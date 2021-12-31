@@ -95,6 +95,7 @@ export default {
 			});
 		},
 		handclick(v) {
+			console.log(v)
 			//tab获取数据
 			this.page = 1;
 			this.status = v.value;
