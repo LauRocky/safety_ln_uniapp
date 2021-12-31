@@ -3,6 +3,7 @@
 		onLaunch:function(){
 			// #ifdef APP-PLUS
 			plus.runtime.getProperty(plus.runtime.appid,(wgtinfo)=>{
+				uni.setStorageSync("version",JSON.stringify(wgtinfo))
 				console.log(JSON.stringify(wgtinfo))
 			})
 			// #endif
