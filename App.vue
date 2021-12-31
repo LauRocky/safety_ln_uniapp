@@ -9,7 +9,6 @@
 				this.globalData.version = wgtinfo.version
 			})
 			// #endif
-			
 		},
 		onShow:function(){
 		
