@@ -48,6 +48,12 @@
 						公告
 					</view>
 				</view>
+				<view class="image-item" @click="feedback">
+					<image class="image-imgs" src="../../static/my/project4.png" mode=""></image>
+					<view class="image-text">
+						意见反馈
+					</view>
+				</view>
 				<!-- <view class="image-item" @click="skill">
 					<image class="image-imgs" src="../../static/my/project4.png" mode=""></image>
 					<view class="image-text">
@@ -67,13 +73,9 @@
 						分享</view>
 					<image class="share-img" src="../../static/my/erweima.png" mode=""></image>
 				</view> -->
-<<<<<<< HEAD
 				<!-- 分割线 -->
 				<view class="divider" style="width: 90%;" ><u-divider lineColor="#b9b9b9" hairline="false"></u-divider></view>
-=======
-				<!-- <u-line ></u-line> -->
-				<u-divider :dashed="false" :hairline="false"></u-divider>
->>>>>>> f74e9584a2686e903d6c98999b68c9ee2826384a
+				<!-- <u-divider :dashed="false" :hairline="false"></u-divider> -->
 				<view class="about" @click="about">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
@@ -180,6 +182,24 @@
 				uni.sendNativeEvent("checkUpdate", res => {
 					console.log(res)
 				});
+			},
+			// 意见反馈
+			feedback(){
+				uni.navigateTo({
+					url: '/pages/my/yijianfankui'
+				})
+				// let type = uni.getSystemInfoSync().platform
+				//      switch(type){
+				//       case 'android':
+				//        this.type=1
+				//        break;
+				//       case 'ios':
+				//         this.type=2
+				//        break;
+				//       default:
+				//         this.type=0
+				//        break;
+				//      }
 			},
 			//技术支持
 			// skill() {
