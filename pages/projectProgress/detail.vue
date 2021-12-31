@@ -35,8 +35,9 @@
 				<!-- <view class="button">
 					<view class="button-text" @click="showPullDown()">查看更多</view>
 				</view> -->
-				<view class="gradual-img" @click="showPullDown()" >
-					<image  style="width: 60upx;height: 60upx;" src="../../static/projectdetail/xiala.png" mode=""></image>
+				<view class="gradual-img" @click="showPullDown()">
+					<image style="width: 60upx;height: 60upx;" src="../../static/projectdetail/xiala.png" mode="">
+					</image>
 				</view>
 			</view>
 			<view class="pull-down" v-if="!isPullDown">
@@ -62,351 +63,377 @@
 				</view>
 			</view>
 		</view>
-
-		<view class="process-container">
-			<view class="title">
-				<text style="margin-bottom: 14upx;">项目进度信息</text>
-				<view style="margin: o auto;text-align: center;">
+		<view class="allDetail">
+				<view class="process-container">
+					<view class="title">
+						<text style="margin-bottom: 14upx;">项目进度信息</text>
+						<!-- 				<view style="margin: o auto;text-align: center;">
 					<view v-show="isShow" @click="showStatus" style="display: flex; margin-bottom: 14upx;flex-wrap: nowrap;font-size: 28upx;
 		font-weight: bold;">展开<u-icon name="arrow-down" :bold="true"></u-icon>
 					</view>
 					<view v-show="!isShow" @click="noShowStatus" style="display: flex; margin-bottom: 14upx;flex-wrap: nowrap;font-size: 28upx;
 		font-weight: bold;">收起<u-icon name="arrow-up" :bold="true"></u-icon>
 					</view>
-				</view>
-			</view>
-			<view class="project-node" v-for="item in timeOver" :key=item.id>
-				<view class="node-tag">
-					<u-tag size="mini" :borderColor="bgColor(item.type)" :bgColor="bgColor(item.type)" color="#ffffff"
-						:text="item.value"></u-tag>
-				</view>
-				<view :class="{'node-info' : item.value.length==2,'node-info1' : item.value.length==4,}">
-					{{item.taskName}}
-				</view>
-			</view>
-			<view class="project-status">
-				<view class="status-container" v-show="!isShow">
-					<view class="status-tag-container" style="margin-bottom: 60upx;">
-						<view v-for="(item,index) in statusList" :key=item.code :class="{
+				</view> -->
+					</view>
+					<view class="project-node" v-for="item in timeOver" :key=item.id>
+						<view class="node-tag">
+							<u-tag size="mini" :borderColor="bgColor(item.type)" :bgColor="bgColor(item.type)"
+								color="#ffffff" :text="item.value"></u-tag>
+						</view>
+						<view :class="{'node-info' : item.value.length==2,'node-info1' : item.value.length==4,}">
+							{{item.taskName}}
+						</view>
+					</view>
+					<view class="project-status">
+						<view class="status-container">
+							<view class="status-tag-container" style="margin-bottom: 60upx;">
+								<view v-for="(item,index) in statusList" :key=item.code :class="{
 								'no-margin-left':index==0||index==3,
 								'item-margin-top':index==3||index==4||index==5,
 								'active-tags':currentIndex==index}" class="tags" @click="changeTags(index)">
-							<text> {{item.name}} </text>
-							<view v-if="ongoing.length!=0">
-								<view class="yuan" v-if="index==1">
-									{{ongoing.length}}
-								</view>
-							</view>
-							<view v-if="complete.length!=0">
-								<view class="yuan" v-if="index==2">
-									{{complete.length}}
-								</view>
-							</view>
-							<view v-if="noovercomplete.length!=0">
-								<view class="yuan" v-if="index==3">
-									{{noovercomplete.length}}
-								</view>
-							</view>
-							<view v-if="overundone.length!=0">
-								<view class="yuan" v-if="index==4">
-									{{overundone.length}}
-								</view>
-							</view>
-							<view v-if="overcomplete.length!=0">
-								<view class="yuan" v-if="index==5">
-									{{overcomplete.length}}
-								</view>
-							</view>
-						</view>
-					</view>
-					<!-- 竖形进度条 -->
-					<view class="progress" v-if="currentIndex==0">
-						<view class="plan" v-for="(item,index) in projectInfo.nodes" :key="item.id">
-							<view class="plan-border" style="position: relative;">
-								<view class="imgs">
-									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
-									</image>
-									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
-									</image>
-									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
-									</image>
-									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
-									</image>
-									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
-									</image>
-								</view>
-								<view class="plan-title">
-									<view class="plan-left">
-										{{item.taskName}}
+									<text> {{item.name}} </text>
+									<view v-if="ongoing.length!=0">
+										<view class="yuan" v-if="index==1">
+											{{ongoing.length}}
+										</view>
 									</view>
-									<view class="title-time" v-if="item.finishTime">
-										计划完成时间:&nbsp;{{item.finishTime}}
+									<view v-if="complete.length!=0">
+										<view class="yuan" v-if="index==2">
+											{{complete.length}}
+										</view>
 									</view>
-									<view class="title-time" v-else>
-										计划完成时间:无
+									<view v-if="noovercomplete.length!=0">
+										<view class="yuan" v-if="index==3">
+											{{noovercomplete.length}}
+										</view>
+									</view>
+									<view v-if="overundone.length!=0">
+										<view class="yuan" v-if="index==4">
+											{{overundone.length}}
+										</view>
+									</view>
+									<view v-if="overcomplete.length!=0">
+										<view class="yuan" v-if="index==5">
+											{{overcomplete.length}}
+										</view>
 									</view>
 								</view>
-								<view class="statusList" v-if="item.nodeState==3">
-									超期{{item.threeTime}}未完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==4">
-									超期{{item.fourTime}}已完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==0">
-									未开始/未涉及
-								</view>
-								<view class="statusList" v-if="item.nodeState==1">
-									正在进行中
-								</view>
-								<view class="statusList" v-if="item.nodeState==2">
-									已完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==5">
-									未超期已完成
-								</view>
+							</view>
+							<!-- 竖形进度条 -->
+							<view class="progress" v-if="currentIndex==0">
+								<view class="plan" v-for="(item,index) in projectInfo.nodes" :key="item.id">
+									<view class="plan-border" style="position: relative;">
+										<view class="imgs">
+											<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png"
+												mode="">
+											</image>
+										</view>
+										<view class="plan-title">
+											<view class="plan-left">
+												{{item.taskName}}
+											</view>
+											<view class="title-time" v-if="item.finishTime">
+												计划完成时间:&nbsp;{{item.finishTime}}
+											</view>
+											<view class="title-time" v-else>
+												计划完成时间:无
+											</view>
+										</view>
+										<view class="statusList" v-if="item.nodeState==3">
+											超期{{item.threeTime}}未完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==4">
+											超期{{item.fourTime}}已完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==0">
+											未开始/未涉及
+										</view>
+										<view class="statusList" v-if="item.nodeState==1">
+											正在进行中
+										</view>
+										<view class="statusList" v-if="item.nodeState==2">
+											已完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==5">
+											未超期已完成
+										</view>
 
+									</view>
+								</view>
 							</view>
-						</view>
-					</view>
-					<!-- 正在进行中 -->
-					<view class="progress" v-if="currentIndex==1">
-						<view class="plan" style="display: flex; " v-for="item in ongoing" :key="item.id">
-							<view class="plan-border" style="position: relative;">
-								<view class="imgs">
-									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
-									</image>
-									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
-									</image>
-									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
-									</image>
-									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
-									</image>
-									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
-									</image>
-								</view>
-								<view class="plan-title">
-									<view class="plan-left">
-										{{item.taskName}}
-									</view>
-									<view class="title-time" v-if="item.finishTime">
-										计划完成时间:&nbsp;{{item.finishTime}}
-									</view>
-									<view class="title-time" v-else>
-										计划完成时间:无
-									</view>
-								</view>
-								<view v-if="item.nodeState==1">
-									<view class="statusList" v-if="item.nodeState==3">
-										超期{{item.threeTime}}未完成
-									</view>
-									<view class="statusList" v-if="item.nodeState==4">
-										超期{{item.fourTime}}已完成
-									</view>
-									<view class="statusList" v-if="item.nodeState==0">
-										未开始/未涉及
-									</view>
-									<view class="statusList" v-if="item.nodeState==1">
-										正在进行中
-									</view>
-									<view class="statusList" v-if="item.nodeState==2">
-										已完成
-									</view>
-									<view class="statusList" v-if="item.nodeState==5">
-										未超期已完成
-									</view>
-								</view>
+							<!-- 正在进行中 -->
+							<view class="progress" v-if="currentIndex==1">
+								<view class="plan" style="display: flex; " v-for="item in ongoing" :key="item.id">
+									<view class="plan-border" style="position: relative;">
+										<view class="imgs">
+											<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png"
+												mode="">
+											</image>
+										</view>
+										<view class="plan-title">
+											<view class="plan-left">
+												{{item.taskName}}
+											</view>
+											<view class="title-time" v-if="item.finishTime">
+												计划完成时间:&nbsp;{{item.finishTime}}
+											</view>
+											<view class="title-time" v-else>
+												计划完成时间:无
+											</view>
+										</view>
+										<view v-if="item.nodeState==1">
+											<view class="statusList" v-if="item.nodeState==3">
+												超期{{item.threeTime}}未完成
+											</view>
+											<view class="statusList" v-if="item.nodeState==4">
+												超期{{item.fourTime}}已完成
+											</view>
+											<view class="statusList" v-if="item.nodeState==0">
+												未开始/未涉及
+											</view>
+											<view class="statusList" v-if="item.nodeState==1">
+												正在进行中
+											</view>
+											<view class="statusList" v-if="item.nodeState==2">
+												已完成
+											</view>
+											<view class="statusList" v-if="item.nodeState==5">
+												未超期已完成
+											</view>
+										</view>
 
+									</view>
+								</view>
 							</view>
-						</view>
-					</view>
-					<view class="progress" v-if="currentIndex==2">
-						<view class="plan" style="display: flex; " v-for="item in complete" :key="item.id">
-							<view class="plan-border" style="position: relative;">
-								<view class="imgs">
-									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
-									</image>
-									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
-									</image>
-									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
-									</image>
-									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
-									</image>
-									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
-									</image>
-								</view>
-								<view class="plan-title">
-									<view class="plan-left">
-										{{item.taskName}}
-									</view>
-									<view class="title-time" v-if="item.finishTime">
-										计划完成时间:&nbsp;{{item.finishTime}}
-									</view>
-									<view class="title-time" v-else>
-										计划完成时间:无
-									</view>
-								</view>
-								<!-- 未涉及/未进行 -->
-								<view v-if="item.nodeState==0">
-									<view class="statusList" v-if="item.nodeState==3">
-										超期{{item.threeTime}}未完成
-									</view>
-									<view class="statusList" v-if="item.nodeState==4">
-										超期{{item.fourTime}}已完成
-									</view>
-									<view class="statusList" v-if="item.nodeState==0">
-										未开始/未涉及
-									</view>
-									<view class="statusList" v-if="item.nodeState==1">
-										正在进行中
-									</view>
-									<view class="statusList" v-if="item.nodeState==2">
-										已完成
-									</view>
-									<view class="statusList" v-if="item.nodeState==5">
-										未超期已完成
-									</view>
-								</view>
+							<view class="progress" v-if="currentIndex==2">
+								<view class="plan" style="display: flex; " v-for="item in complete" :key="item.id">
+									<view class="plan-border" style="position: relative;">
+										<view class="imgs">
+											<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png"
+												mode="">
+											</image>
+										</view>
+										<view class="plan-title">
+											<view class="plan-left">
+												{{item.taskName}}
+											</view>
+											<view class="title-time" v-if="item.finishTime">
+												计划完成时间:&nbsp;{{item.finishTime}}
+											</view>
+											<view class="title-time" v-else>
+												计划完成时间:无
+											</view>
+										</view>
+										<!-- 未涉及/未进行 -->
+										<view v-if="item.nodeState==0">
+											<view class="statusList" v-if="item.nodeState==3">
+												超期{{item.threeTime}}未完成
+											</view>
+											<view class="statusList" v-if="item.nodeState==4">
+												超期{{item.fourTime}}已完成
+											</view>
+											<view class="statusList" v-if="item.nodeState==0">
+												未开始/未涉及
+											</view>
+											<view class="statusList" v-if="item.nodeState==1">
+												正在进行中
+											</view>
+											<view class="statusList" v-if="item.nodeState==2">
+												已完成
+											</view>
+											<view class="statusList" v-if="item.nodeState==5">
+												未超期已完成
+											</view>
+										</view>
 
 
-							</view>
-						</view>
-					</view>
-					<!-- 未超期已完成 -->
-					<view class="progress" v-if="currentIndex==3">
-						<view class="plan" style="display: flex; " v-for="item in noovercomplete" :key="item.id">
-							<view class="plan-border" style="position: relative;">
-								<view class="imgs">
-									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
-									</image>
-									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
-									</image>
-									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
-									</image>
-									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
-									</image>
-									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
-									</image>
-								</view>
-								<view class="plan-title">
-									<view class="plan-left">
-										{{item.taskName}}
 									</view>
-									<view class="title-time" v-if="item.finishTime">
-										计划完成时间:&nbsp;{{item.finishTime}}
-									</view>
-									<view class="title-time" v-else>
-										计划完成时间:无
-									</view>
-								</view>
-								<view class="statusList" v-if="item.nodeState==3">
-									超期{{item.threeTime}}未完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==4">
-									超期{{item.fourTime}}已完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==0">
-									未开始/未涉及
-								</view>
-								<view class="statusList" v-if="item.nodeState==1">
-									正在进行中
-								</view>
-								<view class="statusList" v-if="item.nodeState==2">
-									已完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==5">
-									未超期已完成
 								</view>
 							</view>
-						</view>
-					</view>
-					<view class="progress" v-if="currentIndex==4">
-						<view class="plan" style="display: flex; " v-for="item in overundone" :key="item.id">
-							<view class="plan-border" style="position: relative;">
-								<view class="imgs">
-									<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png" mode="">
-									</image>
-									<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png" mode="">
-									</image>
-									<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png" mode="">
-									</image>
-									<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png" mode="">
-									</image>
-									<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png" mode="">
-									</image>
-								</view>
-								<view class="plan-title">
-									<view class="plan-left">
-										{{item.taskName}}
+							<!-- 未超期已完成 -->
+							<view class="progress" v-if="currentIndex==3">
+								<view class="plan" style="display: flex; " v-for="item in noovercomplete"
+									:key="item.id">
+									<view class="plan-border" style="position: relative;">
+										<view class="imgs">
+											<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png"
+												mode="">
+											</image>
+										</view>
+										<view class="plan-title">
+											<view class="plan-left">
+												{{item.taskName}}
+											</view>
+											<view class="title-time" v-if="item.finishTime">
+												计划完成时间:&nbsp;{{item.finishTime}}
+											</view>
+											<view class="title-time" v-else>
+												计划完成时间:无
+											</view>
+										</view>
+										<view class="statusList" v-if="item.nodeState==3">
+											超期{{item.threeTime}}未完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==4">
+											超期{{item.fourTime}}已完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==0">
+											未开始/未涉及
+										</view>
+										<view class="statusList" v-if="item.nodeState==1">
+											正在进行中
+										</view>
+										<view class="statusList" v-if="item.nodeState==2">
+											已完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==5">
+											未超期已完成
+										</view>
 									</view>
-									<view class="title-time" v-if="item.finishTime">
-										计划完成时间:&nbsp;{{item.finishTime}}
-									</view>
-									<view class="title-time" v-else>
-										计划完成时间:无
-									</view>
-								</view>
-								<view class="statusList" v-if="item.nodeState==3">
-									超期{{item.threeTime}}未完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==4">
-									超期{{item.fourTime}}已完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==0">
-									未开始/未涉及
-								</view>
-								<view class="statusList" v-if="item.nodeState==1">
-									正在进行中
-								</view>
-								<view class="statusList" v-if="item.nodeState==2">
-									已完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==5">
-									未超期已完成
 								</view>
 							</view>
-						</view>
-					</view>
-					<view class="progress" v-if="currentIndex==5">
-						<view class="plan" style="display: flex; " v-for="item in overcomplete" :key="item.id">
-							<view class="plan-border" style="position: relative;">
-								<view class="imgs">
-									<image src="../../static/projectdetail/yuan.png" mode=""></image>
-								</view>
-								<view class="plan-title">
-									<view class="plan-left">
-										{{item.taskName}}
+							<view class="progress" v-if="currentIndex==4">
+								<view class="plan" style="display: flex; " v-for="item in overundone" :key="item.id">
+									<view class="plan-border" style="position: relative;">
+										<view class="imgs">
+											<image v-if="item.nodeState==0" src="../../static/projectdetail/hui.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==3" src="../../static/projectdetail/red.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==1" src="../../static/projectdetail/zise.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==4" src="../../static/projectdetail/yuan.png"
+												mode="">
+											</image>
+											<image v-if="item.nodeState==5" src="../../static/projectdetail/green.png"
+												mode="">
+											</image>
+										</view>
+										<view class="plan-title">
+											<view class="plan-left">
+												{{item.taskName}}
+											</view>
+											<view class="title-time" v-if="item.finishTime">
+												计划完成时间:&nbsp;{{item.finishTime}}
+											</view>
+											<view class="title-time" v-else>
+												计划完成时间:无
+											</view>
+										</view>
+										<view class="statusList" v-if="item.nodeState==3">
+											超期{{item.threeTime}}未完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==4">
+											超期{{item.fourTime}}已完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==0">
+											未开始/未涉及
+										</view>
+										<view class="statusList" v-if="item.nodeState==1">
+											正在进行中
+										</view>
+										<view class="statusList" v-if="item.nodeState==2">
+											已完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==5">
+											未超期已完成
+										</view>
 									</view>
-									<view class="title-time" v-if="item.finishTime">
-										计划完成时间:&nbsp;{{item.finishTime}}
+								</view>
+							</view>
+							<view class="progress" v-if="currentIndex==5">
+								<view class="plan" style="display: flex; " v-for="item in overcomplete" :key="item.id">
+									<view class="plan-border" style="position: relative;">
+										<view class="imgs">
+											<image src="../../static/projectdetail/yuan.png" mode=""></image>
+										</view>
+										<view class="plan-title">
+											<view class="plan-left">
+												{{item.taskName}}
+											</view>
+											<view class="title-time" v-if="item.finishTime">
+												计划完成时间:&nbsp;{{item.finishTime}}
+											</view>
+											<view class="title-time" v-else>
+												计划完成时间:无
+											</view>
+										</view>
+										<view class="statusList" v-if="item.nodeState==3">
+											超期{{item.threeTime}}未完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==4">
+											超期{{item.fourTime}}已完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==0">
+											未开始/未涉及
+										</view>
+										<view class="statusList" v-if="item.nodeState==1">
+											正在进行中
+										</view>
+										<view class="statusList" v-if="item.nodeState==2">
+											已完成
+										</view>
+										<view class="statusList" v-if="item.nodeState==5">
+											未超期已完成
+										</view>
 									</view>
-									<view class="title-time" v-else>
-										计划完成时间:无
-									</view>
-								</view>
-								<view class="statusList" v-if="item.nodeState==3">
-									超期{{item.threeTime}}未完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==4">
-									超期{{item.fourTime}}已完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==0">
-									未开始/未涉及
-								</view>
-								<view class="statusList" v-if="item.nodeState==1">
-									正在进行中
-								</view>
-								<view class="statusList" v-if="item.nodeState==2">
-									已完成
-								</view>
-								<view class="statusList" v-if="item.nodeState==5">
-									未超期已完成
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
-
-			</view>
 		</view>
 	</view>
 </template>
@@ -637,6 +664,8 @@
 </script>
 
 <style scoped>
+	.allDetail {}
+
 	/* 查看 */
 	.gradual-one {
 		width: 100%;
@@ -644,7 +673,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: flex-end;
-		background-image: linear-gradient(#ffffff40 ,40%, #ffffff) !important;
+		background-image: linear-gradient(#ffffff40, 40%, #ffffff) !important;
 		position: absolute;
 		bottom: 0;
 	}
@@ -728,10 +757,12 @@
 		background: #E65749;
 		border-radius: 50%;
 	}
-	.gradual-img{
+
+	.gradual-img {
 		width: 100upx;
 		margin-bottom: 10upx;
 	}
+
 	.status-tag-container {
 		display: flex;
 		flex-wrap: wrap;
@@ -802,9 +833,11 @@
 		font-weight: bold;
 		color: #666666;
 	}
+
 	.progress {
 		width: 90vw;
 	}
+
 	.progress .plan {
 		margin: 0 auto;
 		display: flex;
