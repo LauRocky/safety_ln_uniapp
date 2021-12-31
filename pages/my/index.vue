@@ -186,18 +186,6 @@
 				uni.navigateTo({
 					url: '/pages/my/yijianfankui'
 				})
-				// let type = uni.getSystemInfoSync().platform
-				//      switch(type){
-				//       case 'android':
-				//        this.type=1
-				//        break;
-				//       case 'ios':
-				//         this.type=2
-				//        break;
-				//       default:
-				//         this.type=0
-				//        break;
-				//      }
 			},
 			//技术支持
 			// skill() {
