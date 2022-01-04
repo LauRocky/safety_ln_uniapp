@@ -10,9 +10,7 @@ export default {
 		});
 		// #endif
 	},
-	onShow: function() {
-		
-	},
+	onShow: function() {},
 	mounted: function() {},
 	methods: {
 		toLogin() {

@@ -18,8 +18,6 @@
 				{{versions}}
 			</view>
 		</view>
-
-
 	</view>
 </template>
 <script>
