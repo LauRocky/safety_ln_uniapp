@@ -3,6 +3,7 @@
 export var BASE_URL = "http://59.110.136.159:12002/safety-server/api"
 // export var BASE_URL = 'https://esq.ln2.ink/api' //aliyun
 
+
 // #ifdef H5
 BASE_URL = '/web'; //H5下将地址修改为/web 
 // #endif

@@ -187,10 +187,13 @@
 
 	.video {
 		margin-top: 25upx;
+		padding-bottom: 80upx;
 	}
 
 	.main {
-		width: 80%;
+		width: 82%;
+		padding-bottom: 20upx;
+		border-bottom: 2upx solid rgba(188,188,188,0.2);
 	}
 
 	.ball {
@@ -208,8 +211,6 @@
 
 	.video-item {
 		display: flex;
-		padding: 40upx;
-		padding-top: 20upx;
-		padding-right: 10upx;
+		padding:20upx 0upx 10upx 30upx ;
 	}
 </style>

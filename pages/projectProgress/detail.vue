@@ -1,5 +1,4 @@
 <template>
-	<!-- { active: isActive, 'text-danger': hasError } -->
 	<view class="detail"  :class="{'detailShow': viewShow}">
 		<TwoNavbar :name="project.projectName"></TwoNavbar>
 		<view class="detail-container">

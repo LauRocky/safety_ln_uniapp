@@ -4,11 +4,11 @@
 			version:""
 		},
 		onLaunch:function(){
-			// #ifdef APP-PLUS
-			plus.runtime.getProperty(plus.runtime.appid,(wgtinfo)=>{
-				this.globalData.version = wgtinfo.version
-			})
-			// #endif
+			// // #ifdef APP-PLUS
+			// plus.runtime.getProperty(plus.runtime.appid,(wgtinfo)=>{
+			// 	this.globalData.version = wgtinfo.version
+			// })
+			// // #endif
 		},
 		onShow:function(){
 		

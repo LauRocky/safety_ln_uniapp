@@ -132,6 +132,9 @@
 </script>
 
 <style scoped>
+	.project-container{
+		padding-bottom: 80upx;
+	}
 	.first {
 		margin-top: 30rpx !important;
 	}
