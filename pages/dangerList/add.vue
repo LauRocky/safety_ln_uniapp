@@ -365,7 +365,7 @@ export default {
 .add {
 	background: #ffffff;
 	.add-form {
-		padding: 36upx 24upx;
+		padding: 0upx 24upx 36upx 24upx;
 		.u-form-item__body {
 			background: #ffffff;
 		}

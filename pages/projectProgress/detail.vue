@@ -1,5 +1,6 @@
 <template>
-	<view class="detail">
+	<!-- { active: isActive, 'text-danger': hasError } -->
+	<view class="detail"  :class="{'detailShow': viewShow}">
 		<TwoNavbar :name="project.projectName"></TwoNavbar>
 		<view class="detail-container">
 			<view class="title">
@@ -35,8 +36,9 @@
 				<!-- <view class="button">
 					<view class="button-text" @click="showPullDown()">查看更多</view>
 				</view> -->
-				<view class="gradual-img" @click="showPullDown()" >
-					<image  style="width: 60upx;height: 60upx;" src="../../static/projectdetail/xiala.png" mode=""></image>
+				<view class="gradual-img" @click="showPullDown()">
+					<image style="width: 60upx;height: 60upx;" src="../../static/projectdetail/xiala.png" mode="">
+					</image>
 				</view>
 			</view>
 			<view class="pull-down" v-if="!isPullDown">
@@ -50,7 +52,8 @@
 				</view>
 				<view class="msg-item">
 					<view class="name">项目经理（总包）</view>
-					<view class="container">{{projectInfo.partnerProjectManager?projectInfo.partnerProjectManager:'无'}}
+					<view class="container">
+						{{projectInfo.partnerProjectManager?projectInfo.partnerProjectManager:'无'}}
 						{{projectInfo.partnerProjectManagerMobile}}
 					</view>
 				</view>
@@ -63,16 +66,17 @@
 			</view>
 		</view>
 
+
 		<view class="process-container">
 			<view class="title">
 				<text style="margin-bottom: 14upx;">项目进度信息</text>
 				<view style="margin: o auto;text-align: center;">
-					<view v-show="isShow" @click="showStatus" style="display: flex; margin-bottom: 14upx;flex-wrap: nowrap;font-size: 28upx;
+					<!-- <view v-show="isShow" @click="showStatus" style="display: flex; margin-bottom: 14upx;flex-wrap: nowrap;font-size: 28upx;
 		font-weight: bold;">展开<u-icon name="arrow-down" :bold="true"></u-icon>
 					</view>
 					<view v-show="!isShow" @click="noShowStatus" style="display: flex; margin-bottom: 14upx;flex-wrap: nowrap;font-size: 28upx;
 		font-weight: bold;">收起<u-icon name="arrow-up" :bold="true"></u-icon>
-					</view>
+					</view> -->
 				</view>
 			</view>
 			<view class="project-node" v-for="item in timeOver" :key=item.id>
@@ -85,7 +89,7 @@
 				</view>
 			</view>
 			<view class="project-status">
-				<view class="status-container" v-show="!isShow">
+				<view class="status-container">
 					<view class="status-tag-container" style="margin-bottom: 60upx;">
 						<view v-for="(item,index) in statusList" :key=item.code :class="{
 								'no-margin-left':index==0||index==3,
@@ -164,12 +168,13 @@
 								<view class="statusList" v-if="item.nodeState==5">
 									未超期已完成
 								</view>
-
 							</view>
 						</view>
 					</view>
+
 					<!-- 正在进行中 -->
 					<view class="progress" v-if="currentIndex==1">
+
 						<view class="plan" style="display: flex; " v-for="item in ongoing" :key="item.id">
 							<view class="plan-border" style="position: relative;">
 								<view class="imgs">
@@ -215,7 +220,6 @@
 										未超期已完成
 									</view>
 								</view>
-
 							</view>
 						</view>
 					</view>
@@ -266,8 +270,6 @@
 										未超期已完成
 									</view>
 								</view>
-
-
 							</view>
 						</view>
 					</view>
@@ -405,8 +407,11 @@
 						</view>
 					</view>
 				</view>
-
 			</view>
+		</view>
+		<!--  -->
+		<view class="viewMore" @click="viewMore" v-if="viewShow">
+			查看更多
 		</view>
 	</view>
 </template>
@@ -423,6 +428,7 @@
 		data() {
 			return {
 				// title:'',
+				viewShow:true,
 				currentIndex: 0,
 				isShow: true,
 				isPullDown: true,
@@ -470,6 +476,10 @@
 
 		},
 		methods: {
+			viewMore(){
+				console.log(this.viewShow)
+				this.viewShow=false;
+			},
 			noshowPullDown() {
 				this.isPullDown = true
 			},
@@ -497,6 +507,7 @@
 			},
 			changeTags(index) {
 				this.currentIndex = index
+				this.viewShow=false;
 			},
 			back() {
 				this.timeOver = []
@@ -637,6 +648,26 @@
 </script>
 
 <style scoped>
+	.detail{
+		height: 100vh;
+	}
+	.detailoff{
+		
+	}
+	.detailShow{
+		overflow: hidden;
+	}
+	.viewMore {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		color: #00B490;
+		line-height: 100upx;
+		text-align: center;
+		height: 100upx;
+		background-image: linear-gradient(#ffffff40, 40%, #ffffff) !important;
+	}
+
 	/* 查看 */
 	.gradual-one {
 		width: 100%;
@@ -644,7 +675,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: flex-end;
-		background-image: linear-gradient(#ffffff40 ,40%, #ffffff) !important;
+		background-image: linear-gradient(#ffffff40, 40%, #ffffff) !important;
 		position: absolute;
 		bottom: 0;
 	}
@@ -666,10 +697,6 @@
 		border-radius: 10upx;
 	}
 
-
-	.detail {
-		overflow: hidden;
-	}
 
 	.active-tags {
 		background: #00B490;
@@ -728,10 +755,12 @@
 		background: #E65749;
 		border-radius: 50%;
 	}
-	.gradual-img{
+
+	.gradual-img {
 		width: 100upx;
 		margin-bottom: 10upx;
 	}
+
 	.status-tag-container {
 		display: flex;
 		flex-wrap: wrap;
@@ -802,9 +831,11 @@
 		font-weight: bold;
 		color: #666666;
 	}
+
 	.progress {
 		width: 90vw;
 	}
+
 	.progress .plan {
 		margin: 0 auto;
 		display: flex;

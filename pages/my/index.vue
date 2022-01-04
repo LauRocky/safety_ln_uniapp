@@ -74,8 +74,7 @@
 					<image class="share-img" src="../../static/my/erweima.png" mode=""></image>
 				</view> -->
 				<!-- 分割线 -->
-				<view class="divider" style="width: 90%;" ><u-divider lineColor="#b9b9b9" hairline="false"></u-divider></view>
-				<!-- <u-divider :dashed="false" :hairline="false"></u-divider> -->
+				<view class="divider" style="width: 100%;" ><u-divider lineColor="#b9b9b9" :hairline="false"></u-divider></view>
 				<view class="about" @click="about">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
@@ -188,18 +187,6 @@
 				uni.navigateTo({
 					url: '/pages/my/yijianfankui'
 				})
-				// let type = uni.getSystemInfoSync().platform
-				//      switch(type){
-				//       case 'android':
-				//        this.type=1
-				//        break;
-				//       case 'ios':
-				//         this.type=2
-				//        break;
-				//       default:
-				//         this.type=0
-				//        break;
-				//      }
 			},
 			//技术支持
 			// skill() {

@@ -259,7 +259,7 @@
 
 	.uni-fab--rightBottom {
 		right: 15px;
-		bottom: 70px;
+		bottom: 80px;
 		/* #ifdef H5 */
 		right: calc(15px + var(--window-right));
 		bottom: calc(40px + var(--window-bottom));

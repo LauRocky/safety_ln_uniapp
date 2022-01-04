@@ -40,7 +40,7 @@
                 "idfa" : false,
                 "capabilities" : {
                     "entitlements" : {
-                        "com.apple.developer.associated-domains" : [ "applinks:https://esq.cgdg.com" ]
+                        "com.apple.developer.associated-domains" : [ "applinks:esq.cgdg.com" ]
                     }
                 }
             },

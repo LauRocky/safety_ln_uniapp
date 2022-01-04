@@ -15,19 +15,20 @@
 				https://esq.cgdg.com/
 			</view>
 			<view class="version">
-					Version  {{getVersion()}}
+				{{versions}}
 			</view>
 		</view>
-
-
 	</view>
 </template>
 <script>
+	let App = getApp()
 	export default {
+		
 		data() {
 			return {
 				about: {
-					name: '关于'
+					name: '关于',
+					versions: '',
 				},
 			};
 		},
@@ -37,9 +38,10 @@
 					delta: 1
 				});
 			},
-			getVersion() {
-				return plus.runtime.appVersion;
-			}
+
+		},
+		onLoad() {
+		this.versions = App.globalData.version
 		}
 	}
 </script>
