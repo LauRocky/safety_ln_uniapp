@@ -63,19 +63,20 @@ export default {
 	mounted: function() {
 		let platform = uni.getSystemInfoSync().platform; //判断ioa还是安卓，第三方登录获取参数
 		if (platform == 'ios') {
-				let args = plus.runtime.arguments;
-				uni.showModal({
-					title: args
-				});
-		}else if (platform == 'android') {
-			const that = this;
-			uni.onNativeEventReceive((event, data) => {
+			let args = plus.runtime.arguments;
+			uni.showModal({
+				title: args
+			});
+		}
+		const that = this;
+		uni.onNativeEventReceive((event, data) => {   //监听安卓端传参
+			if (data) {
 				uni.sendNativeEvent(data, res => {
 					console.log(res);
 				});
 				that.getCode(JSON.parse(data).code);
-			});
-		}
+			}
+		});
 	},
 	methods: {
 		getCode(code) {
