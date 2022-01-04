@@ -124,9 +124,8 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
-                    // "target" : "https://esq.cgdg.com/api", //aliyun
+                    // "target" : "https://esq.cgdg.com/api", //正式环境
                     "target" : "https://esq.ln2.ink/api", //aliyun
-
                     // "target" : "http://192.168.1.101:12002/safety-server/api", //公司测试
                     "changeOrigin" : true,
                     "secure" : false,
