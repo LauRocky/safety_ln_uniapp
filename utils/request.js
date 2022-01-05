@@ -1,6 +1,5 @@
-// 在公司的默认地址
-// export var BASE_URL = 'http://192.168.1.101:12002/safety-server/api'
-export var BASE_URL = 'https://esq.ln2.ink/api'//aliyun
+export var BASE_URL = 'http://192.168.1.107:12002/safety-server/api'
+// export var BASE_URL = 'https://esq.ln2.ink/api'//aliyun
 // export var BASE_URL = 'https://esq.cgdg.com/api'//正式环境
 
 
@@ -33,11 +32,6 @@ export function request(url, type, date, tips) {
 					 * showError: true,开启错误提示
 					 *  showError: false,关闭错误提示
 					 * */
-					uni.showToast({
-						title: res.data.code,
-						icon: 'none',
-						duration: 2000
-					});
 					showError(res);
 					resolve(res)
 				}
