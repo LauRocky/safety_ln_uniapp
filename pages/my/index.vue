@@ -202,6 +202,7 @@
 				this.$http('/lvxin/deptInfo', 'POST', {
 					'parentId': this.user.companyId
 				}, false).then(res => {
+					console.log(res,'111')
 					let deptName = '';
 					let array = res.data.reverse();
 					for (var i = 0; i < array.length; i++) {
