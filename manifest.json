@@ -46,11 +46,11 @@
 			/* ios打包配置 */
 			"ios": {
 				"idfa": false,
-				"capabilities": {
+				/* "capabilities": {
 					"entitlements": {
 						"com.apple.developer.associated-domains": ["applinks:esq.cgdg.com"]
 					}
-				},
+				}, */
 				"urltypes": [{
 					"urlidentifier": "com.cgdg.esq",
 					"urlschemes": [
