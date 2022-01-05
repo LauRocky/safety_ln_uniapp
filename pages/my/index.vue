@@ -302,6 +302,7 @@
 							uni.sendNativeEvent("logout", c => {
 								console.log(c)
 							});
+							uni.clearStorageSync();
 							uni.removeStorageSync('userInfo');
 							uni.removeStorageSync('token');
 							uni.navigateTo({
