@@ -151,7 +151,7 @@
 			}
 		},
 		{
-			"path": "pages/my/yijianfankui",
+			"path": "pages/my/feedbackList",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "隐患整改",

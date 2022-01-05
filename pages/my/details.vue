@@ -166,6 +166,10 @@
 				}
 
 				.companyname {
+					width: 40%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
 					padding-left: 0;
 				}
 

@@ -74,12 +74,12 @@
 						el.individual = el.deviceCount;
 						el.MonitorMumber = 0;
 						el.cameraEntities.forEach(e => {
-						
+
 							if (e.ipcType == 1) {
 								el.MonitorMumber += 1;
 							}
 						})
-						
+
 					})
 					this.dataList = res.data
 					this.videoList = this.dataList
@@ -110,10 +110,9 @@
 					res.data.forEach(el => {
 						el.individual = 0;
 						el.MonitorMumber = 0;
+						el.individual = el.deviceCount;
 						el.cameraEntities.forEach(e => {
-							if (e.ipcType == 3) {
-								el.individual += 1;
-							}
+							
 							if (e.ipcType == 1) {
 								el.MonitorMumber += 1;
 							}
@@ -124,7 +123,6 @@
 					this.videoList = this.dataList
 				})
 			},
-
 			//模糊查询
 			handseach(val) {
 				if (this.dataList) {
@@ -192,7 +190,7 @@
 	.main {
 		width: 82%;
 		padding-bottom: 20upx;
-		border-bottom: 2upx solid rgba(188,188,188,0.2);
+		border-bottom: 2upx solid rgba(188, 188, 188, 0.2);
 	}
 
 	.ball {
@@ -210,6 +208,6 @@
 
 	.video-item {
 		display: flex;
-		padding:20upx 0upx 10upx 30upx ;
+		padding: 20upx 0upx 10upx 30upx;
 	}
 </style>
