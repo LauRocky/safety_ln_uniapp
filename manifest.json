@@ -133,9 +133,9 @@
 			"proxy": {
 				"/web": {
 					// "target" : "http://192.168.133.12:12002/safety-server/api", //测试
-					"target": "http://59.110.136.159:12002/safety-server/api", //在线
-
-					// "target" : "https://esq.ln2.ink/api", //aliyun
+					//以下部分请勿改动！
+					// "target" : "https://esq.cgdg.com/api", //正式环境
+					"target": "https://esq.ln2.ink/api", //aliyun	
 					"changeOrigin": true,
 					"secure": false,
 					"pathRewrite": {
