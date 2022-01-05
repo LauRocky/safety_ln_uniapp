@@ -71,16 +71,15 @@
 				}, false).then(res => {
 					uni.hideLoading();
 					res.data.forEach(el => {
-						el.individual = 0;
+						el.individual = el.deviceCount;
 						el.MonitorMumber = 0;
 						el.cameraEntities.forEach(e => {
-							if (e.ipcType == 3) {
-								el.individual += 1;
-							}
+						
 							if (e.ipcType == 1) {
 								el.MonitorMumber += 1;
 							}
 						})
+						
 					})
 					this.dataList = res.data
 					this.videoList = this.dataList

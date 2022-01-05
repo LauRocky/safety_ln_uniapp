@@ -315,7 +315,6 @@
 					}
 				});
 			},
-
 		},
 		onLoad() {
 			this.deptInfo()
