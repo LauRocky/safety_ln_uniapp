@@ -309,7 +309,6 @@
 					}
 				});
 			},
-
 		},
 		onLoad() {
 			this.deptInfo()
