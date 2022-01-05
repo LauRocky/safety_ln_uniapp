@@ -8,7 +8,7 @@
 		<scroll-view class="lists" scroll-y @scrolltolower="handtolower" v-if="numsList.length !== 0">
 			<view class="list-1" v-for="(val, i) in numsList" :key="i" @click="handLsit(val.id)">
 				<view class="list-top">
-					<image class="list-imgs" :src="val.images" mode=""></image>
+					<image class="list-imgs" :src="val.images2" mode=""></image>
 					<view class="list-right">
 						<view class="list-top-1">
 							<view class="top-left">{{ val.problemType2 }}</view>
@@ -31,7 +31,7 @@
 		</scroll-view>
 		<template v-else>
 			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
-		</template>
+		</template> 
 		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
 		<mypicker :show="show" @handcompany="handcompany" @close="handclose" @deSelect="deSelect" />
 	</view>
@@ -158,6 +158,9 @@ export default {
 									val.problemType2 = obj[0].value;
 								}
 								val.crtime = val.createTime.split(' ')[0];
+								if(val.images){
+									val.images2 = val.images.split('|')[0]
+								}
 								if (val.status == -1) {
 									var oDate2 = new Date(val.expireTime.replace(/-/g, '/'));
 									oDate2 = new Date(oDate2); //时间状态判断

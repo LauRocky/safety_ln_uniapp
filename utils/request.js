@@ -1,7 +1,8 @@
 // 在公司的默认地址
 // export var BASE_URL = 'http://192.168.133.12:12002/safety-server/api'
-export var BASE_URL = "http://59.110.136.159:12002/safety-server/api"
-// export var BASE_URL = 'https://esq.ln2.ink/api' //aliyun
+// export var BASE_URL = "http://59.110.136.159:12002/safety-server/api"
+/* export var BASE_URL = "https://esq.cgdg.com/api" */ //正式环境
+export var BASE_URL = 'https://esq.ln2.ink/api' //aliyun
 
 
 // #ifdef H5
