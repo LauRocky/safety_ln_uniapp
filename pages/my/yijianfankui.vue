@@ -124,6 +124,10 @@
 				padding-bottom: 20upx;
 
 				.par-2 {
+					width: 60%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
 					font-size: 32upx;
 					font-family: PingFang SC;
 					font-weight: bold;
