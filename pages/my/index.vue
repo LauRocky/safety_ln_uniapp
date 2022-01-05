@@ -74,7 +74,9 @@
 					<image class="share-img" src="../../static/my/erweima.png" mode=""></image>
 				</view> -->
 				<!-- 分割线 -->
-				<view class="divider" style="width: 100%;" ><u-divider lineColor="#b9b9b9" :hairline="false"></u-divider></view>
+				<view class="divider" style="width: 100%;">
+					<u-divider lineColor="#b9b9b9" :hairline="false" style="opacity: 0.2"></u-divider>
+				</view>
 				<view class="about" @click="about">
 					<image style="width: 50upx;height: 50upx;" src="../../static/my/guanyu.png" mode=""></image>
 					<view class="about-font">
@@ -86,19 +88,50 @@
 				退出登录
 			</view>
 		</view>
-		<u-popup :show="show" @close="close" mode="center" round="10">
+		<!-- 扫码 -->
+		<u-popup :show="show" @close="close" :closeable="true" mode="center" round="10">
 			<view class="mask">
-				<!-- <view class="mask-title">
-					技术支持
-				</view> -->
-				<image @click="back" class="mask-imgs1" src="../../static/my/tuichu.png" mode=""></image>
-				<image class="mask-imgs2" src="../../static/my/erji.png" mode=""></image>
-				<view class="telephone">
-					电话:{{user.mobile}}
+				<view class="mask-title">
+					电脑端登录指南
 				</view>
-				<view class="call" @click="callphone">
-					拨打
+				<view class="mask-text">
+					<view class="mask-text1">
+						1.推荐使用<text style="color: #00B490;">Chrome</text>浏览器进行访问
+					</view>
+					<view class="mask-text1">
+						2.打开Chrome浏览器，输入网址：
+						<view class="" style="color:#00B490;padding-left: 24upx;">
+							https://esq.cgdg.com
+						</view>
+					</view>
+					<view class="mask-text1">
+						3.请使用智慧安质平台app的右上角
+						<text style="color: #00B490;">
+							扫码功能
+						</text>
+						<text style="padding-left: 24upx;">进行免密快捷登录，</text>
+						<text class="" style="color: #00B490;">
+							如下图:
+						</text>
+					</view>
 				</view>
+				<view class="mask-img">
+					<image src="../../static/home/quickImg.png" mode=""></image>
+				</view>
+				<view class="consult">
+					<text style="color: #FF0101;">*</text>
+					<text>登陆中如有问题请咨询：</text>
+					<view class="contact">
+						李工：13954133995 崔工：13611301359
+					</view>
+				</view>
+				<button class="btn" type="default" @click="loginCode">扫码登录</button>
+				<u-checkbox-group placement="row" @change="checkboxChange(!showPopup)">
+					<view class="maskRadio">
+						<u-checkbox :checked="showPopup" label="勾选后下次不再弹窗提示" name="勾选后下次不再弹窗提示">
+						</u-checkbox>
+					</view>
+				</u-checkbox-group>
 			</view>
 		</u-popup>
 	</view>
@@ -112,6 +145,7 @@
 		components: {},
 		data() {
 			return {
+				showPopup: false,
 				user: JSON.parse(uni.getStorageSync('userInfo')),
 				show: false,
 				status: 1,
@@ -121,6 +155,48 @@
 			};
 		},
 		methods: {
+			checkboxChange(e) {
+				this.showPopup = !this.showPopup;
+			},
+			// 扫码
+			loginCode() {
+				uni.showTabBar();
+				const that = this;
+				that.show = false;
+				uni.scanCode({
+					onlyFromCamera: true,
+					success: function(res) {
+						let userInfo = JSON.parse(uni.getStorageSync('userInfo'));
+						userInfo.cacheKey = res.result.split('|')[1];
+						that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
+							.then(resp => {
+								uni.showToast({
+									icon: 'none',
+									title: '登录成功',
+									duration: 1500
+								});
+							})
+							.catch(err => {
+								uni.showToast({
+									title: '登录失败，请刷新二维码或稍后重试',
+									duration: 1500
+								});
+							});
+					}
+				});
+			},
+			handscanCode() {
+				// 点击弹出一个弹窗
+				if (this.showPopup) {
+					this.show = false;
+					this.loginCode();
+					uni.showTabBar();
+				} else {
+					uni.hideTabBar();
+					this.show = true;
+				}
+
+			},
 			// 3. 获取登录人部门信息
 			deptInfo() {
 				this.$http('/lvxin/deptInfo', 'POST', {
@@ -161,9 +237,9 @@
 			},
 
 			// 关闭模态框
-			back() {
-				this.show = false
-			},
+			// back() {
+			// 	this.show = false
+			// },
 			// 个人信息
 			info() {
 				console.log("info")
@@ -173,6 +249,7 @@
 			},
 			close() {
 				this.show = false
+				uni.showTabBar();
 			},
 			// 更新
 			check() {
@@ -183,7 +260,7 @@
 				});
 			},
 			// 意见反馈
-			feedback(){
+			feedback() {
 				uni.navigateTo({
 					url: '/pages/my/yijianfankui'
 				})
@@ -202,39 +279,15 @@
 					url: '/pages/my/about'
 				})
 			},
-			handscanCode() {
-				const that = this;
-				uni.scanCode({
-					onlyFromCamera: true,
-					success: function(res) {
-						let userInfo = JSON.parse(uni.getStorageSync('userInfo'));
-						userInfo.cacheKey = res.result.split('|')[1];
-						that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
-							.then(resp => {
-								if (resp.code == 0) {
-									uni.showToast({
-										icon: 'none',
-										title: '登录成功',
-										duration: 1500
-									});
-								} else {
-									uni.showToast({
-										icon: 'none',
-										title: '登录失败，请刷新二维码或稍后重试' + resp.msg,
-										duration: 1500
-									});
-								}
-
-							})
-							.catch(err => {
-								uni.showToast({
-									title: '登录失败，请刷新二维码或稍后重试',
-									duration: 1500
-								});
-							});
-					}
-				});
-			},
+			// handscanCode() {
+			// 	// 允许从相机和相册扫码
+			// 	uni.scanCode({
+			// 		success: function(res) {
+			// 			console.log('条码类型：' + res.scanType);
+			// 			console.log('条码内容：' + res.result);
+			// 		}
+			// 	});
+			// },
 			scan() {
 				uni.showToast({
 					title: '扫码'
@@ -260,6 +313,7 @@
 					}
 				});
 			},
+
 		},
 		onLoad() {
 			this.deptInfo()
@@ -271,7 +325,7 @@
 	};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	.u-nav-right image {
 		width: 50upx;
 		height: 50upx;
@@ -280,65 +334,80 @@
 
 	.mask {
 		position: relative;
-		width: 80vw;
-		background: url('../../static/my/jishuzhichi.png') no-repeat;
-		background-size: 100% 100%;
-		height: 60vh;
+		width: 90vw;
+		height: 70vh;
 		border-radius: 5upx;
-	}
-
-	.mask .mask-imgs1 {
-		position: absolute;
-		top: 26upx;
-		width: 26upx;
-		height: 26upx;
-		right: 26upx;
-	}
-
-	.mask .mask-imgs2 {
-		position: absolute;
-		top: 102upx;
-		left: 50%;
-		width: 164upx;
-		height: 184upx;
-		transform: translateX(-82upx);
-	}
-
-	.mask .mask-title {
-		margin-top: 26upx;
-		text-align: center;
-		font-size: 32upx;
-		font-family: PingFang SC;
-		font-weight: bold;
-		color: #FFFFFF;
-		line-height: 24upx;
-	}
-
-	.mask .telephone {
-		position: absolute;
-		left: 162upx;
-		bottom: 260upx;
-		font-size: 32upx;
-		font-family: PingFang SC;
-		font-weight: bold;
-		color: #333333;
-		line-height: 24upx;
-	}
-
-	.mask .call {
-		position: absolute;
-		left: 126upx;
-		bottom: 120upx;
-		width: 350upx;
-		height: 60upx;
-		line-height: 60upx;
-		text-align: center;
-		border: 2upx solid #45A28D;
-		border-radius: 10upx;
-		font-size: 30upx;
-		font-family: PingFang SC;
-		font-weight: bold;
-		color: #45A28D;
+	
+		.mask-title {
+			margin-top: 26upx;
+			text-align: center;
+			font-size: 32upx;
+			font-family: PingFang SC;
+			font-weight: bold;
+			color: #333333;
+		}
+	
+		.mask-text {
+			width: 88%;
+			margin: 34upx 37upx 34upx 47upx;
+	
+			.mask-text1 {
+				font-size: 30upx;
+				font-family: PingFang SC;
+				font-weight: 500;
+				color: #333333;
+				line-height: 46upx;
+			}
+		}
+	
+		.mask-img {
+			margin: 0 auto 43upx;
+			width: 88%;
+			height: 240upx;
+	
+			image {
+				width: 100%;
+				height: 100%;
+			}
+		}
+	
+		.consult {
+			width: 88%;
+			margin: 34upx 37upx 36upx 47upx;
+			font-size: 28upx;
+			font-family: PingFang SC;
+			font-weight: 500;
+			line-height: 44upx;
+	
+			.contact {
+				padding-left: 20upx;
+			}
+		}
+	
+		.btn {
+			width: 88%;
+			margin: 0 auto;
+			text-align: center;
+			height: 80upx;
+			font-family: PingFang SC;
+			font-weight: bold;
+			color: #FFFFFF;
+			font-size: 36upx;
+			line-height: 80upx;
+			background: #00B490;
+			border-radius: 40upx;
+		}
+	
+		button::after {
+			border: none;
+		}
+	
+		.maskRadio {
+			width: 88%;
+			margin: 20upx auto;
+			height: 60upx;
+			line-height: 60upx;
+		}
 	}
 
 	.u-nav-left {

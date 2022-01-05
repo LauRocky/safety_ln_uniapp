@@ -27,6 +27,12 @@
 				</view>
 				<view class="look" @click="handGp">查看更多 ({{ totalCount }})</view>
 			</view>
+			<!-- 说明 -->
+			<view class="main-prompt main-top">
+				<image src="../../static/home/prompt.png" mode=""></image>
+				<text class="prompt-text">说明：登录电脑端请访问</text>
+				<text class="prompt-text" style="color: #00B490 ;">https://esq.cgdg.com/</text>
+			</view>
 			<view class="main-cet main-top">
 				<view class="title">隐患数据</view>
 				<view class="zho">
@@ -66,6 +72,51 @@
 				<barecharts />
 			</view>
 		</view>
+		<u-popup :show="show" @close="close" :closeOnClickOverlay="false" closeable  mode="center" round="10">
+			<view class="mask">
+				<view class="mask-title">
+					电脑端登录指南
+				</view>
+				<view class="mask-text">
+					<view class="mask-text1">
+						1.推荐使用<text style="color: #00B490;">Chrome</text>浏览器进行访问
+					</view>
+					<view class="mask-text1">
+						2.打开Chrome浏览器，输入网址：
+						<view class="" style="color:#00B490;padding-left: 24upx;">
+							https://esq.cgdg.com
+						</view>
+					</view>
+					<view class="mask-text1">
+						3.请使用智慧安质平台app的右上角
+						<text style="color: #00B490;">
+							扫码功能
+						</text>
+						<text style="padding-left: 24upx;">进行免密快捷登录，</text>
+						<text class="" style="color: #00B490;">
+							如下图:
+						</text>
+					</view>
+				</view>
+				<view class="mask-img">
+					<image src="../../static/home/quickImg.png" mode=""></image>
+				</view>
+				<view class="consult">
+					<text style="color: #FF0101;">*</text>
+					<text>登陆中如有问题请咨询：</text>
+					<view class="contact">
+						李工：13954133995 崔工：13611301359
+					</view>
+				</view>
+				<button class="btn" type="default" @click="loginCode">扫码登录</button>
+				<u-checkbox-group placement="row" @change="checkboxChange(!showPopup)">
+					<view class="maskRadio">
+						<u-checkbox :checked="showPopup" label="勾选后下次不再弹窗提示" name="勾选后下次不再弹窗提示">
+						</u-checkbox>
+					</view>
+				</u-checkbox-group>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -81,6 +132,8 @@
 		},
 		data() {
 			return {
+				showPopup: false,
+				show: false,
 				project: {
 					projectName: '',
 					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
@@ -112,8 +165,7 @@
 				status: 1, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
 				totalCount: 0,
 				indexList: [],
-				showScanLogin: false,
-				lastPressTime: 0,
+				showScanLogin: false
 			};
 		},
 
@@ -124,10 +176,7 @@
 			this.handbacklog();
 			this.handdetailByUser();
 		},
-		
-
 		methods: {
-			
 			handXq(v) {
 				if (this.status == 1) {
 					uni.navigateTo({
@@ -169,29 +218,30 @@
 					url: `/pages/home/particulars?status=${this.status}`
 				});
 			},
-			handscanCode() {
+			close() {
+				console.log(111)
+				this.show = false
+				uni.showTabBar();
+			},
+			checkboxChange(e) {
+				this.showPopup = !this.showPopup;
+			},
+			loginCode() {
+				uni.showTabBar();
 				const that = this;
+				that.show=false;
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
 						let userInfo = JSON.parse(uni.getStorageSync('userInfo'));
 						userInfo.cacheKey = res.result.split('|')[1];
 						that.$http('/loginAppWithQrcode', 'POST', userInfo, false)
-							.then(resp => {
-								if (resp.code == 0) {
-									uni.showToast({
-										icon: 'none',
-										title: '登录成功',
-										duration: 1500
-									});
-								} else {
-									uni.showToast({
-										icon: 'none',
-										title: '登录失败，请刷新二维码或稍后重试' + resp.msg,
-										duration: 1500
-									});
-								}
-
+							.then(resp => {	
+								uni.showToast({
+									icon: 'none',
+									title: '登录成功',
+									duration: 1500
+								});
 							})
 							.catch(err => {
 								uni.showToast({
@@ -201,6 +251,17 @@
 							});
 					}
 				});
+			},
+			handscanCode() {
+				// 点击弹出一个弹窗
+				if(this.showPopup){
+					this.show = false;
+					this.loginCode();
+					uni.showTabBar();
+				}else{
+					uni.hideTabBar();
+					this.show = true;
+				}
 			},
 			handtolower() {},
 			handtabs(val) {
@@ -303,9 +364,87 @@
 			z-index: -1;
 		}
 
+		.mask {
+			position: relative;
+			width: 90vw;
+			height: 70vh;
+			border-radius: 5upx;
+
+			.mask-title {
+				margin-top: 26upx;
+				text-align: center;
+				font-size: 32upx;
+				font-family: PingFang SC;
+				font-weight: bold;
+				color: #333333;
+			}
+
+			.mask-text {
+				width: 88%;
+				margin: 34upx 37upx 34upx 47upx;
+
+				.mask-text1 {
+					font-size: 30upx;
+					font-family: PingFang SC;
+					font-weight: 500;
+					color: #333333;
+					line-height: 46upx;
+				}
+			}
+
+			.mask-img {
+				margin: 0 auto 43upx;
+				width: 88%;
+				height: 240upx;
+
+				image {
+					width: 100%;
+					height: 100%;
+				}
+			}
+
+			.consult {
+				width: 88%;
+				margin: 34upx 37upx 36upx 47upx;
+				font-size: 28upx;
+				font-family: PingFang SC;
+				font-weight: 500;
+				line-height: 44upx;
+
+				.contact {
+					padding-left: 20upx;
+				}
+			}
+
+			.btn {
+				width: 88%;
+				margin: 0 auto;
+				text-align: center;
+				height: 80upx;
+				font-family: PingFang SC;
+				font-weight: bold;
+				color: #FFFFFF;
+				font-size: 36upx;
+				line-height: 80upx;
+				background: #00B490;
+				border-radius: 40upx;
+			}
+
+			button::after {
+				border: none;
+			}
+
+			.maskRadio {
+				width: 88%;
+				margin: 20upx auto;
+				height: 60upx;
+				line-height: 60upx;
+			}
+		}
+
 		.main {
 			padding: 20upx;
-
+			
 			.main-top {
 				background: #ffffff;
 				box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.06);
@@ -423,6 +562,23 @@
 							color: #333333;
 						}
 					}
+				}
+			}
+			.main-prompt{
+				margin-top: 20upx;
+				padding: 10upx 0;
+				display: flex;
+				align-items: center;
+				image{
+					margin: 10upx 14upx 10upx 27upx;
+					width: 40upx;
+					height: 40upx;
+				}
+				.prompt-text{
+					font-size: 28upx;
+					font-family: PingFang SC;
+					font-weight: bold;
+					color: #333333;
 				}
 			}
 		}

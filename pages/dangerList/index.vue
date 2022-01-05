@@ -26,6 +26,8 @@
 					<view class="foo-time">{{ val.crtime }}</view>
 				</view>
 			</view>
+			<view style="height: 15vh;">
+			</view>
 		</scroll-view>
 		<template v-else>
 			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
@@ -77,7 +79,6 @@ export default {
 		
 	},
 	onShow() {
-		console.log(this.status)
 		this.handclick({
 			value: this.status
 		});
@@ -95,7 +96,6 @@ export default {
 			});
 		},
 		handclick(v) {
-			console.log(v)
 			//tab获取数据
 			this.page = 1;
 			this.status = v.value;
@@ -247,7 +247,6 @@ export default {
 			padding: 27upx 20upx 0;
 			.list-top {
 				display: flex;
-
 				.list-imgs {
 					margin-right: 24upx;
 					width: 154upx;

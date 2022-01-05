@@ -78,21 +78,18 @@
 			// width: 90%;
 			margin: 23upx;
 			// background-color: #DADBDE;
-			border: 1upx solid #DCDFE6;
-			// box-shadow: -1upx  -1upx  1upx  1upx  #C6C7CB  inset
-			box-shadow:    0px -1px 0px 0px #C6C7CB,   
-			
-			                -1px 0px 0px 0px #C6C7CB,   
-			
-			                1px 0px 0px 0px #C6C7CB,   
-			
-			                0px 1px 0px 0px #C6C7CB;    
+			// border: 1upx solid #DCDFE6;
+			border-radius: 16upx;
+			box-shadow: 0px 3upx 16upx 0px rgba(0, 0, 0, 0.06);
 		}
 
 		.button {
 			margin-top: 30upx;
 			width: 80%;
+			height: 80upx;
 			font-size: 36upx;
+			font-family: PingFang SC;
+			font-weight: bold;
 			border-radius: 40upx;
 		}
 	}

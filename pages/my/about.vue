@@ -23,12 +23,11 @@
 <script>
 	let App = getApp()
 	export default {
-		
 		data() {
 			return {
+				versions: '',
 				about: {
-					name: '关于',
-					versions: '',
+					name: '关于',		
 				},
 			};
 		},
@@ -38,10 +37,13 @@
 					delta: 1
 				});
 			},
-
 		},
 		onLoad() {
-		this.versions = App.globalData.version
+			// #ifdef APP-PLUS
+			plus.runtime.getProperty(plus.runtime.appid,(wgtinfo)=>{
+				this.versions=wgtinfo.version
+			})
+			// #endif
 		}
 	}
 </script>
