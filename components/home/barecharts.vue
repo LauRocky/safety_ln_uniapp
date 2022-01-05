@@ -5,12 +5,29 @@
 import * as echarts from '@/uni_modules/lime-echart/components/l-echart/echarts.js';
 export default {
 	name: 'barecharts',
-	props: [],
+	props: ['dataList'],
 	components: {},
 	data() {
 		return {
-			option: {}
+			option: {},
+			data:[]
 		};
+	},
+	watch:{
+		 dataList: {
+		    handler(newName, oldName) {
+		      this.data = newName
+			  this.getEcharts();
+			  this.$refs.chart.init(config => {
+			  	const { canvas } = config;
+			  	const chart = echarts.init(canvas, null, config);
+			  	chart.setOption(this.option);
+			  	return chart;
+			  });
+		    },
+		    // 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法
+		    deep: true
+		  }
 	},
 	onLoad() {},
 	//组件生命周期
@@ -26,42 +43,7 @@ export default {
 	},
 	methods: {
 		getEcharts() {
-			const colors = ['#FF0000', '#F15A24', '#00FF00', '#9CD809', '#00A600', '#29ABE2','#DB2BE0'];
-			const dataList = [
-				{
-					value: 75,
-					name: '火灾'
-				},
-
-				{
-					value: 63,
-					name: '境外安全'
-				},
-
-				{
-					value: 43,
-					name: '食品安全'
-				},
-
-				{
-					value: 30,
-					name: '人身事故'
-				},
-
-				{
-					value: 30,
-					name: '交通事故'
-				},
-
-				{
-					value: 40,
-					name: '信息安全'
-				},
-				{
-					value: 40,
-					name: '网络安全'
-				}
-			];
+			const colors = ['red', 'orange', 'yellow', '#29ABE2'];
 			this.option = {
 				tooltip: {
 					trigger: 'item'
@@ -69,24 +51,23 @@ export default {
 				color: colors,
 				legend: {
 					show: true,
-					 icon: "circle", 
+					icon: 'circle',
 					selectedMode: false, // 取消图例上的点击事件
 					type: 'plain',
 					orient: 'horizontal',
-					left: '76%',
+					left: '77%',
 					top: 'center',
 					align: 'left',
 					itemGap: 10,
 					itemWidth: 15, // 设置宽度
-					itemHeight: 15, // 设置高度
+					itemHeight: 15 // 设置高度
 				},
 				series: [
 					{
 						name: '数据',
 						type: 'pie',
-						radius: ['38%', '53%'],
-						center: ['40%', '50%'],
-						
+						radius: ['35%', '50%'],
+						center: ['40%', '40%'],
 						itemStyle: {
 							normal: {
 								color: function(params) {
@@ -97,25 +78,29 @@ export default {
 						label: {
 							show: true,
 							position: 'outside',
-							formatter: '{d}%',
-							
+							formatter: '{d}%'
 						},
 						emphasis: {
 							itemStyle: {
 								borderColor: '#fff',
 								borderWidth: 10
+							},
+							label: {
+								show: true,
+								fontSize: '15',
+								fontWeight: 'bold'
 							}
 						},
 						labelLine: {
 							normal: {
-								length: 10,
-								length2: 15,
+								length: 5,
+								length2: 8,
 								lineStyle: {
 									width: 1
 								}
 							}
 						},
-						data: dataList
+						data: this.data
 					}
 				]
 			};
