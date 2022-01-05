@@ -69,21 +69,32 @@
 				this.$http('/getCompanyProjectWithCamera', 'POST', {
 					companyId: v.companyId
 				}, false).then(res => {
-					uni.hideLoading();
-					res.data.forEach(el => {
-						el.individual = 0;
-						el.MonitorMumber = 0;
-						el.cameraEntities.forEach(e => {
-							if (e.ipcType == 3) {
-								el.individual += 1;
-							}
-							if (e.ipcType == 1) {
-								el.MonitorMumber += 1;
-							}
+					console.log(res)
+					if(res.code==0){
+						uni.hideLoading();
+						res.data.forEach(el => {
+							el.individual = 0;
+							el.MonitorMumber = 0;
+							el.cameraEntities.forEach(e => {
+								if (e.ipcType == 3) {
+									el.individual += 1;
+								}
+								if (e.ipcType == 1) {
+									el.MonitorMumber += 1;
+								}
+							})
 						})
-					})
-					this.dataList = res.data
-					this.videoList = this.dataList
+						this.dataList = res.data
+						this.videoList = this.dataList
+					}else{
+						uni.showLoading({
+							title: '加载失败',
+							mask: true
+						})
+					}	
+				})
+				.catch(err=>{
+					console.log(err)
 				})
 			},
 			video(e) {
@@ -107,22 +118,29 @@
 				this.$http('/getCompanyProjectWithCamera', 'POST', {
 					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 				}, false).then(res => {
-					uni.hideLoading();
-					res.data.forEach(el => {
-						el.individual = 0;
-						el.MonitorMumber = 0;
-						el.cameraEntities.forEach(e => {
-							if (e.ipcType == 3) {
-								el.individual += 1;
-							}
-							if (e.ipcType == 1) {
-								el.MonitorMumber += 1;
-							}
+					console.log(res)
+					if(res.code==0){
+						uni.hideLoading();
+						res.data.forEach(el => {
+							el.individual = 0;
+							el.MonitorMumber = 0;
+							el.cameraEntities.forEach(e => {
+								if (e.ipcType == 3) {
+									el.individual += 1;
+								}
+								if (e.ipcType == 1) {
+									el.MonitorMumber += 1;
+								}
+							})
 						})
-					})
-
-					this.dataList = res.data
-					this.videoList = this.dataList
+						this.dataList = res.data
+						this.videoList = this.dataList
+					}else{
+						console.log(res)
+					}
+				})
+				.catch(err=>{
+					console.log(err)
 				})
 			},
 

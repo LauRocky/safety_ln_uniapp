@@ -78,8 +78,14 @@
 				this.$http('/camera/project/show', 'POST', {
 					'projectId': this.project.projectId
 				}, false).then(res => {
-					this.rawList=JSON.parse(JSON.stringify(res.projectInfoEntities[0]))
-					this.showList = JSON.parse(JSON.stringify(res.projectInfoEntities[0]))
+					console.log(res)
+					if(res.code==0){
+						this.rawList=JSON.parse(JSON.stringify(res.projectInfoEntities[0]))
+						this.showList = JSON.parse(JSON.stringify(res.projectInfoEntities[0]))
+					}
+				})
+				.catch(err=>{
+					console.log(err)
 				})
 			},
 			// 传值方式  this.$http(`/ehome/camera/previewurl/hls/${el.cameraIndexCode}`,'POST',{},false)

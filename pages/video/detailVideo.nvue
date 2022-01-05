@@ -139,6 +139,12 @@
 						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
+								if(res.code==0){
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								}
 							})
 					} else {
 						let channel = 1;
@@ -168,6 +174,12 @@
 						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl3}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
+								if(res.code==0){
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								}
 							})
 					} else {
 						let channel = 1;
@@ -197,6 +209,12 @@
 						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl1}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
+								if(res.code==0){
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								}
 							})
 					} else {
 						let channel = 1;
@@ -226,6 +244,12 @@
 						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl2}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
+								if(res.code==0){
+									uni.showToast({
+										title: res.msg,
+										icon: 'none'
+									})
+								}
 							})
 					} else {
 						let channel = 1;
@@ -273,7 +297,12 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
-						
+						if(res.code==0){
+							uni.showToast({
+								title:res.msg,
+								icon: "none"
+							})
+						}
 					})
 				} else {
 					let channel = 1;
@@ -295,6 +324,12 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei1}`, "POST", {}, false).then(res => {
 						console.log(res)
+						if(res.code==0){
+							uni.showToast({
+								title:res.msg,
+								icon: "none"
+							})
+						}
 					})
 				} else {
 					let channel = 1;
@@ -316,6 +351,12 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei2}`, "POST", {}, false).then(res => {
 						console.log(res)
+						if(res.code==0){
+							uni.showToast({
+								title:res.msg,
+								icon: "none"
+							})
+						}
 					})
 				} else {
 					let channel = 1;
@@ -337,6 +378,12 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei3}`, "POST", {}, false).then(res => {
 						console.log(res)
+						if(res.code==0){
+							uni.showToast({
+								title:res.msg,
+								icon: "none"
+							})
+						}
 					})
 				} else {
 					let channel = 1;

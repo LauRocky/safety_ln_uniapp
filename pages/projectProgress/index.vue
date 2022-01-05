@@ -80,9 +80,13 @@
 					mask: true
 				})
 				this.$http('/project/plan/withStatusNew', 'POST', this.queryForm, false).then(res => {
+					console.log(res)
 					uni.hideLoading()
 					this.rawList = res.page
 					this.projectList = this.rawList
+				})
+				.catch(err=>{
+					console.log(err)
 				})
 			},
 			handsearch(val) {
