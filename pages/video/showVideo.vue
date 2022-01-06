@@ -59,6 +59,7 @@
 			  }
 			},
 			videodetail(item) {
+				console.error(item);
 				if (item.cameraIndexCode) {
 					console.log(item)
 					uni.navigateTo({
@@ -66,9 +67,9 @@
 					})
 				} else if (item.ezvizAccountId) {
 					uni.navigateTo({
-						url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}`
-					})
-				}
+						url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}&channel=${item.channel}`
+					})		
+				}		
 			},
 			back() {
 				uni.navigateBack({

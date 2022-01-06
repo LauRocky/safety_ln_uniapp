@@ -1,7 +1,7 @@
-// export var BASE_URL = 'http://192.168.133.12:12002/safety-server/api'
-// export var BASE_URL = "http://59.110.136.159:12002/safety-server/api"
-/* export var BASE_URL = "https://esq.cgdg.com/api" */ //正式环境
-export var BASE_URL = 'https://esq.ln2.ink/api' //aliyun
+// export var BASE_URL = 'http://192.168.1.107:12002/safety-server/api'
+// export var BASE_URL = 'https://esq.ln2.ink/api'//aliyun
+export var BASE_URL = 'https://esq.cgdg.com/api'//正式环境
+
 
 // #ifdef H5
 BASE_URL = '/web'; //H5下将地址修改为/web 
@@ -47,8 +47,9 @@ export function request(url, type, date, tips) {
 
 // 错误处理
 const showError = (res) => {
-	if (res.data.code == 111 || res.data.code == 100 || res.data.code == 401) {
-		uni.removeStorage('token');
+	if (res.data.code == 111 || res.data.code == 100|| res.data.code==401) {
+		uni.clearStorage();
+		uni.sendNativeEvent("logout",c=>{console.log(c)});
 		uni.showToast({
 			title: 'Token超期',
 			icon: 'none',

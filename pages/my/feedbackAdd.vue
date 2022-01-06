@@ -25,7 +25,7 @@
 		data() {
 			return {
 				ids: "",
-				titles: '新增反馈',
+				titles: '反馈意见',
 				value1: '',
 				type: "",
 				imgList: [],

@@ -61,7 +61,7 @@ export default {
 	onLoad(){
 	},
 	created() {
-		console.log('11111111')
+		
 		this.handlistByProjectId()
 		let obj = uni.getStorageSync('InformPerson');
 		if (obj) {

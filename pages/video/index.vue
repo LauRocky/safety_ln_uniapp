@@ -79,7 +79,7 @@
 								if (e.ipcType == 3) {
 									el.individual += 1;
 								}
-								else{
+								else {
 									el.MonitorMumber += 1;
 								}
 							})
@@ -110,40 +110,39 @@
 				}
 			},
 			// 获取当前公司下所有项目
-			getCompanySelectData() {
-				uni.showLoading({
-					title: '加载中',
-					mask: true
+	getCompanySelectData() {
+		uni.showLoading({
+			title: '加载中',
+			mask: true
+		})
+		this.$http('/getCompanyProjectWithCamera', 'POST', {
+			companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
+		}, false).then(res => {
+			console.log(res)
+			if(res.code==0){
+				uni.hideLoading();
+				res.data.forEach(el => {
+					el.individual = 0;
+					el.MonitorMumber = 0;
+					el.cameraEntities.forEach(e => {
+						if (e.ipcType == 3) {
+							el.individual += 1;
+						}
+						else{
+							el.MonitorMumber += 1;
+						}
+					})
 				})
-				this.$http('/getCompanyProjectWithCamera', 'POST', {
-					companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
-				}, false).then(res => {
-					console.log(res)
-					if(res.code==0){
-						uni.hideLoading();
-						res.data.forEach(el => {
-							el.individual = 0;
-							el.MonitorMumber = 0;
-							el.cameraEntities.forEach(e => {
-								if (e.ipcType == 3) {
-									el.individual += 1;
-								}
-								else {
-									el.MonitorMumber += 1;
-								}
-							})
-						})
-						this.dataList = res.data
-						this.videoList = this.dataList
-					}else{
-						console.log(res)
-					}
-				})
-				.catch(err=>{
-					console.log(err)
-				})
-			},
-
+				this.dataList = res.data
+				this.videoList = this.dataList
+			}else{
+				console.log(res)
+			}
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	},
 			//模糊查询
 			handseach(val) {
 				if (this.dataList) {
@@ -211,7 +210,7 @@
 	.main {
 		width: 82%;
 		padding-bottom: 20upx;
-		border-bottom: 2upx solid rgba(188,188,188,0.2);
+		border-bottom: 2upx solid rgba(188, 188, 188, 0.2);
 	}
 
 	.ball {
@@ -229,6 +228,6 @@
 
 	.video-item {
 		display: flex;
-		padding:20upx 0upx 10upx 30upx ;
+		padding: 20upx 0upx 10upx 30upx;
 	}
 </style>

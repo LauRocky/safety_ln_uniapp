@@ -12,7 +12,7 @@
 				智慧安质平台
 			</view>
 			<view class="about-http">
-				http://www.cgdg.com/
+				https://esq.cgdg.com/
 			</view>
 			<view class="version">
 				{{versions}}

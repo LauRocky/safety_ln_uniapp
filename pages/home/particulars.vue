@@ -10,19 +10,19 @@
 						<view class="tags" v-if="status == 1">
 							<view class="tt" v-if="val.expireStatus == '1'">
 								【一般】
-								<text>该项目节点超过7天未整改</text>
+								<text>{{val.taskName}}</text>
 							</view>
 							<view class="tt" v-else-if="val.expireStatus == '2'">
 								【较重】
-								<text>该项目节点超过15天未整改</text>
+							<text>{{val.taskName}}</text>
 							</view>
 							<view class="tt" v-else-if="val.expireStatus == '3'">
 								【严重】
-								<text>该项目节点超过30天未整改</text>
+								<text>{{val.taskName}}</text>
 							</view>
 							<view class="tt" v-else-if="val.expireStatus == '4'">
 								【特别严重】
-								<text>该项目节点超过60天未整改</text>
+								<text>{{val.taskName}}</text>
 							</view>
 						</view>
 						<view class="tags" v-if="status == 2"></view>
@@ -140,14 +140,32 @@ export default {
 			this.$http('/project/plan/page', 'POST', this.project, false)
 				.then(res => {
 					if (res.code == 0) {
+						let list=[];
 						res.page.forEach(val => {
-							val.title = val.projectName.substr(0, 1);
-							let list = [];
-							list = val.createTime.split(' ');
-							val.time = list[0];
+							if(val.nodes){
+								val.nodes.forEach(e=>{
+									let item={};
+									item.title=val.projectName.substr(0,1);
+									let listT = [];
+									listT = val.createTime.split(' ');
+									item.time = listT[0];
+									item.taskName=e.taskName;
+									item.expireStatus=val.expireStatus;
+									item.projectId=val.projectId;
+									item.projectName=val.projectName;
+									item.companyId=val.companyId;
+									list.push(item);
+								})
+							}
+							
 						});
-						this.indexList = res.page;
-						this.totalCount = res.page.length;
+						
+							this.indexList=list;
+						
+						
+						this.totalCount = list.length;
+						
+
 					}
 				})
 				.catch(err => {
