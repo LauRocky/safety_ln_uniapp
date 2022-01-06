@@ -5,10 +5,12 @@
 		<view class="list">
 			<!-- 搜索框 -->
 			<view style="padding:30upx 30upx 0">
-				<u-search class="searchs" v-model="seach" @search="handsearch" shape="round" height="50" bgColor="#ffffff" searchIconColor="#333333" :showAction="false"></u-search>
+				<u-search class="searchs" v-model="seach" @search="handsearch" shape="round" height="50"
+					bgColor="#ffffff" searchIconColor="#333333" :showAction="false"></u-search>
 			</view>
-			<view class="videolist" >
-				<view class="item" v-for="(item,index) in showList.cameraEntities" :key="index" @click="videodetail(item)">
+			<view class="videolist">
+				<view class="item" v-for="(item,index) in showList" :key="index"
+					@click="videodetail(item)">
 					<image class="imgs" src="../../static/video/detailVideo.png" mode=""></image>
 					<view class="mask">
 					</view>
@@ -28,7 +30,7 @@
 		},
 		data() {
 			return {
-				seach:"",
+				seach: "",
 				project: {
 					projectId: '',
 					projectName: "",
@@ -37,36 +39,36 @@
 				flag: false,
 				etEznew: '',
 				showList: [],
-				rawList:[],
+				rawList: []
 			};
 		},
 		methods: {
 			handsearch(val) {
+				if(this.rawList){
+					this.showList=this.rawList
 				if(val){
 					let result=[]
-					this.showList.cameraEntities.forEach(e=>{
+					this.showList.forEach(e=>{
 						let pName=e.ipcName;
 						if(pName.indexOf(val)>-1){
 							result.push(e)
-							console.log(result)
 						}
 					})
-					this.showList.cameraEntities=result
-				}else{
-					this.showList=this.rawList
+					this.showList=result
 				}
+			  }
 			},
 			videodetail(item) {
 				if (item.cameraIndexCode) {
 					console.log(item)
 					uni.navigateTo({
 						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}`
-					})	
-				}else if (item.ezvizAccountId) {
+					})
+				} else if (item.ezvizAccountId) {
 					uni.navigateTo({
 						url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}`
-					})		
-				}		
+					})
+				}
 			},
 			back() {
 				uni.navigateBack({
@@ -76,20 +78,20 @@
 			// 2. 获取特定项目下的摄像头列表
 			show() {
 				this.$http('/camera/project/show', 'POST', {
-					'projectId': this.project.projectId
-				}, false).then(res => {
-					console.log(res)
-					if(res.code==0){
-						this.rawList=JSON.parse(JSON.stringify(res.projectInfoEntities[0]))
-						this.showList = JSON.parse(JSON.stringify(res.projectInfoEntities[0]))
-					}
-				})
-				.catch(err=>{
-					console.log(err)
-				})
+						'projectId': this.project.projectId
+					}, false).then(res => {
+						console.log(res)
+						if (res.code == 0) {
+							this.rawList =res.projectInfoEntities[0].cameraEntities
+							this.showList = res.projectInfoEntities[0].cameraEntities
+						}
+					})
+					.catch(err => {
+						console.log(err)
+					})
 			},
 			// 传值方式  this.$http(`/ehome/camera/previewurl/hls/${el.cameraIndexCode}`,'POST',{},false)
-			
+
 		},
 		onLoad(options) {
 			this.project.projectId = options.projectId;
@@ -105,10 +107,11 @@
 </script>
 
 <style lang="scss" scoped>
-	.video {	
+	.video {
 		overflow: hidden;
+
 		.list {
-			.searchs{
+			.searchs {
 				width: 92vw;
 				margin: 0 auto;
 				height: 60upx;
@@ -117,6 +120,7 @@
 				opacity: 0.4;
 				border-radius: 30upx;
 			}
+
 			.ipt {
 				margin: 30upx auto;
 				width: 92vw;
@@ -139,10 +143,12 @@
 					width: 97vw;
 					margin: 0 auto;
 					height: 379upx;
+
 					.imgs {
 						width: 100%;
 						height: 100%;
 					}
+
 					.mask {
 						position: absolute;
 						left: 19upx;

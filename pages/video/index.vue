@@ -79,7 +79,7 @@
 								if (e.ipcType == 3) {
 									el.individual += 1;
 								}
-								if (e.ipcType == 1) {
+								else{
 									el.MonitorMumber += 1;
 								}
 							})
@@ -128,7 +128,7 @@
 								if (e.ipcType == 3) {
 									el.individual += 1;
 								}
-								if (e.ipcType == 1) {
+								else {
 									el.MonitorMumber += 1;
 								}
 							})
