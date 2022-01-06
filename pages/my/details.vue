@@ -8,7 +8,7 @@
 					{{createUser.fullname}}
 				</view>
 				<view class="titlesName companyname">
-					{{company.name}}大萨达是大所多
+					{{company.name}}
 				</view>
 				<view class="status" v-if="obj.status==0">
 					未解决

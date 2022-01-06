@@ -262,7 +262,7 @@
 			// 意见反馈
 			feedback() {
 				uni.navigateTo({
-					url: '/pages/my/yijianfankui'
+					url: '/pages/my/feedback'
 				})
 			},
 			//技术支持
