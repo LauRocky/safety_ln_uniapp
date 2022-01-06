@@ -158,6 +158,10 @@
 				}
 
 				.titlesName {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					width: 110upx;
 					font-size: 32upx;
 					font-family: PingFang SC;
 					font-weight: bold;
@@ -167,9 +171,6 @@
 
 				.companyname {
 					width: 40%;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
 					padding-left: 0;
 				}
 

@@ -2,8 +2,8 @@
     "name" : "智慧安质平台",
     "appid" : "__UNI__A9A3937",
     "description" : "",
-    "versionName" : "1.0.29",
-    "versionCode" : 1029,
+    "versionName" : "1.0.30",
+    "versionCode" : 1030,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -135,6 +135,7 @@
                     // "target" : "http://192.168.1.107:12002/safety-server/api", //测试
                     //以下部分请勿改动！
                     "target" : "https://esq.cgdg.com/api", //正式环境
+
                     // "target" : "https://esq.ln2.ink/api", //aliyun
                     "changeOrigin" : true,
                     "secure" : false,

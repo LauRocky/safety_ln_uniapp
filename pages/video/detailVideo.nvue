@@ -148,7 +148,7 @@
 							})
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${channel}/${onControl}`, "POST", {}, false).then(
+						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${onControl}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
 								if (!res.data) {
@@ -183,7 +183,7 @@
 							})
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${channel}/${rightControl}`, "POST", {}, false).then(
+						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${rightControl}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
 								if (!res.data) {
@@ -218,7 +218,7 @@
 							})
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${channel}/${downControl}`, "POST", {}, false).then(
+						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${downControl}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
 								if (!res.data) {
@@ -253,7 +253,7 @@
 							})
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${channel}/${leftControl}`, "POST", {}, false).then(
+						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${leftControl}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
 								if (!res.data) {
@@ -306,7 +306,7 @@
 					})
 				} else {
 					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${channel}/${bianbei}`, "POST", {}, false).then(res => {
+					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
 						if (res.code == 0) {
 							uni.showToast({
@@ -333,7 +333,7 @@
 					})
 				} else {
 					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${channel}/${bianbei}`, "POST", {}, false).then(res => {
+					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
 						if (res.code == 0) {
 							uni.showToast({
@@ -360,7 +360,7 @@
 					})
 				} else {
 					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${channel}/${bianbei}`, "POST", {}, false).then(res => {
+					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
 						if (res.code == 0) {
 							uni.showToast({
@@ -386,8 +386,7 @@
 						}
 					})
 				} else {
-					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${channel}/${bianbei}`, "POST", {}, false).then(res => {
+					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
 						if (res.code == 0) {
 							uni.showToast({
@@ -420,6 +419,7 @@
 				});
 			},
 			videodetail() {
+				
 				if (this.status.ezv == 0) {
 					// 如果为0则是海康
 					request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
@@ -429,14 +429,18 @@
 							this.videoUrl = apiUrl + res.url
 						})
 				} else {
-					let channel = 1;
+	
 					// 获取萤石云播放url
-					let url = `/getEzNewLiveAddress/${this.status.nvr}/${channel}/${this.status.ezviz}`;
-					// console.log(url)
+					let url = `/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/2`;
+					console.log(url)
 					request(url,
 							'POST', {}, false)
 						.then(res => {
+							console.error(res);
 							this.videoUrl = res.result.data.url
+						})
+						.catch(e=>{
+							console.error(e);
 						})
 				}
 			}
