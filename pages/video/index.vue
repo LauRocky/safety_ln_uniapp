@@ -21,7 +21,7 @@
 						</text>
 						<text class="item1-text">
 							<image src="../../static/video/danbing.png" mode="">
-							</image>单兵数量: {{item.devices.length}}
+							</image>单兵数量: {{item.individual}}
 						</text>
 					</view>
 				</view>
@@ -66,7 +66,7 @@
 					title: '加载中',
 					mask: true
 				})
-				this.$http('/getCompanyProjectWithCamera', 'POST', {
+				this.$http('/getCompanyProjectWithCameraNew', 'POST', {
 					companyId: v.companyId
 				}, false).then(res => {
 					console.log(res)
@@ -127,8 +127,6 @@
 					el.cameraEntities.forEach(e => {
 						if (e.ipcType == 3) {
 							el.individual += 1;
-							console.log(e)
-							console.log(e.individual)
 						}
 						else{
 							el.MonitorMumber += 1;
