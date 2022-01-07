@@ -115,7 +115,7 @@
 			title: '加载中',
 			mask: true
 		})
-		this.$http('/getCompanyProjectWithCamera', 'POST', {
+		this.$http('/getCompanyProjectWithCameraNew', 'POST', {
 			companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 		}, false).then(res => {
 			console.log(res)
