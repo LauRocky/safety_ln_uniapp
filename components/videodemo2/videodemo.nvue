@@ -1,0 +1,64 @@
+<template>
+	<view>
+		<video :src="videoUrl" @fullscreenchange="fullScreenEvent">
+			<cover-view v-if="isShow" class="container">
+				<text>123</text>
+				<!-- <image class="img" src="../../static/logo.png" mode=""></image> -->
+				<!-- <image class="img" src="../../static/direction.png" mode=""></image> -->
+				<button @click="btnEvents" class="btn">这个是按钮</button>
+				<view class="txt">这个是文字</view>
+			</cover-view>
+		</video>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				isShow:false,
+				videoUrl:'https://stream7.iqilu.com/10339/upload_transcode/202002/18/20200218114723HDu3hhxqIT.mp4'
+			};
+		},
+		methods:{
+			btnEvents(){
+				console.log('事件执行了吗')
+			},
+			fullScreenEvent(e){
+				// console.log(e)
+				if(e.detail.fullScreen){ //全屏
+					this.isShow = true
+				}else{ // 非全屏
+					this.isShow = false
+				}
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+.video{
+	width: 100%;
+	height: 300px;
+}
+.container{
+	position: absolute;
+	top:25px;
+	right: 30px;
+	color: #FFFFFF;
+}
+.btn{
+	width: 100px;
+	height: 40px;
+	background-color: blue;
+	color: white;
+	font-size: 12px;
+}
+.txt{
+	color: red;
+}
+.img{
+	width: 50px;
+	height: 50px;
+}
+</style>

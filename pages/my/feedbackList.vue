@@ -94,7 +94,6 @@
 					delta: 1
 				});
 			},
-
 		},
 		onShow() {
 			this.List.page=1;
