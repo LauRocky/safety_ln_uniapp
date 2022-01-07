@@ -21,7 +21,7 @@
 						</text>
 						<text class="item1-text">
 							<image src="../../static/video/danbing.png" mode="">
-							</image>单兵数量: {{item.individual}}
+							</image>单兵数量: {{item.devices.length}}
 						</text>
 					</view>
 				</view>
@@ -127,6 +127,8 @@
 					el.cameraEntities.forEach(e => {
 						if (e.ipcType == 3) {
 							el.individual += 1;
+							console.log(e)
+							console.log(e.individual)
 						}
 						else{
 							el.MonitorMumber += 1;

@@ -4,7 +4,7 @@
 		</view>
 		<view class="header-top">
 			<image @click="getBack" class="img" src="../../static/video/back.png" mode=""></image>
-			<text class="header-item">{{status.names}}</text>
+			<text class="header-item">{{Videotitle}}</text>
 			<text class="header-items"></text>
 		</view>
 		<video class="vid" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
@@ -74,6 +74,7 @@
 				pmgressbar: false,
 				videoContext: null,
 				status: {},
+				Videotitle:'',
 			};
 		},                                          
 		methods: {
@@ -297,9 +298,15 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
+						console.log(res.data.code)
 						if(res.code==0){
 							uni.showToast({
 								title:res.msg,
+								icon: "none"
+							})
+						}else if(res.data.code==500){
+							uni.showToast({
+								title: res.data.msg,
 								icon: "none"
 							})
 						}
@@ -311,6 +318,11 @@
 						if (res.code == 0) {
 							uni.showToast({
 								title: res.msg,
+								icon: "none"
+							})
+						}else if(res.data.code==500){
+							uni.showToast({
+								title: res.data.msg,
 								icon: "none"
 							})
 						}
@@ -329,6 +341,11 @@
 								title:res.msg,
 								icon: "none"
 							})
+						}else if(res.data.code==500){
+							uni.showToast({
+								title: res.data.msg,
+								icon: "none"
+							})
 						}
 					})
 				} else {
@@ -338,6 +355,11 @@
 						if (res.code == 0) {
 							uni.showToast({
 								title: res.msg,
+								icon: "none"
+							})
+						}else if(res.data.code==500){
+							uni.showToast({
+								title: res.data.msg,
 								icon: "none"
 							})
 						}
@@ -356,6 +378,11 @@
 								title:res.msg,
 								icon: "none"
 							})
+						}else if(res.data.code==500){
+							uni.showToast({
+								title: res.data.msg,
+								icon: "none"
+							})
 						}
 					})
 				} else {
@@ -365,6 +392,11 @@
 						if (res.code == 0) {
 							uni.showToast({
 								title: res.msg,
+								icon: "none"
+							})
+						}else if(res.data.code==500){
+							uni.showToast({
+								title: res.data.msg,
 								icon: "none"
 							})
 						}
@@ -383,6 +415,11 @@
 								title:res.msg,
 								icon: "none"
 							})
+						}else if(res.data.code==500){
+							uni.showToast({
+								title: res.data.msg,
+								icon: "none"
+							})
 						}
 					})
 				} else {
@@ -391,6 +428,11 @@
 						if (res.code == 0) {
 							uni.showToast({
 								title: res.msg,
+								icon: "none"
+							})
+						}else if(res.data.code==500){
+							uni.showToast({
+								title: res.data.msg,
 								icon: "none"
 							})
 						}
@@ -419,7 +461,6 @@
 				});
 			},
 			videodetail() {
-				
 				if (this.status.ezv == 0) {
 					// 如果为0则是海康
 					request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
@@ -429,7 +470,6 @@
 							this.videoUrl = apiUrl + res.url
 						})
 				} else {
-	
 					// 获取萤石云播放url
 					let url = `/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/2`;
 					console.log(url)
@@ -449,6 +489,12 @@
 			this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2
 			this.status = option
 			console.log(this.status)
+			// console.log(option.names.length)
+			if(option.names.length>=12){
+				this.Videotitle=option.names.slice(0,11)+'...'
+			}else{
+				this.Videotitle=option.names
+			}
 			this.videodetail()
 		}
 	}
@@ -478,9 +524,11 @@
 
 	.header-top .header-item {
 		color: white;
+		width: 400upx;
 		font-size: 32upx;
 		font-family: PingFang SC;
 		font-weight: bold;
+		text-align: center;	
 	}
 
 	.header-items {

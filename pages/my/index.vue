@@ -254,7 +254,6 @@
 			},
 			// 更新
 			check() {
-
 				//android 更新
 				uni.sendNativeEvent("checkUpdate", res => {
 					console.log(res)
