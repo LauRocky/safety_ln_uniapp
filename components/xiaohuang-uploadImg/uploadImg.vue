@@ -32,7 +32,7 @@ export default {
 		sourceType: {
 			type: Array,
 			default: function() {
-				return ['camera', 'album'];
+				return ['album'];  //让删除了使用相机
 			}
 		},
 		//最大上传数量
