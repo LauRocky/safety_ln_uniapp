@@ -2,8 +2,8 @@
     "name" : "智慧安质平台",
     "appid" : "__UNI__A9A3937",
     "description" : "",
-    "versionName" : "1.0.31",
-    "versionCode" : 1031,
+    "versionName" : "1.0.32",
+    "versionCode" : 1032,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -38,6 +38,7 @@
                     "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.UPDATE_DEVICE_STATS\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
@@ -56,7 +57,13 @@
                         "urlidentifier" : "com.cgdg.esq",
                         "urlschemes" : [ "zhaj" ]
                     }
-                ]
+                ],
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "打开相册用于选择隐患照片上传",
+                    "NSLocationWhenInUseUsageDescription" : "获取当前位置自动填写隐患发生位置",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "获取当前位置自动填写隐患发生位置",
+                    "NSCameraUsageDescription" : "打开相机用于智慧安质平台扫码登录"
+                }
             },
             /* SDK配置 */
             "sdkConfigs" : {
@@ -134,8 +141,9 @@
                 "/web" : {
                     // "target" : "http://192.168.1.107:12002/safety-server/api", //测试
                     //以下部分请勿改动！
-                    // "target" : "https://esq.cgdg.com/api", //正式环境
-                    "target" : "https://esq.ln2.ink/api", //aliyun
+                    "target" : "https://esq.cgdg.com/api", //正式环境
+
+                    // "target" : "https://esq.ln2.ink/api", //aliyun
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

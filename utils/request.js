@@ -1,6 +1,6 @@
 // export var BASE_URL = 'http://192.168.1.107:12002/safety-server/api'
-export var BASE_URL = 'https://esq.ln2.ink/api'//aliyun
-// export var BASE_URL = 'https://esq.cgdg.com/api'//正式环境
+// export var BASE_URL = 'https://esq.ln2.ink/api'//aliyun
+export var BASE_URL = 'https://esq.cgdg.com/api'//正式环境
 
 
 // #ifdef H5
