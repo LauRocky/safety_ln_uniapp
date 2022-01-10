@@ -7,10 +7,9 @@
 			<text class="header-item">{{Videotitle}}</text>
 			<text class="header-items"></text>
 		</view>
-		<video class="vid" @play="playVideo" @error="error"  @waiting="waiting" 
-		:show-loading="false" :src="videoUrl" @fullscreenchange="fullScreenEvent"
-		 id="myVideo" :autoplay="zidong" play-strategy="3"
-			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
+		<video class="vid" @play="playVideo" @error="error" @waiting="waiting" :show-loading="false" :src="videoUrl"
+			@fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong" play-strategy="3" :controls="false"
+			:show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
 				<image @click="recording" class="images1" src="" mode=""></image>
@@ -85,23 +84,25 @@
 				ehomebianbei: '',
 				bianbei: "",
 				Videotitle: '',
-				loading:false,
+				loading: false,
 				hd: 2
 			};
 		},
 		methods: {
-			error(){
-				this.loading=false;
+			error() {
+				this.loading = false;
 				uni.showToast({
-					title:'加载失败',
-					icon:'error'
+					title: '加载失败',
+					icon: 'error'
 				})
 			},
-			waiting(){
-				this.loading=true;
+			waiting() {
+				if(!this.loading){
+					this.loading = true;
+				}
 			},
-			playVideo(){
-			this.loading=false;
+			playVideo() {
+				this.loading = false;
 			},
 			capture() {
 				var pages = getCurrentPages();
@@ -227,7 +228,7 @@
 							icon: "none"
 						})
 					} else if (res.data.code == 500) {
-				
+
 						uni.showToast({
 							title: '当前设备暂不支持',
 							icon: "none"
@@ -293,7 +294,7 @@
 				} else {
 					this.bianbei = 10;
 					this.Fluorite();
-				} 
+				}
 			},
 			// 退出全屏
 			exitFull() {
@@ -360,13 +361,13 @@
 							'POST', {}, false)
 						.then(res => {
 							console.error(res);
-							if(res.result.code==20007){
+							if (res.result.code == 20007) {
 								uni.showToast({
-									title:'设备离线',
-									icon:'none'
+									title: '设备离线',
+									icon: 'none'
 								})
-							}else{
-								this.videoUrl = res.result.data.url	
+							} else {
+								this.videoUrl = res.result.data.url
 							}
 						})
 						.catch(e => {
@@ -431,18 +432,20 @@
 		width: 750upx;
 		height: 500upx;
 	}
-	.vid-loading{
+
+	.vid-loading {
 		width: 100upx;
 		height: 100upx;
 		line-height: 100upx;
-		text-align:center;
+		text-align: center;
 		color: #FFFFFF;
 		font-size: 32upx;
-		position:absolute;
+		position: absolute;
 		left: 375upx;
 		top: 250upx;
-		transform: translate(-50%,-50%);
+		transform: translate(-50%, -50%);
 	}
+
 	.container {
 		position: absolute;
 		top: 100upx;
@@ -455,17 +458,19 @@
 		position: relative;
 		background-color: #464950;
 	}
-	.mask-loading{
+
+	.mask-loading {
 		position: absolute;
 		left: 375upx;
 		bottom: 40upx;
 		width: 100upx;
 		height: 28upx;
 		line-height: 28upx;
-		text-align: center;	
+		text-align: center;
 		transform: translateX(-50%);
 	}
-	.loading-text{
+
+	.loading-text {
 		font-size: 28upx;
 		color: #FFFFFF;
 	}
