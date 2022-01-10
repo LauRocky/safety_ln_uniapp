@@ -9,9 +9,6 @@
 		</view>
 		<video class="vid" @play="playVideo" @error="error"  @waiting="waiting" :show-loading="false" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
 			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
-			<text class="vid-loading" v-if="loading">
-				加载中
-			</text>
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
 				<image @click="recording" class="images1" src="" mode=""></image>
@@ -20,6 +17,9 @@
 			</cover-view>
 		</video>
 		<view class="mask">
+			<view class="mask-loading" v-if="loading">
+				<text class="loading-text">加载中</text>
+			</view>
 			<!-- sd标清,hd高清 -->
 			<image v-if="hd==2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
 			<image v-else @click="clarity(2)" class="clarity" src="../../static/video/hd.png" mode=""></image>
@@ -91,7 +91,7 @@
 			error(e){
 				uni.showToast({
 					title:'加载失败',
-					icon:'loading'
+					icon:'error'
 				})
 			},
 			waiting(e){
@@ -438,6 +438,7 @@
 		line-height: 100upx;
 		text-align:center;
 		color: #FFFFFF;
+		font-size: 32upx;
 		position:absolute;
 		left: 375upx;
 		top: 250upx;
@@ -454,6 +455,20 @@
 		height: 100upx;
 		position: relative;
 		background-color: #464950;
+	}
+	.mask-loading{
+		position: absolute;
+		left: 375upx;
+		bottom: 40upx;
+		width: 100upx;
+		height: 28upx;
+		line-height: 28upx;
+		text-align: center;	
+		transform: translateX(-50%);
+	}
+	.loading-text{
+		font-size: 28upx;
+		color: #FFFFFF;
 	}
 
 	.images1 {
