@@ -20,6 +20,7 @@
 			</cover-view>
 		</video>
 		<view class="mask">
+			{{playStatus}}
 			<!-- sd标清,hd高清 -->
 			<image v-if="hd==2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
 			<image v-else @click="clarity(2)" class="clarity" src="../../static/video/hd.png" mode=""></image>
@@ -70,6 +71,8 @@
 	export default {
 		data() {
 			return {
+				playStatus: '',
+
 				discolor2: false,
 				discolor3: false,
 				discolor4: false,
@@ -80,8 +83,8 @@
 				pmgressbar: false,
 				videoContext: null,
 				status: {},
-				ehomebianbei:'',
-				bianbei:"",
+				ehomebianbei: '',
+				bianbei: "",
 				Videotitle: '',
 				loading:false,
 				hd: 2
@@ -89,7 +92,6 @@
 		},
 		methods: {
 			error(e){
-				console.log(e)
 				uni.showToast({
 					title:'加载失败',
 					icon:'loading'
@@ -162,42 +164,42 @@
 					// 云台控制 上
 					this.discolor = true;
 					if (this.status.ezv == 0) {
-						this.ehomebianbei='UP';
+						this.ehomebianbei = 'UP';
 						this.ehomeControl();
 					} else {
 						let channel = 1;
-						this.bianbei=0;
+						this.bianbei = 0;
 						this.Fluorite();
 					}
 				} else if (e == 2) {
 					// 云台控制 右
 					this.discolor2 = true;
 					if (this.status.ezv == 0) {
-						this.ehomebianbei='RIGHT';
+						this.ehomebianbei = 'RIGHT';
 						this.ehomeControl();
 					} else {
 						let channel = 1;
-						this.bianbei=3;
+						this.bianbei = 3;
 						this.Fluorite();
 					}
 				} else if (e == 3) {
 					this.discolor3 = true;
 					// 云台控制 下
 					if (this.status.ezv == 0) {
-						this.ehomebianbei='DOWN';
+						this.ehomebianbei = 'DOWN';
 						this.ehomeControl();
 					} else {
-						this.bianbei=1;
+						this.bianbei = 1;
 						this.Fluorite();
 					}
 				} else if (e == 4) {
 					// 云台控制 左
 					this.discolor4 = true;
 					if (this.status.ezv == 0) {
-						this.ehomebianbei='LEFT';
+						this.ehomebianbei = 'LEFT';
 						this.ehomeControl();
 					} else {
-						this.bianbei=2;
+						this.bianbei = 2;
 						this.Fluorite();
 					}
 				}
@@ -229,7 +231,7 @@
 							icon: "none"
 						})
 					} else if (res.data.code == 500) {
-						console.log(1111)
+				
 						uni.showToast({
 							title: '当前设备暂不支持',
 							icon: "none"
@@ -238,7 +240,7 @@
 				})
 			},
 			// 萤石云云台控制
-			Fluorite(){
+			Fluorite() {
 				request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${this.bianbei}`, "POST", {}, false).then(
 					res => {
 						console.log(res)
@@ -260,42 +262,42 @@
 				// 萤石云是1,
 				// 海康是0
 				if (this.status.ezv == 0) {
-					this.ehomebianbei='ZOOM_IN';
+					this.ehomebianbei = 'ZOOM_IN';
 					this.ehomeControl();
 				} else {
-					this.bianbei=8;
+					this.bianbei = 8;
 					this.Fluorite();
 				}
 			},
 			// 变倍-
 			bianbeijian() {
 				if (this.status.ezv == 0) {
-					this.ehomebianbei='ZOOM_OUT';
+					this.ehomebianbei = 'ZOOM_OUT';
 					this.ehomeControl();
 				} else {
-					this.bianbei=9;
+					this.bianbei = 9;
 					this.Fluorite();
 				}
 			},
 			// 变焦+
 			bianjiaojia() {
 				if (this.status.ezv == 0) {
-					this.ehomebianbei='FOCUS_FAR';
+					this.ehomebianbei = 'FOCUS_FAR';
 					this.ehomeControl();
 				} else {
-					this.bianbei=11;
+					this.bianbei = 11;
 					this.Fluorite();
 				}
 			},
 			// 变焦-
 			bianjiaojian() {
 				if (this.status.ezv == 0) {
-				this.ehomebianbei='FOCUS_NEAR';
-				this.ehomeControl();
+					this.ehomebianbei = 'FOCUS_NEAR';
+					this.ehomeControl();
 				} else {
-					this.bianbei=10;
+					this.bianbei = 10;
 					this.Fluorite();
-				}
+				} 
 			},
 			// 退出全屏
 			exitFull() {
@@ -349,8 +351,7 @@
 					request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
 							'POST', {}, false)
 						.then(res => {
-							// let apiUrl = 'http://140.249.223.78:12003/'
-							let apiUrl = 'https://esq.cgdg.com/api/'
+							let apiUrl = 'https://esq.cgdg.com'
 							this.videoUrl = apiUrl + res.url
 							console.log(res)
 						})
@@ -376,6 +377,18 @@
 							console.error(e);
 						})
 				}
+			},
+			onPlay() {
+				this.playStatus = 'on play';
+
+
+			},
+			onError() {
+				this.playStatus = 'on error';
+
+			},
+			onLoading() {
+				this.playStatus = 'on loading';
 			}
 		},
 		onLoad(option) {
