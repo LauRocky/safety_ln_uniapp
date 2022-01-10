@@ -7,7 +7,9 @@
 			<text class="header-item">{{Videotitle}}</text>
 			<text class="header-items"></text>
 		</view>
-		<video class="vid" @play="playVideo" @error="error"  @waiting="waiting" :show-loading="false" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
+		<video class="vid" @play="playVideo" @error="error"  @waiting="waiting" 
+		:show-loading="false" :src="videoUrl" @fullscreenchange="fullScreenEvent"
+		 id="myVideo" :autoplay="zidong" play-strategy="3"
 			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
@@ -88,21 +90,18 @@
 			};
 		},
 		methods: {
-			error(e){
+			error(){
+				this.loading=false;
 				uni.showToast({
 					title:'加载失败',
 					icon:'error'
 				})
 			},
-			waiting(e){
-				this.loading=true
-				// uni.showToast({
-				// 	title:'加载中',
-				// 	icon:'loading'
-				// })
+			waiting(){
+				this.loading=true;
 			},
-			playVideo(e){
-			this.loading=false
+			playVideo(){
+			this.loading=false;
 			},
 			capture() {
 				var pages = getCurrentPages();
