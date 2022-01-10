@@ -7,7 +7,9 @@
 			<text class="header-item">{{Videotitle}}</text>
 			<text class="header-items"></text>
 		</view>
-		<video class="vid" @play="playVideo" @error="error"  @waiting="waiting" :show-loading="false" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
+		<video class="vid" @play="playVideo" @error="error"  @waiting="waiting" 
+		:show-loading="false" :src="videoUrl" @fullscreenchange="fullScreenEvent"
+		 id="myVideo" :autoplay="zidong" play-strategy="3"
 			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
@@ -17,8 +19,8 @@
 			</cover-view>
 		</video>
 		<view class="mask">
-			<view class="mask-loading" v-if="loading">
-				<text class="loading-text">加载中</text>
+			<view class="mask-loading">
+				<text class="loading-text">{{loadingList}}</text>
 			</view>
 			<!-- sd标清,hd高清 -->
 			<image v-if="hd==2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
@@ -89,18 +91,21 @@
 			};
 		},
 		methods: {
-			error(e){
+			error(){
+				this.loadingList='';
 				uni.showToast({
 					title:'加载失败',
 					icon:'error'
 				})
 			},
-			waiting(e){
-				this.loadingList='加载中'
+			waiting(){
+				this.loadingList='加载中';
+				console.log(this.loading)
 			},
-			playVideo(e){
-				console.log(e)
-				this.loadingList='播放中';
+			playVideo(){
+				uni.showToast({
+					title:'加载失败',
+				})
 			},
 			capture() {
 				var pages = getCurrentPages();
@@ -335,7 +340,6 @@
 							} else if (res.cancel) {
 								console.log('用户点击取消');
 							}
-
 						}
 					})
 				}
@@ -456,12 +460,12 @@
 	}
 	.mask-loading{
 		width: 100upx;
-		height: 28upx;
-		line-height: 28upx;
-		text-align: center;	
+		height: 100upx;
 	}
 	.loading-text{
+		text-align: center;
 		font-size: 28upx;
+		line-height: 100upx;
 		color: #FFFFFF;
 	}
 
