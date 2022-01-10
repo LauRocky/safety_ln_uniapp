@@ -20,7 +20,6 @@
 			</cover-view>
 		</video>
 		<view class="mask">
-			{{playStatus}}
 			<!-- sd标清,hd高清 -->
 			<image v-if="hd==2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
 			<image v-else @click="clarity(2)" class="clarity" src="../../static/video/hd.png" mode=""></image>
@@ -71,8 +70,6 @@
 	export default {
 		data() {
 			return {
-				playStatus: '',
-
 				discolor2: false,
 				discolor3: false,
 				discolor4: false,
@@ -378,18 +375,6 @@
 						})
 				}
 			},
-			onPlay() {
-				this.playStatus = 'on play';
-
-
-			},
-			onError() {
-				this.playStatus = 'on error';
-
-			},
-			onLoading() {
-				this.playStatus = 'on loading';
-			}
 		},
 		onLoad(option) {
 			this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2
