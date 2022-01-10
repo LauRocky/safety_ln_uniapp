@@ -7,7 +7,7 @@
 			<text class="header-item">{{Videotitle}}</text>
 			<text class="header-items"></text>
 		</view>
-		<video class="vid" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
+		<video class="vid" @play="playVideo" @waiting="waiting" :show-loading="false" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
 			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
@@ -17,6 +17,9 @@
 			</cover-view>
 		</video>
 		<view class="mask">
+			<!-- sd标清,hd高清 -->
+			<image v-if="hd==2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
+			<image v-else @click="clarity(2)" class="clarity" src="../../static/video/hd.png" mode=""></image>
 			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
 		</view>
 		<view class="middle">
@@ -74,10 +77,25 @@
 				pmgressbar: false,
 				videoContext: null,
 				status: {},
-				Videotitle:'',
+				ehomebianbei:'',
+				bianbei:"",
+				Videotitle: '',
+				hd: 2
 			};
-		},                                          
+		},
 		methods: {
+			waiting(e){
+				console.log(e)
+			},
+			playVideo(e){
+				uni.showLoading({
+					title: '加载中',
+					mask: true
+				})
+				setTimeout(()=>{
+					uni.hideLoading()
+				},1500)
+			},
 			capture() {
 				var pages = getCurrentPages();
 				var page = pages[pages.length - 1];
@@ -134,142 +152,44 @@
 				if (e == 1) {
 					// 云台控制 上
 					this.discolor = true;
-					let onControl = 0;
-					let ehomeControl = 'UP';
 					if (this.status.ezv == 0) {
-						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if(res.code==0){
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								}
-							})
+						this.ehomebianbei='UP';
+						this.ehomeControl();
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${onControl}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if (!res.data) {
-									console.log(res.msg)
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								} else {
-									uni.showToast({
-										title: res.data.msg,
-										icon: 'none'
-									})
-								}
-							})
+						this.bianbei=0;
+						this.Fluorite();
 					}
 				} else if (e == 2) {
 					// 云台控制 右
 					this.discolor2 = true;
-					let rightControl = 3;
-					let ehomeControl3 = 'RIGHT';
 					if (this.status.ezv == 0) {
-						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl3}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if(res.code==0){
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								}
-							})
+						this.ehomebianbei='RIGHT';
+						this.ehomeControl();
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${rightControl}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if (!res.data) {
-									console.log(res.msg)
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								} else {
-									uni.showToast({
-										title: res.data.msg,
-										icon: 'none'
-									})
-								}
-							})
+						this.bianbei=3;
+						this.Fluorite();
 					}
 				} else if (e == 3) {
 					this.discolor3 = true;
 					// 云台控制 下
-					let downControl = 1;
-					let ehomeControl1 = 'DOWN';
 					if (this.status.ezv == 0) {
-						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl1}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if(res.code==0){
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								}
-							})
+						this.ehomebianbei='DOWN';
+						this.ehomeControl();
 					} else {
-						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${downControl}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if (!res.data) {
-									console.log(res.msg)
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								} else {
-									uni.showToast({
-										title: res.data.msg,
-										icon: 'none'
-									})
-								}
-							})
+						this.bianbei=1;
+						this.Fluorite();
 					}
 				} else if (e == 4) {
 					// 云台控制 左
 					this.discolor4 = true;
-					let leftControl = 2;
-					let ehomeControl2 = 'LEFT';
 					if (this.status.ezv == 0) {
-						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl2}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if(res.code==0){
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								}
-							})
+						this.ehomebianbei='LEFT';
+						this.ehomeControl();
 					} else {
-						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${leftControl}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if (!res.data) {
-									console.log(res.msg)
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								} else {
-									uni.showToast({
-										title: res.data.msg,
-										icon: 'none'
-									})
-								}
-							})
+						this.bianbei=2;
+						this.Fluorite();
 					}
 				}
 			},
@@ -287,156 +207,85 @@
 
 			// 录屏
 			recording() {
-			
+
+			},
+
+			// ehome云台控制
+			ehomeControl() {
+				request(`/ehome/ptzOption/${this.status.camera}/${this.ehomebianbei}`, "POST", {}, false).then(res => {
+					console.log(res)
+					if (res.code == 0) {
+						uni.showToast({
+							title: res.msg,
+							icon: "none"
+						})
+					} else if (res.data.code == 500) {
+						console.log(1111)
+						uni.showToast({
+							title: '当前设备暂不支持',
+							icon: "none"
+						})
+					}
+				})
+			},
+			// 萤石云云台控制
+			Fluorite(){
+				request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${this.bianbei}`, "POST", {}, false).then(
+					res => {
+						console.log(res)
+						if (res.code == 0) {
+							uni.showToast({
+								title: res.msg,
+								icon: "none"
+							})
+						} else if (res.data.code == 500) {
+							uni.showToast({
+								title: '当前设备暂不支持',
+								icon: "none"
+							})
+						}
+					})
 			},
 			// 变倍+
 			bianbeijia() {
 				// 萤石云是1,
 				// 海康是0
-				let bianbei = 8;
-				let ehomebianbei = 'ZOOM_IN';
 				if (this.status.ezv == 0) {
-					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei}`, "POST", {}, false).then(res => {
-						console.log(res)
-						console.log(res.data.code)
-						if(res.code==0){
-							uni.showToast({
-								title:res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					this.ehomebianbei='ZOOM_IN';
+					this.ehomeControl();
 				} else {
-					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if (res.code == 0) {
-							uni.showToast({
-								title: res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					this.bianbei=8;
+					this.Fluorite();
 				}
 			},
 			// 变倍-
 			bianbeijian() {
-				let bianbei = 9;
-				let ehomebianbei1 = 'ZOOM_OUT';
 				if (this.status.ezv == 0) {
-					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei1}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if(res.code==0){
-							uni.showToast({
-								title:res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					this.ehomebianbei='ZOOM_OUT';
+					this.ehomeControl();
 				} else {
-					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if (res.code == 0) {
-							uni.showToast({
-								title: res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					this.bianbei=9;
+					this.Fluorite();
 				}
 			},
 			// 变焦+
 			bianjiaojia() {
-				let bianbei = 11;
-				let ehomebianbei2 = 'FOCUS_FAR';
 				if (this.status.ezv == 0) {
-					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei2}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if(res.code==0){
-							uni.showToast({
-								title:res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					this.ehomebianbei='FOCUS_FAR';
+					this.ehomeControl();
 				} else {
-					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if (res.code == 0) {
-							uni.showToast({
-								title: res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					this.bianbei=11;
+					this.Fluorite();
 				}
 			},
 			// 变焦-
 			bianjiaojian() {
-				let bianbei = 10;
-				let ehomebianbei3 = 'FOCUS_NEAR';
 				if (this.status.ezv == 0) {
-					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei3}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if(res.code==0){
-							uni.showToast({
-								title:res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+				this.ehomebianbei='FOCUS_NEAR';
+				this.ehomeControl();
 				} else {
-					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if (res.code == 0) {
-							uni.showToast({
-								title: res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					this.bianbei=10;
+					this.Fluorite();
 				}
 			},
 			// 退出全屏
@@ -453,12 +302,37 @@
 			},
 			// 截屏
 			screenshots() {
-			
+
 			},
 			back() {
 				uni.navigateBack({
 					delta: 1
 				});
+			},
+			// 切换高清与流畅
+			clarity(e) {
+				if (this.status.ezv == 0) {
+					uni.showToast({
+						title: '当前设备不支持',
+						icon: 'none'
+					})
+				} else {
+					let that = this
+					uni.showModal({
+						title: '切换',
+						content: '是否切换到清晰度',
+						success: (res) => {
+							console.log(res)
+							if (res.confirm) {
+								that.hd = e;
+								that.videodetail();
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+							}
+
+						}
+					})
+				}
 			},
 			videodetail() {
 				if (this.status.ezv == 0) {
@@ -466,20 +340,23 @@
 					request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
 							'POST', {}, false)
 						.then(res => {
-							let apiUrl = 'http://140.249.223.78:12003/'
+							// let apiUrl = 'http://140.249.223.78:12003/'
+							let apiUrl = 'https://esq.cgdg.com/api/'
 							this.videoUrl = apiUrl + res.url
+							console.log(res)
 						})
 				} else {
 					// 获取萤石云播放url
-					let url = `/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/2`;
+					let url =
+						`/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/${this.hd}`;
 					console.log(url)
 					request(url,
 							'POST', {}, false)
 						.then(res => {
 							console.error(res);
-							this.videoUrl = res.result.data.url
+							this.videoUrl = res.result.data.url	
 						})
-						.catch(e=>{
+						.catch(e => {
 							console.error(e);
 						})
 				}
@@ -490,10 +367,10 @@
 			this.status = option
 			console.log(this.status)
 			// console.log(option.names.length)
-			if(option.names.length>=12){
-				this.Videotitle=option.names.slice(0,11)+'...'
-			}else{
-				this.Videotitle=option.names
+			if (option.names.length >= 12) {
+				this.Videotitle = option.names.slice(0, 11) + '...'
+			} else {
+				this.Videotitle = option.names
 			}
 			this.videodetail()
 		}
@@ -528,7 +405,7 @@
 		font-size: 32upx;
 		font-family: PingFang SC;
 		font-weight: bold;
-		text-align: center;	
+		text-align: center;
 	}
 
 	.header-items {
@@ -553,7 +430,7 @@
 		position: relative;
 		background-color: #464950;
 	}
-	
+
 	.images1 {
 		width: 76upx;
 		height: 76upx;
@@ -572,11 +449,19 @@
 		height: 80upx;
 	}
 
+	.clarity {
+		position: absolute;
+		right: 100upx;
+		bottom: 20upx;
+		width: 60upx;
+		height: 60upx;
+		color: #FFFFFF;
+	}
+
 	.mask-img {
 		position: absolute;
 		right: 20upx;
 		bottom: 20upx;
-		font-size: 28upx;
 		width: 60upx;
 		height: 60upx;
 		color: #FFFFFF;
@@ -630,6 +515,7 @@
 		height: 230upx;
 		transform: translateY(-50%);
 	}
+
 	.a {
 		width: 230upx;
 		height: 130upx;
