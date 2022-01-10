@@ -70,6 +70,7 @@
 	export default {
 		data() {
 			return {
+				loadingList:'',
 				discolor2: false,
 				discolor3: false,
 				discolor4: false,
@@ -95,14 +96,11 @@
 				})
 			},
 			waiting(e){
-				this.loading=true
-				// uni.showToast({
-				// 	title:'加载中',
-				// 	icon:'loading'
-				// })
+				this.loadingList='加载中'
 			},
 			playVideo(e){
-			this.loading=false
+				console.log(e)
+				this.loadingList='播放中';
 			},
 			capture() {
 				var pages = getCurrentPages();
@@ -457,14 +455,10 @@
 		background-color: #464950;
 	}
 	.mask-loading{
-		position: absolute;
-		left: 375upx;
-		bottom: 40upx;
 		width: 100upx;
 		height: 28upx;
 		line-height: 28upx;
 		text-align: center;	
-		transform: translateX(-50%);
 	}
 	.loading-text{
 		font-size: 28upx;
