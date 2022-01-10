@@ -7,8 +7,11 @@
 			<text class="header-item">{{Videotitle}}</text>
 			<text class="header-items"></text>
 		</view>
-		<video class="vid" @play="playVideo" @waiting="waiting" :show-loading="false" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
+		<video class="vid" @play="playVideo" @error="error"  @waiting="waiting" :show-loading="false" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
 			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
+			<text class="vid-loading" v-if="loading">
+				加载中
+			</text>
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
 				<image @click="recording" class="images1" src="" mode=""></image>
@@ -80,21 +83,27 @@
 				ehomebianbei:'',
 				bianbei:"",
 				Videotitle: '',
+				loading:false,
 				hd: 2
 			};
 		},
 		methods: {
-			waiting(e){
+			error(e){
 				console.log(e)
+				uni.showToast({
+					title:'加载失败',
+					icon:'loading'
+				})
+			},
+			waiting(e){
+				this.loading=true
+				// uni.showToast({
+				// 	title:'加载中',
+				// 	icon:'loading'
+				// })
 			},
 			playVideo(e){
-				uni.showLoading({
-					title: '加载中',
-					mask: true
-				})
-				setTimeout(()=>{
-					uni.hideLoading()
-				},1500)
+			this.loading=false
 			},
 			capture() {
 				var pages = getCurrentPages();
@@ -354,7 +363,14 @@
 							'POST', {}, false)
 						.then(res => {
 							console.error(res);
-							this.videoUrl = res.result.data.url	
+							if(res.result.code==20007){
+								uni.showToast({
+									title:'设备离线',
+									icon:'none'
+								})
+							}else{
+								this.videoUrl = res.result.data.url	
+							}
 						})
 						.catch(e => {
 							console.error(e);
@@ -414,10 +430,21 @@
 	}
 
 	.vid {
+		position: relative;
 		width: 750upx;
 		height: 500upx;
 	}
-
+	.vid-loading{
+		width: 100upx;
+		height: 100upx;
+		line-height: 100upx;
+		text-align:center;
+		color: #FFFFFF;
+		position:absolute;
+		left: 375upx;
+		top: 250upx;
+		transform: translate(-50%,-50%);
+	}
 	.container {
 		position: absolute;
 		top: 100upx;
