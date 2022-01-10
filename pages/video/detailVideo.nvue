@@ -8,7 +8,8 @@
 			<text class="header-items"></text>
 		</view>
 		<video class="vid" :src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong"
-			:controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
+			play-strategy="3" :controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar"
+			@play="onPlay" @error="onError" @waiting="onLoading">
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
 				<image @click="recording" class="images1" src="" mode=""></image>
@@ -17,6 +18,8 @@
 			</cover-view>
 		</video>
 		<view class="mask">
+			{{playStatus}}
+
 			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
 		</view>
 		<view class="middle">
@@ -64,6 +67,8 @@
 	export default {
 		data() {
 			return {
+				playStatus: '',
+
 				discolor2: false,
 				discolor3: false,
 				discolor4: false,
@@ -74,9 +79,9 @@
 				pmgressbar: false,
 				videoContext: null,
 				status: {},
-				Videotitle:'',
+				Videotitle: '',
 			};
-		},                                          
+		},
 		methods: {
 			capture() {
 				var pages = getCurrentPages();
@@ -140,7 +145,7 @@
 						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
-								if(res.code==0){
+								if (res.code == 0) {
 									uni.showToast({
 										title: res.msg,
 										icon: 'none'
@@ -149,22 +154,23 @@
 							})
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${onControl}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if (!res.data) {
-									console.log(res.msg)
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								} else {
-									uni.showToast({
-										title: res.data.msg,
-										icon: 'none'
-									})
-								}
-							})
+						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${onControl}`, "POST", {}, false)
+							.then(
+								res => {
+									console.log(res)
+									if (!res.data) {
+										console.log(res.msg)
+										uni.showToast({
+											title: res.msg,
+											icon: 'none'
+										})
+									} else {
+										uni.showToast({
+											title: res.data.msg,
+											icon: 'none'
+										})
+									}
+								})
 					}
 				} else if (e == 2) {
 					// 云台控制 右
@@ -175,7 +181,7 @@
 						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl3}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
-								if(res.code==0){
+								if (res.code == 0) {
 									uni.showToast({
 										title: res.msg,
 										icon: 'none'
@@ -184,22 +190,23 @@
 							})
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${rightControl}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if (!res.data) {
-									console.log(res.msg)
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								} else {
-									uni.showToast({
-										title: res.data.msg,
-										icon: 'none'
-									})
-								}
-							})
+						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${rightControl}`, "POST", {}, false)
+							.then(
+								res => {
+									console.log(res)
+									if (!res.data) {
+										console.log(res.msg)
+										uni.showToast({
+											title: res.msg,
+											icon: 'none'
+										})
+									} else {
+										uni.showToast({
+											title: res.data.msg,
+											icon: 'none'
+										})
+									}
+								})
 					}
 				} else if (e == 3) {
 					this.discolor3 = true;
@@ -210,7 +217,7 @@
 						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl1}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
-								if(res.code==0){
+								if (res.code == 0) {
 									uni.showToast({
 										title: res.msg,
 										icon: 'none'
@@ -219,22 +226,23 @@
 							})
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${downControl}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if (!res.data) {
-									console.log(res.msg)
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								} else {
-									uni.showToast({
-										title: res.data.msg,
-										icon: 'none'
-									})
-								}
-							})
+						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${downControl}`, "POST", {}, false)
+							.then(
+								res => {
+									console.log(res)
+									if (!res.data) {
+										console.log(res.msg)
+										uni.showToast({
+											title: res.msg,
+											icon: 'none'
+										})
+									} else {
+										uni.showToast({
+											title: res.data.msg,
+											icon: 'none'
+										})
+									}
+								})
 					}
 				} else if (e == 4) {
 					// 云台控制 左
@@ -245,7 +253,7 @@
 						request(`/ehome/ptzOption/${this.status.camera}/${ehomeControl2}`, "POST", {}, false).then(
 							res => {
 								console.log(res)
-								if(res.code==0){
+								if (res.code == 0) {
 									uni.showToast({
 										title: res.msg,
 										icon: 'none'
@@ -254,22 +262,23 @@
 							})
 					} else {
 						let channel = 1;
-						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${leftControl}`, "POST", {}, false).then(
-							res => {
-								console.log(res)
-								if (!res.data) {
-									console.log(res.msg)
-									uni.showToast({
-										title: res.msg,
-										icon: 'none'
-									})
-								} else {
-									uni.showToast({
-										title: res.data.msg,
-										icon: 'none'
-									})
-								}
-							})
+						request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${leftControl}`, "POST", {}, false)
+							.then(
+								res => {
+									console.log(res)
+									if (!res.data) {
+										console.log(res.msg)
+										uni.showToast({
+											title: res.msg,
+											icon: 'none'
+										})
+									} else {
+										uni.showToast({
+											title: res.data.msg,
+											icon: 'none'
+										})
+									}
+								})
 					}
 				}
 			},
@@ -287,7 +296,7 @@
 
 			// 录屏
 			recording() {
-			
+
 			},
 			// 变倍+
 			bianbeijia() {
@@ -299,12 +308,12 @@
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei}`, "POST", {}, false).then(res => {
 						console.log(res)
 						console.log(res.data.code)
-						if(res.code==0){
+						if (res.code == 0) {
 							uni.showToast({
-								title:res.msg,
+								title: res.msg,
 								icon: "none"
 							})
-						}else if(res.data.code==500){
+						} else if (res.data.code == 500) {
 							uni.showToast({
 								title: res.data.msg,
 								icon: "none"
@@ -313,20 +322,21 @@
 					})
 				} else {
 					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if (res.code == 0) {
-							uni.showToast({
-								title: res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(
+						res => {
+							console.log(res)
+							if (res.code == 0) {
+								uni.showToast({
+									title: res.msg,
+									icon: "none"
+								})
+							} else if (res.data.code == 500) {
+								uni.showToast({
+									title: res.data.msg,
+									icon: "none"
+								})
+							}
+						})
 				}
 			},
 			// 变倍-
@@ -336,12 +346,12 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei1}`, "POST", {}, false).then(res => {
 						console.log(res)
-						if(res.code==0){
+						if (res.code == 0) {
 							uni.showToast({
-								title:res.msg,
+								title: res.msg,
 								icon: "none"
 							})
-						}else if(res.data.code==500){
+						} else if (res.data.code == 500) {
 							uni.showToast({
 								title: res.data.msg,
 								icon: "none"
@@ -350,20 +360,21 @@
 					})
 				} else {
 					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if (res.code == 0) {
-							uni.showToast({
-								title: res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(
+						res => {
+							console.log(res)
+							if (res.code == 0) {
+								uni.showToast({
+									title: res.msg,
+									icon: "none"
+								})
+							} else if (res.data.code == 500) {
+								uni.showToast({
+									title: res.data.msg,
+									icon: "none"
+								})
+							}
+						})
 				}
 			},
 			// 变焦+
@@ -373,12 +384,12 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei2}`, "POST", {}, false).then(res => {
 						console.log(res)
-						if(res.code==0){
+						if (res.code == 0) {
 							uni.showToast({
-								title:res.msg,
+								title: res.msg,
 								icon: "none"
 							})
-						}else if(res.data.code==500){
+						} else if (res.data.code == 500) {
 							uni.showToast({
 								title: res.data.msg,
 								icon: "none"
@@ -387,20 +398,21 @@
 					})
 				} else {
 					let channel = 1;
-					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if (res.code == 0) {
-							uni.showToast({
-								title: res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(
+						res => {
+							console.log(res)
+							if (res.code == 0) {
+								uni.showToast({
+									title: res.msg,
+									icon: "none"
+								})
+							} else if (res.data.code == 500) {
+								uni.showToast({
+									title: res.data.msg,
+									icon: "none"
+								})
+							}
+						})
 				}
 			},
 			// 变焦-
@@ -410,12 +422,12 @@
 				if (this.status.ezv == 0) {
 					request(`/ehome/ptzOption/${this.status.camera}/${ehomebianbei3}`, "POST", {}, false).then(res => {
 						console.log(res)
-						if(res.code==0){
+						if (res.code == 0) {
 							uni.showToast({
-								title:res.msg,
+								title: res.msg,
 								icon: "none"
 							})
-						}else if(res.data.code==500){
+						} else if (res.data.code == 500) {
 							uni.showToast({
 								title: res.data.msg,
 								icon: "none"
@@ -423,20 +435,21 @@
 						}
 					})
 				} else {
-					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(res => {
-						console.log(res)
-						if (res.code == 0) {
-							uni.showToast({
-								title: res.msg,
-								icon: "none"
-							})
-						}else if(res.data.code==500){
-							uni.showToast({
-								title: res.data.msg,
-								icon: "none"
-							})
-						}
-					})
+					request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${bianbei}`, "POST", {}, false).then(
+						res => {
+							console.log(res)
+							if (res.code == 0) {
+								uni.showToast({
+									title: res.msg,
+									icon: "none"
+								})
+							} else if (res.data.code == 500) {
+								uni.showToast({
+									title: res.data.msg,
+									icon: "none"
+								})
+							}
+						})
 				}
 			},
 			// 退出全屏
@@ -453,7 +466,7 @@
 			},
 			// 截屏
 			screenshots() {
-			
+
 			},
 			back() {
 				uni.navigateBack({
@@ -466,7 +479,7 @@
 					request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
 							'POST', {}, false)
 						.then(res => {
-							let apiUrl = 'http://140.249.223.78:12003/'
+							let apiUrl = 'https://esq.cgdg.com'
 							this.videoUrl = apiUrl + res.url
 						})
 				} else {
@@ -479,10 +492,22 @@
 							console.error(res);
 							this.videoUrl = res.result.data.url
 						})
-						.catch(e=>{
+						.catch(e => {
 							console.error(e);
 						})
 				}
+			},
+			onPlay() {
+				this.playStatus = 'on play';
+
+
+			},
+			onError() {
+				this.playStatus = 'on error';
+
+			},
+			onLoading() {
+				this.playStatus = 'on loading';
 			}
 		},
 		onLoad(option) {
@@ -490,10 +515,10 @@
 			this.status = option
 			console.log(this.status)
 			// console.log(option.names.length)
-			if(option.names.length>=12){
-				this.Videotitle=option.names.slice(0,11)+'...'
-			}else{
-				this.Videotitle=option.names
+			if (option.names.length >= 12) {
+				this.Videotitle = option.names.slice(0, 11) + '...'
+			} else {
+				this.Videotitle = option.names
 			}
 			this.videodetail()
 		}
@@ -528,7 +553,7 @@
 		font-size: 32upx;
 		font-family: PingFang SC;
 		font-weight: bold;
-		text-align: center;	
+		text-align: center;
 	}
 
 	.header-items {
@@ -553,7 +578,7 @@
 		position: relative;
 		background-color: #464950;
 	}
-	
+
 	.images1 {
 		width: 76upx;
 		height: 76upx;
@@ -630,6 +655,7 @@
 		height: 230upx;
 		transform: translateY(-50%);
 	}
+
 	.a {
 		width: 230upx;
 		height: 130upx;
