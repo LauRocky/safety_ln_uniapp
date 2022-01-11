@@ -109,6 +109,7 @@ export default {
 	},
 	methods: {
 		handgreList(val, i) {
+			this.numsList = [];
 			this.darshow = false;
 			this.page = 1
 			this.title = val.name
