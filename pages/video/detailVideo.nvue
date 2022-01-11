@@ -19,7 +19,7 @@
 		</video>
 		<view class="mask">
 			<view class="mask-loading" v-if="loading">
-				<text class="loading-text">加载中</text>
+				<text class="loading-text">视频加载中...</text>
 			</view>
 			<!-- sd标清,hd高清 -->
 			<image v-if="hd==2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
@@ -71,6 +71,7 @@
 	export default {
 		data() {
 			return {
+				loadingList: '',
 				discolor2: false,
 				discolor3: false,
 				discolor4: false,
@@ -85,25 +86,28 @@
 				bianbei: "",
 				Videotitle: '',
 				loading: false,
-				hd: 2
+				hd: 2,
+				played:false
 			};
 		},
 		methods: {
 			error() {
 				this.loading = false;
 				uni.showToast({
-					title: '加载失败',
+					title: '播放失败',
 					icon: 'error'
 				})
 			},
 			waiting() {
-				if(!this.loading){
+				if(!this.played){
 					this.loading = true;
 				}
 			},
 			playVideo() {
 				this.loading = false;
+				this.played=true;
 			},
+			
 			capture() {
 				var pages = getCurrentPages();
 				var page = pages[pages.length - 1];
@@ -337,7 +341,6 @@
 							} else if (res.cancel) {
 								console.log('用户点击取消');
 							}
-
 						}
 					})
 				}
@@ -460,18 +463,15 @@
 	}
 
 	.mask-loading {
-		position: absolute;
-		left: 375upx;
-		bottom: 40upx;
-		width: 100upx;
-		height: 28upx;
-		line-height: 28upx;
-		text-align: center;
-		transform: translateX(-50%);
+		width: 200upx;
+		height: 100upx;
 	}
 
 	.loading-text {
+		width: 200upx;
+		text-align: center;
 		font-size: 28upx;
+		line-height: 100upx;
 		color: #FFFFFF;
 	}
 
