@@ -94,7 +94,6 @@
 					delta: 1
 				});
 			},
-
 		},
 		onShow() {
 			this.List.page=1;
@@ -124,6 +123,10 @@
 				padding-bottom: 20upx;
 
 				.par-2 {
+					width: 60%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
 					font-size: 32upx;
 					font-family: PingFang SC;
 					font-weight: bold;
@@ -133,7 +136,6 @@
 				.par-3 {
 					font-size: 28upx;
 					font-family: PingFang SC;
-					font-weight: bold;
 					color: #FF0000;
 				}
 
@@ -141,7 +143,6 @@
 					font-size: 28upx;
 					color: #11B38C;
 					font-family: PingFang SC;
-					font-weight: bold;
 				}
 			}
 
@@ -164,7 +165,7 @@
 
 				.times {
 					text-align: right;
-					font-size: 28upx;
+					font-size: 24upx;
 					font-family: PingFang SC;
 					font-weight: 500;
 					color: #666666;
@@ -193,6 +194,12 @@
 			font-family: PingFang SC;
 			font-weight: bold;
 			border-radius: 40upx;
+		}
+		.kong {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
 		}
 	}
 </style>

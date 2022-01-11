@@ -96,6 +96,8 @@ export default {
 						uni.sendNativeEvent(res, rest => {
 							console.log(rest);
 						});
+						uni.clearStorageSync();
+						uni.sendNativeEvent("login",call=>{});
 						uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
 						uni.setStorageSync('token', res.data.token.token);
 						this.toHome();
@@ -140,6 +142,8 @@ export default {
 						.then(res => {
 							if (res.code == 0) {
 								uni.hideToast();
+								uni.clearStorageSync();
+								uni.sendNativeEvent("login",call=>{});
 								uni.setStorageSync('userInfo', res.user);
 								uni.setStorageSync('token', res.token);
 								uni.switchTab({

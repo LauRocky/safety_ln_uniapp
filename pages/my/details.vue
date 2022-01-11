@@ -27,15 +27,14 @@
 				<image :src="val.url" mode="widthFix" v-for="(val, i) in obj.picList" :key="i"></image>
 			</view>
 		</view>
-		<uni-fab :pattern="pattern" :content="content" horizontal="right" vertical="bottom" direction="vertical"
-			:popMenu="true" @trigger="trigger" @fabClick="fabClick" />
+		<view v-if="userObj.userId===this.obj.createBy">
+			<uni-fab :pattern="pattern" :content="content" horizontal="right" vertical="bottom" direction="vertical"
+				:popMenu="true" @trigger="trigger" @fabClick="fabClick" />
+		</view>
 	</view>
 </template>
 <script>
 	import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
-	// import {
-	// 	request
-	// } from '../../utils/request.js'
 	export default {
 		data() {
 			return {
@@ -56,12 +55,13 @@
 						active: false
 					}
 				],
+				userObj:{},
 				titles: '反馈详情',
 				id: '',
 				obj: {},
 				createUser: {},
 				company: {},
-				picList: []
+				// picList: []
 			};
 		},
 		methods: {
@@ -121,7 +121,7 @@
 							this.obj = res.data
 							this.createUser = res.data.createUser
 							this.company = res.data.company
-							this.picList = this.obj.picList
+							// this.picList = this.obj.picList
 						}
 						console.log(this.createUser)
 						console.log(this.obj)
@@ -135,6 +135,7 @@
 			this.opinionDetail()
 		},
 		onLoad(options) {
+			this.userObj=JSON.parse(uni.getStorageSync('userInfo'))
 			console.log(options)
 			this.id = options.id
 			// this.opinionDetail()
@@ -157,6 +158,10 @@
 				}
 
 				.titlesName {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					width: 110upx;
 					font-size: 32upx;
 					font-family: PingFang SC;
 					font-weight: bold;
@@ -165,6 +170,7 @@
 				}
 
 				.companyname {
+					width: 40%;
 					padding-left: 0;
 				}
 

@@ -25,7 +25,7 @@
 		data() {
 			return {
 				ids: "",
-				titles: '新增反馈',
+				titles: '反馈意见',
 				value1: '',
 				type: "",
 				imgList: [],
@@ -46,7 +46,9 @@
 							this.obj = res.data
 							this.value1 = this.obj.content
 							this.obj.picList.forEach(el => {
-								this.imgList.push(el.url)
+								let objdd={}
+								objdd=el.url
+								this.imgList.push(objdd)
 							})
 							this.createUser = res.data.createUser
 							this.company = res.data.company
@@ -104,10 +106,10 @@
 			},
 			SubmitOpinions() {
 				this.imgList.forEach(el => {
-					console.log(el)
 					let objs = {};
 					objs.url = el
 					this.picList.push(objs);
+					// this.obj.picList.push(objs);
 				})
 				this.$http('/problem/feedback/save', 'POST', {
 						'content': this.obj.content,
@@ -134,7 +136,9 @@
 		},
 		onLoad(options) {
 			this.ids = options.id
-			this.opinionDetail();
+			if(this.ids){
+				this.opinionDetail();
+			}
 			let type = uni.getSystemInfoSync().platform
 			switch (type) {
 				case 'android':

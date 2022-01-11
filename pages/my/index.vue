@@ -262,7 +262,7 @@
 			// 意见反馈
 			feedback() {
 				uni.navigateTo({
-					url: '/pages/my/yijianfankui'
+					url: '/pages/my/feedbackList'
 				})
 			},
 			//技术支持
@@ -299,6 +299,10 @@
 					content: '确定要退出当前用户？',
 					success: function(res) {
 						if (res.confirm) {
+							uni.sendNativeEvent("logout", c => {
+								console.log(c)
+							});
+							uni.clearStorageSync();
 							uni.removeStorageSync('userInfo');
 							uni.removeStorageSync('token');
 							uni.navigateTo({
@@ -310,7 +314,6 @@
 					}
 				});
 			},
-
 		},
 		onLoad() {
 			this.deptInfo()

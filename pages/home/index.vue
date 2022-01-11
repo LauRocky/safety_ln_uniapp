@@ -335,17 +335,37 @@ export default {
 		},
 		handbacklog() {
 			//项目预警
-			this.$http('/project/plan/page', 'POST', this.project, false)
+			let url='/project/plan/page?companyId='+JSON.parse(uni.getStorageSync('userInfo')).companyId;
+			this.$http(url, 'GET', {}, false)
 				.then(res => {
 					if (res.code == 0) {
+						let list=[];
 						res.page.forEach(val => {
-							val.title = val.projectName;
-							let list = [];
-							list = val.createTime.split(' ');
-							val.time = list[0];
+							if(val.nodes){
+								val.nodes.forEach(e=>{
+									let item={};
+									item.title=val.projectName+e.taskName;
+									let listT = [];
+									listT = val.createTime.split(' ');
+									item.time = listT[0];
+									item.projectId=val.projectId;
+									item.projectName=val.projectName;
+									item.companyId=val.companyId;
+									list.push(item);
+								})
+							}
+							
 						});
-						this.indexList = res.page.slice(0, 6);
-						this.totalCount = res.page.length;
+						if(list.length>=6){
+							this.indexList = list.slice(0, 6);
+						}else{
+							this.indexList=list;
+						}
+						
+						this.totalCount = list.length;
+						
+						
+						
 					}
 				})
 				.catch(err => {

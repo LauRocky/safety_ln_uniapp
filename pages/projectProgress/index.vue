@@ -80,9 +80,13 @@
 					mask: true
 				})
 				this.$http('/project/plan/withStatusNew', 'POST', this.queryForm, false).then(res => {
+					console.log(res)
 					uni.hideLoading()
 					this.rawList = res.page
 					this.projectList = this.rawList
+				})
+				.catch(err=>{
+					console.log(err)
 				})
 			},
 			handsearch(val) {
@@ -167,13 +171,17 @@
 		display: flex;
 		align-items: center;
 		padding-bottom: 21rpx;
-		justify-content: space-between;
+		justify-content: space-between;		
 	}
 
 	.project .title text {
+		width: 80%;
 		font-size: 32rpx;
 		font-weight: bold;
 		color: #333333;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	>>>.u-tag--primary[data-v-95cf93f4] {

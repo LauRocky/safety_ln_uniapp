@@ -587,6 +587,9 @@
 						}
 					})
 				})
+				.catch(err=>{
+					console.log(err)
+				})
 			},
 
 			/* 获得地址 */
