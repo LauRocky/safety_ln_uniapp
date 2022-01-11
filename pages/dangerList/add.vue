@@ -106,7 +106,6 @@ import aderss from '../../components/dangerList/aderss.vue';
 import uploadImg from '../../components/xiaohuang-uploadImg/uploadImg.vue';
 import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 import { BASE_URL } from '../../utils/request.js';
-
 export default {
 	name: 'add',
 	props: [],
@@ -208,7 +207,6 @@ export default {
 		};
 	},
 	onLoad() {
-
 	},
 	onShow() {
 		
@@ -309,7 +307,6 @@ export default {
 			this.userAdd.problemType = v.code;
 			this.showT = false;
 		},
-
 		handEndR(v) {
 			//整改
 			this.userAdd.rectification = v.fullname;
