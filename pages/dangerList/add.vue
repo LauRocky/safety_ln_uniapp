@@ -2,6 +2,14 @@
 	<view class="add">
 		<TwoNavbar :name="twoname" :rightText="rightText" @rightcilck="submit" />
 		<u--form class="add-form" labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
+			<u-form-item class="form-item" prop="categoryList" @click="showC = true" borderBottom>
+				<view class="add-1">
+					<image class="add-imgs" src="../../static/add/xiangmumingcheng.png" mode=""></image>
+					<view class="add-title">新增隐患类别</view>
+				</view>
+				<u--input v-model="userAdd.categoryList" inputAlign="right" disabled placeholder="请选择" border="none"></u--input>
+				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
+			</u-form-item>
 			<u-form-item class="form-item" prop="name" @click="show = true" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/xiangmu.png" mode=""></image>
@@ -88,6 +96,7 @@
 		<projectPicker ref="projectPicker" :show="show"  @close="show = false" @handEnd="handEnd" />
 		<levelPicker ref="levelPicker" :showl="showl"  @closeL="showl = false" @handEndl="handEndl" />
 		<levelType ref="levelType" :showl="showT" @closeL="showT = false" @handEndl="handEndT" />
+		<categoryList ref="levelType1" :showl="showC" @closeL="showC = false" @handEndl="handEndC"/>
 		<rectification ref="rectification" :showR="showR" @closeR="showR = false" @handEndR="handEndR" />
 		<InformPerson ref="InformPerson" :showP="showP" @closeP="showP = false" @handEndP="handEndP" />
 		<describe :showD="showD" @closeD="showD = false" @handEndD="handEndD">隐患详情描述</describe>
@@ -99,6 +108,7 @@
 import projectPicker from '../../components/dangerList/projectPicker.vue';
 import levelPicker from '../../components/dangerList/levelPicker.vue';
 import levelType from '../../components/dangerList/levelType.vue';
+import categoryList from '../../components/dangerList/categoryList.vue'
 import rectification from '../../components/dangerList/rectification.vue';
 import InformPerson from '../../components/dangerList/InformPerson.vue';
 import describe from '../../components/dangerList/describe.vue';
@@ -114,6 +124,7 @@ export default {
 		TwoNavbar,
 		projectPicker,
 		levelPicker,
+		categoryList,
 		levelType,
 		rectification,
 		InformPerson,
@@ -127,6 +138,7 @@ export default {
 			rightText: '创建',
 			show: false, //项目显隐
 			showl: false, //等级
+			showC: false, //类别
 			showT: false, //类型
 			showR: false, //整改
 			showP: false, //知会
@@ -135,6 +147,8 @@ export default {
 			showA: false, //地址
 			userAdd: {
 				name: '',
+				category:'',
+				categoryList:'安全隐患',
 				dagner: '安全事件等级',
 				type: '建设施工',
 				rectification: '',
@@ -170,6 +184,13 @@ export default {
 					}
 				],
 				type: [
+					{
+						required: true,
+						message: '请选择类型',
+						trigger: ['blur', 'change']
+					}
+				],
+				categoryList: [
 					{
 						required: true,
 						message: '请选择类型',
@@ -237,7 +258,8 @@ export default {
 					areaDetail: this.userAdd.location,
 					images: this.userAdd.images,
 					location: this.userAdd.location,
-					source: 0
+					source: 0,
+					category:this.userAdd.category,
 				},
 				false
 			)
@@ -264,6 +286,7 @@ export default {
 			this.$refs.projectPicker.handcache();
 			this.$refs.levelPicker.handcache();
 			this.$refs.levelType.handcache();
+			this.$refs.levelType1.handcache();
 			this.$refs.rectification.handcache();
 			this.$refs.InformPerson.handcache();
 			this.$refs.aderssA.handcache();
@@ -309,11 +332,16 @@ export default {
 			this.userAdd.problemType = v.code;
 			this.showT = false;
 		},
-
+		handEndC(v) {
+			//整改
+			console.log(v)
+			this.userAdd.categoryList = v.value;
+			this.showC = false;
+		},
 		handEndR(v) {
 			//整改
 			this.userAdd.rectification = v.fullname;
-			this.userAdd.problemSolver = v.userId;
+			this.userAdd.category = v.userId;
 			this.showR = false;
 		},
 		handEndP(v) {

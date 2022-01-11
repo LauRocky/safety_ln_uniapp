@@ -100,11 +100,11 @@
 			},
 			waiting(){
 				this.loadingList='加载中';
-				console.log(this.loading)
 			},
 			playVideo(){
 				uni.showToast({
-					title:'加载失败',
+					title:'加载中',
+					icon:'none'
 				})
 			},
 			capture() {
@@ -368,7 +368,7 @@
 									title:'设备离线',
 									icon:'none'
 								})
-							}else{
+							}else if(res.result.code==200){
 								this.videoUrl = res.result.data.url	
 							}
 						})
