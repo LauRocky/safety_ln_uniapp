@@ -1,16 +1,18 @@
 <template>
 	<view class="danger">
-		<u-navbar :fixed="true" style="display:flex;align-items: center;color: #FFFFFF;" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			<view class="u-nav-left" style="color: #FFFFFF;font-size: 32upx;" @click="switchTitle" slot="left">{{headerTitle}}</view>
-			<image class="u-nav-left" style="width: 23upx; height: 13upx;" src="../../static/danger/showAll.png" mode="" slot="left"></image>
-		</u-navbar>
-		<view class="Spinner" v-if="spinnerShow">
-			<view class="Spinner-list" @click="choose(index)" :class="index==choose?'green':''" v-for="(item,index) in SpinnerList" :key="item.value">
-				<view :class="index==current?'green':''">
-					{{item.name}}
+		<u-navbar class="navbar" :fixed="true" style="display:flex;align-items: center;color: #FFFFFF;" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
+			<view class="u-nav-left" style="color: #FFFFFF;font-size: 32upx;" slot="left">
+				<view class="" @click="darshow = !darshow">
+					{{ title }}
+
+					<image class="nav-left-img" style="width: 25upx; height: 15upx;" src="../../static/danger/showAll.png" mode=""></image>
+				</view>
+				<view class="bav-list" v-if="darshow">
+					<image class="bav-imgs" src="../../static/danger/shang.png" mode=""></image>
+					<view class="bav-1" v-for="(val, i) in SpinnerList" @click="handgreList(val, i)" :key="i">{{ val.name }}</view>
 				</view>
 			</view>
-		</view>
+		</u-navbar>
 		<u-tabs lineColor="#00B490" lineWidth="120" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handclick"></u-tabs>
 		<view class="danger-list">{{ totalCount }}个隐患</view>
 		<scroll-view class="lists" scroll-y @scrolltolower="handtolower" v-if="numsList.length !== 0">
@@ -34,12 +36,11 @@
 					<view class="foo-time">{{ val.crtime }}</view>
 				</view>
 			</view>
-			<view style="height: 15vh;">
-			</view>
+			<view style="height: 15vh;"></view>
 		</scroll-view>
 		<template v-else>
 			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
-		</template> 
+		</template>
 		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
 		<mypicker :show="show" @handcompany="handcompany" @close="handclose" @deSelect="deSelect" />
 	</view>
@@ -56,39 +57,31 @@ export default {
 	},
 	data() {
 		return {
-			current:0,
-			headerTitle:'全部',
-			title: '所有城市',
-			shows: false,
+			title: '全部',
+			category: '',
+			darshow: false,
 			show: false,
 			btnnum: 0,
 			dangerName: '',
 			showTitle: true,
-			categoryList:[], //隐患新增类别
 			dictLsit: [], //隐患等级列表
 			page: 1,
 			limit: 10,
 			numsList: [],
 			totalCount: 0,
-			category:'',//判断选择全部还是安全,质量
 			status: '1', //状态值
-			spinnerShow:false,
-			// obj:{
-			// 	status:'',
-			// 	category:''
-			// },
-			SpinnerList:[
+			SpinnerList: [
 				{
 					name: '全部',
-					value: '1'
+					value: ''
 				},
 				{
 					name: '安全隐患',
-					value: '2'
+					value: '安全'
 				},
 				{
 					name: '质量隐患',
-					value: '3'
+					value: '质量'
 				}
 			],
 			list1: [
@@ -107,63 +100,21 @@ export default {
 			]
 		};
 	},
-	onLoad() {
-		
-	},
+	onLoad() {},
 	onShow() {
-		this.page=1;
 		this.handclick({
-			value: this.status,
+			value: this.status
 		});
 		this.handgETLIST();
 	},
 	methods: {
-		choose(indexs){
-			// console.log(indexs)
-			this.current = indexs;
-			this.numsList=[];
-			if(indexs==0){
-				this.headerTitle='全部'
-				this.spinnerShow=!this.spinnerShow
-				this.category='';
-				console.log(this.numsList)
-				this.handDangerList({
-					status: '-1',
-					page: 1,
-					limit: this.limit,
-					category:this.category,
-					problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
-				});
-			}else if(indexs==1){
-				// 安全
-				this.category='安全';
-				this.headerTitle='安全隐患'
-				console.log(this.numsList)
-				this.handDangerList({
-					status: '-1',
-					page: 1,
-					limit: this.limit,
-					category:this.category,
-					problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
-				});
-				this.spinnerShow=!this.spinnerShow;
-			}else{
-				// 质量
-				this.spinnerShow=!this.spinnerShow
-				this.headerTitle='质量隐患'
-				this.category='质量';
-				console.log(this.numsList)
-				this.handDangerList({
-					status: '-1',
-					page: 1,
-					limit: this.limit,
-					category:this.category,
-					problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
-				});
-			}
-		},
-		switchTitle(){
-			this.spinnerShow=!this.spinnerShow
+		handgreList(val, i) {
+			this.numsList = [];
+			this.darshow = false;
+			this.page = 1
+			this.title = val.name
+			this.category = val.value;
+			this.handDangerList();
 		},
 		deSelect() {
 			this.title = '所有城市';
@@ -180,61 +131,8 @@ export default {
 			this.page = 1;
 			this.status = v.value;
 			this.numsList = [];
-			if (v.value == '1') {
-				console.log(this.numsList)
-				if(this.category==''){
-					console.log(this.page)
-					this.handDangerList({
-						status: '-1',
-						page: this.page,
-						limit: this.limit,
-						category:this.category,
-						problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
-					});
-				}else if(this.category=='安全'){
-						console.log(this.page)
-					this.handDangerList({
-						status: '-1',
-						page: this.page,
-						limit: this.limit,
-						category:this.category,
-						problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
-					});
-				}else{
-						console.log(this.page)
-					this.handDangerList({
-						status: '-1',
-						page: this.page,
-						limit: this.limit,
-						category:this.category,
-						problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
-					});
-				}
-			} else if (v.value == '2') {
-				// this.numsList=[];
-					console.log(this.page)
-					console.log(this.numsList)
-				this.handDangerList({
-					status: '1',
-					page: this.page,
-					limit: this.limit,
-					category:this.category,
-					problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId
-				});
-			} else {
-				// this.numsList=[];
-				// console.log(this.page)
-				console.log(this.numsList)
-				this.handDangerList({
-					status: '-1,1,0',
-					page: this.page,
-					limit: this.limit,
-					category:this.category,
-					all: '1'
-				});
-			}
+			this.handDangerList();
 		},
-		
 		handcompany(v) {
 			//选择项目
 			this.title = v.name;
@@ -244,27 +142,50 @@ export default {
 			//获取公司项目数据
 			getDictList('PROBLEMS_LEVEL_TYPE')
 				.then(res => {
-					// console.log(res)
 					this.dictLsit = res.dict;
 				})
 				.catch(err => {
 					console.log(err);
 				});
 		},
-		handDangerList(obj) {
-			console.log(obj)
+		handDangerList() {
 			//列表数据
 			uni.showLoading({
 				title: '加载中',
 				mask: true
 			});
+			let obj = {};
+			if (this.status == '1') {
+				obj = {
+					status: '-1',
+					category: this.category,
+					page: this.page,
+					limit: this.limit,
+					problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
+				};
+			} else if (this.status == '2') {
+				obj = {
+					status: '1',
+					category: this.category,
+					page: this.page,
+					limit: this.limit,
+					problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId
+				};
+			} else {
+				obj = {
+					status: '-1,1,0',
+					category: this.category,
+					page: this.page,
+					limit: this.limit,
+					all: '1'
+				};
+			}
 			var myDate = new Date();
 			this.$http('/problem/app/list', 'POST', obj, false)
 				.then(res => {
 					uni.hideLoading();
 					if (res.code == 0) {
-						console.log(res)
-						if (this.numsList.length <= res.page.totalCount) {
+						if (this.numsList.length < res.page.totalCount) {
 							this.page++;
 							res.page.list.forEach(val => {
 								let obj = {};
@@ -273,8 +194,8 @@ export default {
 									val.problemType2 = obj[0].value;
 								}
 								val.crtime = val.createTime.split(' ')[0];
-								if(val.images){
-									val.images2 = val.images.split('|')[0]
+								if (val.images) {
+									val.images2 = val.images.split('|')[0];
 								}
 								if (val.status == -1) {
 									var oDate2 = new Date(val.expireTime.replace(/-/g, '/'));
@@ -288,12 +209,9 @@ export default {
 									val.statusTime = 3; //待复核
 								} else if (val.status == 0) {
 									val.statusTime = 4; //已解决
-								}	
-								// if(val)
+								}
 							});
-								
-								this.numsList = this.numsList.concat(res.page.list);
-							
+							this.numsList = this.numsList.concat(res.page.list);
 						} else {
 						}
 						this.totalCount = res.page.totalCount;
@@ -313,32 +231,25 @@ export default {
 			this.show = false;
 		},
 		handtolower() {
-			this.numsList=[];
 			if (this.status == '1') {
-				console.log(this.status)
 				this.handDangerList({
 					status: '-1',
 					page: this.page,
 					limit: this.limit,
-					category:this.category,
 					problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
 				});
 			} else if (this.status == '2') {
-				console.log(this.status)
 				this.handDangerList({
 					status: '1',
 					page: this.page,
 					limit: this.limit,
-					category:this.category,
 					problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId
 				});
 			} else {
-				console.log(this.status)
 				this.handDangerList({
 					status: '-1,1,0',
 					page: this.page,
 					limit: this.limit,
-					category:this.category,
 					all: '1'
 				});
 			}
@@ -361,31 +272,34 @@ export default {
 	width: 100vw;
 	height: 100%;
 	overflow: hidden;
-	.Spinner{
-		z-index: 9999;
-		width: 120upx;
-		height: 240upx;
-		background-color:#2e2e2e;
-		position:absolute;
-		top: 100upx;
-		left: 20upx;
-		text-align: center;
-		color: #333333;
-		.Spinner-list{
-			width: 100%;
-			height: 80upx;
-			line-height: 80upx;
-			font-size: 28upx;
-			font-family: PingFang SC;
-			color: #FFFFFF;
-			.items{
-				height: 80upx;
+	.navbar {
+		.u-nav-left {
+			position: relative;
+			.nav-left-img {
+				position: absolute;
+				right: -15;
+				bottom: 10upx;
+			}
+			.bav-list {
+				font-size: 35upx;
+				padding: 20upx 30upx 30upx;
+				width: 160upx;
+				position: absolute;
+				top: 82upx;
+				background: #4c4c4c;
+				border-radius: 15rpx;
+				.bav-1 {
+					padding: 20upx 0;
+					border-bottom: 2upx solid #8a8a8a;
+				}
+				.bav-imgs {
+					position: absolute;
+					top: -23upx;
+					width: 35upx;
+					height: 30upx;
+				}
 			}
 		}
-		.green{
-			color: #00B48F;
-		}
-		
 	}
 	.danger-list {
 		padding: 20upx 20upx;
@@ -407,21 +321,17 @@ export default {
 					height: 154upx;
 					border-radius: 16upx;
 				}
-
 				.list-right {
 					flex: 8;
-
 					.list-top-1 {
 						display: flex;
 						justify-content: space-between;
-
 						.top-left {
 							font-size: 28upx;
 							font-family: PingFang SC;
 							font-weight: bold;
 							color: #666666;
 						}
-
 						.top-right {
 							display: flex;
 							align-items: center;
@@ -430,21 +340,18 @@ export default {
 							font-weight: 500;
 							color: #00b490;
 						}
-
 						.top-right2 {
 							font-size: 24upx;
 							font-family: PingFang SC;
 							font-weight: bold;
 							color: #ff0000;
 						}
-
 						.top-right3 {
 							display: flex;
 							align-items: center;
 							font-size: 24upx;
 							font-family: PingFang SC;
 							font-weight: bold;
-
 							&:after {
 								content: ' ';
 								display: block;
@@ -455,7 +362,6 @@ export default {
 								border-radius: 50%;
 							}
 						}
-
 						.top-right4 {
 							font-size: 24upx;
 							font-family: PingFang SC;
@@ -463,7 +369,6 @@ export default {
 							color: #ff6c00;
 						}
 					}
-
 					.list-title {
 						padding: 23upx 0;
 						font-size: 32upx;
@@ -471,7 +376,6 @@ export default {
 						font-weight: bold;
 						color: #333333;
 					}
-
 					.list-ce {
 						font-size: 28upx;
 						font-family: PingFang SC;
@@ -480,18 +384,15 @@ export default {
 					}
 				}
 			}
-
 			.list-foo {
 				display: flex;
 				align-items: center;
 				font-size: 24upx;
 				font-family: PingFang SC;
 				color: #666666;
-
 				.foo-left {
 					flex: 2;
 				}
-
 				.foo-time {
 					padding: 20upx 0;
 					flex: 8;
@@ -501,7 +402,6 @@ export default {
 			}
 		}
 	}
-
 	.add {
 		position: fixed;
 		bottom: 80upx;
@@ -509,7 +409,6 @@ export default {
 		width: 160upx;
 		height: 160upx;
 	}
-
 	.kong {
 		position: fixed;
 		top: 50%;

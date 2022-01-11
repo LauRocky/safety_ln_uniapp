@@ -1,16 +1,10 @@
 <template>
 	<view class="levelType">
 		<u-popup :show="showl" @close="handIcon" :closeable="true" :round="10" mode="bottom">
-			<view class="titles">
-				隐患类型
-			</view>
+			<view class="titles">隐患类型</view>
 			<view class="main">
 				<view class="title2">请选择隐患类型</view>
-				<view class="text-city" :class="[cooindexss == i1 ? 'activecity' : '']" @click="handcooCC(i1, val1)" v-for="(val1, i1) in category" :key="i1">{{ val1.name }}</view>
-				
-				<!-- <scroll-view class="scroll-a" scroll-y>
-					<view class="text-a" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)" v-for="(val1, i1) in dictLsit" :key="i1">{{ val1.value }}</view>
-				</scroll-view> -->
+				<view class="text-city" :class="[cooindex == i1 ? 'activecity' : '']" @click="handcoo(i1, val1)" v-for="(val1, i1) in category" :key="i1">{{ val1.name }}</view>
 			</view>
 		</u-popup>
 	</view>
@@ -24,17 +18,18 @@ export default {
 	data() {
 		return {
 			dictLsit: [],
-			string:'QUALITY_PROBLEM_TYPE',
-			category:[{
-				name:'安全',
-				id:1
-			},{
-				name:'质量',
-				id:2
-			}
+			string: 'QUALITY_PROBLEM_TYPE',
+			category: [
+				{
+					name: '安全',
+					value: 1
+				},
+				{
+					name: '质量',
+					value: 2
+				}
 			],
 			cooindex: null,
-			cooindexss:null,
 			obj: {}
 		};
 	},
@@ -42,7 +37,7 @@ export default {
 	//组件生命周期
 	created() {
 		// this.handgETLIST();
-		let obj = uni.getStorageSync('levelType1');
+		let obj = uni.getStorageSync('categoryList');
 		if (obj) {
 			//缓存下标
 			this.cooindex = obj.cooindex;
@@ -51,26 +46,17 @@ export default {
 	},
 	mounted() {},
 	methods: {
-		handcooCC(val,v){
-			console.log(val,v)
+		handcoo(val, v) {
 			this.cooindex = val;
 			this.obj.cooindex = val;
-			// this.obj.code = v.code;
-			this.obj.value=v.name;
-
+			this.obj.name = v.name;
+			this.$emit('handEndl', v);
 		},
-		// handcoo(val, v) {
-		// 	this.cooindex = val;
-		// 	this.obj.cooindex = val;
-		// 	this.obj.value = v.value;
-		// 	this.obj.code = v.code;
-		// 	this.$emit('handEndl', v);
-		// },
 		handcache() {
 			//缓存数据
 			if (this.obj.name) {
 				//判断有新选择的存储
-				uni.setStorageSync('levelType1', this.obj);
+				uni.setStorageSync('categoryList', this.obj);
 			}
 		},
 		handIcon() {
@@ -79,7 +65,6 @@ export default {
 		handgETLIST() {
 			getDictList(this.string)
 				.then(res => {
-					console.log(res)
 					this.dictLsit = res.dict;
 				})
 				.catch(err => {
@@ -106,15 +91,17 @@ export default {
 		}
 	}
 	.main {
+		height: 40vh;
 		padding: 20upx 29upx 0 64upx;
 		.title2 {
+			margin-bottom: 20upx;
 			font-size: 32upx;
 			font-family: PingFang SC;
 			font-weight: bold;
 			color: #333333;
 		}
-		.text-city{
-			padding: 20upx 0;
+		.text-city {
+			padding: 15upx 0;
 			font-size: 28upx;
 			font-family: PingFang SC;
 			font-weight: bold;

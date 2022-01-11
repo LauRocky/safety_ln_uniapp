@@ -2,12 +2,12 @@
 	<view class="add">
 		<TwoNavbar :name="twoname" :rightText="rightText" @rightcilck="submit" />
 		<u--form class="add-form" labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
-			<u-form-item class="form-item" prop="categoryList" @click="showC = true" borderBottom>
+			<u-form-item class="form-item" prop="categoryType" @click="showC = true" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/xiangmumingcheng.png" mode=""></image>
 					<view class="add-title">新增隐患类别</view>
 				</view>
-				<u--input v-model="userAdd.categoryList" inputAlign="right" disabled placeholder="请选择" border="none"></u--input>
+				<u--input v-model="userAdd.categoryType" inputAlign="right" disabled placeholder="安全隐患" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
 			<u-form-item class="form-item" prop="name" @click="show = true" borderBottom>
@@ -93,10 +93,10 @@
 				<uploadImg class="uploadImg" ref="uploadImg" :mode="imgList" @chooseFile="chooseFile" @imgDelete="imgDelete" :control="control" :columnNum="columnNum" />
 			</view>
 		</u--form>
-		<projectPicker ref="projectPicker" :show="show"  @close="show = false" @handEnd="handEnd" />
-		<levelPicker ref="levelPicker" :showl="showl"  @closeL="showl = false" @handEndl="handEndl" />
-		<levelType ref="levelType" :showl="showT" @closeL="showT = false" @handEndl="handEndT" />
-		<categoryList ref="levelType1" :showl="showC" @closeL="showC = false" @handEndl="handEndC"/>
+		<categoryList ref="categoryList" :showl="showC" @closeL="showC = false" @handEndl="handEndC" />
+		<projectPicker ref="projectPicker" :show="show" @close="show = false" @handEnd="handEnd" />
+		<levelPicker ref="levelPicker" :showl="showl" @closeL="showl = false" @handEndl="handEndl" :category="userAdd.category" />
+		<levelType ref="levelType" :showl="showT" @closeL="showT = false" @handEndl="handEndT" :category="userAdd.category" />
 		<rectification ref="rectification" :showR="showR" @closeR="showR = false" @handEndR="handEndR" />
 		<InformPerson ref="InformPerson" :showP="showP" @closeP="showP = false" @handEndP="handEndP" />
 		<describe :showD="showD" @closeD="showD = false" @handEndD="handEndD">隐患详情描述</describe>
@@ -105,10 +105,10 @@
 	</view>
 </template>
 <script>
+import categoryList from '../../components/dangerList/categoryList.vue';
 import projectPicker from '../../components/dangerList/projectPicker.vue';
 import levelPicker from '../../components/dangerList/levelPicker.vue';
 import levelType from '../../components/dangerList/levelType.vue';
-import categoryList from '../../components/dangerList/categoryList.vue'
 import rectification from '../../components/dangerList/rectification.vue';
 import InformPerson from '../../components/dangerList/InformPerson.vue';
 import describe from '../../components/dangerList/describe.vue';
@@ -116,15 +116,14 @@ import aderss from '../../components/dangerList/aderss.vue';
 import uploadImg from '../../components/xiaohuang-uploadImg/uploadImg.vue';
 import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 import { BASE_URL } from '../../utils/request.js';
-
 export default {
 	name: 'add',
 	props: [],
 	components: {
 		TwoNavbar,
+		categoryList,
 		projectPicker,
 		levelPicker,
-		categoryList,
 		levelType,
 		rectification,
 		InformPerson,
@@ -136,9 +135,9 @@ export default {
 		return {
 			twoname: '新增隐患',
 			rightText: '创建',
+			showC: false, //隐患类型
 			show: false, //项目显隐
 			showl: false, //等级
-			showC: false, //类别
 			showT: false, //类型
 			showR: false, //整改
 			showP: false, //知会
@@ -146,9 +145,9 @@ export default {
 			showZ: false, //整改
 			showA: false, //地址
 			userAdd: {
+				category: '',
 				name: '',
-				category:'',
-				categoryList:'安全隐患',
+				categoryType: '',
 				dagner: '安全事件等级',
 				type: '建设施工',
 				rectification: '',
@@ -169,6 +168,13 @@ export default {
 			columnNum: 4,
 			imgList: [],
 			rules: {
+				categoryType: [
+					{
+						required: true,
+						message: '请选择类型',
+						trigger: ['blur', 'change']
+					}
+				],
 				name: [
 					{
 						required: true,
@@ -184,13 +190,6 @@ export default {
 					}
 				],
 				type: [
-					{
-						required: true,
-						message: '请选择类型',
-						trigger: ['blur', 'change']
-					}
-				],
-				categoryList: [
 					{
 						required: true,
 						message: '请选择类型',
@@ -228,12 +227,8 @@ export default {
 			}
 		};
 	},
-	onLoad() {
-
-	},
-	onShow() {
-		
-	},
+	onLoad() {},
+	onShow() {},
 	//组件生命周期
 	created() {},
 	mounted() {},
@@ -246,6 +241,7 @@ export default {
 				'/problems',
 				'POST',
 				{
+					category: this.userAdd.categoryType,
 					companyId: this.userAdd.companyId,
 					projectId: this.userAdd.projectId,
 					problemType: this.userAdd.problemType,
@@ -258,13 +254,12 @@ export default {
 					areaDetail: this.userAdd.location,
 					images: this.userAdd.images,
 					location: this.userAdd.location,
-					source: 0,
-					category:this.userAdd.category,
+					source: 0
 				},
 				false
 			)
 				.then(res => {
-					console.log(res)
+					console.log(res);
 					if (res.code == 0) {
 						this.handAllcatch();
 						uni.showToast({
@@ -283,17 +278,17 @@ export default {
 				});
 		},
 		handAllcatch() {
+			this.$refs.categoryList.handcache();
 			this.$refs.projectPicker.handcache();
 			this.$refs.levelPicker.handcache();
 			this.$refs.levelType.handcache();
-			this.$refs.levelType1.handcache();
 			this.$refs.rectification.handcache();
 			this.$refs.InformPerson.handcache();
 			this.$refs.aderssA.handcache();
 		},
-	async chooseFile(list, v) {
+		async chooseFile(list, v) {
 			//上传图片
-		await uni.uploadFile({
+			await uni.uploadFile({
 				url: BASE_URL + '/upload/image',
 				filePath: v,
 				name: 'pic',
@@ -304,14 +299,19 @@ export default {
 				},
 				success: res => {
 					const imgRes = JSON.parse(res.data);
-					this.$set(this.imgList,this.imgList.length,imgRes.data.file_full_url)
-					
+					this.$set(this.imgList, this.imgList.length, imgRes.data.file_full_url);
 				}
 			});
 		},
 		imgDelete(list, eq) {
 			//删除图片
-			this.imgList = list
+			this.imgList = list;
+		},
+		handEndC(v) {
+			//安全隐患
+			console.log(v);
+			this.userAdd.categoryType = v.name;
+			this.showC = false;
 		},
 		handEnd(v) {
 			//项目
@@ -332,16 +332,10 @@ export default {
 			this.userAdd.problemType = v.code;
 			this.showT = false;
 		},
-		handEndC(v) {
-			//整改
-			console.log(v)
-			this.userAdd.categoryList = v.value;
-			this.showC = false;
-		},
 		handEndR(v) {
 			//整改
 			this.userAdd.rectification = v.fullname;
-			this.userAdd.category = v.userId;
+			this.userAdd.problemSolver = v.userId;
 			this.showR = false;
 		},
 		handEndP(v) {
