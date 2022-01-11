@@ -1,7 +1,17 @@
 <template>
 	<view class="danger">
-		<u-navbar :fixed="true" style="display:flex;align-items: center;color: #FFFFFF;" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			<view class="u-nav-left" style="color: #FFFFFF;font-size: 32upx;" slot="left">隐患列表</view>
+		<u-navbar class="navbar" :fixed="true" style="display:flex;align-items: center;color: #FFFFFF;" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
+			<view class="u-nav-left" style="color: #FFFFFF;font-size: 32upx;" slot="left">
+				<view class="" @click="darshow = !darshow">
+					{{ title }}
+
+					<image class="nav-left-img" style="width: 25upx; height: 15upx;" src="../../static/danger/showAll.png" mode=""></image>
+				</view>
+				<view class="bav-list" v-if="darshow">
+					<image class="bav-imgs" src="../../static/danger/shang.png" mode=""></image>
+					<view class="bav-1" v-for="(val, i) in SpinnerList" @click="handgreList(val, i)" :key="i">{{ val.name }}</view>
+				</view>
+			</view>
 		</u-navbar>
 		<u-tabs lineColor="#00B490" lineWidth="120" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handclick"></u-tabs>
 		<view class="danger-list">{{ totalCount }}个隐患</view>
@@ -26,12 +36,11 @@
 					<view class="foo-time">{{ val.crtime }}</view>
 				</view>
 			</view>
-			<view style="height: 15vh;">
-			</view>
+			<view style="height: 15vh;"></view>
 		</scroll-view>
 		<template v-else>
 			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
-		</template> 
+		</template>
 		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
 		<mypicker :show="show" @handcompany="handcompany" @close="handclose" @deSelect="deSelect" />
 	</view>
@@ -48,7 +57,9 @@ export default {
 	},
 	data() {
 		return {
-			title: '所有城市',
+			title: '全部',
+			category: '',
+			darshow: false,
 			show: false,
 			btnnum: 0,
 			dangerName: '',
@@ -59,6 +70,20 @@ export default {
 			numsList: [],
 			totalCount: 0,
 			status: '1', //状态值
+			SpinnerList: [
+				{
+					name: '全部',
+					value: ''
+				},
+				{
+					name: '安全隐患',
+					value: '安全'
+				},
+				{
+					name: '质量隐患',
+					value: '质量'
+				}
+			],
 			list1: [
 				{
 					name: '待整改',
@@ -75,9 +100,7 @@ export default {
 			]
 		};
 	},
-	onLoad() {
-		
-	},
+	onLoad() {},
 	onShow() {
 		this.handclick({
 			value: this.status
@@ -85,6 +108,13 @@ export default {
 		this.handgETLIST();
 	},
 	methods: {
+		handgreList(val, i) {
+			this.darshow = false;
+			this.page = 1
+			this.title = val.name
+			this.category = val.value;
+			this.handDangerList();
+		},
 		deSelect() {
 			this.title = '所有城市';
 			this.show = false;
@@ -100,28 +130,7 @@ export default {
 			this.page = 1;
 			this.status = v.value;
 			this.numsList = [];
-			if (v.value == '1') {
-				this.handDangerList({
-					status: '-1',
-					page: this.page,
-					limit: this.limit,
-					problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
-				});
-			} else if (v.value == '2') {
-				this.handDangerList({
-					status: '1',
-					page: this.page,
-					limit: this.limit,
-					problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId
-				});
-			} else {
-				this.handDangerList({
-					status: '-1,1,0',
-					page: this.page,
-					limit: this.limit,
-					all: '1'
-				});
-			}
+			this.handDangerList();
 		},
 		handcompany(v) {
 			//选择项目
@@ -138,12 +147,38 @@ export default {
 					console.log(err);
 				});
 		},
-		handDangerList(obj) {
+		handDangerList() {
 			//列表数据
 			uni.showLoading({
 				title: '加载中',
 				mask: true
 			});
+			let obj = {};
+			if (this.status == '1') {
+				obj = {
+					status: '-1',
+					category: this.category,
+					page: this.page,
+					limit: this.limit,
+					problemSolver: JSON.parse(uni.getStorageSync('userInfo')).userId
+				};
+			} else if (this.status == '2') {
+				obj = {
+					status: '1',
+					category: this.category,
+					page: this.page,
+					limit: this.limit,
+					problemChecker: JSON.parse(uni.getStorageSync('userInfo')).userId
+				};
+			} else {
+				obj = {
+					status: '-1,1,0',
+					category: this.category,
+					page: this.page,
+					limit: this.limit,
+					all: '1'
+				};
+			}
 			var myDate = new Date();
 			this.$http('/problem/app/list', 'POST', obj, false)
 				.then(res => {
@@ -158,8 +193,8 @@ export default {
 									val.problemType2 = obj[0].value;
 								}
 								val.crtime = val.createTime.split(' ')[0];
-								if(val.images){
-									val.images2 = val.images.split('|')[0]
+								if (val.images) {
+									val.images2 = val.images.split('|')[0];
 								}
 								if (val.status == -1) {
 									var oDate2 = new Date(val.expireTime.replace(/-/g, '/'));
@@ -236,6 +271,36 @@ export default {
 	width: 100vw;
 	height: 100%;
 	overflow: hidden;
+	.navbar {
+		.u-nav-left {
+			position: relative;
+			.nav-left-img {
+				position: absolute;
+				right: -15;
+				bottom: 10upx;
+			}
+			.bav-list {
+				font-size: 35upx;
+				padding: 20upx 30upx 30upx;
+				width: 160upx;
+				position: absolute;
+				top: 82upx;
+				background: #4c4c4c;
+				border-radius: 15rpx;
+				.bav-1 {
+					padding: 20upx 0;
+					border-bottom: 2upx solid #8a8a8a;
+				}
+				.bav-imgs {
+					position: absolute;
+					top: -23upx;
+					width: 35upx;
+					height: 30upx;
+				}
+			}
+		}
+	}
+
 	.danger-list {
 		padding: 20upx 20upx;
 		font-size: 28upx;
