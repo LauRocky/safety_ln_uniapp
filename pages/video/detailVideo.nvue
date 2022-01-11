@@ -1,32 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@yydshsy 
-LauRocky
-/
-safety_ln_uniapp
-Public
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-safety_ln_uniapp/pages/video/detailVideo.nvue
-@MAYDAYHAO
-MAYDAYHAO 等曾子旭修改
-Latest commit af7b8ba 1 hour ago
- History
- 3 contributors
-@yydshsy@MAYDAYHAO@jinlin22
-602 lines (567 sloc)  13.6 KB
-   
 <template>
 	<view class="detailVideo">
 		<view class="headerTitle" :style="{height:iStatusBarHeight+'upx'}">
@@ -36,8 +7,8 @@ Latest commit af7b8ba 1 hour ago
 			<text class="header-item">{{Videotitle}}</text>
 			<text class="header-items"></text>
 		</view>
-		<video class="vid" @play="playVideo" @error="error" @waiting="waiting" :show-loading="false" :src="videoUrl"
-			@fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="zidong" play-strategy="3" :controls="false"
+		<video class="vid" @play="playVideo" @error="error" @waiting="waiting" :show-center-play-btn="play" :show-loading="true" :src="videoUrl"
+			@fullscreenchange="fullScreenEvent" id="myVideo"  :autoplay="zidong" play-strategy="3" :controls="false"
 			:show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
@@ -47,9 +18,9 @@ Latest commit af7b8ba 1 hour ago
 			</cover-view>
 		</video>
 		<view class="mask">
-			<view class="mask-loading" v-if="loading">
+		<!-- 	<view class="mask-loading" v-if="loading">
 				<text class="loading-text">视频加载中...</text>
-			</view>
+			</view> -->
 			<!-- sd标清,hd高清 -->
 			<image v-if="hd==2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
 			<image v-else @click="clarity(2)" class="clarity" src="../../static/video/hd.png" mode=""></image>
@@ -106,6 +77,7 @@ Latest commit af7b8ba 1 hour ago
 				discolor4: false,
 				discolor: false,
 				isShow: false,
+				play:true,
 				videoUrl: '',
 				zidong: false,
 				pmgressbar: false,
@@ -114,29 +86,27 @@ Latest commit af7b8ba 1 hour ago
 				ehomebianbei: '',
 				bianbei: "",
 				Videotitle: '',
-				loading: false,
+				// loading: false,
 				hd: 2,
-				played:false
+				// played:false
 			};
 		},
 		methods: {
 			error() {
-				this.loading = false;
+				// this.loading = false;
 				uni.showToast({
 					title: '播放失败',
 					icon: 'error'
 				})
 			},
 			waiting() {
-				if(!this.played){
-					this.loading = true;
-				}
+				
 			},
 			playVideo() {
-				this.loading = false;
-				this.played=true;
+				// this.loading = false;
+				// this.played=true;
 			},
-			
+		
 			capture() {
 				var pages = getCurrentPages();
 				var page = pages[pages.length - 1];
@@ -361,12 +331,14 @@ Latest commit af7b8ba 1 hour ago
 					let that = this
 					uni.showModal({
 						title: '切换',
-						content: '是否切换到清晰度',
+						content: '是否切换清晰度',
 						success: (res) => {
 							console.log(res)
 							if (res.confirm) {
 								that.hd = e;
 								that.videodetail();
+								this.zidong=true;
+								// this.play=true;
 							} else if (res.cancel) {
 								console.log('用户点击取消');
 							}
@@ -629,16 +601,3 @@ Latest commit af7b8ba 1 hour ago
 		font-family: PingFang SC;
 	}
 </style>
-© 2022 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete

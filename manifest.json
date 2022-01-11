@@ -139,7 +139,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
-                    // "target" : "http://192.168.1.107:12002/safety-server/api", //测试
+                // "target" : "http://192.168.1.104:12002/safety-server/api", //测试
                     //以下部分请勿改动！
                     // "target" : "https://esq.cgdg.com/api", //正式环境
 
