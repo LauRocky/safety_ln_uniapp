@@ -57,6 +57,7 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
+		
 		handReview() {
 			//提交
 			uni.showLoading({ title: '提交中', mask: true });
