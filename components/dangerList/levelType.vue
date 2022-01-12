@@ -69,7 +69,6 @@
 				let type = 'PROBLEM_TYPE';
 				if (this.$props.category == '质量') {
 					type = 'QUALITY_PROBLEM_TYPE';
-					
 				}
 				getDictList(type)
 					.then(res => {

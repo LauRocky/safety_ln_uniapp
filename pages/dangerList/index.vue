@@ -1,18 +1,18 @@
 <template>
 	<view class="danger">
 		<u-navbar class="navbar" :fixed="true" style="display:flex;align-items: center;color: #FFFFFF;" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
-			<view class="u-nav-left" style="color: #FFFFFF;font-size: 32upx;" slot="left">
-				<view class="" @click="darshow = !darshow">
-					{{ title }}
-
-					<image class="nav-left-img" style="width: 25upx; height: 15upx;" src="../../static/danger/showAll.png" mode=""></image>
-				</view>
-				<view class="bav-list" v-if="darshow">
-					<image class="bav-imgs" src="../../static/danger/shang.png" mode=""></image>
-					<view class="bav-1" v-for="(val, i) in SpinnerList" @click="handgreList(val, i)" :key="i">{{ val.name }}</view>
-				</view>
+			<view class="u-nav-left" @click="darshow = !darshow" style="color: #FFFFFF;font-size: 32upx;" slot="left">
+				{{ title }}
+			<image class="nav-left-img" style="width: 25upx; height: 15upx;" src="../../static/danger/showAll.png" mode=""></image>
 			</view>
 		</u-navbar>
+		<!-- <view class="fixed-nvb">
+		
+		</view> -->
+		<view class="bav-list" v-if="darshow">
+			<image class="bav-imgs" src="../../static/danger/shang.png" mode=""></image>
+			<view class="bav-1" v-for="(val, i) in SpinnerList" @click="handgreList(val, i)" :key="i">{{ val.name }}</view>
+		</view>
 		<u-tabs lineColor="#00B490" lineWidth="120" :activeStyle="{ color: '#00B490' }" :scrollable="false" :list="list1" @click="handclick"></u-tabs>
 		<view class="danger-list">{{ totalCount }}个隐患</view>
 		<scroll-view class="lists" scroll-y @scrolltolower="handtolower" v-if="numsList.length !== 0">
@@ -273,32 +273,28 @@ export default {
 	height: 100%;
 	overflow: hidden;
 	.navbar {
-		.u-nav-left {
-			position: relative;
-			.nav-left-img {
-				position: absolute;
-				right: -15;
-				bottom: 10upx;
-			}
-			.bav-list {
-				font-size: 35upx;
-				padding: 20upx 30upx 30upx;
-				width: 160upx;
-				position: absolute;
-				top: 82upx;
-				background: #4c4c4c;
-				border-radius: 15rpx;
-				.bav-1 {
-					padding: 20upx 0;
-					border-bottom: 2upx solid #8a8a8a;
-				}
-				.bav-imgs {
-					position: absolute;
-					top: -23upx;
-					width: 35upx;
-					height: 30upx;
-				}
-			}
+	
+	}
+	.bav-list {
+		z-index: 999;
+		font-size: 35upx;
+		padding: 20upx 30upx 30upx;
+		width: 160upx;
+		position: absolute;
+		top: 120upx;
+		left: 20upx;
+		color: #FFFFFF;
+		background: #4c4c4c;
+		border-radius: 15rpx;
+		.bav-1 {
+			padding: 20upx 0;
+			border-bottom: 2upx solid #8a8a8a;
+		}
+		.bav-imgs {
+			position: absolute;
+			top: -23upx;
+			width: 35upx;
+			height: 30upx;
 		}
 	}
 	.danger-list {
