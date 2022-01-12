@@ -7,7 +7,7 @@
 					<image class="add-imgs" src="../../static/add/xiangmumingcheng.png" mode=""></image>
 					<view class="add-title">新增隐患类别</view>
 				</view>
-				<u--input v-model="userAdd.categoryType" inputAlign="right" disabled placeholder="安全隐患" border="none"></u--input>
+				<u--input v-model="userAdd.categoryType" inputAlign="right" disabled placeholder="安全" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
 			<u-form-item class="form-item" prop="name" @click="show = true" borderBottom>
@@ -95,8 +95,8 @@
 		</u--form>
 		<categoryList ref="categoryList" :showl="showC" @closeL="showC = false" @handEndl="handEndC" />
 		<projectPicker ref="projectPicker" :show="show" @close="show = false" @handEnd="handEnd" />
-		<levelPicker ref="levelPicker" :showl="showl" @closeL="showl = false" @handEndl="handEndl" :category="userAdd.category" />
-		<levelType ref="levelType" :showl="showT" @closeL="showT = false" @handEndl="handEndT" :category="userAdd.category" />
+		<levelPicker ref="levelPicker" :showl="showl" @closeL="showl = false" @handEndl="handEndl" :category="userAdd.categoryType" />
+		<levelType ref="levelType" :showl="showT" @closeL="showT = false" @handEndl="handEndT" :category="userAdd.categoryType" />
 		<rectification ref="rectification" :showR="showR" @closeR="showR = false" @handEndR="handEndR" />
 		<InformPerson ref="InformPerson" :showP="showP" @closeP="showP = false" @handEndP="handEndP" />
 		<describe :showD="showD" @closeD="showD = false" @handEndD="handEndD">隐患详情描述</describe>
@@ -147,8 +147,8 @@ export default {
 			userAdd: {
 				category: '',
 				name: '',
-				categoryType: '',
-				dagner: '安全事件等级',
+				categoryType: '安全',
+				dagner: '安全事件隐患',
 				type: '建设施工',
 				rectification: '',
 				person: '',
@@ -311,6 +311,17 @@ export default {
 			//安全隐患
 			console.log(v);
 			this.userAdd.categoryType = v.name;
+			if(this.userAdd.categoryType=='安全'){
+				this.userAdd.dagner='安全事件隐患';
+				this.userAdd.assessment=3;
+				this.userAdd.type='建设施工';
+				this.userAdd.problemType=0;
+			}else if(this.userAdd.categoryType){
+				this.userAdd.dagner='一般工程质量事故';
+				this.userAdd.type='防渗漏';
+				this.userAdd.assessment=3;
+				this.userAdd.problemType=0;
+			}
 			this.showC = false;
 		},
 		handEnd(v) {
