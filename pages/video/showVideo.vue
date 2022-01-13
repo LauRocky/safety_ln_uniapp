@@ -63,7 +63,7 @@
 				if (item.cameraIndexCode) {
 					console.log(item)
 					uni.navigateTo({
-						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}`
+						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&liveStreamUrl=${item.liveStreamUrl}&liveSubStreamUrl=${item.liveSubStreamUrl}`
 					})
 				} else if (item.ezvizAccountId) {
 					uni.navigateTo({

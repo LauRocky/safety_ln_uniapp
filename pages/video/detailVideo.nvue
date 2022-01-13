@@ -8,7 +8,7 @@
 			<text class="header-items"></text>
 		</view>
 		<video class="vid" @play="playVideo" @error="error" @waiting="waiting" :show-center-play-btn="play" :show-loading="true" :src="videoUrl"
-			@fullscreenchange="fullScreenEvent" id="myVideo"  :autoplay="zidong" play-strategy="3" :controls="false"
+			@fullscreenchange="fullScreenEvent" id="myVideo"  :autoplay="zidong" :play-strategy="0" :controls="false"
 			:show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
@@ -96,7 +96,8 @@
 				// this.loading = false;
 				uni.showToast({
 					title: '播放失败',
-					icon: 'error'
+					icon: 'error',
+					duration:2000
 				})
 			},
 			waiting() {
@@ -349,18 +350,19 @@
 			videodetail() {
 				if (this.status.ezv == 0) {
 					// 如果为0则是海康
-					request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
-							'POST', {}, false)
-						.then(res => {
-							let apiUrl = 'https://esq.cgdg.com'
-							this.videoUrl = apiUrl + res.url
-							console.log(res)
-						})
+					// request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
+					// 		'POST', {}, false)
+					// 	.then(res => {
+							let apiUrl = 'https://esq.cgdg.com';
+							this.videoUrl = apiUrl + this.status.liveSubStreamUrl;
+							console.error(this.videoUrl)
+					// 	})
+					
 				} else {
 					// 获取萤石云播放url
 					let url =
 						`/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/${this.hd}`;
-					console.log(url)
+					console.error(url)
 					request(url,
 							'POST', {}, false)
 						.then(res => {
@@ -371,7 +373,8 @@
 									icon: 'none'
 								})
 							} else {
-								this.videoUrl = res.result.data.url
+								this.videoUrl = res.result.data.url;
+								console.error(this.videoUrl);
 							}
 						})
 						.catch(e => {
