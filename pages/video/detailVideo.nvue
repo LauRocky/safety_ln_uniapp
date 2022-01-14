@@ -348,39 +348,40 @@
 				}
 			},
 			videodetail() {
-				if (this.status.ezv == 0) {
-					// 如果为0则是海康
-					// request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
-					// 		'POST', {}, false)
-					// 	.then(res => {
-							let apiUrl = 'https://esq.cgdg.com';
-							this.videoUrl = apiUrl + this.status.liveSubStreamUrl;
-							console.error(this.videoUrl)
-					// 	})
+				this.videoUrl="rtsp://192.168.133.5:8554/vlc";
+				// if (this.status.ezv == 0) {
+				// 	// 如果为0则是海康
+				// 	// request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
+				// 	// 		'POST', {}, false)
+				// 	// 	.then(res => {
+				// 			let apiUrl = 'https://esq.cgdg.com';
+				// 			this.videoUrl = apiUrl + this.status.liveSubStreamUrl;
+				// 			console.error(this.videoUrl)
+				// 	// 	})
 					
-				} else {
-					// 获取萤石云播放url
-					let url =
-						`/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/${this.hd}`;
-					console.error(url)
-					request(url,
-							'POST', {}, false)
-						.then(res => {
-							console.error(res);
-							if (res.result.code == 20007) {
-								uni.showToast({
-									title: '设备离线',
-									icon: 'none'
-								})
-							} else {
-								this.videoUrl = res.result.data.url;
-								console.error(this.videoUrl);
-							}
-						})
-						.catch(e => {
-							console.error(e);
-						})
-				}
+				// } else {
+				// 	// 获取萤石云播放url
+				// 	let url =
+				// 		`/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/${this.hd}`;
+				// 	console.error(url)
+				// 	request(url,
+				// 			'POST', {}, false)
+				// 		.then(res => {
+				// 			console.error(res);
+				// 			if (res.result.code == 20007) {
+				// 				uni.showToast({
+				// 					title: '设备离线',
+				// 					icon: 'none'
+				// 				})
+				// 			} else {
+				// 				this.videoUrl = res.result.data.url;
+				// 				console.error(this.videoUrl);
+				// 			}
+				// 		})
+				// 		.catch(e => {
+				// 			console.error(e);
+				// 		})
+				// }
 			},
 		},
 		onLoad(option) {
