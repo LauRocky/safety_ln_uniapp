@@ -191,24 +191,21 @@
 				});
 			},
 			handscanCode() {
-	
-			console.log(uni.getStorageSync('show'))
-			
-			if (!uni.getStorageSync('show') || uni.getStorageSync('show') == 1) {
-				// 点击弹出一个弹窗
-				this.show = true
-			} else{
-				this.show = false
-				this.loginCode();
-			}
-
+				console.log(uni.getStorageSync('show'))
+				if (!uni.getStorageSync('show') || uni.getStorageSync('show') == 1) {
+					// 点击弹出一个弹窗
+					this.show = true
+				} else {
+					this.show = false
+					this.loginCode();
+				}
 			},
 			// 3. 获取登录人部门信息
 			deptInfo() {
 				this.$http('/lvxin/deptInfo', 'POST', {
 					'parentId': this.user.companyId
 				}, false).then(res => {
-					console.log(res,'111')
+					console.log(res, '111')
 					let deptName = '';
 					let array = res.data.reverse();
 					for (var i = 0; i < array.length; i++) {
@@ -323,7 +320,7 @@
 		},
 		onLoad() {
 			this.deptInfo()
-			uni.removeStorageSync('show')
+			// uni.removeStorageSync('show')
 		},
 		onShow() {
 			//刷新用户数据
@@ -344,7 +341,7 @@
 		width: 90vw;
 		height: 70vh;
 		border-radius: 5upx;
-	
+
 		.mask-title {
 			margin-top: 26upx;
 			text-align: center;
@@ -353,11 +350,11 @@
 			font-weight: bold;
 			color: #333333;
 		}
-	
+
 		.mask-text {
 			width: 88%;
 			margin: 34upx 37upx 34upx 47upx;
-	
+
 			.mask-text1 {
 				font-size: 30upx;
 				font-family: PingFang SC;
@@ -366,18 +363,18 @@
 				line-height: 46upx;
 			}
 		}
-	
+
 		.mask-img {
 			margin: 0 auto 43upx;
 			width: 88%;
 			height: 240upx;
-	
+
 			image {
 				width: 100%;
 				height: 100%;
 			}
 		}
-	
+
 		.consult {
 			width: 88%;
 			margin: 34upx 37upx 36upx 47upx;
@@ -385,12 +382,12 @@
 			font-family: PingFang SC;
 			font-weight: 500;
 			line-height: 44upx;
-	
+
 			.contact {
 				padding-left: 20upx;
 			}
 		}
-	
+
 		.btn {
 			width: 88%;
 			margin: 0 auto;
@@ -404,11 +401,11 @@
 			background: #00B490;
 			border-radius: 40upx;
 		}
-	
+
 		button::after {
 			border: none;
 		}
-	
+
 		.maskRadio {
 			width: 88%;
 			margin: 20upx auto;
