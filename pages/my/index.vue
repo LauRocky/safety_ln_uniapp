@@ -147,7 +147,7 @@
 			return {
 				showPopup: false,
 				user: JSON.parse(uni.getStorageSync('userInfo')),
-				show: false,
+				show: false, //true是显示,false是隐藏
 				status: 1,
 				danger: 2,
 				public: 3,
@@ -157,6 +157,11 @@
 		methods: {
 			checkboxChange(e) {
 				this.showPopup = !this.showPopup;
+				if (this.showPopup) {
+					uni.setStorageSync('show', 2) //2是隐藏
+				} else {
+					uni.setStorageSync('show', 1) //1是显示
+				}
 			},
 			// 扫码
 			loginCode() {
@@ -186,15 +191,16 @@
 				});
 			},
 			handscanCode() {
+	
+			console.log(uni.getStorageSync('show'))
+			
+			if (!uni.getStorageSync('show') || uni.getStorageSync('show') == 1) {
 				// 点击弹出一个弹窗
-				if (this.showPopup) {
-					this.show = false;
-					this.loginCode();
-					uni.showTabBar();
-				} else {
-					uni.hideTabBar();
-					this.show = true;
-				}
+				this.show = true
+			} else{
+				this.show = false
+				this.loginCode();
+			}
 
 			},
 			// 3. 获取登录人部门信息
@@ -317,6 +323,7 @@
 		},
 		onLoad() {
 			this.deptInfo()
+			uni.removeStorageSync('show')
 		},
 		onShow() {
 			//刷新用户数据
