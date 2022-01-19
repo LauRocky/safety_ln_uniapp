@@ -320,7 +320,6 @@
 		},
 		onLoad() {
 			this.deptInfo()
-			// uni.removeStorageSync('show')
 		},
 		onShow() {
 			//刷新用户数据

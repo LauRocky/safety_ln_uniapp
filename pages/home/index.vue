@@ -321,7 +321,6 @@
 			},
 			handscanCode() {
 				console.log(uni.getStorageSync('show'))
-
 				if (!uni.getStorageSync('show') || uni.getStorageSync('show') == 1) {
 					// 点击弹出一个弹窗
 					this.show = true
