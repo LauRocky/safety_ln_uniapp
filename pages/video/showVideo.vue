@@ -20,7 +20,7 @@
 						</view>
 						{{item.status==0?'不在线':'在线'}}
 					</text> 
-					<image class="imgs" :src="item.image"  mode="" @error="img" :data-index="index"></image>
+					<image class="imgs" :src="item.image"  mode="widthFix" @error="img" :data-index="index"></image>
 					<view class="mask">
 					</view>
 					<span class="mask-name">{{item.ipcName}}</span>
@@ -107,7 +107,8 @@
 									'nvr': null,
 									'token': uni.getStorageSync('token'),
 									"ezvizAccountId":null,
-									"name":item.ipcName
+									"name":item.ipcName,
+									"id":item.ipcId
 								};
 								uni.sendNativeEvent(JSON.stringify(body), rest => {
 									console.log(rest);
@@ -147,7 +148,8 @@
 										'nvr': item.nvrDeviceSerial,
 										'token': uni.getStorageSync('token'),
 										"ezvizAccountId":item.ezvizAccountId,
-										"name":item.ipcName
+										"name":item.ipcName,
+										"id":item.ipcId
 									};
 									uni.sendNativeEvent(JSON.stringify(body), rest => {
 										console.log(rest);
