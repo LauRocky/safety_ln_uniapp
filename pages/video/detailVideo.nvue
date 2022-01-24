@@ -7,9 +7,9 @@
 			<text class="header-item">{{Videotitle}}</text>
 			<text class="header-items"></text>
 		</view>
-		<video class="vid" @play="playVideo" @error="error" @waiting="waiting" :show-center-play-btn="play" :show-loading="true" :src="videoUrl"
-			@fullscreenchange="fullScreenEvent" id="myVideo"  :autoplay="zidong" :play-strategy="0" :controls="false"
-			:show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
+		<video class="vid" @play="playVideo" @error="error" @waiting="waiting" :show-center-play-btn="play"
+			:show-loading="true" src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="false"
+			codec="software" :controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
 			<cover-view v-if="isShow" class="container">
 				<!-- 当前图片截屏跟录屏图片暂未添加 -->
 				<image @click="recording" class="images1" src="" mode=""></image>
@@ -18,7 +18,7 @@
 			</cover-view>
 		</video>
 		<view class="mask">
-		<!-- 	<view class="mask-loading" v-if="loading">
+			<!-- 	<view class="mask-loading" v-if="loading">
 				<text class="loading-text">视频加载中...</text>
 			</view> -->
 			<!-- sd标清,hd高清 -->
@@ -77,7 +77,7 @@
 				discolor4: false,
 				discolor: false,
 				isShow: false,
-				play:true,
+				play: true,
 				videoUrl: '',
 				zidong: false,
 				pmgressbar: false,
@@ -92,22 +92,23 @@
 			};
 		},
 		methods: {
-			error() {
+			error(e) {
 				// this.loading = false;
+				console.error(e);
 				uni.showToast({
 					title: '播放失败',
 					icon: 'error',
-					duration:2000
+					duration: 2000
 				})
 			},
 			waiting() {
-				
+
 			},
 			playVideo() {
 				// this.loading = false;
 				// this.played=true;
 			},
-		
+
 			capture() {
 				var pages = getCurrentPages();
 				var page = pages[pages.length - 1];
@@ -338,7 +339,7 @@
 							if (res.confirm) {
 								that.hd = e;
 								that.videodetail();
-								this.zidong=true;
+								this.zidong = true;
 								// this.play=true;
 							} else if (res.cancel) {
 								console.log('用户点击取消');
@@ -348,40 +349,66 @@
 				}
 			},
 			videodetail() {
-				this.videoUrl="rtsp://192.168.133.5:8554/vlc";
-				// if (this.status.ezv == 0) {
-				// 	// 如果为0则是海康
-				// 	// request(`/ehome/camera/previewurl/hls/${this.status.camera}`,
-				// 	// 		'POST', {}, false)
-				// 	// 	.then(res => {
-				// 			let apiUrl = 'https://esq.cgdg.com';
-				// 			this.videoUrl = apiUrl + this.status.liveSubStreamUrl;
-				// 			console.error(this.videoUrl)
-				// 	// 	})
+
+				if (this.status.ezv == 0) {
 					
-				// } else {
-				// 	// 获取萤石云播放url
-				// 	let url =
-				// 		`/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/${this.hd}`;
-				// 	console.error(url)
-				// 	request(url,
-				// 			'POST', {}, false)
-				// 		.then(res => {
-				// 			console.error(res);
-				// 			if (res.result.code == 20007) {
-				// 				uni.showToast({
-				// 					title: '设备离线',
-				// 					icon: 'none'
-				// 				})
-				// 			} else {
-				// 				this.videoUrl = res.result.data.url;
-				// 				console.error(this.videoUrl);
-				// 			}
-				// 		})
-				// 		.catch(e => {
-				// 			console.error(e);
-				// 		})
-				// }
+					
+					let url = "/ehome/camera/previewurl/hls/" + item.cameraIndexCode;
+					console.error(url);
+					request(url,
+							'POST', {}, false)
+						.then(res => {
+							this.videoUrl ="https://esq.cgdg.com"+ res.url;
+							let body = {
+								'stream': 'rtsp',
+								'type': 'video',
+								'body': res,
+								'cameraIndexCode': item.cameraIndexCode,
+								'channel': null,
+								'nvr': null,
+								'token': uni.getStorageSync('token'),
+								"ezvizAccountId": null,
+								"name": item.ipcName
+							};
+
+							uni.sendNativeEvent(JSON.stringify(body), rest => {
+								console.log(rest);
+							});
+
+						}).catch(e => {
+							console.error(e);
+							uni.showToast({
+								title: '获取播放地址失败',
+								icon: 'none'
+							})
+						})
+				} else {
+					// 获取萤石云播放url
+					let url =
+						`/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/${this.hd}`;
+					console.error(url)
+					request(url,
+							'POST', {}, false)
+						.then(res => {
+							console.error(res);
+							if (res.result.code == 20007) {
+								uni.showToast({
+									title: '设备离线',
+									icon: 'none'
+								})
+							} else {
+								this.videoUrl = res.result.data.url;
+								console.error(this.videoUrl);
+							}
+						})
+						.catch(e => {
+							console.error(e);
+							uni.showToast({
+								title: '获取播放地址失败',
+								icon: 'none'
+							})
+						})
+				}
 			},
 		},
 		onLoad(option) {
