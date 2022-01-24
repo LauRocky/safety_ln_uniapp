@@ -243,19 +243,19 @@
 			.videolist {
 				.item {
 					position: relative;
-					width: 97vw;
-					margin: 0 auto;
+					width: 92vw;
+					margin: 20upx auto;
 					height: 379upx;
-
 					.imgs {
 						width: 100%;
 						height: 100%;
+						border-radius: 10upx;
 					}
 
 					.mask {
 						position: absolute;
-						left: 19upx;
-						bottom: 20upx;
+						// left: 19upx;
+						bottom: 0;
 						width: 92vw;
 						height: 60upx;
 						background: #000000;
@@ -265,8 +265,8 @@
 
 					.mask-name {
 						position: absolute;
-						left: 39upx;
-						bottom: 34upx;
+						left: 30upx;
+						bottom: 12upx;
 						font-size: 28upx;
 						font-family: PingFang SC;
 						font-weight: bold;
@@ -274,8 +274,8 @@
 					}
 					.item-status{
 						position: absolute;
-						right: 20upx;
-						top: 20upx;
+						right: 0upx;
+						top: 0upx;
 						z-index: 5;
 						width: 110upx; 
 						height: 50upx;
