@@ -146,7 +146,6 @@
 									let obj = uni.getStorageSync('show')
 									uni.clearStorageSync();
 									uni.setStorageSync("show", obj)
-
 									uni.sendNativeEvent("login", call => {});
 									uni.setStorageSync('userInfo', res.user);
 									uni.setStorageSync('token', res.token);
