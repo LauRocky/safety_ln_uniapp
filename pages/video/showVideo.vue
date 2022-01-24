@@ -8,9 +8,20 @@
 				<u-search class="searchs" v-model="seach" @search="handsearch" shape="round" height="50"
 					bgColor="#ffffff" searchIconColor="#333333" :showAction="false"></u-search>
 			</view>
-			<view class="videolist">
-				<view class="item" v-for="(item,index) in showList" :key="index"
-					@click="videodetail(item)">
+			<view  v-if="this.showList.length==0">
+				<image class="kong" src="../../static/danger/kong.png" mode=""></image>
+			</view>
+			<view class="videolist" v-else>
+				<view class="item" v-for="(item,index) in showList" :key="index" @click="videodetail(item)">
+					<text class="item-status">
+						<view class="item-color" v-if="item.status==0" style="background-color:#E43D33;">
+							
+						</view>
+						<view class="item-color" v-else>
+							
+						</view>
+						{{item.status==0?'不在线':'在线'}}
+					</text>
 					<image class="imgs" src="../../static/video/detailVideo.png" mode=""></image>
 					<view class="mask">
 					</view>
@@ -23,6 +34,9 @@
 <script>
 	import navBar from '../../components/navBar/navBar.vue'
 	import twoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
+	import {
+		request
+	} from '../../utils/request.js'
 	export default {
 		components: {
 			navBar,
@@ -44,32 +58,113 @@
 		},
 		methods: {
 			handsearch(val) {
-				if(this.rawList){
-					this.showList=this.rawList
-				if(val){
-					let result=[]
-					this.showList.forEach(e=>{
-						let pName=e.ipcName;
-						if(pName.indexOf(val)>-1){
-							result.push(e)
-						}
-					})
-					this.showList=result
+				if (this.rawList) {
+					this.showList = this.rawList
+					if (val) {
+						let result = []
+						this.showList.forEach(e => {
+							let pName = e.ipcName;
+							if (pName.indexOf(val) > -1) {
+								result.push(e)
+							}
+						})
+						this.showList = result
+					}
 				}
-			  }
 			},
 			videodetail(item) {
-				console.error(item);
-				if (item.cameraIndexCode) {
-					console.log(item)
-					uni.navigateTo({
-						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&liveStreamUrl=${item.liveStreamUrl}&liveSubStreamUrl=${item.liveSubStreamUrl}`
+				// if(item.)
+				// console.error(JSON.stringify(item));
+				// 如果设备处于离线,弹出提示,不让他跳转
+				if(item.status==0){
+					uni.showToast({
+						title: '当前设备离线',
+						icon: 'none'
 					})
-				} else if (item.ezvizAccountId) {
-					uni.navigateTo({
-						url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}&channel=${item.channel}`
-					})		
-				}		
+				}else{
+					if (item.cameraIndexCode) {
+						// uni.navigateTo({
+						// 	url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&liveStreamUrl=${item.liveStreamUrl}&liveSubStreamUrl=${item.liveSubStreamUrl}`
+						// })
+						
+						let url = "/ehome/camera/previewurl/rtsp/rtsp/" + item.cameraIndexCode;
+						console.error(url);
+						request(url,
+								'POST', {}, false)
+							.then(res => {
+								let apiUrl = 'https://esq.cgdg.com';
+					
+								let body = {
+									'stream': 'rtsp',
+									'type': 'video',
+									'body': res,
+									'cameraIndexCode': item.cameraIndexCode,
+									'channel': null,
+									'nvr': null,
+									'token': uni.getStorageSync('token'),
+									"ezvizAccountId":null,
+									"name":item.ipcName
+								};
+								uni.sendNativeEvent(JSON.stringify(body), rest => {
+									console.log(rest);
+								});
+					
+							}).catch(e => {
+								console.error(e);
+								uni.showToast({
+									title: '获取播放地址失败',
+									icon: 'none'
+								})
+							})
+					} else if (item.ezvizAccountId) {
+						// uni.navigateTo({
+						// 	url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}&channel=${item.channel}`
+						// })		
+						let url =
+							`/getEzNewLiveAddress/${item.nvrDeviceSerial}/${item.channel}/${item.ezvizAccountId}/2`;
+						console.error(url)
+						request(url,
+								'POST', {}, false)
+							.then(res => {
+								console.error(res);
+								if (res.result.code == 20007) {
+									uni.showToast({
+										title: '设备离线',
+										icon: 'none'
+									})
+								} else {
+					
+									let body = {
+										'stream': 'hls',
+										'body': res,
+										'type': 'video',
+										'cameraIndexCode': null,
+										'channel': item.channel,
+										'nvr': item.nvrDeviceSerial,
+										'token': uni.getStorageSync('token'),
+										"ezvizAccountId":item.ezvizAccountId,
+										"name":item.ipcName
+									};
+									uni.sendNativeEvent(JSON.stringify(body), rest => {
+										console.log(rest);
+									});
+					
+								}
+							})
+							.catch(e => {
+								console.error(e);
+								uni.showToast({
+									title: '获取播放地址失败',
+									icon: 'none'
+								})
+							})
+					}else{
+						uni.showToast({
+							title: '获取播放地址失败',
+							icon: 'none'
+						})
+					}
+				}
 			},
 			back() {
 				uni.navigateBack({
@@ -83,8 +178,9 @@
 					}, false).then(res => {
 						console.log(res)
 						if (res.code == 0) {
-							this.rawList =res.projectInfoEntities[0].cameraEntities
+							this.rawList = res.projectInfoEntities[0].cameraEntities
 							this.showList = res.projectInfoEntities[0].cameraEntities
+							console.log("da",this.showList)
 						}
 					})
 					.catch(err => {
@@ -170,9 +266,39 @@
 						font-weight: bold;
 						color: #FFFFFF;
 					}
+					.item-status{
+						position: absolute;
+						right: 20upx;
+						top: 20upx;
+						z-index: 5;
+						width: 110upx; 
+						height: 50upx;
+						font-family: PingFang SC;
+						font-size: 24upx;
+						font-weight: bold;
+						color: #FFFFFF;
+						line-height: 50upx;
+						text-align: center;
+						border-radius: 10upx;
+						background-color: rgba(0,0,0,0.3);
+						.item-color{
+							position: absolute;
+							top: 20upx;
+							left: 4upx;
+							width: 10upx;
+							height: 10upx;
+							border-radius: 50%;
+							background-color: #00B48F;
+						}
+					}
 				}
-
 			}
+		.kong {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
 		}
 	}
 </style>

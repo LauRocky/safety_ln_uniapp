@@ -258,7 +258,7 @@
 			// 更新
 			check() {
 				//android 更新
-				uni.sendNativeEvent("checkUpdate", res => {
+				uni.sendNativeEvent({"checkUpdate":true}, res => {
 					console.log(res)
 				});
 			},
@@ -303,7 +303,7 @@
 					success: function(res) {
 						if (res.confirm) {
 							uni.sendNativeEvent("logout", c => {
-								console.log(c)
+								
 							});
 							uni.clearStorageSync();
 							uni.removeStorageSync('userInfo');

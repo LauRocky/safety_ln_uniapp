@@ -76,6 +76,7 @@
 					uni.sendNativeEvent(data, res => {
 						console.log(res);
 					});
+					
 					that.getCode(JSON.parse(data).code);
 				}
 			});
@@ -94,11 +95,16 @@
 							uni.sendNativeEvent(res, rest => {
 								console.log(rest);
 							});
+							uni.sendNativeEvent("login", call => {
+									console.log(call);
+							});
 							// 根据用户id,key
 							let obj = uni.getStorageSync('show')
 							uni.clearStorageSync();
-							uni.setStorageSync("show", obj)
-							uni.sendNativeEvent("login", call => {});
+							if (obj){
+								uni.setStorageSync("show", obj)
+							}
+							
 							uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
 							uni.setStorageSync('token', res.data.token.token);
 							this.toHome();
@@ -112,7 +118,7 @@
 					})
 					.catch(err => {
 						uni.hideLoading();
-						console.log(err);
+						console.error(err);
 						uni.hideLoading();
 						uni.showToast({
 							icon: 'error',
@@ -144,9 +150,16 @@
 								if (res.code == 0) {
 									uni.hideToast();
 									let obj = uni.getStorageSync('show')
+								
 									uni.clearStorageSync();
-									uni.setStorageSync("show", obj)
-									uni.sendNativeEvent("login", call => {});
+									if (obj){
+										uni.setStorageSync("show", obj)
+									}
+
+									uni.sendNativeEvent("login", call => {
+											console.log(call);
+									});
+
 									uni.setStorageSync('userInfo', res.user);
 									uni.setStorageSync('token', res.token);
 									uni.switchTab({
@@ -161,7 +174,8 @@
 								}
 							})
 							.catch(err => {
-								console.log(err);
+								console.error(err);
+							
 								uni.showToast({
 									title: '登录失败',
 									duration: 2000,
