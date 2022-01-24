@@ -351,8 +351,6 @@
 			videodetail() {
 
 				if (this.status.ezv == 0) {
-					
-					
 					let url = "/ehome/camera/previewurl/hls/" + item.cameraIndexCode;
 					console.error(url);
 					request(url,
