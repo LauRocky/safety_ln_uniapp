@@ -14,15 +14,13 @@
 			<view class="videolist" v-else>
 				<view class="item" v-for="(item,index) in showList" :key="index" @click="videodetail(item)">
 					<text class="item-status">
-						<view class="item-color" v-if="item.status==0" style="background-color:#E43D33;">
-							
+						<view class="item-color" v-if="item.status==0" style="background-color:#E43D33;">	
 						</view>
 						<view class="item-color" v-else>
-							
 						</view>
 						{{item.status==0?'不在线':'在线'}}
-					</text>
-					<image class="imgs" src="../../static/video/detailVideo.png" mode=""></image>
+					</text> 
+					<image class="imgs" :src="item.image"  mode="" @error="img" :data-index="index"></image>
 					<view class="mask">
 					</view>
 					<span class="mask-name">{{item.ipcName}}</span>
@@ -44,6 +42,7 @@
 		},
 		data() {
 			return {
+				showImg:require("../../static/video/detailVideo.png"),
 				seach: "",
 				project: {
 					projectId: '',
@@ -57,6 +56,11 @@
 			};
 		},
 		methods: {
+			img(e){
+				console.log(e)
+				const index = e.target.dataset.index;  
+				this.showList[index].image=this.showImg
+			},
 			handsearch(val) {
 				if (this.rawList) {
 					this.showList = this.rawList
