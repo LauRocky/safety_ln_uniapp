@@ -22,7 +22,10 @@
 						</view>
 						{{item.status==0?'不在线':'在线'}}
 					</text>
-					<image class="imgs" src="../../static/video/detailVideo.png" mode=""></image>
+					<image v-if="item.image=='camera.png'"  class="imgs" src="../../static/video/detailVideo.png" mode=""></image>
+					<image v-else class="imgs"  :src="item.image"  mode=""></image>
+					
+				
 					<view class="mask">
 					</view>
 					<span class="mask-name">{{item.ipcName}}</span>
