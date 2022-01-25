@@ -78,6 +78,7 @@ export default {
 					icon: 'none'
 				});
 			} else {
+				
 				if (item.cameraIndexCode) {
 					uni.navigateTo({
 						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&ipcId=${item.ipcId}`
