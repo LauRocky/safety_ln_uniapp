@@ -101,6 +101,23 @@ export default {
 			]
 		};
 	},
+	onBackPress(e) {
+		uni.showModal({
+			content: '是否要退出应用？',
+			confirmText: '确定',
+			cancelText: '取消',
+			success: function(res) {
+				if (res.confirm) {
+					uni.sendNativeEvent("colseapp", res => {
+						console.log(res);
+					});
+				} else if (res.cancel) {
+		
+				}
+			}
+		});
+		return true;
+	},
 	onLoad() {},
 	onShow() {
 		this.handclick({

@@ -11,6 +11,10 @@
 			// // #endif
 		},
 		onShow:function(){
+			
+		},
+		onHide() {
+
 		
 		},
 		mounted:function(){

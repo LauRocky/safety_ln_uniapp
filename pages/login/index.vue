@@ -36,6 +36,7 @@
 	export default {
 		data() {
 			return {
+				lastTouch: 0,
 				type: 'password',
 				icon: 'eye-off',
 				radio: false,
@@ -57,6 +58,23 @@
 				}
 			};
 		},
+		onBackPress(e) {
+			uni.showModal({
+				content: '是否要退出应用？',
+				confirmText: '确定',
+				cancelText: '取消',
+				success: function(res) {
+					if (res.confirm) {
+						uni.sendNativeEvent("colseapp", res => {
+							console.log(res);
+						});
+					} else if (res.cancel) {
+
+					}
+				}
+			});
+			return true;
+		},
 		onReady() {},
 		mounted: function() {
 			// #ifdef APP-PLUS
@@ -76,7 +94,7 @@
 					uni.sendNativeEvent(data, res => {
 						console.log(res);
 					});
-					
+
 					that.getCode(JSON.parse(data).code);
 				}
 			});
@@ -96,15 +114,15 @@
 								console.log(rest);
 							});
 							uni.sendNativeEvent("login", call => {
-									console.log(call);
+								console.log(call);
 							});
 							// 根据用户id,key
 							let obj = uni.getStorageSync('show')
 							uni.clearStorageSync();
-							if (obj){
+							if (obj) {
 								uni.setStorageSync("show", obj)
 							}
-							
+
 							uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
 							uni.setStorageSync('token', res.data.token.token);
 							this.toHome();
@@ -150,14 +168,14 @@
 								if (res.code == 0) {
 									uni.hideToast();
 									let obj = uni.getStorageSync('show')
-								
+
 									uni.clearStorageSync();
-									if (obj){
+									if (obj) {
 										uni.setStorageSync("show", obj)
 									}
 
 									uni.sendNativeEvent("login", call => {
-											console.log(call);
+										console.log(call);
 									});
 
 									uni.setStorageSync('userInfo', res.user);
@@ -175,7 +193,7 @@
 							})
 							.catch(err => {
 								console.error(err);
-							
+
 								uni.showToast({
 									title: '登录失败',
 									duration: 2000,

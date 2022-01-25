@@ -18,9 +18,9 @@
 						</view>
 						<view class="item-color" v-else>
 						</view>
-						{{item.status==0?'不在线':'在线'}}
+						<text class="item-text">{{item.status==0?'不在线':'在线'}}</text>
 					</text> 
-					<image class="imgs" :src="item.image"  mode="widthFix" @error="img" :data-index="index"></image>
+					<image class="imgs" :src="item.image"  mode="aspectFill" @error="img" :data-index="index"></image>
 					<view class="mask">
 					</view>
 					<span class="mask-name">{{item.ipcName}}</span>
@@ -284,17 +284,23 @@
 						font-weight: bold;
 						color: #FFFFFF;
 						line-height: 50upx;
-						text-align: center;
+					
 						border-radius: 10upx;
 						background-color: rgba(0,0,0,0.3);
 						.item-color{
 							position: absolute;
-							top: 20upx;
-							left: 4upx;
-							width: 10upx;
-							height: 10upx;
+							top: 18upx;
+							left: 16upx;
+							width: 15upx;
+							height: 15upx;
 							border-radius: 50%;
 							background-color: #00B48F;
+						}
+						.item-text{
+							position: absolute;
+							
+							left: 40upx;
+						
 						}
 					}
 				}
