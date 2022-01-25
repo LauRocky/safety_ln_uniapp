@@ -7,22 +7,17 @@
 			<view style="padding:30upx 30upx 0">
 				<u-search class="searchs" v-model="seach" @search="handsearch" shape="round" height="50" bgColor="#ffffff" searchIconColor="#333333" :showAction="false"></u-search>
 			</view>
-			<view  v-if="this.showList.length==0">
-				<image class="kong" src="../../static/danger/kong.png" mode=""></image>
-			</view>
+			<view v-if="this.showList.length == 0"><image class="kong" src="../../static/danger/kong.png" mode=""></image></view>
 			<view class="videolist" v-else>
-				<view class="item" v-for="(item,index) in showList" :key="index" @click="videodetail(item)">
+				<view class="item" v-for="(item, index) in showList" :key="index" @click="videodetail(item)">
 					<text class="item-status">
-						<view class="item-color" v-if="item.status==0" style="background-color:#E43D33;">	
-						</view>
-						<view class="item-color" v-else>
-						</view>
-						<text class="item-text">{{item.status==0?'不在线':'在线'}}</text>
-					</text> 
-					<image class="imgs" :src="item.image"  mode="aspectFill" @error="img" :data-index="index"></image>
-					<view class="mask">
-					</view>
-					<span class="mask-name">{{item.ipcName}}</span>
+						<view class="item-color" v-if="item.status == 0" style="background-color:#E43D33;"></view>
+						<view class="item-color" v-else></view>
+						{{ item.status == 0 ? '不在线' : '在线' }}
+					</text>
+					<image class="imgs" :src="item.image" mode="" @error="img" :data-index="index"></image>
+					<view class="mask"></view>
+					<span class="mask-name">{{ item.ipcName }}</span>
 				</view>
 			</view>
 		</view>
@@ -39,6 +34,7 @@ export default {
 	},
 	data() {
 		return {
+			showImg: require('../../static/video/detailVideo.png'),
 			seach: '',
 			project: {
 				projectId: '',
@@ -52,6 +48,11 @@ export default {
 		};
 	},
 	methods: {
+		img(e) {
+			console.log(e);
+			const index = e.target.dataset.index;
+			this.showList[index].image = this.showImg;
+		},
 		handsearch(val) {
 			if (this.rawList) {
 				this.showList = this.rawList;
@@ -65,116 +66,32 @@ export default {
 					});
 					this.showList = result;
 				}
-			},
-			videodetail(item) {
-				// if(item.)
-				// console.error(JSON.stringify(item));
-				// 如果设备处于离线,弹出提示,不让他跳转
-				if(item.status==0){
-					uni.showToast({
-						title: '当前设备离线',
-						icon: 'none'
-					})
-				}else{
-					if (item.cameraIndexCode) {
-						// uni.navigateTo({
-						// 	url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&liveStreamUrl=${item.liveStreamUrl}&liveSubStreamUrl=${item.liveSubStreamUrl}`
-						// })
-						
-						let url = "/ehome/camera/previewurl/rtsp/rtsp/" + item.cameraIndexCode;
-						console.error(url);
-						request(url,
-								'POST', {}, false)
-							.then(res => {
-								let apiUrl = 'https://esq.cgdg.com';
-					
-								let body = {
-									'stream': 'rtsp',
-									'type': 'video',
-									'body': res,
-									'cameraIndexCode': item.cameraIndexCode,
-									'channel': null,
-									'nvr': null,
-									'token': uni.getStorageSync('token'),
-									"ezvizAccountId":null,
-									"name":item.ipcName,
-									"id":item.ipcId
-								};
-								uni.sendNativeEvent(JSON.stringify(body), rest => {
-									console.log(rest);
-								});
-					
-							}).catch(e => {
-								console.error(e);
-								uni.showToast({
-									title: '获取播放地址失败',
-									icon: 'none'
-								})
-							})
-					} else if (item.ezvizAccountId) {
-						// uni.navigateTo({
-						// 	url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}&channel=${item.channel}`
-						// })		
-						let url =
-							`/getEzNewLiveAddress/${item.nvrDeviceSerial}/${item.channel}/${item.ezvizAccountId}/2`;
-						console.error(url)
-						request(url,
-								'POST', {}, false)
-							.then(res => {
-								console.error(res);
-								if (res.result.code == 20007) {
-									uni.showToast({
-										title: '设备离线',
-										icon: 'none'
-									})
-								} else {
-					
-									let body = {
-										'stream': 'hls',
-										'body': res,
-										'type': 'video',
-										'cameraIndexCode': null,
-										'channel': item.channel,
-										'nvr': item.nvrDeviceSerial,
-										'token': uni.getStorageSync('token'),
-										"ezvizAccountId":item.ezvizAccountId,
-										"name":item.ipcName,
-										"id":item.ipcId
-									};
-									uni.sendNativeEvent(JSON.stringify(body), rest => {
-										console.log(rest);
-									});
-					
-								}
-							})
-							.catch(e => {
-								console.error(e);
-								uni.showToast({
-									title: '获取播放地址失败',
-									icon: 'none'
-								})
-							})
-					}else{
-						uni.showToast({
-							title: '获取播放地址失败',
-							icon: 'none'
-						})
-					}
-				}
-			},
-			back() {
-				uni.navigateBack({
-					delta: 2
-				});
-			} else if (item.ezvizAccountId) {
-				uni.navigateTo({
-					url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}&channel=${item.channel}`
-				});
-			} else {
+			}
+		},
+		videodetail(item) {
+			// if(item.)
+			// console.error(JSON.stringify(item));
+			// 如果设备处于离线,弹出提示,不让他跳转
+			if (item.status == 0) {
 				uni.showToast({
-					title: '获取播放地址失败',
+					title: '当前设备离线',
 					icon: 'none'
 				});
+			} else {
+				if (item.cameraIndexCode) {
+					uni.navigateTo({
+						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&ipcId=${item.ipcId}`
+					});
+				} else if (item.ezvizAccountId) {
+					uni.navigateTo({
+						url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}&channel=${item.channel}`
+					});
+				} else {
+					uni.showToast({
+						title: '获取播放地址失败',
+						icon: 'none'
+					});
+				}
 			}
 		},
 		back() {
@@ -197,6 +114,7 @@ export default {
 					if (res.code == 0) {
 						this.rawList = res.projectInfoEntities[0].cameraEntities;
 						this.showList = res.projectInfoEntities[0].cameraEntities;
+						console.log('da', this.showList);
 					}
 				})
 				.catch(err => {
@@ -252,19 +170,19 @@ export default {
 		.videolist {
 			.item {
 				position: relative;
-				width: 97vw;
-				margin: 0 auto;
+				width: 92vw;
+				margin: 20upx auto;
 				height: 379upx;
-
 				.imgs {
 					width: 100%;
 					height: 100%;
+					border-radius: 10upx;
 				}
 
 				.mask {
 					position: absolute;
-					left: 19upx;
-					bottom: 20upx;
+					// left: 19upx;
+					bottom: 0;
 					width: 92vw;
 					height: 60upx;
 					background: #000000;
@@ -272,59 +190,47 @@ export default {
 					border-radius: 0px 0px 10upx 10upx;
 				}
 
-					.mask {
+				.mask-name {
+					position: absolute;
+					left: 30upx;
+					bottom: 12upx;
+					font-size: 28upx;
+					font-family: PingFang SC;
+					font-weight: bold;
+					color: #ffffff;
+				}
+				.item-status {
+					position: absolute;
+					right: 0upx;
+					top: 0upx;
+					z-index: 5;
+					width: 110upx;
+					height: 50upx;
+					font-family: PingFang SC;
+					font-size: 24upx;
+					font-weight: bold;
+					color: #ffffff;
+					line-height: 50upx;
+					text-align: center;
+					border-radius: 10upx;
+					background-color: rgba(0, 0, 0, 0.3);
+					.item-color {
 						position: absolute;
-						// left: 19upx;
-						bottom: 0;
-						width: 92vw;
-						height: 60upx;
-						background: #000000;
-						opacity: 0.6;
-						border-radius: 0px 0px 10upx 10upx;
-					}
-
-					.mask-name {
-						position: absolute;
-						left: 30upx;
-						bottom: 12upx;
-						font-size: 28upx;
-						font-family: PingFang SC;
-						font-weight: bold;
-						color: #FFFFFF;
-					}
-					.item-status{
-						position: absolute;
-						right: 0upx;
-						top: 0upx;
-						z-index: 5;
-						width: 110upx; 
-						height: 50upx;
-						font-family: PingFang SC;
-						font-size: 24upx;
-						font-weight: bold;
-						color: #FFFFFF;
-						line-height: 50upx;
-					
-						border-radius: 10upx;
-						background-color: rgba(0,0,0,0.3);
-						.item-color{
-							position: absolute;
-							top: 18upx;
-							left: 16upx;
-							width: 15upx;
-							height: 15upx;
-							border-radius: 50%;
-							background-color: #00B48F;
-						}
-						.item-text{
-							position: absolute;
-							
-							left: 40upx;
-						
-						}
+						top: 20upx;
+						left: 4upx;
+						width: 10upx;
+						height: 10upx;
+						border-radius: 50%;
+						background-color: #00b48f;
 					}
 				}
 			}
+		}
+		.kong {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
 		}
 	}
 }

@@ -352,44 +352,23 @@ export default {
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}
-					})
-				}
-			},
-			videodetail() {
-
-				if (this.status.ezv == 0) {
-					let url = "/ehome/camera/previewurl/hls/" + item.cameraIndexCode;
-					console.error(url);
-					request(url,
-							'POST', {}, false)
-						.then(res => {
-							this.videoUrl ="https://esq.cgdg.com"+ res.url;
-							let body = {
-								'stream': 'rtsp',
-								'type': 'video',
-								'body': res,
-								'cameraIndexCode': item.cameraIndexCode,
-								'channel': null,
-								'nvr': null,
-								'token': uni.getStorageSync('token'),
-								"ezvizAccountId": null,
-								"name": item.ipcName
-							};
-
-							uni.sendNativeEvent(JSON.stringify(body), rest => {
-								console.log(rest);
-							});
-
-						}).catch(e => {
-							console.error(e);
+					}
+				});
+			}
+		},
+		videodetail() {
+			if (this.status.ezv == 0) {
+				request('/camera/updateHlsPlayUrl', 'POST', { ipcId: this.status.ipcId }, false)
+					.then(res => {
+						if (res.code == 20007) {
 							uni.showToast({
 								title: '设备离线',
 								icon: 'none'
 							});
 						} else {
-						/* 	http://yun-live.oss-cn-shanghai.aliyuncs.com/record/yunlive/record/yunlive/meeting_1070/2020-11-25-09-27-59_2020-11-25-09-35-52.m3u8 */
+							/* 	http://yun-live.oss-cn-shanghai.aliyuncs.com/record/yunlive/record/yunlive/meeting_1070/2020-11-25-09-27-59_2020-11-25-09-35-52.m3u8 */
 							this.videoUrl = 'https://esq.cgdg.com' + res.data.liveStreamUrl;
-							console.error(this.videoUrl)
+							console.error(this.videoUrl);
 						}
 					})
 					.catch(e => {
