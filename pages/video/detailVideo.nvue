@@ -1,17 +1,37 @@
 <template>
 	<view class="detailVideo">
-		<view class="headerTitle" :style="{height:iStatusBarHeight+'upx'}">
-		</view>
+		<view class="headerTitle" :style="{ height: iStatusBarHeight + 'upx' }"></view>
 		<view class="header-top">
 			<image @click="getBack" class="img" src="../../static/video/back.png" mode=""></image>
-			<text class="header-item">{{Videotitle}}</text>
+			<text class="header-item">{{ Videotitle }}</text>
 			<text class="header-items"></text>
 		</view>
-		<video class="vid" @play="playVideo" @error="error" @waiting="waiting" :show-center-play-btn="play"
-			:show-loading="true" src="videoUrl" @fullscreenchange="fullScreenEvent" id="myVideo" :autoplay="false"
-			codec="software" :controls="false" :show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
+		<web-view
+			v-if="platform == 'ios'"
+			ref="webView"
+			class="webView"
+			style="width: 100vw;height: 400upx;"
+			:src="'/hybrid/html/video.html?url=' + videoUrl"
+			@message="reciveMessage"
+		></web-view>
+		<video
+			class="vid"
+			v-else
+			@play="playVideo"
+			@error="error"
+			@waiting="waiting"
+			:show-center-play-btn="play"
+			:show-loading="true"
+			:src="videoUrl"
+			@fullscreenchange="fullScreenEvent"
+			id="myVideo"
+			:autoplay="zidong"
+			:play-strategy="0"
+			:controls="false"
+			:show-play-btn="pmgressbar"
+			:show-fullscreen-btn="pmgressbar"
+		>
 			<cover-view v-if="isShow" class="container">
-				<!-- 当前图片截屏跟录屏图片暂未添加 -->
 				<image @click="recording" class="images1" src="" mode=""></image>
 				<image @click="screenshots" class="images2" src="" mode=""></image>
 				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
@@ -22,23 +42,19 @@
 				<text class="loading-text">视频加载中...</text>
 			</view> -->
 			<!-- sd标清,hd高清 -->
-			<image v-if="hd==2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
+			<image v-if="hd == 2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
 			<image v-else @click="clarity(2)" class="clarity" src="../../static/video/hd.png" mode=""></image>
 			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
 		</view>
 		<view class="middle">
 			<view class="middle-content">
-				<image @touchstart="down(1)" @touchend="up(1)" class="content-img" src="../../static/video/shadowon.png"
-					mode=""></image>
+				<image @touchstart="down(1)" @touchend="up(1)" class="content-img" src="../../static/video/shadowon.png" mode=""></image>
 				<image v-if="discolor" class="content-img" src="../../static/video/brighton.png" mode=""></image>
-				<image @touchstart="down(2)" @touchend="up(2)" class="content-img1"
-					src="../../static/video/shadowright.png" mode=""></image>
+				<image @touchstart="down(2)" @touchend="up(2)" class="content-img1" src="../../static/video/shadowright.png" mode=""></image>
 				<image v-if="discolor2" class="content-img1" src="../../static/video/brightright.png" mode=""></image>
-				<image @touchstart="down(3)" @touchend="up(3)" class="content-img2"
-					src="../../static/video/shadowdown.png" mode=""></image>
+				<image @touchstart="down(3)" @touchend="up(3)" class="content-img2" src="../../static/video/shadowdown.png" mode=""></image>
 				<image v-if="discolor3" class="content-img2" src="../../static/video/brightdown.png" mode=""></image>
-				<image @touchstart="down(4)" @touchend="up(4)" class="content-img3"
-					src="../../static/video/shadowleft.png" mode=""></image>
+				<image @touchstart="down(4)" @touchend="up(4)" class="content-img3" src="../../static/video/shadowleft.png" mode=""></image>
 				<image v-if="discolor4" class="content-img3" src="../../static/video/brightleft.png" mode=""></image>
 			</view>
 			<!-- 底部照片 -->
@@ -63,287 +79,278 @@
 		</view>
 	</view>
 </template>
-
 <script>
-	import {
-		request
-	} from '../../utils/request.js'
-	export default {
-		data() {
-			return {
-				loadingList: '',
-				discolor2: false,
-				discolor3: false,
-				discolor4: false,
-				discolor: false,
-				isShow: false,
-				play: true,
-				videoUrl: '',
-				zidong: false,
-				pmgressbar: false,
-				videoContext: null,
-				status: {},
-				ehomebianbei: '',
-				bianbei: "",
-				Videotitle: '',
-				// loading: false,
-				hd: 2,
-				// played:false
-			};
+import { request } from '../../utils/request.js';
+export default {
+	components: {},
+	data() {
+		return {
+			loadingList: '',
+			discolor2: false,
+			discolor3: false,
+			discolor4: false,
+			discolor: false,
+			isShow: false,
+			play: true,
+			videoUrl: '',
+			zidong: false,
+			pmgressbar: false,
+			videoContext: null,
+			status: {},
+			ehomebianbei: '',
+			bianbei: '',
+			Videotitle: '',
+			// loading: false,
+			hd: 2,
+			// played:false
+			platform: ''
+		};
+	},
+	created() {},
+	mounted() {},
+	methods: {
+		//webview发送过来的数据，内容为是否全屏的判断
+		reciveMessage(e) {
+			console.log(e, '232323');
 		},
-		methods: {
-			error(e) {
-				// this.loading = false;
-				console.error(e);
-				uni.showToast({
-					title: '播放失败',
-					icon: 'error',
-					duration: 2000
-				})
-			},
-			waiting() {
+		waiting() {},
+		playVideo() {
+			// this.loading = false;
+			// this.played=true;
+		},
 
-			},
-			playVideo() {
-				// this.loading = false;
-				// this.played=true;
-			},
-
-			capture() {
-				var pages = getCurrentPages();
-				var page = pages[pages.length - 1];
-				console.log("当前页" + pages.length - 1);
-				var bitmap = null;
-				var currentWebview = page.$getAppWebview();
-				bitmap = new plus.nativeObj.Bitmap('amway_img');
-				// 将webview内容绘制到Bitmap对象中  
-				currentWebview.draw(bitmap, function() {
-					console.log('截屏绘制图片成功');
-					bitmap.save("_doc/a.jpg", {}, function(i) {
-						console.log('保存图片成功：' + JSON.stringify(i));
-						uni.saveImageToPhotosAlbum({
-							filePath: i.target,
-							success: function() {
-								bitmap.clear(); //销毁Bitmap图片  
-								uni.showToast({
-									title: '保存图片成功',
-									mask: false,
-									duration: 1500
-								});
-							}
-						});
-					}, function(e) {
-						console.log('保存图片失败：' + JSON.stringify(e));
-					});
-				}, function(e) {
-					console.log('截屏绘制图片失败：' + JSON.stringify(e));
-				});
-				//currentWebview.append(amway_bit);    
-			},
-			// 导航栏返回
-			getBack() {
-				uni.navigateBack({
-					delta: 1
-				})
-			},
-			fullScreenEvent(e) {
-				if (e.detail.fullScreen) { //全屏
-					this.isShow = true;
-					this.videoContext = uni.createVideoContext("myVideo", this);
-					this.videoContext.showStatusBar(); //显示状态栏,仅在ios全屏下有效
-					this.pmgressbar = true;
-				} else { // 非全屏
-					this.isShow = false
-					this.isShow = false;
-					this.screen = false;
-					this.fullControl = false;
-					this.pmgressbar = false;
-				}
-			},
-			down(e) {
-				console.log(e)
-				if (e == 1) {
-					// 云台控制 上
-					this.discolor = true;
-					if (this.status.ezv == 0) {
-						this.ehomebianbei = 'UP';
-						this.ehomeControl();
-					} else {
-						let channel = 1;
-						this.bianbei = 0;
-						this.Fluorite();
-					}
-				} else if (e == 2) {
-					// 云台控制 右
-					this.discolor2 = true;
-					if (this.status.ezv == 0) {
-						this.ehomebianbei = 'RIGHT';
-						this.ehomeControl();
-					} else {
-						let channel = 1;
-						this.bianbei = 3;
-						this.Fluorite();
-					}
-				} else if (e == 3) {
-					this.discolor3 = true;
-					// 云台控制 下
-					if (this.status.ezv == 0) {
-						this.ehomebianbei = 'DOWN';
-						this.ehomeControl();
-					} else {
-						this.bianbei = 1;
-						this.Fluorite();
-					}
-				} else if (e == 4) {
-					// 云台控制 左
-					this.discolor4 = true;
-					if (this.status.ezv == 0) {
-						this.ehomebianbei = 'LEFT';
-						this.ehomeControl();
-					} else {
-						this.bianbei = 2;
-						this.Fluorite();
-					}
-				}
-			},
-			up(e) {
-				if (e == 1) {
-					this.discolor = false;
-				} else if (e == 2) {
-					this.discolor2 = false;
-				} else if (e == 3) {
-					this.discolor3 = false;
-				} else if (e == 4) {
-					this.discolor4 = false;
-				}
-			},
-
-			// 录屏
-			recording() {
-
-			},
-
-			// ehome云台控制
-			ehomeControl() {
-				request(`/ehome/ptzOption/${this.status.camera}/${this.ehomebianbei}`, "POST", {}, false).then(res => {
-					console.log(res)
-					if (res.code == 0) {
-						uni.showToast({
-							title: res.msg,
-							icon: "none"
-						})
-					} else if (res.data.code == 500) {
-
-						uni.showToast({
-							title: '当前设备暂不支持',
-							icon: "none"
-						})
-					}
-				})
-			},
-			// 萤石云云台控制
-			Fluorite() {
-				request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${this.bianbei}`, "POST", {}, false).then(
-					res => {
-						console.log(res)
-						if (res.code == 0) {
-							uni.showToast({
-								title: res.msg,
-								icon: "none"
-							})
-						} else if (res.data.code == 500) {
-							uni.showToast({
-								title: '当前设备暂不支持',
-								icon: "none"
-							})
+		capture() {
+			var pages = getCurrentPages();
+			var page = pages[pages.length - 1];
+			var bitmap = null;
+			var currentWebview = page.$getAppWebview();
+			bitmap = new plus.nativeObj.Bitmap('amway_img');
+			// 将webview内容绘制到Bitmap对象中
+			currentWebview.draw(
+				bitmap,
+				function() {
+					bitmap.save(
+						'_doc/a.jpg',
+						{},
+						function(i) {
+							uni.saveImageToPhotosAlbum({
+								filePath: i.target,
+								success: function() {
+									bitmap.clear(); //销毁Bitmap图片
+									uni.showToast({
+										title: '保存图片成功',
+										mask: false,
+										duration: 1500
+									});
+								}
+							});
+						},
+						function(e) {
+							console.log('保存图片失败：' + JSON.stringify(e));
 						}
-					})
-			},
-			// 变倍+
-			bianbeijia() {
-				// 萤石云是1,
-				// 海康是0
+					);
+				},
+				function(e) {
+					console.log('截屏绘制图片失败：' + JSON.stringify(e));
+				}
+			);
+			//currentWebview.append(amway_bit);
+		},
+		// 导航栏返回
+		getBack() {
+			uni.navigateBack({
+				delta: 1
+			});
+		},
+		fullScreenEvent(e) {
+			if (e.detail.fullScreen) {
+				//全屏
+				this.isShow = true;
+				this.videoContext = uni.createVideoContext('myVideo', this);
+				this.videoContext.showStatusBar(); //显示状态栏,仅在ios全屏下有效
+				this.pmgressbar = true;
+			} else {
+				// 非全屏
+				this.isShow = false;
+				this.isShow = false;
+				this.screen = false;
+				this.fullControl = false;
+				this.pmgressbar = false;
+			}
+		},
+		down(e) {
+			if (e == 1) {
+				// 云台控制 上
+				this.discolor = true;
 				if (this.status.ezv == 0) {
-					this.ehomebianbei = 'ZOOM_IN';
+					this.ehomebianbei = 'UP';
 					this.ehomeControl();
 				} else {
-					this.bianbei = 8;
+					let channel = 1;
+					this.bianbei = 0;
 					this.Fluorite();
 				}
-			},
-			// 变倍-
-			bianbeijian() {
+			} else if (e == 2) {
+				// 云台控制 右
+				this.discolor2 = true;
 				if (this.status.ezv == 0) {
-					this.ehomebianbei = 'ZOOM_OUT';
+					this.ehomebianbei = 'RIGHT';
 					this.ehomeControl();
 				} else {
-					this.bianbei = 9;
+					let channel = 1;
+					this.bianbei = 3;
 					this.Fluorite();
 				}
-			},
-			// 变焦+
-			bianjiaojia() {
+			} else if (e == 3) {
+				this.discolor3 = true;
+				// 云台控制 下
 				if (this.status.ezv == 0) {
-					this.ehomebianbei = 'FOCUS_FAR';
+					this.ehomebianbei = 'DOWN';
 					this.ehomeControl();
 				} else {
-					this.bianbei = 11;
+					this.bianbei = 1;
 					this.Fluorite();
 				}
-			},
-			// 变焦-
-			bianjiaojian() {
+			} else if (e == 4) {
+				// 云台控制 左
+				this.discolor4 = true;
 				if (this.status.ezv == 0) {
-					this.ehomebianbei = 'FOCUS_NEAR';
+					this.ehomebianbei = 'LEFT';
 					this.ehomeControl();
 				} else {
-					this.bianbei = 10;
+					this.bianbei = 2;
 					this.Fluorite();
 				}
-			},
-			// 退出全屏
-			exitFull() {
-				this.videoContext = uni.createVideoContext("myVideo", this);
-				this.videoContext.exitFullScreen();
-				this.zidong = false
-			},
-			// 全屏
-			full() {
-				this.videoContext = uni.createVideoContext("myVideo", this);
-				this.videoContext.requestFullScreen();
-				this.zidong = true
-			},
-			// 截屏
-			screenshots() {
+			}
+		},
+		up(e) {
+			if (e == 1) {
+				this.discolor = false;
+			} else if (e == 2) {
+				this.discolor2 = false;
+			} else if (e == 3) {
+				this.discolor3 = false;
+			} else if (e == 4) {
+				this.discolor4 = false;
+			}
+		},
 
-			},
-			back() {
-				uni.navigateBack({
-					delta: 1
-				});
-			},
-			// 切换高清与流畅
-			clarity(e) {
-				if (this.status.ezv == 0) {
+		// 录屏
+		recording() {},
+
+		// ehome云台控制
+		ehomeControl() {
+			request(`/ehome/ptzOption/${this.status.camera}/${this.ehomebianbei}`, 'POST', {}, false).then(res => {
+				if (res.code == 0) {
 					uni.showToast({
-						title: '当前设备不支持',
+						title: res.msg,
 						icon: 'none'
-					})
-				} else {
-					let that = this
-					uni.showModal({
-						title: '切换',
-						content: '是否切换清晰度',
-						success: (res) => {
-							console.log(res)
-							if (res.confirm) {
-								that.hd = e;
-								that.videodetail();
-								this.zidong = true;
-								// this.play=true;
-							} else if (res.cancel) {
-								console.log('用户点击取消');
-							}
+					});
+				} else if (res.data.code == 500) {
+					uni.showToast({
+						title: '当前设备暂不支持',
+						icon: 'none'
+					});
+				}
+			});
+		},
+		// 萤石云云台控制
+		Fluorite() {
+			request(`/ptzOption/${this.status.nvr}/${this.status.channel}/${this.bianbei}`, 'POST', {}, false).then(res => {
+				if (res.code == 0) {
+					uni.showToast({
+						title: res.msg,
+						icon: 'none'
+					});
+				} else if (res.data.code == 500) {
+					uni.showToast({
+						title: '当前设备暂不支持',
+						icon: 'none'
+					});
+				}
+			});
+		},
+		// 变倍+
+		bianbeijia() {
+			// 萤石云是1,
+			// 海康是0
+			if (this.status.ezv == 0) {
+				this.ehomebianbei = 'ZOOM_IN';
+				this.ehomeControl();
+			} else {
+				this.bianbei = 8;
+				this.Fluorite();
+			}
+		},
+		// 变倍-
+		bianbeijian() {
+			if (this.status.ezv == 0) {
+				this.ehomebianbei = 'ZOOM_OUT';
+				this.ehomeControl();
+			} else {
+				this.bianbei = 9;
+				this.Fluorite();
+			}
+		},
+		// 变焦+
+		bianjiaojia() {
+			if (this.status.ezv == 0) {
+				this.ehomebianbei = 'FOCUS_FAR';
+				this.ehomeControl();
+			} else {
+				this.bianbei = 11;
+				this.Fluorite();
+			}
+		},
+		// 变焦-
+		bianjiaojian() {
+			if (this.status.ezv == 0) {
+				this.ehomebianbei = 'FOCUS_NEAR';
+				this.ehomeControl();
+			} else {
+				this.bianbei = 10;
+				this.Fluorite();
+			}
+		},
+		// 退出全屏
+		exitFull() {
+			this.videoContext = uni.createVideoContext('myVideo', this);
+			this.videoContext.exitFullScreen();
+			this.zidong = false;
+		},
+		// 全屏
+		full() {
+			this.videoContext = uni.createVideoContext('myVideo', this);
+			this.videoContext.requestFullScreen();
+			this.zidong = true;
+		},
+		// 截屏
+		screenshots() {},
+		back() {
+			uni.navigateBack({
+				delta: 1
+			});
+		},
+		// 切换高清与流畅
+		clarity(e) {
+			if (this.status.ezv == 0) {
+				uni.showToast({
+					title: '当前设备不支持',
+					icon: 'none'
+				});
+			} else {
+				let that = this;
+				uni.showModal({
+					title: '切换',
+					content: '是否切换清晰度',
+					success: res => {
+						if (res.confirm) {
+							that.hd = e;
+							that.videodetail();
+							this.zidong = true;
+							// this.play=true;
+						} else if (res.cancel) {
+							console.log('用户点击取消');
 						}
 					})
 				}
@@ -376,257 +383,259 @@
 						}).catch(e => {
 							console.error(e);
 							uni.showToast({
-								title: '获取播放地址失败',
+								title: '设备离线',
 								icon: 'none'
-							})
-						})
-				} else {
-					// 获取萤石云播放url
-					let url =
-						`/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/${this.hd}`;
-					console.error(url)
-					request(url,
-							'POST', {}, false)
-						.then(res => {
-							console.error(res);
-							if (res.result.code == 20007) {
-								uni.showToast({
-									title: '设备离线',
-									icon: 'none'
-								})
-							} else {
-								this.videoUrl = res.result.data.url;
-								console.error(this.videoUrl);
-							}
-						})
-						.catch(e => {
-							console.error(e);
-							uni.showToast({
-								title: '获取播放地址失败',
-								icon: 'none'
-							})
-						})
-				}
-			},
-		},
-		onLoad(option) {
-			this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2
-			this.status = option
-			console.log(this.status)
-			// console.log(option.names.length)
-			if (option.names.length >= 12) {
-				this.Videotitle = option.names.slice(0, 11) + '...'
+							});
+						} else {
+						/* 	http://yun-live.oss-cn-shanghai.aliyuncs.com/record/yunlive/record/yunlive/meeting_1070/2020-11-25-09-27-59_2020-11-25-09-35-52.m3u8 */
+							this.videoUrl = 'https://esq.cgdg.com' + res.data.liveStreamUrl;
+							console.error(this.videoUrl)
+						}
+					})
+					.catch(e => {
+						console.error(e);
+					});
 			} else {
-				this.Videotitle = option.names
+				// 获取萤石云播放url
+				let url = `/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/${this.hd}`;
+				console.error(url);
+				request(url, 'POST', {}, false)
+					.then(res => {
+						console.error(res);
+						if (res.result.code == 20007) {
+							uni.showToast({
+								title: '设备离线',
+								icon: 'none'
+							});
+						} else {
+							this.videoUrl = res.result.data.url;
+							console.error(this.videoUrl);
+						}
+					})
+					.catch(e => {
+						console.error(e);
+					});
 			}
-			this.videodetail()
 		}
+	},
+	onLoad(option) {
+		this.platform = uni.getSystemInfoSync().platform;
+		this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2;
+		this.status = option;
+		// console.log(option.names.length)
+		if (option.names.length >= 12) {
+			this.Videotitle = option.names.slice(0, 11) + '...';
+		} else {
+			this.Videotitle = option.names;
+		}
+		this.videodetail();
 	}
+};
 </script>
 
 <style lang="scss" scoped>
-	.headerTitle {
-		width: 750upx;
-		background-color: #00B48F;
-	}
+.headerTitle {
+	width: 750upx;
+	background-color: #00b48f;
+}
 
-	.header-top {
-		background-color: #00B48F;
-		width: 750upx;
-		height: 92upx;
-		padding: 0 20upx;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-	}
+.header-top {
+	background-color: #00b48f;
+	width: 750upx;
+	height: 92upx;
+	padding: 0 20upx;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
 
-	.img {
-		width: 40upx;
-		height: 40upx;
-	}
+.img {
+	width: 40upx;
+	height: 40upx;
+}
 
-	.header-top .header-item {
-		color: white;
-		width: 400upx;
-		font-size: 32upx;
-		font-family: PingFang SC;
-		font-weight: bold;
-		text-align: center;
-	}
+.header-top .header-item {
+	color: white;
+	width: 400upx;
+	font-size: 32upx;
+	font-family: PingFang SC;
+	font-weight: bold;
+	text-align: center;
+}
 
-	.header-items {
-		color: white;
-		width: 50upx;
-	}
+.header-items {
+	color: white;
+	width: 50upx;
+}
 
-	.vid {
-		position: relative;
-		width: 750upx;
-		height: 500upx;
-	}
+.vid {
+	position: relative;
+	width: 750upx;
+	height: 500upx;
+}
 
-	.vid-loading {
-		width: 100upx;
-		height: 100upx;
-		line-height: 100upx;
-		text-align: center;
-		color: #FFFFFF;
-		font-size: 32upx;
-		position: absolute;
-		left: 375upx;
-		top: 250upx;
-		transform: translate(-50%, -50%);
-	}
+.vid-loading {
+	width: 100upx;
+	height: 100upx;
+	line-height: 100upx;
+	text-align: center;
+	color: #ffffff;
+	font-size: 32upx;
+	position: absolute;
+	left: 375upx;
+	top: 250upx;
+	transform: translate(-50%, -50%);
+}
 
-	.container {
-		position: absolute;
-		top: 100upx;
-		right: 10upx;
-	}
+.container {
+	position: absolute;
+	top: 100upx;
+	right: 10upx;
+}
 
-	.mask {
-		width: 750upx;
-		height: 100upx;
-		position: relative;
-		background-color: #464950;
-	}
+.mask {
+	width: 750upx;
+	height: 100upx;
+	position: relative;
+	background-color: #464950;
+}
 
-	.mask-loading {
-		width: 200upx;
-		height: 100upx;
-	}
+.mask-loading {
+	width: 200upx;
+	height: 100upx;
+}
 
-	.loading-text {
-		width: 200upx;
-		text-align: center;
-		font-size: 28upx;
-		line-height: 100upx;
-		color: #FFFFFF;
-	}
+.loading-text {
+	width: 200upx;
+	text-align: center;
+	font-size: 28upx;
+	line-height: 100upx;
+	color: #ffffff;
+}
 
-	.images1 {
-		width: 76upx;
-		height: 76upx;
-		transform: translateX(5%);
-		margin-bottom: 40upx;
-	}
+.images1 {
+	width: 76upx;
+	height: 76upx;
+	transform: translateX(5%);
+	margin-bottom: 40upx;
+}
 
-	.images2 {
-		width: 80upx;
-		height: 80upx;
-		margin-bottom: 40upx;
-	}
+.images2 {
+	width: 80upx;
+	height: 80upx;
+	margin-bottom: 40upx;
+}
 
-	.images3 {
-		width: 80upx;
-		height: 80upx;
-	}
+.images3 {
+	width: 80upx;
+	height: 80upx;
+}
 
-	.clarity {
-		position: absolute;
-		right: 100upx;
-		bottom: 20upx;
-		width: 60upx;
-		height: 60upx;
-		color: #FFFFFF;
-	}
+.clarity {
+	position: absolute;
+	right: 100upx;
+	bottom: 20upx;
+	width: 60upx;
+	height: 60upx;
+	color: #ffffff;
+}
 
-	.mask-img {
-		position: absolute;
-		right: 20upx;
-		bottom: 20upx;
-		width: 60upx;
-		height: 60upx;
-		color: #FFFFFF;
-	}
+.mask-img {
+	position: absolute;
+	right: 20upx;
+	bottom: 20upx;
+	width: 60upx;
+	height: 60upx;
+	color: #ffffff;
+}
 
-	.middle {
-		width: 750upx;
-		text-align: center;
-	}
+.middle {
+	width: 750upx;
+	text-align: center;
+}
 
-	.middle .middle-content {
-		margin: 20upx;
-		width: 360upx;
-		height: 360upx;
-		position: relative;
-		transform: translateX(50%);
-	}
+.middle .middle-content {
+	margin: 20upx;
+	width: 360upx;
+	height: 360upx;
+	position: relative;
+	transform: translateX(50%);
+}
 
-	.middle-content .content-img {
-		position: absolute;
-		left: 180upx;
-		top: 0;
-		width: 230upx;
-		height: 130upx;
-		transform: translateX(-50%);
-	}
+.middle-content .content-img {
+	position: absolute;
+	left: 180upx;
+	top: 0;
+	width: 230upx;
+	height: 130upx;
+	transform: translateX(-50%);
+}
 
-	.middle-content .content-img1 {
-		position: absolute;
-		right: 0;
-		top: 180upx;
-		width: 130upx;
-		height: 230upx;
-		transform: translateY(-50%);
-	}
+.middle-content .content-img1 {
+	position: absolute;
+	right: 0;
+	top: 180upx;
+	width: 130upx;
+	height: 230upx;
+	transform: translateY(-50%);
+}
 
-	.middle-content .content-img2 {
-		position: absolute;
-		left: 180upx;
-		bottom: 0;
-		width: 230upx;
-		height: 130upx;
-		transform: translateX(-50%);
-	}
+.middle-content .content-img2 {
+	position: absolute;
+	left: 180upx;
+	bottom: 0;
+	width: 230upx;
+	height: 130upx;
+	transform: translateX(-50%);
+}
 
-	.middle-content .content-img3 {
-		position: absolute;
-		left: 0;
-		top: 180upx;
-		width: 130upx;
-		height: 230upx;
-		transform: translateY(-50%);
-	}
+.middle-content .content-img3 {
+	position: absolute;
+	left: 0;
+	top: 180upx;
+	width: 130upx;
+	height: 230upx;
+	transform: translateY(-50%);
+}
 
-	.a {
-		width: 230upx;
-		height: 130upx;
-	}
+.a {
+	width: 230upx;
+	height: 130upx;
+}
 
-	.b {
-		width: 50upx;
-		height: 52upx;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -70%);
-	}
+.b {
+	width: 50upx;
+	height: 52upx;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -70%);
+}
 
-	.soleBase {
-		width: 750upx;
-		// margin: 50upx 50upx 10upx;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
-		align-items: center;
-	}
+.soleBase {
+	width: 750upx;
+	// margin: 50upx 50upx 10upx;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
 
-	.soleBase .zoom1 {
-		width: 96upx;
-		height: 135upx;
-	}
+.soleBase .zoom1 {
+	width: 96upx;
+	height: 135upx;
+}
 
-	.zoom1 .zoom1-img {
-		width: 96upx;
-		height: 96upx;
-	}
+.zoom1 .zoom1-img {
+	width: 96upx;
+	height: 96upx;
+}
 
-	.zoom1 .zoom1-text {
-		font-size: 30upx;
-		color: #666666;
-		text-align: center;
-		font-family: PingFang SC;
-	}
+.zoom1 .zoom1-text {
+	font-size: 30upx;
+	color: #666666;
+	text-align: center;
+	font-family: PingFang SC;
+}
 </style>
