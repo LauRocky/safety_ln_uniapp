@@ -21,8 +21,7 @@
 			<video id='myVideo' class='video-js vjs-default-skin vjs-big-play-centered' controls autoplay muted
 				x-webkit-airplay="true" x5-video-player-fullscreen="true" preload="auto" playsinline="true"
 				webkit-playsinline x5-video-player-type="h5" style="object-fit:fill;width:375px; height:200px">
-				<source id="sourceS" type="application/x-mpegURL"
-					src="">
+				<source id="sourceS" type="application/x-mpegURL" src="">
 			</video>
 		</div>
 	</body>
@@ -39,8 +38,13 @@
 		let obj = location.search;
 		let videoArr = obj.split('=')[1].split(',')[0]
 		let sourceS = document.getElementById('sourceS')
-		console.log(videoArr,'2222222222')
 		sourceS.src = videoArr
+		//将是否全屏传到uniapp中
+		uni.postMessage({
+			data: {
+				action: '222'
+			}
+		});
 
 	});
 </script>

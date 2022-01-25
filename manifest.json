@@ -156,9 +156,8 @@
                 "/web" : {
                     // "target" : "http://192.168.1.104:12002/safety-server/api", //测试
                     //以下部分请勿改动！
-                    "target" : "https://esq.cgdg.com/api", //正式环境
-
-                    // "target" : "https://esq.ln2.ink/api", //aliyun
+                    /* "target" : "https://esq.cgdg.com/api", */ //正式环境
+                    "target" : "http://59.110.136.159:12002/safety-server/api", //aliyun
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

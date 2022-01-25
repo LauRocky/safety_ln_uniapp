@@ -6,16 +6,37 @@
 			<text class="header-item">{{ Videotitle }}</text>
 			<text class="header-items"></text>
 		</view>
-		<!-- <web-view style="width: 100vw;height: 400upx;" :src="'/hybrid/html/video.html?url=' + videoUrl"></web-view> -->
-		<!-- <video class="vid" @play="playVideo" @error="error" @waiting="waiting" :show-center-play-btn="play" :show-loading="true" :src="videoUrl"
-			@fullscreenchange="fullScreenEvent" id="myVideo"  :autoplay="zidong" :play-strategy="0" :controls="false"
-			:show-play-btn="pmgressbar" :show-fullscreen-btn="pmgressbar">
+		<web-view
+			v-if="platform == 'ios'"
+			ref="webView"
+			class="webView"
+			style="width: 100vw;height: 400upx;"
+			:src="'/hybrid/html/video.html?url=' + videoUrl"
+			@message="reciveMessage"
+		></web-view>
+		<video
+			class="vid"
+			v-else
+			@play="playVideo"
+			@error="error"
+			@waiting="waiting"
+			:show-center-play-btn="play"
+			:show-loading="true"
+			:src="videoUrl"
+			@fullscreenchange="fullScreenEvent"
+			id="myVideo"
+			:autoplay="zidong"
+			:play-strategy="0"
+			:controls="false"
+			:show-play-btn="pmgressbar"
+			:show-fullscreen-btn="pmgressbar"
+		>
 			<cover-view v-if="isShow" class="container">
 				<image @click="recording" class="images1" src="" mode=""></image>
 				<image @click="screenshots" class="images2" src="" mode=""></image>
 				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
 			</cover-view>
-		</video> -->
+		</video>
 		<view class="mask">
 			<!-- 	<view class="mask-loading" v-if="loading">
 				<text class="loading-text">视频加载中...</text>
@@ -80,14 +101,18 @@ export default {
 			bianbei: '',
 			Videotitle: '',
 			// loading: false,
-			hd: 2
+			hd: 2,
 			// played:false
+			platform: ''
 		};
 	},
-	created() {
-	},
+	created() {},
 	mounted() {},
 	methods: {
+		//webview发送过来的数据，内容为是否全屏的判断
+		reciveMessage(e) {
+			console.log(e, '232323');
+		},
 		waiting() {},
 		playVideo() {
 			// this.loading = false;
@@ -334,12 +359,23 @@ export default {
 		videodetail() {
 			if (this.status.ezv == 0) {
 				// 如果为0则是海康
-				request(`/ehome/camera/previewurl/hls/${this.status.camera}`, 'POST', {}, false).then(res => {
-					console.log(res.url)
-					let apiUrl = 'https://esq.cgdg.com';
-					this.videoUrl = 'https://esq.cgdg.com/openUrl/iPsqnBu/live.m3u8';
-					console.log(this.videoUrl,'11111111')
-				});
+				request('/camera/updateHlsPlayUrl', 'POST', { ipcId: this.status.ipcId }, false)
+					.then(res => {
+						console.error(res)
+						if (res.code == 20007) {
+							uni.showToast({
+								title: '设备离线',
+								icon: 'none'
+							});
+						} else {
+						/* 	http://yun-live.oss-cn-shanghai.aliyuncs.com/record/yunlive/record/yunlive/meeting_1070/2020-11-25-09-27-59_2020-11-25-09-35-52.m3u8 */
+							this.videoUrl = 'https://esq.cgdg.com' + res.data.liveStreamUrl;
+							console.error(this.videoUrl)
+						}
+					})
+					.catch(e => {
+						console.error(e);
+					});
 			} else {
 				// 获取萤石云播放url
 				let url = `/getEzNewLiveAddress/${this.status.nvr}/${this.status.channel}/${this.status.ezviz}/${this.hd}`;
@@ -364,6 +400,7 @@ export default {
 		}
 	},
 	onLoad(option) {
+		this.platform = uni.getSystemInfoSync().platform;
 		this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2;
 		this.status = option;
 		// console.log(option.names.length)
