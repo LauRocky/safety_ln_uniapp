@@ -67,10 +67,12 @@
 					if (res.confirm) {
 						uni.sendNativeEvent("colseapp", res => {
 							console.log(res);
+						
 						});
 					} else if (res.cancel) {
-
+						
 					}
+					return true;
 				}
 			});
 			return true;
