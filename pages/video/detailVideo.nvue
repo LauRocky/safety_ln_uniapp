@@ -10,7 +10,7 @@
 			v-if="platform == 'ios'"
 			ref="webView"
 			class="webView"
-			style="width: 100vw;height: 400upx;"
+			style="width: 100vw;height: 500upx;"
 			:src="'/hybrid/html/video.html?url=' + videoUrl"
 			@message="reciveMessage"
 		></web-view>
@@ -37,7 +37,7 @@
 				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
 			</cover-view>
 		</video>
-		<view class="mask">
+		<view class="mask" v-if="platform !== 'ios'">
 			<!-- 	<view class="mask-loading" v-if="loading">
 				<text class="loading-text">视频加载中...</text>
 			</view> -->
