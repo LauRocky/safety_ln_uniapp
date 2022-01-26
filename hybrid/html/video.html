@@ -18,8 +18,8 @@
 	</head>
 	<body>
 		<div class="all">
-			<video id='myVideo' class='video-js vjs-default-skin vjs-big-play-centered' controls autoplay muted
-				x-webkit-airplay="true" x5-video-player-fullscreen="true" preload="auto" playsinline="true"
+			<video id='myVideo' class='video-js vjs-default-skin vjs-big-play-centered' controls muted
+				x-webkit-airplay="true" x5-video-player-fullscreen="true" preload="auto" playsinline="true" x5-playsinline 
 				webkit-playsinline x5-video-player-type="h5" style="object-fit:fill;width:375px; height:200px">
 				<source id="sourceS" type="application/x-mpegURL" src="">
 			</video>
@@ -30,8 +30,9 @@
 <script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js"></script>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/video-js.min.css" rel="stylesheet">
-<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/video.min.js"></script>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script>
 
 <script type="text/javascript">
 	document.addEventListener('UniAppJSBridgeReady', function() {
