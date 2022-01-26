@@ -139,7 +139,7 @@
 
 <script>
 	import {
-		scanCode
+		scanCode,is_iOS
 	} from '../../utils/utils.js'
 	export default {
 		components: {},
@@ -155,6 +155,9 @@
 			};
 		},
 		onBackPress(e) {
+			if (is_iOS()) {
+				return;
+			}
 			uni.showModal({
 				content: '是否要退出应用？',
 				confirmText: '确定',
