@@ -69,8 +69,7 @@ export default {
 			}
 		},
 		videodetail(item) {
-			// if(item.)
-			// console.error(JSON.stringify(item));
+		
 			// 如果设备处于离线,弹出提示,不让他跳转
 			if (item.status == 0) {
 				uni.showToast({
@@ -80,13 +79,88 @@ export default {
 			} else {
 				
 				if (item.cameraIndexCode) {
+					//安卓端不需要跳转。需判断。
 					uni.navigateTo({
 						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&ipcId=${item.ipcId}`
 					});
+					//以下代码在安卓端生效
+					let url = "/ehome/camera/previewurl/rtsp/rtsp/" + item.cameraIndexCode;
+					console.error(url);
+					request(url,
+							'POST', {}, false)
+						.then(res => {
+							let apiUrl = 'https://esq.cgdg.com';
+										
+							let body = {
+								'stream': 'rtsp',
+								'type': 'video',
+								'body': res,
+								'cameraIndexCode': item.cameraIndexCode,
+								'channel': null,
+								'nvr': null,
+								'token': uni.getStorageSync('token'),
+								"ezvizAccountId":null,
+								"name":item.ipcName,
+								"id":item.ipcId
+							};
+							uni.sendNativeEvent(JSON.stringify(body), rest => {
+								console.log(rest);
+							});
+										
+						}).catch(e => {
+							console.error(e);
+							uni.showToast({
+								title: '获取播放地址失败',
+								icon: 'none'
+							})
+						})
+					
+					
 				} else if (item.ezvizAccountId) {
+					//安卓端不需要跳转。需判断。
 					uni.navigateTo({
 						url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}&channel=${item.channel}`
 					});
+					//以下代码在安卓端生效
+					let url =
+						`/getEzNewLiveAddress/${item.nvrDeviceSerial}/${item.channel}/${item.ezvizAccountId}/2`;
+					console.error(url)
+					request(url,
+							'POST', {}, false)
+						.then(res => {
+							console.error(res);
+							if (res.result.code == 20007) {
+								uni.showToast({
+									title: '设备离线',
+									icon: 'none'
+								})
+							} else {
+										
+								let body = {
+									'stream': 'hls',
+									'body': res,
+									'type': 'video',
+									'cameraIndexCode': null,
+									'channel': item.channel,
+									'nvr': item.nvrDeviceSerial,
+									'token': uni.getStorageSync('token'),
+									"ezvizAccountId":item.ezvizAccountId,
+									"name":item.ipcName,
+									"id":item.ipcId
+								};
+								uni.sendNativeEvent(JSON.stringify(body), rest => {
+									console.log(rest);
+								});
+										
+							}
+						})
+						.catch(e => {
+							console.error(e);
+							uni.showToast({
+								title: '获取播放地址失败',
+								icon: 'none'
+							})
+						})
 				} else {
 					uni.showToast({
 						title: '获取播放地址失败',
