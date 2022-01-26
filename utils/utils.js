@@ -1,4 +1,4 @@
-export function scanCode() {   //扫码
+export function scanCode() { //扫码
 	return new Promise((resolve, reject) => {
 		uni.scanCode({
 			success: function(res) {
@@ -12,11 +12,17 @@ export function scanCode() {   //扫码
 		});
 	})
 }
-export function removeTag(text) {    //去除标签
+export function removeTag(text) { //去除标签
 	var reg = /<[^<>]+>/g
 	text = text.replace(reg, '')
 	text = text.replace(/&nbsp;/ig, '')
 	text = text.replace(/&ldquo;/ig, '')
 	text = text.replace(/&rdquo;/ig, '')
 	return text
+}
+export function is_iOS() {
+	if (uni.getSystemInfoSync().platform == 'ios') {
+		return true
+	}
+	return false
 }
