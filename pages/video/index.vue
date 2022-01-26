@@ -60,6 +60,7 @@
 					} else if (res.cancel) {
 			
 					}
+					return true;
 				}
 			});
 			return true;
