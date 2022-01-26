@@ -29,6 +29,7 @@
 <script>
 	import navBar from '../../components/navBar/navBar.vue'
 	import mypicker from '../../components/mypicker/mypicker.vue';
+	import { is_iOS } from '../../utils/utils.js';
 	export default {
 		components: {
 			navBar,
@@ -49,6 +50,9 @@
 			}
 		},
 		onBackPress(e) {
+			if (is_iOS()) {
+				return;
+			}
 			uni.showModal({
 				content: '是否要退出应用？',
 				confirmText: '确定',

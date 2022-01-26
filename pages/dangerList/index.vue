@@ -3,7 +3,7 @@
 		<u-navbar class="navbar" :fixed="true" style="display:flex;align-items: center;color: #FFFFFF;" :placeholder="true" :safeAreaInsetTop="true" bgColor="#11B38C" leftIcon="">
 			<view class="u-nav-left" @click="darshow = !darshow" style="color: #FFFFFF;font-size: 32upx;" slot="left">
 				{{ title }}
-			<image class="nav-left-img" style="width: 25upx; height: 15upx;" src="../../static/danger/showAll.png" mode=""></image>
+				<image class="nav-left-img" style="width: 25upx; height: 15upx;" src="../../static/danger/showAll.png" mode=""></image>
 			</view>
 		</u-navbar>
 		<!-- <view class="fixed-nvb">
@@ -50,6 +50,7 @@
 import navBar from '../../components/navBar/navBar.vue';
 import mypicker from '../../components/mypicker/mypicker.vue';
 import { getDictList } from '../../utils/api.js';
+import { is_iOS } from '../../utils/utils.js';
 export default {
 	components: {
 		navBar,
@@ -57,7 +58,7 @@ export default {
 	},
 	data() {
 		return {
-			qualityDictList:[],
+			qualityDictList: [],
 			title: '全部',
 			category: '',
 			darshow: false,
@@ -102,17 +103,19 @@ export default {
 		};
 	},
 	onBackPress(e) {
+		if (is_iOS()) {
+			return;
+		}
 		uni.showModal({
 			content: '是否要退出应用？',
 			confirmText: '确定',
 			cancelText: '取消',
 			success: function(res) {
 				if (res.confirm) {
-					uni.sendNativeEvent("colseapp", res => {
+					uni.sendNativeEvent('colseapp', res => {
 						console.log(res);
 					});
 				} else if (res.cancel) {
-		
 				}
 				return true;
 			}
@@ -130,8 +133,8 @@ export default {
 		handgreList(val, i) {
 			this.numsList = [];
 			this.darshow = false;
-			this.page = 1
-			this.title = val.name
+			this.page = 1;
+			this.title = val.name;
 			this.category = val.value;
 			this.handDangerList();
 		},
@@ -160,12 +163,11 @@ export default {
 		handgETLIST() {
 			//获取公司项目数据
 			getDictList('QUALITY_PROBLEM_LEVEL')
-			.then(res=>{
-				this.qualityDictList=res.dict;
-			})
-			.catch(e=>{});
-			
-			
+				.then(res => {
+					this.qualityDictList = res.dict;
+				})
+				.catch(e => {});
+
 			getDictList('PROBLEMS_LEVEL_TYPE')
 				.then(res => {
 					this.dictLsit = res.dict;
@@ -216,10 +218,10 @@ export default {
 							res.page.list.forEach(val => {
 								let obj = {};
 								if (val.problemType) {
-									if(val.category&&val.category=='安全'){
+									if (val.category && val.category == '安全') {
 										obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
 										val.problemType2 = obj[0].value;
-									}else if(val.category&&val.category=='质量'){
+									} else if (val.category && val.category == '质量') {
 										obj = this.qualityDictList.filter(item => val.problemType == item.code); //判断安全等级对比
 										val.problemType2 = obj[0].value;
 									}
@@ -304,7 +306,6 @@ export default {
 	height: 100%;
 	overflow: hidden;
 	.navbar {
-	
 	}
 	.bav-list {
 		z-index: 999;
@@ -314,7 +315,7 @@ export default {
 		position: absolute;
 		top: 120upx;
 		left: 20upx;
-		color: #FFFFFF;
+		color: #ffffff;
 		background: #4c4c4c;
 		border-radius: 15rpx;
 		.bav-1 {
