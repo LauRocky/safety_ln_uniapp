@@ -107,7 +107,7 @@
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
 				"navigationBarTitleText": "",
-				"navigationStyle": "custom",		
+				"navigationStyle": "custom",
 				"app-plus": {
 					"titleNView": false,
 					"bounce": "none"
@@ -273,7 +273,7 @@
 			}
 
 		}
-    ],
+	],
 	"tabBar": {
 		"color": "#A9A9A9",
 		"selectedColor": "#00B490",
@@ -312,6 +312,9 @@
 			"selectedIconPath": "static/tabBar/my1.png",
 			"visible": true
 		}]
+	},
+	"globalStyle":{
+		/* "pageOrientation":"auto" */
 	}
 	/* "condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)

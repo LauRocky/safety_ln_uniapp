@@ -1,0 +1,266 @@
+<template>
+	<view>
+		<KJ-HikVideoPlayer
+			ref="HikVideoPlayer"
+			:style="{ width: '100vw', height: palyerHeight }"
+			style="background-color: #464950"
+			@player="er"
+			@intercomClient="onIntercomClient"
+		></KJ-HikVideoPlayer>
+		<!-- <button type="primary" @click="setHardDecodePlay">设置解码方式</button>
+		<button type="primary" @click="setSmartDetect">设置是否显示智能信息</button>
+		<button type="primary" @click="startRealPlay">开启预览</button>
+		<button type="primary" @click="startPlayback">开启录像回放</button>
+		<button type="primary" @click="seekToTime">按绝对时间回放定位</button>
+		<button type="primary" @click="stopPlay">停止取流和播放</button>
+		<button type="primary" @click="pause">暂停回放</button>
+		<button type="primary" @click="resume">恢复回放</button>
+		<button type="primary" @click="openSound">开启声音</button>
+		<button type="primary" @click="turnOffSound">关闭声音</button>
+		<button type="primary" @click="getOSDTime">获取视频中屏幕显示时间</button>
+		<button type="primary" @click="capturePicture">抓图</button>
+		<button type="primary" @click="startRecord">开始录像</button>
+		<button type="primary" @click="stopRecord">结束录像</button>
+		<button type="primary" @click="startVoiceIntercom">开启语音对讲</button>
+		<button type="primary" @click="stopVoiceIntercom">关闭语音对讲</button> -->
+	</view>
+</template>
+
+<script>
+export default {
+	props: ['videoUrl'],
+	data() {
+		return {
+			classbg:false,
+			RealPlayUrl: '',
+			PlaybackUrl: '',
+			imageSrc: '',
+			palyerHeight: '500rpx'
+		};
+	},
+	onLoad(option) {},
+	created() {},
+	mounted() {
+		uni.showLoading({
+			title: '加载中',
+			mask: true
+		});
+		setTimeout(() => {
+			this.startRealPlay();
+		}, 500);
+	},
+	methods: {
+		/**
+		 * 全屏
+		 * */
+		full() {
+			this.palyerHeight = '750rpx'
+			plus.screen.lockOrientation("landscape-primary");  
+		},
+		/**
+		 * 退出全屏
+		 * */
+		exitfull() {
+			plus.screen.lockOrientation('portrait-primary');
+			this.palyerHeight = '500rpx';
+		},
+		/**
+		 * 播放状态回调
+		 * */
+		er(e) {
+			//{"playStatus":"SUCCESS","errorCode":"HVPErrorCodeSuccess"}
+			//错误码参考插件市场文档
+			console.log('er: ' + JSON.stringify(e.detail));
+				uni.hideLoading();
+			if (e.detail.playStatus == 'SUCCESS') {
+			} else {
+				uni.showToast({
+					title: '播放失败',
+					icon: 'none'
+				});
+			}
+		},
+		/**
+		 * 语音对讲状态回调
+		 * */
+		onIntercomClient(e) {
+			console.log('onIntercomClient: ' + JSON.stringify(e.detail));
+		},
+		/**
+		 * 设置解码方式 true：硬解码 false：软解码
+		 * **/
+		setHardDecodePlay() {
+			this.$refs.HikVideoPlayer.setHardDecodePlay(true);
+		},
+		/**
+		 * 设置是否显示智能信息
+		 * **/
+		setSmartDetect() {
+			this.$refs.HikVideoPlayer.setSmartDetect(true);
+		},
+		/**
+		 * 开启预览
+		 * */
+		startRealPlay() {
+			var _this = this;
+			this.$refs.HikVideoPlayer.stopPlay(res => {
+				console.log('stopPlay: ' + JSON.stringify(res));
+				_this.$refs.HikVideoPlayer.startRealPlay(this.videoUrl, res => {
+					console.log('startRealPlay: ' + res);
+				});
+			});
+		},
+		/**
+		 * 开启录像回放
+		 * 时间格式：yyyy-MM-dd HH:mm:ss
+		 * */
+		startPlayback() {
+			var _this = this;
+			this.$refs.HikVideoPlayer.stopPlay(res => {
+				console.log('stopPlay: ' + JSON.stringify(res));
+				_this.$refs.HikVideoPlayer.startPlayback(PlaybackUrl, '2020-07-28 1:00:00', '2020-07-28 23:59:59', res => {
+					console.log('startPlayback: ' + JSON.stringify(res));
+				});
+			});
+		},
+		/**
+		 * 按绝对时间回放定位
+		 * 使用按绝对时间回放定位接口之前，必须先调用开始回放接口
+		 * */
+		seekToTime() {
+			this.$refs.HikVideoPlayer.seekToTime('2020-07-28 4:00:00', res => {
+				console.log('seekToTime: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 * 停止取流和播放
+		 * */
+		stopPlay() {
+			this.$refs.HikVideoPlayer.stopPlay(res => {
+				console.log('stopPlay: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 * 暂停回放
+		 * */
+		pause() {
+			this.$refs.HikVideoPlayer.pause(res => {
+				console.log('pause: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 * 恢复回放
+		 * */
+		resume() {
+			this.$refs.HikVideoPlayer.resume(res => {
+				console.log('resume: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 * 开启声音
+		 * */
+		openSound() {
+			this.$refs.HikVideoPlayer.enableSound(true, res => {
+				console.log('openSound: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 * 关闭声音
+		 * */
+		turnOffSound() {
+			this.$refs.HikVideoPlayer.enableSound(false, res => {
+				console.log('turnOffSound: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 *获取视频中屏幕显示时间
+		 * */
+		getOSDTime() {
+			var _this = this;
+			var interval3 = setInterval(function() {
+				_this.$refs.HikVideoPlayer.getOSDTime(res => {
+					console.log('getOSDTime: ' + JSON.stringify(res));
+				});
+			}, 1000);
+		},
+		/**
+		 *抓图
+		 *注意：filePath 一定要是_doc绝对目录
+		 * */
+		capturePicture() {
+			var filePath = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
+			var fileName = 'test.png';
+			var dic = {
+				filePath: filePath,
+				fileName: fileName
+			};
+
+			var _this = this;
+			this.$refs.HikVideoPlayer.capturePicture(dic, res => {
+				console.log('capturePicture: ' + JSON.stringify(res));
+				_this.imageSrc = 'file://' + filePath + '/' + fileName;
+				console.log(_this.imageSrc);
+			});
+		},
+		/**
+		 *开始录像
+		 *注意：filePath 一定要是_doc绝对目录
+		 * */
+		startRecord() {
+			var filePath = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
+			console.log(filePath, '22121212');
+			var dic = {
+				filePath: filePath,
+				fileName: 'test.mp4'
+			};
+			var _this = this;
+			this.$refs.HikVideoPlayer.startRecord(dic, res => {
+				uni.setStorageSync();
+				console.log('startRecord: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 *结束录像
+		 * */
+		stopRecord() {
+			this.$refs.HikVideoPlayer.stopRecord(res => {
+				console.log('stopRecord: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 *开启语言对讲
+		 * */
+		startVoiceIntercom() {
+			this.$refs.HikVideoPlayer.startVoiceIntercom(VoiceIntercomUrl, res => {
+				console.log('startVoiceIntercom: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 *关闭语言对讲
+		 * */
+		stopVoiceIntercom() {
+			this.$refs.HikVideoPlayer.stopVoiceIntercom(res => {
+				console.log('stopVoiceIntercom: ' + JSON.stringify(res));
+			});
+		}
+	}
+};
+</script>
+
+<style>
+.bg {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.EZOpen {
+	background-color: #3f536e;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+</style>
