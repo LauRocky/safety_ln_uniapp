@@ -6,14 +6,15 @@
 			<text class="header-item">{{ Videotitle }}</text>
 			<text class="header-items"></text>
 		</view>
-		<web-view
+		<!-- <web-view
 			v-if="platform == 'ios'"
 			ref="webView"
 			class="webView"
-			style="width: 100vw;height: 400upx;"
+			style="width: 100vw;height: 500upx;"
 			:src="'/hybrid/html/video.html?url=' + videoUrl"
 			@message="reciveMessage"
-		></web-view>
+		></web-view> -->
+		<EZopen ref="EZOpen" v-if="platform == 'ios'" :videoUrl="videoUrl"></EZopen>
 		<video
 			class="vid"
 			v-else
@@ -37,7 +38,7 @@
 				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
 			</cover-view>
 		</video>
-		<view class="mask">
+		<view class="mask" v-if="platform !== 'ios'">
 			<!-- 	<view class="mask-loading" v-if="loading">
 				<text class="loading-text">视频加载中...</text>
 			</view> -->
@@ -46,6 +47,11 @@
 			<image v-else @click="clarity(2)" class="clarity" src="../../static/video/hd.png" mode=""></image>
 			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
 		</view>
+
+		<view class="mask" v-else>
+			<!-- <image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image> -->
+		</view>
+
 		<view class="middle">
 			<view class="middle-content">
 				<image @touchstart="down(1)" @touchend="up(1)" class="content-img" src="../../static/video/shadowon.png" mode=""></image>
@@ -80,9 +86,13 @@
 	</view>
 </template>
 <script>
+import EZopen from '../../components/EZopen/EZOpen.nvue';
 import { request } from '../../utils/request.js';
+import { is_iOS } from '../../utils/utils.js';
 export default {
-	components: {},
+	components: {
+		EZopen
+	},
 	data() {
 		return {
 			loadingList: '',
@@ -103,7 +113,7 @@ export default {
 			// loading: false,
 			hd: 2,
 			// played:false
-			platform: ''
+			platform: '',
 		};
 	},
 	created() {},
@@ -320,9 +330,13 @@ export default {
 		},
 		// 全屏
 		full() {
-			this.videoContext = uni.createVideoContext('myVideo', this);
-			this.videoContext.requestFullScreen();
-			this.zidong = true;
+			if (is_iOS()) {
+				this.$refs.EZOpen.changeZoom();
+			} else {
+				this.videoContext = uni.createVideoContext('myVideo', this);
+				this.videoContext.requestFullScreen();
+				this.zidong = true;
+			}
 		},
 		// 截屏
 		screenshots() {},
@@ -358,7 +372,24 @@ export default {
 		},
 		videodetail() {
 			if (this.status.ezv == 0) {
-				request('/camera/updateHlsPlayUrl', 'POST', { ipcId: this.status.ipcId }, false)
+				// request('/camera/updateHlsPlayUrl', 'POST', { ipcId: this.status.ipcId }, false)
+				// 	.then(res => {
+				// 		if (res.code == 20007) {
+				// 			uni.showToast({
+				// 				title: '设备离线',
+				// 				icon: 'none'
+				// 			});
+				// 		} else {
+
+				// 			/* 	http://yun-live.oss-cn-shanghai.aliyuncs.com/record/yunlive/record/yunlive/meeting_1070/2020-11-25-09-27-59_2020-11-25-09-35-52.m3u8 */
+				// 			this.videoUrl = 'https://esq.cgdg.com' + res.data.liveStreamUrl;
+				// 			console.error(this.videoUrl);
+				// 		}
+				// 	})
+				// 	.catch(e => {
+				// 		console.error(e);
+				// 	});
+				request(`/ehome/camera/previewurl/rtsp/rtsp/${this.status.camera}`, 'POST', {}, false)
 					.then(res => {
 						if (res.code == 20007) {
 							uni.showToast({
@@ -366,10 +397,8 @@ export default {
 								icon: 'none'
 							});
 						} else {
-							
-							/* 	http://yun-live.oss-cn-shanghai.aliyuncs.com/record/yunlive/record/yunlive/meeting_1070/2020-11-25-09-27-59_2020-11-25-09-35-52.m3u8 */
-							this.videoUrl = 'https://esq.cgdg.com' + res.data.liveStreamUrl;
-							console.error(this.videoUrl);
+							this.videoUrl = res.url;
+			
 						}
 					})
 					.catch(e => {
@@ -418,7 +447,13 @@ export default {
 	width: 750upx;
 	background-color: #00b48f;
 }
-
+.EZOpen {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
 .header-top {
 	background-color: #00b48f;
 	width: 750upx;

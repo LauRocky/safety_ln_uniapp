@@ -75,6 +75,12 @@
                 },
                 "ad" : {}
             },
+            "screenOrientation" : [
+                "portrait-primary",
+                "landscape-primary",
+                "portrait-secondary",
+                "landscape-secondary"
+            ],
             "icons" : {
                 "android" : {
                     "hdpi" : "unpackage/res/icons/72x72.png",
@@ -111,7 +117,22 @@
                 "useOriginalMsgbox" : true
             }
         },
-        "nativePlugins" : {}
+        "nativePlugins" : {
+            "KJ-HikVideoPlayer" : {
+                "__plugin_info__" : {
+                    "name" : "海康(HIKVISION)实时视频预览、录像回放、语音对讲",
+                    "description" : "提供iOS、android版本的实时视频预览、录像回放、语音对讲 QQ群号:470893776",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=2403",
+                    "android_package_name" : "com.ln.safety",
+                    "ios_bundle_id" : "com.cgdg.esq.anzhi",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "2403",
+                    "parameters" : {}
+                }
+            }
+        }
     },
     /* 快应用特有相关 */
     "quickapp" : {},

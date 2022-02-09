@@ -17,10 +17,11 @@
 		</style>
 	</head>
 	<body>
-		<div class="all">
+		<div class="all" style="height: 250px;">
 			<video id='myVideo' class='video-js vjs-default-skin vjs-big-play-centered' controls muted
-				x-webkit-airplay="true" x5-video-player-fullscreen="true" preload="auto" playsinline="true" x5-playsinline 
-				webkit-playsinline x5-video-player-type="h5" style="object-fit:fill;width:375px; height:200px">
+				x-webkit-airplay="true" x5-video-player-fullscreen="true" preload="auto" playsinline="true"
+				x5-playsinline webkit-playsinline x5-video-player-type="h5"
+				style="object-fit:fill;width:100%; height:100%">
 				<source id="sourceS" type="application/x-mpegURL" src="">
 			</video>
 		</div>
@@ -36,16 +37,17 @@
 
 <script type="text/javascript">
 	document.addEventListener('UniAppJSBridgeReady', function() {
-		let obj = location.search;
-		let videoArr = obj.split('=')[1].split(',')[0]
-		let sourceS = document.getElementById('sourceS')
-		sourceS.src = videoArr
-		//将是否全屏传到uniapp中
-		uni.postMessage({
-			data: {
-				action: '222'
-			}
-		});
+				let obj = location.search;
+				let videoArr = obj.split('=')[1].split(',')[0]
+				let sourceS = document.getElementById('sourceS')
+				sourceS.src = videoArr
+				
+					//将是否全屏传到uniapp中
+					uni.postMessage({
+						data: {
+							action: '222'
+						}
+					});
 
-	});
+				});
 </script>
