@@ -18,7 +18,7 @@
 		<u-popup :show="show" :closeable="true" mode="center" @close="close" @open="open">
 			<view class="main">
 				<view class="titles">
-					<text>待办通知</text>
+					<text>设备离线通知</text>
 				</view>
 				<view class="text-a">
 					<text>{{content}}</text>
