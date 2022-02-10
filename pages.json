@@ -163,6 +163,30 @@
 			}
 		},
 		{
+			"path": "pages/my/alertsNotice",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "消息通知",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/my/MonitorWarning",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "消息详情",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},
+		{
 			"path": "pages/my/feedbackAdd",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",

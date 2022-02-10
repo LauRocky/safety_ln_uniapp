@@ -258,9 +258,9 @@ export default {
 				line-height: 100upx;
 				background: #27a387;
 				border-radius: 50upx;
-				font-size: 51upx;
+				font-size: 40upx;
 				font-family: PingFang SC;
-				font-weight: bold;
+				font-weight: 500;
 				color: #feffff;
 			}
 			.par-cet {

@@ -54,12 +54,24 @@
 						意见反馈
 					</view>
 				</view>
-				<!-- <view class="image-item" @click="skill">
-					<image class="image-imgs" src="../../static/my/project4.png" mode=""></image>
-					<view class="image-text">
-						技术支持
+				<view class="image-item" @click="alerts" style="position: relative;">
+					<view class="box">
+						<u-badge numberType="overflow" type="error" max="99" :value="value"></u-badge>
 					</view>
-				</view> -->
+					<image class="image-imgs" src="../../static/my/alerts.png" mode=""></image>
+					<view class="image-text">
+						待办通知
+					</view>
+				</view>
+				<view class="image-item" @click="offline" style="position: relative;">
+					<view class="box">
+						<u-badge numberType="overflow" type="error" max="99" :value="nums"></u-badge>
+					</view>
+					<image class="image-imgs" src="../../static/my/offline.png" mode=""></image>
+					<view class="image-text">
+						监控预警
+					</view>
+				</view>
 			</view>
 
 			<view class="app-plug" style="margin-top: 20upx;">
@@ -139,19 +151,22 @@
 
 <script>
 	import {
-		scanCode,is_iOS
+		scanCode,
+		is_iOS
 	} from '../../utils/utils.js'
 	export default {
 		components: {},
 		data() {
 			return {
 				showPopup: false,
+				value: '',  //待办
 				user: JSON.parse(uni.getStorageSync('userInfo')),
 				show: false, //true是显示,false是隐藏
 				status: 1,
 				danger: 2,
 				public: 3,
 				deptNames: "",
+				nums:"",  //监控未读数量
 			};
 		},
 		onBackPress(e) {
@@ -168,12 +183,12 @@
 							console.log(res);
 						});
 					} else if (res.cancel) {
-			
+
 					}
 					return true;
 				}
 			});
-		return true;
+			return true;
 		},
 		methods: {
 			checkboxChange(e) {
@@ -279,7 +294,9 @@
 			// 更新
 			check() {
 				//android 更新
-				uni.sendNativeEvent({"checkUpdate":true}, res => {
+				uni.sendNativeEvent({
+					"checkUpdate": true
+				}, res => {
 					console.log(res)
 				});
 			},
@@ -293,6 +310,62 @@
 			// skill() {
 			// 	this.show = true
 			// },
+			//进入页面后,调取数据,拿到待办未读数量
+			alertsNotice() {
+				this.$http('/upcoming/page', 'POST', {
+						readStatus: 0,
+						page: "",
+						limit: "",
+					}, false).then(res => {
+						if (res.code == 0) {
+							console.log(res)
+							this.value = res.page.totalCount
+							uni.showTabBarRedDot({
+								index: 4,
+							})
+						}
+					})
+					.catch(err => {
+						console.log(err)
+					})
+			},
+			// 进入页面后,调取数据,拿到监控未读数量
+			monitoring() {
+				this.$http('/notification/cameraAlarmList', 'GET', {}, false).then(res => {
+						if (res.code == 0) {
+							if (res.data == 0) {
+							
+							} else {
+								let nums=0;
+								res.data.forEach(el => {
+									if (el.alarmStatus == 0) {
+										nums++;
+										uni.showTabBarRedDot({
+											index: 4,
+										})
+									}
+									this.nums=nums
+								})
+							}
+						}
+					})
+					.catch(err => {
+						console.log(err)
+					})
+			},
+			
+			// 消息通知
+			alerts() {
+				uni.navigateTo({
+					url: '/pages/my/alertsNotice'
+				})
+			},
+			// 监控预警
+			offline() {
+				uni.navigateTo({
+					url: '/pages/my/MonitorWarning'
+				})
+			},
 			// 分享
 			share() {
 				console.log(111)
@@ -324,7 +397,7 @@
 					success: function(res) {
 						if (res.confirm) {
 							uni.sendNativeEvent("logout", c => {
-								
+
 							});
 							uni.clearStorageSync();
 							uni.removeStorageSync('userInfo');
@@ -343,6 +416,8 @@
 			this.deptInfo()
 		},
 		onShow() {
+			this.alertsNotice();
+			this.monitoring();
 			//刷新用户数据
 			this.user = JSON.parse(uni.getStorageSync('userInfo'))
 		}
@@ -446,7 +521,27 @@
 	}
 
 	.image-item {
+		width: 25%;
+		height: 80%;
+		padding-bottom: 20upx;
 		text-align: center;
+
+		.box {
+			position: absolute;
+			z-index: 5;
+			top: 0;
+			right: 20upx;
+			border-radius: 50%;
+			font-size: 14upx;
+
+			/deep/ .u-badge--not-dot {
+				padding: 4upx 8upx;
+			}
+
+			/deep/ .u-badge--error {
+				background-color: #f43530;
+			}
+		}
 	}
 
 	.iphone {
@@ -490,7 +585,7 @@
 		height: 128upx;
 		position: relative;
 		background-color: #ffffff;
-		margin-top: 40upx;
+		margin-top: 20upx;
 		padding: 24upx;
 		padding-bottom: 32upx;
 		font-size: 28upx;
@@ -510,16 +605,17 @@
 
 	.images {
 		display: flex;
-		justify-content: space-around;
+		flex-wrap: wrap;
+		align-content: flex-start;
 		color: #929292;
 		width: 90xw;
-		height: 240upx;
+		// height: 240upx;
 		background: #FFFFFF;
 		box-shadow: 0px 0px 11upx 0px rgba(0, 0, 0, 0.06);
 		border-radius: 10upx;
 		padding-top: 52upx;
 		margin: 0 auto;
-		margin-top: 20upx;
+		margin-top: 10upx;
 	}
 
 	.image-imgs {
@@ -622,6 +718,7 @@
 	}
 
 	.my {
+		overflow: hidden;
 		margin: 20upx;
 	}
 
