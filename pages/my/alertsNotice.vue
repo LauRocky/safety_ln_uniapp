@@ -37,15 +37,22 @@
 			return {
 				name: "待办通知",
 				list: [],
-				pageSize: 10,
-				totalCount: 0,
-				totalPage: 1,
+				limit: 10,
+				page: 1,
 				content: "",
 				show: false,
 				// showL:false,
 			};
 		},
 		onLoad() {
+		
+		},
+		onShow(){
+			this.page=1;
+			this.list=[];
+			this.alerts();
+		},
+		onReachBottom() {
 			this.alerts();
 		},
 		methods: {
@@ -68,13 +75,20 @@
 				});
 			},
 			alerts() {
+				uni.showLoading({
+					title: '加载中',
+				});
 				this.$http('/upcoming/page', 'POST', {
 						readStatus: "",
-						page: "",
-						limit: "",
+						page:this.page,
+						limit:this.limit,
 					}, false).then(res => {
+						uni.hideLoading();
 						if (res.code == 0) {
-							this.list = res.page.list
+							if (this.list.length < res.page.totalCount) {
+								this.page++;
+								this.list = this.list.concat(res.page.list);
+							}
 						}
 					})
 					.catch(err => {

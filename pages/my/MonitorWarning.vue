@@ -39,13 +39,18 @@
 				id: '',
 				show: false,
 				list: [],
-				pageSize: 10,
-				totalCount: 0,
-				totalPage: 1,
+				limit: 10,
+				page: 1,
 				content: "",
 			};
 		},
 		onShow() {
+			this.page=1;
+			this.list=[];
+			this.monitoring()
+		},
+		// 页面上拉处理事件函数
+		onReachBottom() {
 			this.monitoring()
 		},
 		// computed:{
@@ -57,10 +62,19 @@
 		// },
 		methods: {
 			monitoring() {
-				this.$http('/notification/cameraAlarmList', 'GET', {}, false).then(res => {
-						console.log(res)
+				uni.showLoading({
+					title: '加载中',
+				});
+				this.$http('/notification/cameraAlarmPage', 'GET', {
+					page:this.page,
+					limit:this.limit,
+				}, false).then(res => {
+					uni.hideLoading();
 						if (res.code == 0) {
-							this.list=res.data
+							if (this.list.length < res.page.totalCount) {
+								this.page++;
+								this.list = this.list.concat(res.page.list);
+							}
 						}
 					})
 					.catch(err => {

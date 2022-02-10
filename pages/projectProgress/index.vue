@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<nav-bar  :title="title" @seach="handsearch" @Upqie="handUpqie"></nav-bar>
+		<nav-bar :title="title" @seach="handsearch" @Upqie="handUpqie"></nav-bar>
 		<view class="project-container">
 			<view class="project" @click="goDetail(project.projectId,project.projectName,project.companyId)"
 				:class="{first : index == 0}" v-for="(project,index) in projectList" :key="index">
@@ -29,7 +29,13 @@
 <script>
 	import navBar from '../../components/navBar/navBar.vue'
 	import mypicker from '../../components/mypicker/mypicker.vue';
-	import { is_iOS } from '../../utils/utils.js';
+	import {
+		is_iOS
+	} from '../../utils/utils.js';
+	import {
+		monitoring,
+		alerts
+	} from '../../utils/api.js'
 	export default {
 		components: {
 			navBar,
@@ -63,7 +69,7 @@
 							console.log(res);
 						});
 					} else if (res.cancel) {
-			
+
 					}
 					return true;
 				}
@@ -73,11 +79,12 @@
 		methods: {
 			//待办与监控
 			// 监控预警
-			monitoring() {
-				this.$http('/notification/cameraAlarmList', 'GET', {}, false).then(res => {
+			warning() {
+				monitoring().then(res => {
+						console.log("444", res)
 						if (res.code == 0) {
 							if (res.data == 0) {
-			
+
 							} else {
 								res.data.forEach(el => {
 									if (el.alarmStatus == 0) {
@@ -94,12 +101,8 @@
 					})
 			},
 			// 待办提醒
-			alerts() {
-				this.$http('/upcoming/page', 'POST', {
-						readStatus: "",
-						page: "",
-						limit: "",
-					}, false).then(res => {
+			remind() {
+				alerts().then(res => {
 						if (res.code == 0) {
 							if (res.page.totalCount == 0) {} else {
 								res.page.list.forEach(el => {
@@ -149,14 +152,14 @@
 					mask: true
 				})
 				this.$http('/project/plan/withStatusNew', 'POST', this.queryForm, false).then(res => {
-					console.log(res)
-					uni.hideLoading()
-					this.rawList = res.page
-					this.projectList = this.rawList
-				})
-				.catch(err=>{
-					console.log(err)
-				})
+						console.log(res)
+						uni.hideLoading()
+						this.rawList = res.page
+						this.projectList = this.rawList
+					})
+					.catch(err => {
+						console.log(err)
+					})
 			},
 			handsearch(val) {
 				if (val) {
@@ -200,17 +203,18 @@
 			this.getProjectList()
 		},
 		onShow() {
-			this.alerts()
-			this.monitoring();
+			this.remind();
+			this.warning()
 		}
 
 	}
 </script>
 
 <style scoped>
-	.project-container{
+	.project-container {
 		padding-bottom: 80upx;
 	}
+
 	.first {
 		margin-top: 30rpx !important;
 	}
@@ -243,7 +247,7 @@
 		display: flex;
 		align-items: center;
 		padding-bottom: 21rpx;
-		justify-content: space-between;		
+		justify-content: space-between;
 	}
 
 	.project .title text {

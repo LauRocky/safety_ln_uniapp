@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { monitoring,alerts} from '../../utils/api.js'
 import navBar from '../../components/navBar/navBar.vue';
 import mypicker from '../../components/mypicker/mypicker.vue';
 import { getDictList } from '../../utils/api.js';
@@ -124,8 +125,8 @@ export default {
 	},
 	onLoad() {},
 	onShow() {
-		this.alerts()
-		this.monitoring();
+		this.remind();
+		this.warning()
 		this.handclick({
 			value: this.status
 		});
@@ -134,8 +135,9 @@ export default {
 	methods: {
 		//待办与监控 
 		// 监控预警
-		monitoring() {
-			this.$http('/notification/cameraAlarmList', 'GET', {}, false).then(res => {
+		warning() {
+			monitoring().then(res => {
+					console.log("444", res)
 					if (res.code == 0) {
 						if (res.data == 0) {
 		
@@ -155,12 +157,8 @@ export default {
 				})
 		},
 		// 待办提醒
-		alerts() {
-			this.$http('/upcoming/page', 'POST', {
-					readStatus: "",
-					page: "",
-					limit: "",
-				}, false).then(res => {
+		remind() {
+			alerts().then(res => {
 					if (res.code == 0) {
 						if (res.page.totalCount == 0) {} else {
 							res.page.list.forEach(el => {

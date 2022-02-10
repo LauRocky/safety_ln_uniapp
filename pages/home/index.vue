@@ -120,6 +120,10 @@
 		scanCode,
 		is_iOS
 	} from '../../utils/utils.js';
+	import {
+		monitoring,
+		alerts
+	} from '../../utils/api.js'
 	import barecharts from '../../components/home/barecharts.vue';
 
 	export default {
@@ -212,8 +216,8 @@
 			return true;
 		},
 		onShow() {
-			this.alerts()
-			this.monitoring();
+			this.remind();
+			this.warning()
 		},
 		onLoad() {
 			this.handProbleBar();
@@ -224,8 +228,9 @@
 		},
 		methods: {
 			// 监控预警
-			monitoring() {
-				this.$http('/notification/cameraAlarmList', 'GET', {}, false).then(res => {
+			warning() {
+				monitoring().then(res => {
+						console.log("444", res)
 						if (res.code == 0) {
 							if (res.data == 0) {
 
@@ -245,12 +250,8 @@
 					})
 			},
 			// 待办提醒
-			alerts() {
-				this.$http('/upcoming/page', 'POST', {
-						readStatus: "",
-						page: "",
-						limit: "",
-					}, false).then(res => {
+			remind() {
+				alerts().then(res => {
 						if (res.code == 0) {
 							if (res.page.totalCount == 0) {} else {
 								res.page.list.forEach(el => {
