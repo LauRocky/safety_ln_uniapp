@@ -50,12 +50,12 @@
 		</view>
 		<div class="mask-ios" v-else>
 			<image @click="full_video" class="mask-ios-img" src="../../static/video/last.png" mode=""></image>
-			<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image>
+		<!-- 	<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image> -->
 		</div>
 		<div class="mask-pos" v-if="full == 1">
 			<!-- 全屏展示 -->
 			<image @click="exitfull_video" class="images3" src="../../static/video/last.png" mode=""></image>
-			<image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image>
+			<!-- <image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image> -->
 		</div> 
 		<div class="middle">
 			<div class="middle-content">
