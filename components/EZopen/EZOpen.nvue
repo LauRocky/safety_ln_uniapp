@@ -2,7 +2,7 @@
 	<view>
 		<KJ-HikVideoPlayer
 			ref="HikVideoPlayer"
-			:style="{ width: '100vw', height: palyerHeight }"
+			:style="{ width: '100%', height: palyerHeight }"
 			style="background-color: #464950"
 			@player="er"
 			@intercomClient="onIntercomClient"
@@ -31,11 +31,12 @@ export default {
 	props: ['videoUrl'],
 	data() {
 		return {
-			classbg:false,
+			classbg: false,
 			RealPlayUrl: '',
 			PlaybackUrl: '',
 			imageSrc: '',
-			palyerHeight: '500rpx'
+			filePathvideo: '',
+			palyerHeight: '250px'
 		};
 	},
 	onLoad(option) {},
@@ -47,22 +48,23 @@ export default {
 		});
 		setTimeout(() => {
 			this.startRealPlay();
-		}, 500);
+		}, 1000);
 	},
 	methods: {
 		/**
 		 * 全屏
 		 * */
 		full() {
-			this.palyerHeight = '750rpx'
-			plus.screen.lockOrientation("landscape-primary");  
+			this.palyerHeight = '1000px';
+
+			plus.screen.lockOrientation('landscape-primary');
 		},
 		/**
 		 * 退出全屏
 		 * */
 		exitfull() {
 			plus.screen.lockOrientation('portrait-primary');
-			this.palyerHeight = '500rpx';
+			this.palyerHeight = '250px';
 		},
 		/**
 		 * 播放状态回调
@@ -71,7 +73,7 @@ export default {
 			//{"playStatus":"SUCCESS","errorCode":"HVPErrorCodeSuccess"}
 			//错误码参考插件市场文档
 			console.log('er: ' + JSON.stringify(e.detail));
-				uni.hideLoading();
+			uni.hideLoading();
 			if (e.detail.playStatus == 'SUCCESS') {
 			} else {
 				uni.showToast({
@@ -103,9 +105,9 @@ export default {
 		 * */
 		startRealPlay() {
 			var _this = this;
-			this.$refs.HikVideoPlayer.stopPlay(res => {
+			_this.$refs.HikVideoPlayer.stopPlay(res => {
 				console.log('stopPlay: ' + JSON.stringify(res));
-				_this.$refs.HikVideoPlayer.startRealPlay(this.videoUrl, res => {
+				_this.$refs.HikVideoPlayer.startRealPlay(_this.videoUrl, res => {
 					console.log('startRealPlay: ' + res);
 				});
 			});
@@ -196,26 +198,39 @@ export default {
 			};
 
 			var _this = this;
-			this.$refs.HikVideoPlayer.capturePicture(dic, res => {
+			_this.$refs.HikVideoPlayer.capturePicture(dic, res => {
 				console.log('capturePicture: ' + JSON.stringify(res));
 				_this.imageSrc = 'file://' + filePath + '/' + fileName;
-				console.log(_this.imageSrc);
+				uni.saveImageToPhotosAlbum({
+					filePath: _this.imageSrc,
+					success: function() {
+						uni.showToast({
+							title: '保存图片成功',
+							duration: 1500
+						});
+					},
+					fail: function() {
+						uni.showToast({
+							title: '保存图片失败',
+							duration: 1500
+						});
+					}
+				});
 			});
 		},
+
 		/**
 		 *开始录像
 		 *注意：filePath 一定要是_doc绝对目录
 		 * */
 		startRecord() {
-			var filePath = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
-			console.log(filePath, '22121212');
+			this.filePathvideo = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
 			var dic = {
-				filePath: filePath,
+				filePath: this.filePathvideo,
 				fileName: 'test.mp4'
 			};
 			var _this = this;
-			this.$refs.HikVideoPlayer.startRecord(dic, res => {
-				uni.setStorageSync();
+			_this.$refs.HikVideoPlayer.startRecord(dic, res => {
 				console.log('startRecord: ' + JSON.stringify(res));
 			});
 		},
@@ -223,8 +238,24 @@ export default {
 		 *结束录像
 		 * */
 		stopRecord() {
+			var tempFilePath = 'file://' + this.filePathvideo + '/test.mp4';
 			this.$refs.HikVideoPlayer.stopRecord(res => {
 				console.log('stopRecord: ' + JSON.stringify(res));
+				uni.saveVideoToPhotosAlbum({
+					filePath: tempFilePath,
+					success: function() {
+						uni.showToast({
+							title: '保存录像成功',
+							duration: 1500
+						});
+					},
+					fail: function() {
+						uni.showToast({
+							title: '保存录像失败',
+							duration: 1500
+						});
+					}
+				});
 			});
 		},
 		/**

@@ -1,20 +1,20 @@
 <template>
-	<view class="detailVideo">
-		<view class="headerTitle" :style="{ height: iStatusBarHeight + 'upx' }"></view>
-		<view class="header-top">
+	<div class="detailVideo">
+		<div class="headerTitle" :style="{ height: iStatusBarHeight + 'rpx' }"></div>
+		<div class="header-top">
 			<image @click="getBack" class="img" src="../../static/video/back.png" mode=""></image>
 			<text class="header-item">{{ Videotitle }}</text>
 			<text class="header-items"></text>
-		</view>
-		<!-- <web-view
+		</div>
+		<div v-if="platform == 'ios'" style="height: 500rpx; width: 100%;"></div>
+		<KJ-HikVideoPlayer
+			ref="HikVideoPlayer"
 			v-if="platform == 'ios'"
-			ref="webView"
-			class="webView"
-			style="width: 100vw;height: 500upx;"
-			:src="'/hybrid/html/video.html?url=' + videoUrl"
-			@message="reciveMessage"
-		></web-view> -->
-		<EZopen ref="EZOpen" v-if="platform == 'ios'" :videoUrl="videoUrl"></EZopen>
+			:class="full == 1 ? 'EZOpen_full' : 'EZOpen'"
+			:style="{ width: '100%', height: palyerHeight, top: full == 1 ? 0 : iStatusBarHeight + 92 + 'rpx' }"
+			@player="er"
+			@intercomClient="onIntercomClient"
+		></KJ-HikVideoPlayer>
 		<video
 			class="vid"
 			v-else
@@ -38,22 +38,27 @@
 				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
 			</cover-view>
 		</video>
+
 		<view class="mask" v-if="platform !== 'ios'">
 			<!-- 	<view class="mask-loading" v-if="loading">
-				<text class="loading-text">视频加载中...</text>
-			</view> -->
+						<text class="loading-text">视频加载中...</text>
+					</view> -->
 			<!-- sd标清,hd高清 -->
 			<image v-if="hd == 2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
 			<image v-else @click="clarity(2)" class="clarity" src="../../static/video/hd.png" mode=""></image>
 			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
 		</view>
-
-		<view class="mask" v-else>
-			<!-- <image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image> -->
-		</view>
-
-		<view class="middle">
-			<view class="middle-content">
+		<div class="mask-ios" v-else>
+			<image @click="full_video" class="mask-ios-img" src="../../static/video/last.png" mode=""></image>
+		<!-- 	<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image> -->
+		</div>
+		<div class="mask-pos" v-if="full == 1">
+			<!-- 全屏展示 -->
+			<image @click="exitfull_video" class="images3" src="../../static/video/last.png" mode=""></image>
+			<!-- <image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image> -->
+		</div> 
+		<div class="middle">
+			<div class="middle-content">
 				<image @touchstart="down(1)" @touchend="up(1)" class="content-img" src="../../static/video/shadowon.png" mode=""></image>
 				<image v-if="discolor" class="content-img" src="../../static/video/brighton.png" mode=""></image>
 				<image @touchstart="down(2)" @touchend="up(2)" class="content-img1" src="../../static/video/shadowright.png" mode=""></image>
@@ -62,37 +67,34 @@
 				<image v-if="discolor3" class="content-img2" src="../../static/video/brightdown.png" mode=""></image>
 				<image @touchstart="down(4)" @touchend="up(4)" class="content-img3" src="../../static/video/shadowleft.png" mode=""></image>
 				<image v-if="discolor4" class="content-img3" src="../../static/video/brightleft.png" mode=""></image>
-			</view>
+			</div>
 			<!-- 底部照片 -->
-			<view class="soleBase">
-				<view class="zoom1" @click="bianbeijia">
+			<div class="soleBase">
+				<div class="zoom1" @click="bianbeijia">
 					<image class="zoom1-img" src="../../static/video/bianbei.png" mode=""></image>
 					<text class="zoom1-text">变倍+</text>
-				</view>
-				<view class="zoom1" @click="bianbeijian">
+				</div>
+				<div class="zoom1" @click="bianbeijian">
 					<image class="zoom1-img" src="../../static/video/bianbei1.png" mode=""></image>
 					<text class="zoom1-text">变倍-</text>
-				</view>
-				<view class="zoom1" @click="bianjiaojia">
+				</div>
+				<div class="zoom1" @click="bianjiaojia">
 					<image class="zoom1-img" src="../../static/video/bianjiao1.png" mode=""></image>
 					<text class="zoom1-text">变焦+</text>
-				</view>
-				<view class="zoom1" @click="bianjiaojian">
+				</div>
+				<div class="zoom1" @click="bianjiaojian">
 					<image class="zoom1-img" src="../../static/video/bianjiao2.png" mode=""></image>
 					<text class="zoom1-text">变焦-</text>
-				</view>
-			</view>
-		</view>
-	</view>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 <script>
-import EZopen from '../../components/EZopen/EZOpen.nvue';
 import { request } from '../../utils/request.js';
 import { is_iOS } from '../../utils/utils.js';
 export default {
-	components: {
-		EZopen
-	},
+	components: {},
 	data() {
 		return {
 			loadingList: '',
@@ -114,58 +116,16 @@ export default {
 			hd: 2,
 			// played:false
 			platform: '',
+			palyerHeight: '500rpx',
+			full: 0
 		};
+	},
+	onShow() {
+		plus.screen.lockOrientation('portrait-primary');
 	},
 	created() {},
 	mounted() {},
 	methods: {
-		//webview发送过来的数据，内容为是否全屏的判断
-		reciveMessage(e) {
-			console.log(e, '232323');
-		},
-		waiting() {},
-		playVideo() {
-			// this.loading = false;
-			// this.played=true;
-		},
-
-		capture() {
-			var pages = getCurrentPages();
-			var page = pages[pages.length - 1];
-			var bitmap = null;
-			var currentWebview = page.$getAppWebview();
-			bitmap = new plus.nativeObj.Bitmap('amway_img');
-			// 将webview内容绘制到Bitmap对象中
-			currentWebview.draw(
-				bitmap,
-				function() {
-					bitmap.save(
-						'_doc/a.jpg',
-						{},
-						function(i) {
-							uni.saveImageToPhotosAlbum({
-								filePath: i.target,
-								success: function() {
-									bitmap.clear(); //销毁Bitmap图片
-									uni.showToast({
-										title: '保存图片成功',
-										mask: false,
-										duration: 1500
-									});
-								}
-							});
-						},
-						function(e) {
-							console.log('保存图片失败：' + JSON.stringify(e));
-						}
-					);
-				},
-				function(e) {
-					console.log('截屏绘制图片失败：' + JSON.stringify(e));
-				}
-			);
-			//currentWebview.append(amway_bit);
-		},
 		// 导航栏返回
 		getBack() {
 			uni.navigateBack({
@@ -244,10 +204,6 @@ export default {
 				this.discolor4 = false;
 			}
 		},
-
-		// 录屏
-		recording() {},
-
 		// ehome云台控制
 		ehomeControl() {
 			request(`/ehome/ptzOption/${this.status.camera}/${this.ehomebianbei}`, 'POST', {}, false).then(res => {
@@ -322,7 +278,8 @@ export default {
 				this.Fluorite();
 			}
 		},
-		// 退出全屏
+
+		/* // 退出全屏
 		exitFull() {
 			this.videoContext = uni.createVideoContext('myVideo', this);
 			this.videoContext.exitFullScreen();
@@ -331,15 +288,13 @@ export default {
 		// 全屏
 		full() {
 			if (is_iOS()) {
-				this.$refs.EZOpen.changeZoom();
+				console.log('222');
 			} else {
 				this.videoContext = uni.createVideoContext('myVideo', this);
 				this.videoContext.requestFullScreen();
 				this.zidong = true;
 			}
-		},
-		// 截屏
-		screenshots() {},
+		}, */
 		back() {
 			uni.navigateBack({
 				delta: 1
@@ -371,24 +326,11 @@ export default {
 			}
 		},
 		videodetail() {
+			uni.showLoading({
+				title: '加载中',
+				mask: true
+			});
 			if (this.status.ezv == 0) {
-				// request('/camera/updateHlsPlayUrl', 'POST', { ipcId: this.status.ipcId }, false)
-				// 	.then(res => {
-				// 		if (res.code == 20007) {
-				// 			uni.showToast({
-				// 				title: '设备离线',
-				// 				icon: 'none'
-				// 			});
-				// 		} else {
-
-				// 			/* 	http://yun-live.oss-cn-shanghai.aliyuncs.com/record/yunlive/record/yunlive/meeting_1070/2020-11-25-09-27-59_2020-11-25-09-35-52.m3u8 */
-				// 			this.videoUrl = 'https://esq.cgdg.com' + res.data.liveStreamUrl;
-				// 			console.error(this.videoUrl);
-				// 		}
-				// 	})
-				// 	.catch(e => {
-				// 		console.error(e);
-				// 	});
 				request(`/ehome/camera/previewurl/rtsp/rtsp/${this.status.camera}`, 'POST', {}, false)
 					.then(res => {
 						if (res.code == 20007) {
@@ -398,7 +340,8 @@ export default {
 							});
 						} else {
 							this.videoUrl = res.url;
-			
+							console.log(this.videoUrl, '2222');
+							this.startRealPlay();
 						}
 					})
 					.catch(e => {
@@ -425,6 +368,141 @@ export default {
 						console.error(e);
 					});
 			}
+		},
+		/**
+		 * 全屏
+		 * */
+		full_video() {
+			plus.screen.lockOrientation('landscape-primary');
+			setTimeout(() => {
+				this.full = 1;
+				this.palyerHeight = '750rpx';
+			}, 100);
+		},
+		/**
+		 * 退出全屏
+		 * */
+		exitfull_video() {
+			plus.screen.lockOrientation('portrait-primary');
+			setTimeout(() => {
+				this.full = 0;
+				this.palyerHeight = '500rpx';
+			}, 100);
+		},
+		/**
+		 * 播放状态回调
+		 * */
+		er(e) {
+			//{"playStatus":"SUCCESS","errorCode":"HVPErrorCodeSuccess"}
+			//错误码参考插件市场文档
+			console.log('er: ' + JSON.stringify(e.detail));
+			uni.hideLoading();
+			if (e.detail.playStatus == 'SUCCESS') {
+			} else {
+				uni.showToast({
+					title: '播放失败',
+					icon: 'none'
+				});
+			}
+		},
+		/**
+		 * 开启预览
+		 * */
+		startRealPlay() {
+			var _this = this;
+			_this.$refs.HikVideoPlayer.stopPlay(res => {
+				console.log('stopPlay: ' + JSON.stringify(res));
+				_this.$refs.HikVideoPlayer.startRealPlay(_this.videoUrl, res => {
+					console.log('startRealPlay: ' + res);
+				});
+			});
+		},
+		/**
+		 *抓图
+		 *注意：filePath 一定要是_doc绝对目录
+		 * */
+		capturePicture() {
+			var filePath = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
+			var fileName = 'test.png';
+			var dic = {
+				filePath: filePath,
+				fileName: fileName
+			};
+
+			var _this = this;
+			_this.$refs.HikVideoPlayer.capturePicture(dic, res => {
+				console.log('capturePicture: ' + JSON.stringify(res));
+				_this.imageSrc = 'file://' + filePath + '/' + fileName;
+				uni.saveImageToPhotosAlbum({
+					filePath: _this.imageSrc,
+					success: function() {
+						uni.showToast({
+							title: '截图成功',
+							duration: 1500
+						});
+					},
+					fail: function() {
+						uni.showToast({
+							title: '截图失败',
+							duration: 1500
+						});
+					}
+				});
+			});
+		},
+
+		/**
+		 *开始录像
+		 *注意：filePath 一定要是_doc绝对目录
+		 * */
+		startRecord() {
+			this.filePathvideo = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
+			var dic = {
+				filePath: this.filePathvideo,
+				fileName: 'test.mp4'
+			};
+			var _this = this;
+			_this.$refs.HikVideoPlayer.startRecord(dic, res => {
+				console.log('startRecord: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 *结束录像
+		 * */
+		stopRecord() {
+			var tempFilePath = 'file://' + this.filePathvideo + '/test.mp4';
+			this.$refs.HikVideoPlayer.stopRecord(res => {
+				console.log('stopRecord: ' + JSON.stringify(res));
+				uni.saveVideoToPhotosAlbum({
+					filePath: tempFilePath,
+					success: function() {
+						uni.showToast({
+							title: '保存录像成功',
+							duration: 1500
+						});
+					},
+					fail: function() {
+						uni.showToast({
+							title: '保存录像失败',
+							duration: 1500
+						});
+					}
+				});
+			});
+		},
+		/**
+		 * 语音对讲状态回调
+		 * */
+		onIntercomClient(e) {
+			console.log('onIntercomClient: ' + JSON.stringify(e.detail));
+		},
+		/**
+		 * 停止取流和播放
+		 * */
+		stopPlay() {
+			this.$refs.HikVideoPlayer.stopPlay(res => {
+				console.log('stopPlay: ' + JSON.stringify(res));
+			});
 		}
 	},
 	onLoad(option) {
@@ -443,11 +521,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.detailVideo {
+	/* width: 750rpx;
+	flex: 1; */
+}
 .headerTitle {
-	width: 750upx;
+	width: 750rpx;
 	background-color: #00b48f;
 }
+
 .EZOpen {
+	background-color: #464950;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.EZOpen_full {
 	position: fixed;
 	top: 0;
 	bottom: 0;
@@ -456,9 +547,9 @@ export default {
 }
 .header-top {
 	background-color: #00b48f;
-	width: 750upx;
-	height: 92upx;
-	padding: 0 20upx;
+	width: 750rpx;
+	height: 92rpx;
+	padding: 0 20rpx;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -466,14 +557,14 @@ export default {
 }
 
 .img {
-	width: 40upx;
-	height: 40upx;
+	width: 40rpx;
+	height: 40rpx;
 }
 
 .header-top .header-item {
 	color: white;
-	width: 400upx;
-	font-size: 32upx;
+	width: 400rpx;
+	font-size: 32rpx;
 	font-family: PingFang SC;
 	font-weight: bold;
 	text-align: center;
@@ -481,147 +572,168 @@ export default {
 
 .header-items {
 	color: white;
-	width: 50upx;
+	width: 50rpx;
 }
 
 .vid {
 	position: relative;
-	width: 750upx;
-	height: 500upx;
+	width: 750rpx;
+	height: 500rpx;
 }
 
 .vid-loading {
-	width: 100upx;
-	height: 100upx;
-	line-height: 100upx;
+	width: 100rpx;
+	height: 100rpx;
+	line-height: 100rpx;
 	text-align: center;
 	color: #ffffff;
-	font-size: 32upx;
+	font-size: 32rpx;
 	position: absolute;
-	left: 375upx;
-	top: 250upx;
+	left: 375rpx;
+	top: 250rpx;
 	transform: translate(-50%, -50%);
 }
 
 .container {
 	position: absolute;
-	top: 100upx;
-	right: 10upx;
+	top: 100rpx;
+	right: 10rpx;
 }
 
 .mask {
-	width: 750upx;
-	height: 100upx;
+	width: 750rpx;
+	height: 100rpx;
 	position: relative;
 	background-color: #464950;
 }
 
 .mask-loading {
-	width: 200upx;
-	height: 100upx;
+	width: 200rpx;
+	height: 100rpx;
 }
-
+.mask-ios {
+	padding: 0 20rpx;
+	display: flex;
+	flex-direction: row;
+	flex-direction:row-reverse;
+	align-items: center;
+	width: 750rpx;
+	height: 100rpx;
+	background-color: #464950;
+}
+.mask-ios-img {
+	margin-right: 20rpx;
+	width: 60rpx;
+	height: 60rpx;
+}
+.mask-pos {
+	position: fixed;
+	top: 120;
+	right: 20;
+}
+.images3 {
+	margin-top: 20rpx;
+	width: 80rpx;
+	height: 80rpx;
+}
 .loading-text {
-	width: 200upx;
+	width: 200rpx;
 	text-align: center;
-	font-size: 28upx;
-	line-height: 100upx;
+	font-size: 28rpx;
+	line-height: 100rpx;
 	color: #ffffff;
 }
 
 .images1 {
-	width: 76upx;
-	height: 76upx;
+	width: 76rpx;
+	height: 76rpx;
 	transform: translateX(5%);
-	margin-bottom: 40upx;
+	margin-bottom: 40rpx;
 }
 
 .images2 {
-	width: 80upx;
-	height: 80upx;
-	margin-bottom: 40upx;
+	width: 80rpx;
+	height: 80rpx;
+	margin-bottom: 40rpx;
 }
 
-.images3 {
-	width: 80upx;
-	height: 80upx;
-}
+
 
 .clarity {
 	position: absolute;
-	right: 100upx;
-	bottom: 20upx;
-	width: 60upx;
-	height: 60upx;
+	right: 100rpx;
+	bottom: 20rpx;
+	width: 60rpx;
+	height: 60rpx;
 	color: #ffffff;
 }
 
 .mask-img {
 	position: absolute;
-	right: 20upx;
-	bottom: 20upx;
-	width: 60upx;
-	height: 60upx;
+	right: 20rpx;
+	bottom: 20rpx;
+	width: 60rpx;
+	height: 60rpx;
 	color: #ffffff;
 }
 
 .middle {
-	width: 750upx;
+	width: 750rpx;
 	text-align: center;
 }
 
 .middle .middle-content {
-	margin: 20upx;
-	width: 360upx;
-	height: 360upx;
+	margin: 20rpx;
+	width: 360rpx;
+	height: 360rpx;
 	position: relative;
 	transform: translateX(50%);
 }
 
 .middle-content .content-img {
 	position: absolute;
-	left: 180upx;
+	left: 180rpx;
 	top: 0;
-	width: 230upx;
-	height: 130upx;
+	width: 230rpx;
+	height: 130rpx;
 	transform: translateX(-50%);
 }
 
 .middle-content .content-img1 {
 	position: absolute;
 	right: 0;
-	top: 180upx;
-	width: 130upx;
-	height: 230upx;
+	top: 180rpx;
+	width: 130rpx;
+	height: 230rpx;
 	transform: translateY(-50%);
 }
 
 .middle-content .content-img2 {
 	position: absolute;
-	left: 180upx;
+	left: 180rpx;
 	bottom: 0;
-	width: 230upx;
-	height: 130upx;
+	width: 230rpx;
+	height: 130rpx;
 	transform: translateX(-50%);
 }
 
 .middle-content .content-img3 {
 	position: absolute;
 	left: 0;
-	top: 180upx;
-	width: 130upx;
-	height: 230upx;
+	top: 180rpx;
+	width: 130rpx;
+	height: 230rpx;
 	transform: translateY(-50%);
 }
 
 .a {
-	width: 230upx;
-	height: 130upx;
+	width: 230rpx;
+	height: 130rpx;
 }
 
 .b {
-	width: 50upx;
-	height: 52upx;
+	width: 50rpx;
+	height: 52rpx;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -629,8 +741,8 @@ export default {
 }
 
 .soleBase {
-	width: 750upx;
-	// margin: 50upx 50upx 10upx;
+	width: 750rpx;
+	// margin: 50rpx 50rpx 10rpx;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
@@ -638,17 +750,17 @@ export default {
 }
 
 .soleBase .zoom1 {
-	width: 96upx;
-	height: 135upx;
+	width: 96rpx;
+	height: 135rpx;
 }
 
 .zoom1 .zoom1-img {
-	width: 96upx;
-	height: 96upx;
+	width: 96rpx;
+	height: 96rpx;
 }
 
 .zoom1 .zoom1-text {
-	font-size: 30upx;
+	font-size: 30rpx;
 	color: #666666;
 	text-align: center;
 	font-family: PingFang SC;
