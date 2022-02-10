@@ -437,13 +437,13 @@ export default {
 					filePath: _this.imageSrc,
 					success: function() {
 						uni.showToast({
-							title: '保存图片成功',
+							title: '截图成功',
 							duration: 1500
 						});
 					},
 					fail: function() {
 						uni.showToast({
-							title: '保存图片失败',
+							title: '截图失败',
 							duration: 1500
 						});
 					}
