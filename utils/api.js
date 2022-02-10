@@ -9,5 +9,17 @@ export function getDictList(dictType) {
 		type: dictType
 	})
 }
-
+// 监控预警
+export function  monitoring() {
+		return new request('/notification/cameraAlarmList', 'GET', {
+	})
+}
+// 待办
+export function  alerts() {
+		return new request('/upcoming/page', 'POST', {
+			readStatus: "",
+			page: "",
+			limit: "",
+	})
+}
  

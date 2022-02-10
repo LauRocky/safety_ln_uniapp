@@ -120,8 +120,11 @@
 		scanCode,
 		is_iOS
 	} from '../../utils/utils.js';
+	import {
+		monitoring,
+		alerts
+	} from '../../utils/api.js'
 	import barecharts from '../../components/home/barecharts.vue';
-
 	export default {
 		components: {
 			barecharts
@@ -212,20 +215,20 @@
 			return true;
 		},
 		onShow() {
-			this.alerts()
-			this.monitoring();
+
 		},
 		onLoad() {
 			this.handProbleBar();
+			this.monitorMessage();
+			this.alertsMessage();
 		},
 		mounted: function() {
 			this.handbacklog();
 			this.handdetailByUser();
 		},
 		methods: {
-			// 监控预警
-			monitoring() {
-				this.$http('/notification/cameraAlarmList', 'GET', {}, false).then(res => {
+			monitorMessage() {
+				monitoring().then(res => {
 						if (res.code == 0) {
 							if (res.data == 0) {
 
@@ -242,15 +245,30 @@
 					})
 					.catch(err => {
 						console.log(err)
-					})
+					});
+					setInterval(function() {
+						monitoring().then(res => {
+								if (res.code == 0) {
+									if (res.data == 0) {
+						
+									} else {
+										res.data.forEach(el => {
+											if (el.alarmStatus == 0) {
+												uni.showTabBarRedDot({
+													index: 4,
+												})
+											}
+										})
+									}
+								}
+							})
+							.catch(err => {
+								console.log(err)
+							});
+					}, 20000)
 			},
-			// 待办提醒
-			alerts() {
-				this.$http('/upcoming/page', 'POST', {
-						readStatus: "",
-						page: "",
-						limit: "",
-					}, false).then(res => {
+			alertsMessage() {
+				alerts().then(res => {
 						if (res.code == 0) {
 							if (res.page.totalCount == 0) {} else {
 								res.page.list.forEach(el => {
@@ -267,6 +285,25 @@
 					.catch(err => {
 						console.log(err)
 					})
+					setInterval(function() {
+						alerts().then(res => {
+								if (res.code == 0) {
+									if (res.page.totalCount == 0) {} else {
+										res.page.list.forEach(el => {
+											if (el.readStatus == 0) {
+												console.log(this.tabberShow)
+												uni.showTabBarRedDot({
+													index: 4,
+												})
+											}
+										})
+									}
+								}
+							})
+							.catch(err => {
+								console.log(err)
+							})
+					}, 20000)
 			},
 			handXq(v) {
 				if (this.status == 1) {
