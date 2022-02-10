@@ -2,8 +2,8 @@
     "name" : "智慧安质平台",
     "appid" : "__UNI__A9A3937",
     "description" : "",
-    "versionName" : "1.0.39",
-    "versionCode" : 1039,
+    "versionName" : "1.0.40",
+    "versionCode" : 1040,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -112,9 +112,6 @@
                         "spotlight@3x" : "unpackage/res/icons/120x120.png"
                     }
                 }
-            },
-            "splashscreen" : {
-                "useOriginalMsgbox" : true
             }
         },
         "nativePlugins" : {
@@ -163,6 +160,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
+                    // "target" : "http://59.110.136.159:12002/safety-server/api",
                     // "target" : "http://192.168.124.7:12002/safety-server/api", //测试
                     //以下部分请勿改动！
                     "target" : "https://esq.cgdg.com/api", //正式环境
