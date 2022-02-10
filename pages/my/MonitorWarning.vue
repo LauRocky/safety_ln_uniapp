@@ -7,7 +7,7 @@
 				<view class="card-yuan" v-if="item.alarmStatus==0">
 				</view>
 				<view class="card_news">
-					<view :class="item.flag ? 'card_content1':'card_content2'">{{item.companyInfo.province+ item.companyInfo.name + item.cameraInfo.ipcName + '摄像头于' + item.createTime+'离线'}}</view>
+					<view :class="item.flag ? 'card_content1':'card_content2'">{{item.companyInfo.name + item.cameraInfo.ipcName + '摄像头于' + item.createTime+'离线'}}</view>
 					<text class="times">{{item.createTime}}</text>
 				</view>
 			</view>
@@ -95,7 +95,7 @@
 			},
 			eachItem(el) {
 			console.log("55", el)
-			this.content = el.companyInfo.province + el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'
+			this.content =  el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'
 			this.show = true;
 			},
 		},
