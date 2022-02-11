@@ -28,80 +28,66 @@
 	</view>
 </template>
 <script>
-	import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
+		import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 	export default {
-		components: {
-			TwoNavbar
-		},
-		data() {
-			return {
-				name: "设备离线通知",
-				id: '',
-				show: false,
-				list: [],
-				limit: 10,
-				page: 1,
-				content: "",
-			};
-		},
-		onShow() {
-			this.page=1;
-			this.list=[];
-			this.monitoring()
-		},
-		// 页面上拉处理事件函数
-		onReachBottom() {
-			this.monitoring()
-		},
-		// computed:{
-		// 	content:function(){
-		// 		return this.list.forEach(el=>{
-		// 			 `el.companyInfo.province + el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'`
-		// 		})
-		// 	}
-		// },
-		methods: {
-			monitoring() {
-				uni.showLoading({
-					title: '加载中',
-				});
-				this.$http('/notification/cameraAlarmPage', 'GET', {
-					page:this.page,
-					limit:this.limit,
-				}, false).then(res => {
-					uni.hideLoading();
-						if (res.code == 0) {
-							if (this.list.length < res.page.totalCount) {
-								this.page++;
-								this.list = this.list.concat(res.page.list);
+			components: {
+				TwoNavbar
+			},
+			data() {
+				return {
+					name: "设备离线通知",
+					id: '',
+					show: false,
+					list: [],
+					pageSize: 10,
+					totalCount: 0,
+					totalPage: 1,
+					content: "",
+				};
+			},
+			onShow() {
+				this.monitoring()
+			},
+			// computed:{
+			// 	content:function(){
+			// 		return this.list.forEach(el=>{
+			// 			 `el.companyInfo.province + el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'`
+			// 		})
+			// 	}
+			// },
+			methods: {
+				monitoring() {
+					this.$http('/notification/cameraAlarmList', 'GET', {}, false).then(res => {
+							console.log(res)
+							if (res.code == 0) {
+								this.list=res.data
 							}
-						}
-					})
-					.catch(err => {
-						console.log(err)
-					})
+						})
+						.catch(err => {
+							console.log(err)
+						})
+				},
+				open() {
+					// console.log('open');
+				},
+				close() {
+					this.show = false
+				},
+				leftClick() {
+					console.log('leftClick');
+					uni.navigateBack({
+						delta: 1
+					});
+				},
+				eachItem(el) {
+			
+				this.content =  el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'
+				this.show = true;
+				},
 			},
-			open() {
-				// console.log('open');
-			},
-			close() {
-				this.show = false
-			},
-			leftClick() {
-				console.log('leftClick');
-				uni.navigateBack({
-					delta: 1
-				});
-			},
-			eachItem(el) {
-			console.log("55", el)
-			this.content =  el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'
-			this.show = true;
-			},
-		},
-		onLoad() {
-		
-		}
+			onLoad() {
+			
+			}
 	}
 </script>
 
