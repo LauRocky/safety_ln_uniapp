@@ -8,6 +8,8 @@
 		</div>
 		<div v-if="platform == 'ios'" style="height: 500rpx; width: 100%;"></div>
 		<KJ-HikVideoPlayer
+			@touchstart="touchStart"
+			@touchend="touchEnd"
 			ref="HikVideoPlayer"
 			v-if="platform == 'ios'"
 			:class="full == 1 ? 'EZOpen_full' : 'EZOpen'"
@@ -49,14 +51,14 @@
 			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
 		</view>
 		<div class="mask-ios" v-else>
-			<image @click="full_video" class="mask-ios-img" src="../../static/video/last.png" mode=""></image>
-		<!-- 	<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image> -->
+			<image @click="full_video" class="mask-ios-img" src="../../static/video/da.png" mode=""></image>
+			<!-- 	<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image> -->
 		</div>
 		<div class="mask-pos" v-if="full == 1">
 			<!-- 全屏展示 -->
-			<image @click="exitfull_video" class="images3" src="../../static/video/last.png" mode=""></image>
+			<image @click="exitfull_video" class="images3" src="../../static/video/xiao.png" mode=""></image>
 			<!-- <image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image> -->
-		</div> 
+		</div>
 		<div class="middle">
 			<div class="middle-content">
 				<image @touchstart="down(1)" @touchend="up(1)" class="content-img" src="../../static/video/shadowon.png" mode=""></image>
@@ -117,7 +119,9 @@ export default {
 			// played:false
 			platform: '',
 			palyerHeight: '500rpx',
-			full: 0
+			full: 0,
+			touchStartX: 0, // 触屏起始点x
+			touchStartY: 0 // 触屏起始点y
 		};
 	},
 	onShow() {
@@ -126,6 +130,50 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
+		/**
+		 * 触摸开始
+		 **/
+
+		touchStart(e) {
+			if (this.full == 0) {
+				return;
+			}
+			console.log('触摸开始', e.touches);
+			this.touchStartX = e.touches[0].pageX;
+			this.touchStartY = e.touches[0].pageY;
+		},
+
+		/**
+		 * 触摸结束
+		 **/
+
+		touchEnd(e) {
+			if (this.full == 0) {
+				return;
+			}
+			console.log('触摸结束');
+			let deltaX = e.changedTouches[0].pageX - this.touchStartX;
+			let deltaY = e.changedTouches[0].pageY - this.touchStartY;
+			if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+				if (deltaX >= 0) {
+					this.down(2);
+					console.log('右滑');
+				} else {
+					this.down(4);
+					console.log('左滑');
+				}
+			} else if (Math.abs(deltaY) > 50 && Math.abs(deltaX) < Math.abs(deltaY)) {
+				if (deltaY < 0) {
+					this.down(1);
+					console.log('上滑');
+				} else {
+					this.down(3);
+					console.log('下滑');
+				}
+			} else {
+				console.log('可能是误触！');
+			}
+		},
 		// 导航栏返回
 		getBack() {
 			uni.navigateBack({
@@ -615,7 +663,7 @@ export default {
 	padding: 0 20rpx;
 	display: flex;
 	flex-direction: row;
-	flex-direction:row-reverse;
+	flex-direction: row-reverse;
 	align-items: center;
 	width: 750rpx;
 	height: 100rpx;
@@ -656,8 +704,6 @@ export default {
 	height: 80rpx;
 	margin-bottom: 40rpx;
 }
-
-
 
 .clarity {
 	position: absolute;
