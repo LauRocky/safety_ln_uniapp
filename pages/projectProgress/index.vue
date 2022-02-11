@@ -32,10 +32,6 @@
 	import {
 		is_iOS
 	} from '../../utils/utils.js';
-	import {
-		monitoring,
-		alerts
-	} from '../../utils/api.js'
 	export default {
 		components: {
 			navBar,
@@ -77,50 +73,6 @@
 			return true;
 		},
 		methods: {
-			//待办与监控
-			// 监控预警
-			warning() {
-				monitoring().then(res => {
-						console.log("444", res)
-						if (res.code == 0) {
-							if (res.data == 0) {
-
-							} else {
-								res.data.forEach(el => {
-									if (el.alarmStatus == 0) {
-										uni.showTabBarRedDot({
-											index: 4,
-										})
-									}
-								})
-							}
-						}
-					})
-					.catch(err => {
-						console.log(err)
-					})
-			},
-			// 待办提醒
-			remind() {
-				alerts().then(res => {
-						if (res.code == 0) {
-							if (res.page.totalCount == 0) {} else {
-								res.page.list.forEach(el => {
-									if (el.readStatus == 0) {
-										console.log(this.tabberShow)
-										uni.showTabBarRedDot({
-											index: 4,
-										})
-									}
-								})
-							}
-						}
-					})
-					.catch(err => {
-						console.log(err)
-					})
-			},
-			// 
 			deSelect() {
 				this.title = "所有城市";
 				this.show = false;
@@ -203,8 +155,6 @@
 			this.getProjectList()
 		},
 		onShow() {
-			this.remind();
-			this.warning()
 		}
 
 	}

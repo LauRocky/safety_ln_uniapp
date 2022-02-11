@@ -13,7 +13,7 @@
 					<text class="item-status">
 						<view class="item-color" v-if="item.status == 0" style="background-color:#E43D33;"></view>
 						<view class="item-color" v-else></view>
-						<text class="item-text">{{ item.status == 0 ? '不在线' : '在线' }}</text>
+						<text class="item-text">{{ item.status == 0 ? '离线' : '在线' }}</text>
 					</text>
 					<image class="imgs" :src="item.image" mode="" @error="img" :data-index="index"></image>
 					<view class="mask"></view>
@@ -189,8 +189,19 @@ export default {
 					uni.hideLoading();
 					console.log(res);
 					if (res.code == 0) {
-						this.rawList = res.projectInfoEntities[0].cameraEntities;
-						this.showList = res.projectInfoEntities[0].cameraEntities;
+						let obj={}
+						res.projectInfoEntities[0].cameraEntities.forEach(el=>{
+							if(el.status==1){
+								obj=el
+								this.showList.unshift(obj)
+								this.rawList.unshift(obj)
+							}
+							else if(el.status==0){
+								obj=el
+								this.showList.push(obj)
+								this.rawList.push(obj)
+							}
+						})
 						console.log('da', this.showList);
 					}
 				})
