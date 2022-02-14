@@ -200,6 +200,10 @@ export default {
 								obj=el
 								this.showList.push(obj)
 								this.rawList.push(obj)
+							}else{
+								obj=el
+								this.showList.push(obj)
+								this.rawList.push(obj)
 							}
 						})
 						console.log('da', this.showList);
@@ -209,16 +213,15 @@ export default {
 					console.log(err);
 				});
 		}
-		// 传值方式  this.$http(`/ehome/camera/previewurl/hls/${el.cameraIndexCode}`,'POST',{},false)
 	},
 	onLoad(options) {
+		console.log("555",options)
 		this.project.projectId = options.projectId;
 		this.project.projectName = options.projectName;
-		// uni.setNavigationBarTitle({
-		// 	title:this.project.projectName
-		// })
 	},
 	onShow() {
+		this.showList=[];
+		this.rawList=[];
 		this.show();
 	}
 };
