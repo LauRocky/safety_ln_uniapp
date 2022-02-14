@@ -39,7 +39,7 @@
 				id: '',
 				show: false,
 				list: [],
-				limit: 10,
+				limit: 15,
 				page: 1,
 				content: "",
 			};
@@ -53,13 +53,6 @@
 		onReachBottom() {
 			this.monitoring()
 		},
-		// computed:{
-		// 	content:function(){
-		// 		return this.list.forEach(el=>{
-		// 			 `el.companyInfo.province + el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'`
-		// 		})
-		// 	}
-		// },
 		methods: {
 			monitoring() {
 				uni.showLoading({
@@ -110,6 +103,7 @@
 		padding: 0 20upx;
 
 		.card {
+			// height: 9vh;
 			overflow: hidden;
 			display: flex;
 			flex-direction: row;
@@ -135,7 +129,6 @@
 				.times {
 					text-align: right;
 					font-size: 24upx;
-					padding-top: 10upx;
 				}
 		
 				.card_title {
@@ -157,27 +150,27 @@
 		
 				// 点击详情 展开
 				.card_content1 {
-					padding: 10upx 0;
+					padding: 10upx 0 15upx 0;
 					text-indent: 0em;
 					font-size: 28upx;
 				}
 		
 				.card_content2 {
-					padding: 10rpx 0 0 0;
+					padding: 10upx 0 15upx 0;
 					overflow: hidden;
 					white-space: nowrap;
 					text-overflow: ellipsis;
 					text-indent: 0em;
-					font-size: 28rpx;
+					font-size: 28upx;
 				}
 		
 				.card_lookmore {
-					width: 100rpx;
-					height: 14rpx;
-					padding: 10rpx 0;
-					font-size: 20rpx;
-					line-height: 20rpx;
-					border-bottom: 1rpx solid rgb(0, 98, 0);
+					width: 100upx;
+					height: 14upx;
+					padding: 10upx 0;
+					font-size: 20upx;
+					line-height: 20upx;
+					border-bottom: 1upx solid rgb(0, 98, 0);
 					color: rgb(0, 98, 0);
 				}
 			}

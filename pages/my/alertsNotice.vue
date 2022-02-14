@@ -37,7 +37,7 @@
 			return {
 				name: "待办通知",
 				list: [],
-				limit: 10,
+				limit: 15,
 				page: 1,
 				content: "",
 				show: false,
@@ -110,7 +110,6 @@
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
-			// align-items: center;
 			border-bottom: 1upx solid #ccc;
 
 			.card-yuan {
