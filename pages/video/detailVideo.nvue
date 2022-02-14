@@ -8,6 +8,8 @@
 		</div>
 		<div v-if="platform == 'ios'" style="height: 500rpx; width: 100%;"></div>
 		<KJ-HikVideoPlayer
+			@touchstart="touchStart"
+			@touchend="touchEnd"
 			ref="HikVideoPlayer"
 			v-if="platform == 'ios'"
 			:class="full == 1 ? 'EZOpen_full' : 'EZOpen'"
@@ -49,14 +51,24 @@
 			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
 		</view>
 		<div class="mask-ios" v-else>
-			<image @click="full_video" class="mask-ios-img" src="../../static/video/last.png" mode=""></image>
-		<!-- 	<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image> -->
+			<image @click="full_video" class="mask-ios-img" src="../../static/video/da.png" mode=""></image>
+			<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image>
+			<image v-if="clip" @click="handClip(1)" class="mask-ios-img" src="../../static/video/shexiangji.png" mode=""></image>
+			<div class="cliptime" @click="handClip(2)" v-else>
+				<image class="clip-img" src="../../static/video/yuan.png" mode=""></image>
+				<text class="clip-t">{{ time < 10 ? '0' + time : time }}</text>
+			</div>
 		</div>
 		<div class="mask-pos" v-if="full == 1">
 			<!-- 全屏展示 -->
-			<image @click="exitfull_video" class="images3" src="../../static/video/last.png" mode=""></image>
-			<!-- <image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image> -->
-		</div> 
+			<image @click="exitfull_video" class="images3" src="../../static/video/xiao.png" mode=""></image>
+			<image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image>
+			<image v-if="clip" @click="handClip(1)" class="images3" src="../../static/video/shexiangji.png" mode=""></image>
+			<div class="cliptime1" @click="handClip(2)" v-else>
+				<image class="clip-img1" src="../../static/video/yuan.png" mode=""></image>
+				<text class="clip-t1">{{ time < 10 ? '0' + time : time }}</text>
+			</div>
+		</div>
 		<div class="middle">
 			<div class="middle-content">
 				<image @touchstart="down(1)" @touchend="up(1)" class="content-img" src="../../static/video/shadowon.png" mode=""></image>
@@ -117,7 +129,13 @@ export default {
 			// played:false
 			platform: '',
 			palyerHeight: '500rpx',
-			full: 0
+			filePathvideo: '',
+			full: 0,
+			touchStartX: 0, // 触屏起始点x
+			touchStartY: 0, // 触屏起始点y
+			time: 30,
+			timer: null,
+			clip: true
 		};
 	},
 	onShow() {
@@ -126,6 +144,72 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
+		handClip(val) {
+			//点击 1开始录像 2停止录像
+			if (val == 1) {
+				this.clip = false;
+				this.startRecord();
+				this.timer = setInterval(() => {
+					this.time--;
+					if (this.time == 0) {
+						this.stopRecord();
+						clearInterval(this.timer);
+						this.clip = true;
+						this.time = 30;
+					}
+					
+				}, 1000);
+			} else {
+				this.stopRecord();
+				clearInterval(this.timer);
+				this.clip = true;
+				this.time = 30;
+			}
+		},
+		/**
+		 * 触摸开始
+		 **/
+
+		touchStart(e) {
+			if (this.full == 0) {
+				return;
+			}
+			console.log('触摸开始', e.touches);
+			this.touchStartX = e.touches[0].pageX;
+			this.touchStartY = e.touches[0].pageY;
+		},
+
+		/**
+		 * 触摸结束
+		 **/
+
+		touchEnd(e) {
+			if (this.full == 0) {
+				return;
+			}
+			console.log('触摸结束');
+			let deltaX = e.changedTouches[0].pageX - this.touchStartX;
+			let deltaY = e.changedTouches[0].pageY - this.touchStartY;
+			if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+				if (deltaX >= 0) {
+					this.down(2);
+					console.log('右滑');
+				} else {
+					this.down(4);
+					console.log('左滑');
+				}
+			} else if (Math.abs(deltaY) > 50 && Math.abs(deltaX) < Math.abs(deltaY)) {
+				if (deltaY < 0) {
+					this.down(1);
+					console.log('上滑');
+				} else {
+					this.down(3);
+					console.log('下滑');
+				}
+			} else {
+				console.log('可能是误触！');
+			}
+		},
 		// 导航栏返回
 		getBack() {
 			uni.navigateBack({
@@ -615,11 +699,26 @@ export default {
 	padding: 0 20rpx;
 	display: flex;
 	flex-direction: row;
-	flex-direction:row-reverse;
+	flex-direction: row-reverse;
 	align-items: center;
 	width: 750rpx;
 	height: 100rpx;
 	background-color: #464950;
+	.cliptime {
+		margin-right: 20rpx;
+		position: relative;
+		.clip-img {
+			width: 80rpx;
+			height: 80rpx;
+		}
+		.clip-t {
+			position: absolute;
+			top: 14rpx;
+			right: 15rpx;
+			font-size: 40rpx;
+			color: #e54545;
+		}
+	}
 }
 .mask-ios-img {
 	margin-right: 20rpx;
@@ -627,15 +726,40 @@ export default {
 	height: 60rpx;
 }
 .mask-pos {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	position: fixed;
 	top: 120;
 	right: 20;
+	.cliptime1 {
+		position: relative;
+		.clip-img1 {
+			width: 80rpx;
+			height: 80rpx;
+		}
+		.clip-t1 {
+			position: absolute;
+			top: 14rpx;
+			right: 15rpx;
+			font-size: 40rpx;
+			color: #e54545;
+		}
+	}
 }
 .images3 {
 	margin-top: 20rpx;
 	width: 80rpx;
 	height: 80rpx;
 }
+
+.clip-yuan {
+	display: inline-block;
+	width: 20rpx;
+	height: 20rpx;
+	background: red($color: #b61e11);
+}
+
 .loading-text {
 	width: 200rpx;
 	text-align: center;
@@ -656,8 +780,6 @@ export default {
 	height: 80rpx;
 	margin-bottom: 40rpx;
 }
-
-
 
 .clarity {
 	position: absolute;

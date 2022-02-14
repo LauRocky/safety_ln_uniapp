@@ -28,66 +28,73 @@
 	</view>
 </template>
 <script>
-		import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
+	import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 	export default {
-			components: {
-				TwoNavbar
-			},
-			data() {
-				return {
-					name: "设备离线通知",
-					id: '',
-					show: false,
-					list: [],
-					pageSize: 10,
-					totalCount: 0,
-					totalPage: 1,
-					content: "",
-				};
-			},
-			onShow() {
-				this.monitoring()
-			},
-			// computed:{
-			// 	content:function(){
-			// 		return this.list.forEach(el=>{
-			// 			 `el.companyInfo.province + el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'`
-			// 		})
-			// 	}
-			// },
-			methods: {
-				monitoring() {
-					this.$http('/notification/cameraAlarmList', 'GET', {}, false).then(res => {
-							console.log(res)
-							if (res.code == 0) {
-								this.list=res.data
+		components: {
+			TwoNavbar
+		},
+		data() {
+			return {
+				name: "设备离线通知",
+				id: '',
+				show: false,
+				list: [],
+				limit: 15,
+				page: 1,
+				content: "",
+			};
+		},
+		onShow() {
+			this.page=1;
+			this.list=[];
+			this.monitoring()
+		},
+		// 页面上拉处理事件函数
+		onReachBottom() {
+			this.monitoring()
+		},
+		methods: {
+			monitoring() {
+				uni.showLoading({
+					title: '加载中',
+				});
+				this.$http('/notification/cameraAlarmPage', 'GET', {
+					page:this.page,
+					limit:this.limit,
+				}, false).then(res => {
+					uni.hideLoading();
+						if (res.code == 0) {
+							if (this.list.length < res.page.totalCount) {
+								this.page++;
+								this.list = this.list.concat(res.page.list);
 							}
-						})
-						.catch(err => {
-							console.log(err)
-						})
-				},
-				open() {
-					// console.log('open');
-				},
-				close() {
-					this.show = false
-				},
-				leftClick() {
-					console.log('leftClick');
-					uni.navigateBack({
-						delta: 1
-					});
-				},
-				eachItem(el) {
-			
-				this.content =  el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'
-				this.show = true;
-				},
+						}
+					})
+					.catch(err => {
+						console.log(err)
+					})
 			},
-			onLoad() {
-			
-			}
+			open() {
+				// console.log('open');
+			},
+			close() {
+				this.show = false
+			},
+			leftClick() {
+				console.log('leftClick');
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			eachItem(el) {
+			console.log("55", el)
+			this.content =  el.companyInfo.name + el.cameraInfo.ipcName + '摄像头于' + el.createTime+'离线'
+			this.show = true;
+			},
+		},
+		onLoad() {
+		
+		}
 	}
 </script>
 
@@ -96,6 +103,7 @@
 		padding: 0 20upx;
 
 		.card {
+			// height: 9vh;
 			overflow: hidden;
 			display: flex;
 			flex-direction: row;
@@ -121,7 +129,6 @@
 				.times {
 					text-align: right;
 					font-size: 24upx;
-					padding-top: 10upx;
 				}
 		
 				.card_title {
@@ -143,27 +150,27 @@
 		
 				// 点击详情 展开
 				.card_content1 {
-					padding: 10upx 0;
+					padding: 10upx 0 15upx 0;
 					text-indent: 0em;
 					font-size: 28upx;
 				}
 		
 				.card_content2 {
-					padding: 10rpx 0 0 0;
+					padding: 10upx 0 15upx 0;
 					overflow: hidden;
 					white-space: nowrap;
 					text-overflow: ellipsis;
 					text-indent: 0em;
-					font-size: 28rpx;
+					font-size: 28upx;
 				}
 		
 				.card_lookmore {
-					width: 100rpx;
-					height: 14rpx;
-					padding: 10rpx 0;
-					font-size: 20rpx;
-					line-height: 20rpx;
-					border-bottom: 1rpx solid rgb(0, 98, 0);
+					width: 100upx;
+					height: 14upx;
+					padding: 10upx 0;
+					font-size: 20upx;
+					line-height: 20upx;
+					border-bottom: 1upx solid rgb(0, 98, 0);
 					color: rgb(0, 98, 0);
 				}
 			}
