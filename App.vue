@@ -8,7 +8,7 @@ export default {
 				// 页面加载时触发
 				var pinf = plus.push.getClientInfo();
 				var cid = pinf.clientid; //客户端标识
-				console.log(cid,'pppp')
+				console.error(cid,'pppp')
 		// #endif
 	},
 	onShow: function() {},
