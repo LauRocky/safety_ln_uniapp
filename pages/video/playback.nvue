@@ -1,0 +1,597 @@
+<template>
+	<div class="detailVideo">
+		<div class="headerTitle" :style="{ height: iStatusBarHeight + 'rpx' }"></div>
+		<div class="header-top">
+			<image @click="getBack" class="img" src="../../static/video/back.png" mode=""></image>
+			<text class="header-item">{{ 录像回放 }}</text>
+			<text class="header-items"></text>
+		</div>
+		<div style="height: 500rpx; width: 100%;"></div>
+		<KJ-HikVideoPlayer
+			ref="HikVideoPlayer"
+			:class="full == 1 ? 'EZOpen_full' : 'EZOpen'"
+			:style="{ width: '100%', height: palyerHeight, top: full == 1 ? 0 : iStatusBarHeight + 92 + 'rpx' }"
+			@player="er"
+			@intercomClient="onIntercomClient"
+		></KJ-HikVideoPlayer>
+
+		<div class="mask-ios" v-if="full == 0">
+			<image @click="full_video" class="mask-ios-img" src="../../static/video/da.png" mode=""></image>
+			<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image>
+		</div>
+		<div class="mask-pos" v-else>
+			<!-- 全屏展示 -->
+			<image @click="exitfull_video" class="images3" src="../../static/video/xiao.png" mode=""></image>
+			<image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image>
+		</div>
+		<picker mode="date" :value="startdate" :start="startDate" :end="endDate" @change="bindDateChange">
+			<view class="uni-input">{{ startdate }}</view>
+		</picker>
+	</div>
+</template>
+<script>
+import { request } from '../../utils/request.js';
+import { is_iOS } from '../../utils/utils.js';
+export default {
+	components: {},
+	data() {
+		return {
+			play: true,
+			videoUrl: '',
+			zidong: false,
+			status: {},
+			ehomebianbei: '',
+			bianbei: '',
+			Videotitle: '',
+			PlaybackUrl: '',
+			platform: '',
+			palyerHeight: '500rpx',
+			filePathvideo: '',
+			full: 0,
+			time: 30,
+			timer: null,
+			clip: true,
+			datetimerange: [],
+			cameraIndexCode: '',
+			startdate:""
+		};
+	},
+	computed: {
+		startDate() {
+			return this.getDate('start');
+		},
+		endDate() {
+			return this.getDate('end');
+		}
+	},
+	onLoad(options) {
+		console.log(options);
+		this.cameraIndexCode = options.camera;
+		this.platform = uni.getSystemInfoSync().platform;
+		this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2;
+		this.startPlayback();
+	},
+	onShow() {
+		plus.screen.lockOrientation('portrait-primary');
+	},
+	created() {},
+	mounted() {},
+	methods: {
+		bindDateChange: function(e) {
+			console.log(e)
+			this.startdate = e.detail.value;
+			this.starttimeStamp = e.timeStamp
+		},
+		getDate(type) {
+			const date = new Date();
+			let year = date.getFullYear();
+			let month = date.getMonth() + 1;
+			let day = date.getDate();
+
+			if (type === 'start') {
+				year = year - 60;
+			} else if (type === 'end') {
+				this.startdate = `${year}-${month}-${day}`;
+			}
+			month = month > 9 ? month : '0' + month;
+			day = day > 9 ? day : '0' + day;
+			return `${year}-${month}-${day}`;
+		},
+
+		// 导航栏返回
+		getBack() {
+			uni.navigateBack({
+				delta: 1
+			});
+		},
+
+		videodetail() {
+			uni.showLoading({
+				title: '加载中',
+				mask: true
+			});
+			request(
+				`/camera/playback`,
+				'GET',
+				{
+					cameraIndexCode: this.cameraIndexCode,
+					beginTime: this.datetimerange[0],
+					endTime: this.datetimerange[1],
+					protocol: 'rtsp'
+				},
+				false
+			)
+				.then(res => {
+					console.log(res);
+					if (res.code == 0) {
+						this.PlaybackUrl = res.url;
+						this.startPlayback();
+					}
+				})
+				.catch(e => {
+					console.error(e);
+				});
+		},
+		/**
+		 * 全屏
+		 * */
+		full_video() {
+			plus.screen.lockOrientation('landscape-primary');
+			setTimeout(() => {
+				this.full = 1;
+				this.palyerHeight = '750rpx';
+			}, 100);
+		},
+		/**
+		 * 退出全屏
+		 * */
+		exitfull_video() {
+			plus.screen.lockOrientation('portrait-primary');
+			setTimeout(() => {
+				this.full = 0;
+				this.palyerHeight = '500rpx';
+			}, 100);
+		},
+		/**
+		 * 播放状态回调
+		 * */
+		er(e) {
+			//{"playStatus":"SUCCESS","errorCode":"HVPErrorCodeSuccess"}
+			//错误码参考插件市场文档
+			console.log('er: ' + JSON.stringify(e.detail));
+			uni.hideLoading();
+			if (e.detail.playStatus == 'SUCCESS') {
+			} else {
+				uni.showToast({
+					title: '播放失败',
+					icon: 'none'
+				});
+			}
+		},
+		/**
+		 * 开启预览
+		 * */
+		startRealPlay() {
+			var _this = this;
+			_this.$refs.HikVideoPlayer.stopPlay(res => {
+				console.log('stopPlay: ' + JSON.stringify(res));
+				_this.$refs.HikVideoPlayer.startRealPlay(_this.videoUrl, res => {
+					console.log('startRealPlay: ' + res);
+				});
+			});
+		},
+		/**
+		 * 开启录像回放
+		 * 时间格式：yyyy-MM-dd HH:mm:ss
+		 * */
+		startPlayback() {
+			var _this = this;
+			this.$refs.HikVideoPlayer.stopPlay(res => {
+				console.log('stopPlay: ' + JSON.stringify(res));
+				_this.$refs.HikVideoPlayer.startPlayback(this.PlaybackUrl, this.datetimerange[0], this.datetimerange[1], res => {
+					console.log('startPlayback: ' + JSON.stringify(res));
+					this.getOSDTime();
+				});
+			});
+		},
+		/**
+		 * 暂停回放
+		 * */
+		pause() {
+			this.$refs.HikVideoPlayer.pause(res => {
+				console.log('pause: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 * 恢复回放
+		 * */
+		resume() {
+			this.$refs.HikVideoPlayer.resume(res => {
+				console.log('resume: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 *获取视频中屏幕显示时间
+		 * */
+		getOSDTime() {
+			var _this = this;
+			var interval3 = setInterval(function() {
+				_this.$refs.HikVideoPlayer.getOSDTime(res => {
+					console.log('getOSDTime: ' + JSON.stringify(res));
+				});
+			}, 1000);
+		},
+		/**
+		 *抓图
+		 *注意：filePath 一定要是_doc绝对目录
+		 * */
+		capturePicture() {
+			var filePath = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
+			var fileName = 'test.png';
+			var dic = {
+				filePath: filePath,
+				fileName: fileName
+			};
+
+			var _this = this;
+			_this.$refs.HikVideoPlayer.capturePicture(dic, res => {
+				console.log('capturePicture: ' + JSON.stringify(res));
+				_this.imageSrc = 'file://' + filePath + '/' + fileName;
+				uni.saveImageToPhotosAlbum({
+					filePath: _this.imageSrc,
+					success: function() {
+						uni.showToast({
+							title: '截图成功',
+							duration: 1500
+						});
+					},
+					fail: function() {
+						uni.showToast({
+							title: '截图失败',
+							duration: 1500
+						});
+					}
+				});
+			});
+		},
+
+		/**
+		 *开始录像
+		 *注意：filePath 一定要是_doc绝对目录
+		 * */
+		startRecord() {
+			this.filePathvideo = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
+			var dic = {
+				filePath: this.filePathvideo,
+				fileName: 'test.mp4'
+			};
+			var _this = this;
+			_this.$refs.HikVideoPlayer.startRecord(dic, res => {
+				console.log('startRecord: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 *结束录像
+		 * */
+		stopRecord() {
+			var tempFilePath = 'file://' + this.filePathvideo + '/test.mp4';
+			this.$refs.HikVideoPlayer.stopRecord(res => {
+				console.log('stopRecord: ' + JSON.stringify(res));
+				uni.saveVideoToPhotosAlbum({
+					filePath: tempFilePath,
+					success: function() {
+						uni.showToast({
+							title: '保存录像成功',
+							duration: 1500
+						});
+					},
+					fail: function() {
+						uni.showToast({
+							title: '保存录像失败',
+							duration: 1500
+						});
+					}
+				});
+			});
+		},
+		/**
+		 * 语音对讲状态回调
+		 * */
+		onIntercomClient(e) {
+			console.log('onIntercomClient: ' + JSON.stringify(e.detail));
+		},
+		/**
+		 * 停止取流和播放
+		 * */
+		stopPlay() {
+			this.$refs.HikVideoPlayer.stopPlay(res => {
+				console.log('stopPlay: ' + JSON.stringify(res));
+			});
+		}
+	}
+};
+</script>
+
+<style lang="scss" scoped>
+.detailVideo {
+	/* width: 750rpx;
+	flex: 1; */
+}
+.headerTitle {
+	width: 750rpx;
+	background: #00b48f;
+}
+
+.EZOpen {
+	background: #464950;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.EZOpen_full {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.header-top {
+	background: #00b48f;
+	width: 750rpx;
+	height: 92rpx;
+	padding: 0 20rpx;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.img {
+	width: 40rpx;
+	height: 40rpx;
+}
+
+.header-top .header-item {
+	color: white;
+	width: 400rpx;
+	font-size: 32rpx;
+	font-family: PingFang SC;
+	font-weight: bold;
+	text-align: center;
+}
+
+.header-items {
+	color: white;
+	width: 50rpx;
+}
+
+.vid {
+	position: relative;
+	width: 750rpx;
+	height: 500rpx;
+}
+
+.vid-loading {
+	width: 100rpx;
+	height: 100rpx;
+	line-height: 100rpx;
+	text-align: center;
+	color: #ffffff;
+	font-size: 32rpx;
+	position: absolute;
+	left: 375rpx;
+	top: 250rpx;
+	transform: translate(-50%, -50%);
+}
+
+.container {
+	position: absolute;
+	top: 100rpx;
+	right: 10rpx;
+}
+
+.mask {
+	width: 750rpx;
+	height: 100rpx;
+	position: relative;
+	background: #464950;
+}
+
+.mask-loading {
+	width: 200rpx;
+	height: 100rpx;
+}
+.mask-ios {
+	padding: 0 20rpx;
+	display: flex;
+	flex-direction: row;
+	flex-direction: row-reverse;
+	align-items: center;
+	width: 750rpx;
+	height: 100rpx;
+	background: #464950;
+	.cliptime {
+		margin-right: 20rpx;
+		position: relative;
+		.clip-img {
+			width: 80rpx;
+			height: 80rpx;
+		}
+		.clip-t {
+			position: absolute;
+			top: 14rpx;
+			right: 15rpx;
+			font-size: 40rpx;
+			color: #e54545;
+		}
+	}
+}
+.mask-ios-img {
+	margin-right: 20rpx;
+	width: 60rpx;
+	height: 60rpx;
+}
+.mask-pos {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 120;
+	right: 20;
+	.cliptime1 {
+		position: relative;
+		.clip-img1 {
+			width: 80rpx;
+			height: 80rpx;
+		}
+		.clip-t1 {
+			position: absolute;
+			top: 14rpx;
+			right: 15rpx;
+			font-size: 40rpx;
+			color: #e54545;
+		}
+	}
+}
+.images3 {
+	margin-top: 20rpx;
+	width: 80rpx;
+	height: 80rpx;
+}
+
+.clip-yuan {
+	width: 20rpx;
+	height: 20rpx;
+	background: red($color: #b61e11);
+}
+
+.loading-text {
+	width: 200rpx;
+	text-align: center;
+	font-size: 28rpx;
+	line-height: 100rpx;
+	color: #ffffff;
+}
+
+.images1 {
+	width: 76rpx;
+	height: 76rpx;
+	transform: translateX(5%);
+	margin-bottom: 40rpx;
+}
+
+.images2 {
+	width: 80rpx;
+	height: 80rpx;
+	margin-bottom: 40rpx;
+}
+
+.clarity {
+	position: absolute;
+	right: 100rpx;
+	bottom: 20rpx;
+	width: 60rpx;
+	height: 60rpx;
+	color: #ffffff;
+}
+
+.mask-img {
+	position: absolute;
+	right: 20rpx;
+	bottom: 20rpx;
+	width: 60rpx;
+	height: 60rpx;
+	color: #ffffff;
+}
+
+.middle {
+	width: 750rpx;
+	text-align: center;
+}
+
+.middle .middle-content {
+	margin: 20rpx;
+	width: 360rpx;
+	height: 360rpx;
+	position: relative;
+	transform: translateX(50%);
+}
+
+.middle-content .content-img {
+	position: absolute;
+	left: 180rpx;
+	top: 0;
+	width: 230rpx;
+	height: 130rpx;
+	transform: translateX(-50%);
+}
+
+.middle-content .content-img1 {
+	position: absolute;
+	right: 0;
+	top: 180rpx;
+	width: 130rpx;
+	height: 230rpx;
+	transform: translateY(-50%);
+}
+
+.middle-content .content-img2 {
+	position: absolute;
+	left: 180rpx;
+	bottom: 0;
+	width: 230rpx;
+	height: 130rpx;
+	transform: translateX(-50%);
+}
+
+.middle-content .content-img3 {
+	position: absolute;
+	left: 0;
+	top: 180rpx;
+	width: 130rpx;
+	height: 230rpx;
+	transform: translateY(-50%);
+}
+
+.a {
+	width: 230rpx;
+	height: 130rpx;
+}
+
+.b {
+	width: 50rpx;
+	height: 52rpx;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -70%);
+}
+
+.soleBase {
+	width: 750rpx;
+	// margin: 50rpx 50rpx 10rpx;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.soleBase .zoom1 {
+	width: 96rpx;
+	height: 135rpx;
+}
+
+.zoom1 .zoom1-img {
+	width: 96rpx;
+	height: 96rpx;
+}
+
+.zoom1 .zoom1-text {
+	font-size: 30rpx;
+	color: #666666;
+	text-align: center;
+	font-family: PingFang SC;
+}
+</style>

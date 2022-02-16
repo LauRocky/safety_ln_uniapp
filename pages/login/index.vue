@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import { is_iOS } from '../../utils/utils.js';
+import { is_iOS, igexinTool } from '../../utils/utils.js';
+const App = getApp();
 export default {
 	data() {
 		return {
@@ -120,6 +121,18 @@ export default {
 				.then(res => {
 					uni.hideLoading();
 					if (res.code == 0) {
+						// #ifdef APP-PLUS
+						//个推绑定别名和userid一起绑定
+						let userinfo = res.data.user;
+						let tool = new igexinTool();
+						let num = 20 - userinfo.userId.toString().length;
+						let string = userinfo.userId.toString();
+						for (var i = 0; i < num; i++) {
+							string += '0';
+						}
+						App.globalData.Apushid = string;
+						tool.bindAlias(string, App.globalData.cid);
+						// #endif
 						if (!is_iOS()) {
 							uni.sendNativeEvent(res, rest => {
 								console.log(rest);
@@ -179,6 +192,18 @@ export default {
 					this.$http('/loginApp', 'POST', this.form, false)
 						.then(res => {
 							if (res.code == 0) {
+								// #ifdef APP-PLUS
+								//个推绑定别名和userid一起绑定
+								let userinfo = JSON.parse(res.user);
+								let tool = new igexinTool();
+								let num = 20 - userinfo.userId.toString().length;
+								let string = userinfo.userId.toString();
+								for (var i = 0; i < num; i++) {
+									string += '0';
+								}
+								App.globalData.Apushid = string;
+								tool.bindAlias(string, App.globalData.cid);
+								// #endif
 								uni.hideToast();
 								let obj = uni.getStorageSync('show');
 
@@ -206,7 +231,6 @@ export default {
 						})
 						.catch(err => {
 							console.error(err);
-
 							uni.showToast({
 								title: '登录失败',
 								duration: 2000,

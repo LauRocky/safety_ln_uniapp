@@ -16,23 +16,6 @@
 			}
 		},
 		{
-			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
-			"style": {
-				"disableScroll": true,
-				"app-plus": {
-					"backgroundColorTop": "transparent",
-					"background": "transparent",
-					"titleNView": false,
-					"scrollIndicator": false,
-					"popGesture": "none",
-					"animationType": "fade-in",
-					"animationDuration": 200
-
-				}
-			}
-		},
-
-		{
 			"path": "pages/home/index",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -296,6 +279,18 @@
 				}
 			}
 
+		}, {
+			"path": "pages/video/playback",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+
 		}
 	],
 	"tabBar": {
@@ -337,8 +332,8 @@
 			"visible": true
 		}]
 	},
-	"globalStyle":{
-		"pageOrientation":"auto"
+	"globalStyle": {
+		"pageOrientation": "auto"
 	}
 	/* "condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)

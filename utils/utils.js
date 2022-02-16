@@ -26,3 +26,65 @@ export function is_iOS() {
 	}
 	return false
 }
+
+//个推如何修改绑定别名
+export function igexinTool() {
+	
+	var isAndorid, PushManager, context, Instance, GeTuiSdk;
+	if (plus.os.name == 'Android') {
+		isAndorid = true;
+	} else {
+		isAndorid = false;
+	}
+
+	if (isAndorid) {
+		PushManager = plus.android.importClass("com.igexin.sdk.PushManager");
+		context = plus.android.runtimeMainActivity().getContext();
+		Instance = PushManager.getInstance();
+	} else {
+		GeTuiSdk = plus.ios.importClass("GeTuiSdk");
+	}
+
+	this.bindAlias = function(alias, cid) {
+		if (isAndorid) {
+			Instance.bindAlias(context, alias, cid);
+		} else {
+			GeTuiSdk.bindAliasandSequenceNum(alias, cid);
+		}
+	}
+
+	this.unbindAlias = function(alias) {
+		if (isAndorid) {
+			Instance.unBindAlias(context, alias, cid, false); //true所有设备解绑，false解锁自已的
+		} else {
+			GeTuiSdk.unbindAliasandSequenceNumandIsSelf(alias, cid, false);
+		}
+	}
+
+	this.getVersion = function() {
+		if (isAndorid) {
+			return Instance.getVersion(context);
+		} else {
+			return GeTuiSdk.version;
+		}
+	}
+
+	//开启推送  
+	this.turnOnPush = function() {
+		if (isAndorid) {
+			Instance.turnOnPush(context);
+		} else {
+			GeTuiSdk.setPushModeForOff(false);
+		}
+	}
+
+	//关闭推送  
+	this.turnOffPush = function() {
+		if (isAndorid) {
+			Instance.turnOffPush(context);
+		} else {
+			GeTuiSdk.setPushModeForOff(true);
+		}
+	}
+
+}
