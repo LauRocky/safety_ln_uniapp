@@ -53,7 +53,7 @@
 		<div class="mask-ios" v-else>
 			<image @click="full_video" class="mask-ios-img" src="../../static/video/da.png" mode=""></image>
 			<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image>
-			<!-- <image @click="handplatback" class="mask-ios-img" src="../../static/video/hui.png" mode=""></image> -->
+			<image @click="handplatback" class="mask-ios-img" src="../../static/video/hui.png" mode=""></image>
 			<image v-if="clip" @click="handClip(1)" class="mask-ios-img" src="../../static/video/shexiangji.png" mode=""></image>
 			<div class="cliptime" @click="handClip(2)" v-else>
 				<image class="clip-img" src="../../static/video/yuan.png" mode=""></image>
