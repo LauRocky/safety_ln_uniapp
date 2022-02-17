@@ -230,11 +230,11 @@ export default {
 		};
 	},
 	onLoad() {
-		let obj = uni.getStorageSync('categoryList');   //隐患类别
+		let obj = uni.getStorageSync('categoryList'); //隐患类别
 		if (obj.name == '安全') {
 			this.category1 = 'PROBLEMS_LEVEL_TYPE';
 			this.category2 = 'PROBLEM_TYPE';
-		} else {
+		} else if (obj.name == '质量') {
 			this.category1 = 'QUALITY_PROBLEM_LEVEL';
 			this.category2 = 'QUALITY_PROBLEM_TYPE';
 		}
@@ -270,22 +270,6 @@ export default {
 				false
 			)
 				.then(res => {
-					console.log({
-						category: this.userAdd.categoryType,
-						companyId: this.userAdd.companyId,
-						projectId: this.userAdd.projectId,
-						problemType: this.userAdd.problemType,
-						assessment: this.userAdd.assessment,
-						problemSolver: this.userAdd.problemSolver,
-						notifyPerson: this.userAdd.notifyPerson,
-						expireTime: expireTime,
-						problemDesc: this.userAdd.Details,
-						problemRequire: this.userAdd.require,
-						areaDetail: this.userAdd.location,
-						images: this.userAdd.images,
-						location: this.userAdd.location,
-						source: 0
-					});
 					if (res.code == 0) {
 						this.handAllcatch();
 						uni.showToast({
