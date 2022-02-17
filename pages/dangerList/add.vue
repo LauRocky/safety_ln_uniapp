@@ -95,8 +95,8 @@
 		</u--form>
 		<categoryList ref="categoryList" :showl="showC" @closeL="showC = false" @handEndl="handEndC" />
 		<projectPicker ref="projectPicker" :show="show" @close="show = false" @handEnd="handEnd" />
-		<levelPicker ref="levelPicker" :showl="showl" @closeL="showl = false" @handEndl="handEndl" :category="userAdd.categoryType" />
-		<levelType ref="levelType" :showl="showT" @closeL="showT = false" @handEndl="handEndT" :category="userAdd.categoryType" />
+		<levelPicker ref="levelPicker" :showl="showl" :category1="category1" @closeL="showl = false" @handEndl="handEndl" :category="userAdd.categoryType" />
+		<levelType ref="levelType" :showl="showT" :category2="category2" @closeL="showT = false" @handEndl="handEndT" :category="userAdd.categoryType" />
 		<rectification ref="rectification" :showR="showR" @closeR="showR = false" @handEndR="handEndR" />
 		<InformPerson ref="InformPerson" :showP="showP" @closeP="showP = false" @handEndP="handEndP" />
 		<describe :showD="showD" @closeD="showD = false" @handEndD="handEndD">隐患详情描述</describe>
@@ -148,8 +148,8 @@ export default {
 				category: '',
 				name: '',
 				categoryType: '安全',
-				dagner: '安全事件隐患',
-				type: '建设施工',
+				dagner: '',
+				type: '',
 				rectification: '',
 				person: '',
 				Details: '',
@@ -159,14 +159,16 @@ export default {
 				images: '',
 				companyId: '', //项目id
 				projectId: '', //隐患id
-				assessment: '4', //隐患等级，参考字典值。取code
-				problemType: '0', //选择，隐患类型，参考字典值。取code
+				assessment: '', //隐患等级，参考字典值。取code
+				problemType: '', //选择，隐患类型，参考字典值。取code
 				problemSolver: '', //整改人
 				notifyPerson: '' //只会人
 			},
 			control: true, //上传图片变量
 			columnNum: 4,
 			imgList: [],
+			category1: 'PROBLEMS_LEVEL_TYPE', //等级和质量区别 传值
+			category2: 'PROBLEM_TYPE',
 			rules: {
 				categoryType: [
 					{
@@ -227,7 +229,16 @@ export default {
 			}
 		};
 	},
-	onLoad() {},
+	onLoad() {
+		let obj = uni.getStorageSync('categoryList'); //隐患类别
+		if (obj.name == '安全') {
+			this.category1 = 'PROBLEMS_LEVEL_TYPE';
+			this.category2 = 'PROBLEM_TYPE';
+		} else if (obj.name == '质量') {
+			this.category1 = 'QUALITY_PROBLEM_LEVEL';
+			this.category2 = 'QUALITY_PROBLEM_TYPE';
+		}
+	},
 	onShow() {},
 	//组件生命周期
 	created() {},
@@ -259,7 +270,6 @@ export default {
 				false
 			)
 				.then(res => {
-					console.log(res);
 					if (res.code == 0) {
 						this.handAllcatch();
 						uni.showToast({
@@ -309,19 +319,18 @@ export default {
 		},
 		handEndC(v) {
 			//安全隐患
-			console.log(v);
 			this.userAdd.categoryType = v.name;
-			if(this.userAdd.categoryType=='安全'){
-				this.userAdd.dagner='安全事件隐患';
-				this.userAdd.assessment=3;
-				this.userAdd.type='建设施工';
-				this.userAdd.problemType=0;
-			}else if(this.userAdd.categoryType){
-				this.userAdd.dagner='一般工程质量事故';
-				this.userAdd.type='防渗漏';
-				this.userAdd.assessment=3;
-				this.userAdd.problemType=0;
+			if (this.userAdd.categoryType == '安全') {
+				this.category1 = 'PROBLEMS_LEVEL_TYPE';
+				this.category2 = 'PROBLEM_TYPE';
+			} else if (this.userAdd.categoryType == '质量') {
+				this.category1 = 'QUALITY_PROBLEM_LEVEL';
+				this.category2 = 'QUALITY_PROBLEM_TYPE';
 			}
+			this.userAdd.dagner = '';
+			this.userAdd.type = '';
+			this.userAdd.assessment = '';
+			this.userAdd.problemType = '';
 			this.showC = false;
 		},
 		handEnd(v) {
@@ -333,12 +342,14 @@ export default {
 		},
 		handEndl(v) {
 			//隐患等级
+			console.log(v.code, '111111');
 			this.userAdd.dagner = v.value;
 			this.userAdd.assessment = v.code;
 			this.showl = false;
 		},
 		handEndT(v) {
 			//隐患类型
+			console.log(v);
 			this.userAdd.type = v.value;
 			this.userAdd.problemType = v.code;
 			this.showT = false;

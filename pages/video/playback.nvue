@@ -3,7 +3,7 @@
 		<div class="headerTitle" :style="{ height: iStatusBarHeight + 'rpx' }"></div>
 		<div class="header-top">
 			<image @click="getBack" class="img" src="../../static/video/back.png" mode=""></image>
-			<text class="header-item">{{ 录像回放 }}</text>
+			<text class="header-item">录像回放</text>
 			<text class="header-items"></text>
 		</div>
 		<div style="height: 500rpx; width: 100%;"></div>
@@ -15,23 +15,52 @@
 			@intercomClient="onIntercomClient"
 		></KJ-HikVideoPlayer>
 
-		<div class="mask-ios" v-if="full == 0">
+		<view class="mask-ios" v-if="full == 0">
 			<image @click="full_video" class="mask-ios-img" src="../../static/video/da.png" mode=""></image>
 			<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image>
-		</div>
+			<image v-if="clip" @click="handClip(1)" class="mask-ios-img" src="../../static/video/shexiangji.png" mode=""></image>
+			<div class="cliptime" @click="handClip(2)" v-else>
+				<image class="clip-img" src="../../static/video/yuan.png" mode=""></image>
+				<text class="clip-t">{{ time < 10 ? '0' + time : time }}</text>
+			</div>
+		</view>
 		<div class="mask-pos" v-else>
 			<!-- 全屏展示 -->
 			<image @click="exitfull_video" class="images3" src="../../static/video/xiao.png" mode=""></image>
 			<image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image>
+			<image v-if="clip" @click="handClip(1)" class="images3" src="../../static/video/shexiangji.png" mode=""></image>
+			<div class="cliptime1" @click="handClip(2)" v-else>
+				<image class="clip-img1" src="../../static/video/yuan.png" mode=""></image>
+				<text class="clip-t1">{{ time < 10 ? '0' + time : time }}</text>
+			</div>
 		</div>
-		<picker mode="date" :value="startdate" :start="startDate" :end="endDate" @change="bindDateChange">
-			<view class="uni-input">{{ startdate }}</view>
-		</picker>
+		<div class="dateflex" @click="handDate(1)" style="margin-top: 20rpx;">
+			<text class="date-1">开始日期</text>
+			<text class="date-2">{{ startDate }}</text>
+		</div>
+		<div class="dateflex" @click="handDate(2)">
+			<text class="date-1">结束日期</text>
+			<text class="date-2">{{ endDate }}</text>
+		</div>
+		<div><text class="date-btn" @click="videodetail">播放</text></div>
+
+		<u-datetime-picker
+			:title="title"
+			:formatter="formatter"
+			:show="show"
+			v-model="value1"
+			closeOnClickOverlay="true"
+			mode="datetime"
+			@confirm="handconfirm"
+			@close="show = false"
+			@cancel="show = false"
+		></u-datetime-picker>
 	</div>
 </template>
 <script>
 import { request } from '../../utils/request.js';
 import { is_iOS } from '../../utils/utils.js';
+import { getTime } from '../../utils/dateTime.js';
 export default {
 	components: {},
 	data() {
@@ -51,25 +80,20 @@ export default {
 			time: 30,
 			timer: null,
 			clip: true,
-			datetimerange: [],
 			cameraIndexCode: '',
-			startdate:""
+			show: false,
+			value1: new Date(),
+			title: '开始日期',
+			Datestatus: null,
+			startDate: '请选择',
+			startDateM: null,
+			endDate: '请选择'
 		};
 	},
-	computed: {
-		startDate() {
-			return this.getDate('start');
-		},
-		endDate() {
-			return this.getDate('end');
-		}
-	},
 	onLoad(options) {
-		console.log(options);
 		this.cameraIndexCode = options.camera;
 		this.platform = uni.getSystemInfoSync().platform;
 		this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2;
-		this.startPlayback();
 	},
 	onShow() {
 		plus.screen.lockOrientation('portrait-primary');
@@ -77,27 +101,72 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
-		bindDateChange: function(e) {
-			console.log(e)
-			this.startdate = e.detail.value;
-			this.starttimeStamp = e.timeStamp
-		},
-		getDate(type) {
-			const date = new Date();
-			let year = date.getFullYear();
-			let month = date.getMonth() + 1;
-			let day = date.getDate();
-
-			if (type === 'start') {
-				year = year - 60;
-			} else if (type === 'end') {
-				this.startdate = `${year}-${month}-${day}`;
+		handClip(val) {
+			if (!this.PlaybackUrl) {
+				return uni.showToast({
+					title: '请先选择时间段',
+					icon: 'none'
+				});
 			}
-			month = month > 9 ? month : '0' + month;
-			day = day > 9 ? day : '0' + day;
-			return `${year}-${month}-${day}`;
+			//点击 1开始录像 2停止录像
+			if (val == 1) {
+				this.clip = false;
+				this.startRecord();
+				this.timer = setInterval(() => {
+					this.time--;
+					if (this.time == 0) {
+						this.stopRecord();
+						clearInterval(this.timer);
+						this.clip = true;
+						this.time = 30;
+					}
+				}, 1000);
+			} else {
+				this.stopRecord();
+				clearInterval(this.timer);
+				this.clip = true;
+				this.time = 30;
+			}
 		},
-
+		handconfirm(e) {
+			//确定日期选择
+			this.show = false;
+			if (this.Datestatus == 2) {
+				if (this.startDateM > e.value) {
+					return uni.showToast({
+						title: '结束日期要大于开始日期',
+						icon: 'none'
+					});
+				}
+				this.endDate = getTime(e.value);
+			} else {
+				this.startDateM = e.value;
+				this.startDate = getTime(e.value);
+			}
+		},
+		handDate(val) {
+			//打开日期弹窗
+			this.show = true;
+			this.Datestatus = val;
+		},
+		formatter(type, value) {
+			if (type === 'year') {
+				return `${value}年`;
+			}
+			if (type === 'month') {
+				return `${value}月`;
+			}
+			if (type === 'day') {
+				return `${value}日`;
+			}
+			if (type === 'hour') {
+				return `${value}时`;
+			}
+			if (type === 'minute') {
+				return `${value}分`;
+			}
+			return value;
+		},
 		// 导航栏返回
 		getBack() {
 			uni.navigateBack({
@@ -115,8 +184,8 @@ export default {
 				'GET',
 				{
 					cameraIndexCode: this.cameraIndexCode,
-					beginTime: this.datetimerange[0],
-					endTime: this.datetimerange[1],
+					beginTime: this.startDate,
+					endTime: this.endDate,
 					protocol: 'rtsp'
 				},
 				false
@@ -124,7 +193,9 @@ export default {
 				.then(res => {
 					console.log(res);
 					if (res.code == 0) {
-						this.PlaybackUrl = res.url;
+						console.log(res.data.playbackUrl, '333');
+						this.PlaybackUrl = res.data.playbackUrl;
+						let list = res.data.list;
 						this.startPlayback();
 					}
 				})
@@ -136,6 +207,12 @@ export default {
 		 * 全屏
 		 * */
 		full_video() {
+			if (!this.PlaybackUrl) {
+				return uni.showToast({
+					title: '请先选择时间段',
+					icon: 'none'
+				});
+			}
 			plus.screen.lockOrientation('landscape-primary');
 			setTimeout(() => {
 				this.full = 1;
@@ -185,12 +262,14 @@ export default {
 		 * 时间格式：yyyy-MM-dd HH:mm:ss
 		 * */
 		startPlayback() {
+			if (this.PlaybackUrl) {
+				this.stopPlay();
+			}
 			var _this = this;
 			this.$refs.HikVideoPlayer.stopPlay(res => {
 				console.log('stopPlay: ' + JSON.stringify(res));
-				_this.$refs.HikVideoPlayer.startPlayback(this.PlaybackUrl, this.datetimerange[0], this.datetimerange[1], res => {
+				_this.$refs.HikVideoPlayer.startPlayback(this.PlaybackUrl, this.startDate, this.endDate, res => {
 					console.log('startPlayback: ' + JSON.stringify(res));
-					this.getOSDTime();
 				});
 			});
 		},
@@ -226,6 +305,12 @@ export default {
 		 *注意：filePath 一定要是_doc绝对目录
 		 * */
 		capturePicture() {
+			if (!this.PlaybackUrl) {
+				return uni.showToast({
+					title: '请先选择时间段',
+					icon: 'none'
+				});
+			}
 			var filePath = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
 			var fileName = 'test.png';
 			var dic = {
@@ -467,6 +552,25 @@ export default {
 	background: red($color: #b61e11);
 }
 
+.dateflex {
+	padding: 10rpx 0;
+	margin: 10rpx 20rpx;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	border-bottom: 2rpx solid;
+	.date-2 {
+		color: #bebebe;
+	}
+}
+.date-btn {
+	padding: 20rpx 0;
+	margin: 10rpx 20rpx;
+	text-align: center;
+	border-radius: 20rpx;
+	background: #00b48f;
+	color: white;
+}
 .loading-text {
 	width: 200rpx;
 	text-align: center;

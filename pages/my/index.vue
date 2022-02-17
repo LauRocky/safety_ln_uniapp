@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { scanCode, is_iOS,igexinTool } from '../../utils/utils.js';
+import { scanCode, is_iOS, igexinTool } from '../../utils/utils.js';
 const App = getApp();
 export default {
 	components: {},
@@ -364,18 +364,21 @@ export default {
 				content: '确定要退出当前用户？',
 				success: function(res) {
 					if (res.confirm) {
-						uni.sendNativeEvent('logout', c => {});
-						uni.clearStorageSync();
-						uni.removeStorageSync('userInfo');
-						uni.removeStorageSync('token');
-						
-						let tool = new igexinTool();  //解绑别名
-						App.globalData.Apushid = string;
-						tool.unbindAlias(string);
+						if (!is_iOS()) {
+							uni.sendNativeEvent('logout', c => {});
+						}
 						
 						uni.navigateTo({
-							url: '../login/index'
+							url: '/pages/login/index'
 						});
+						uni.clearStorageSync();
+						
+						if (is_iOS()) {
+							let tool = new igexinTool(); //解绑别名
+							let string = App.globalData.Apushid;
+							tool.unbindAlias(string);
+						}
+						
 					} else if (res.cancel) {
 						console.log('用户点击取消');
 					}
