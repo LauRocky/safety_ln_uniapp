@@ -18,11 +18,21 @@
 		<view class="mask-ios" v-if="full == 0">
 			<image @click="full_video" class="mask-ios-img" src="../../static/video/da.png" mode=""></image>
 			<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image>
+			<image v-if="clip" @click="handClip(1)" class="mask-ios-img" src="../../static/video/shexiangji.png" mode=""></image>
+			<div class="cliptime" @click="handClip(2)" v-else>
+				<image class="clip-img" src="../../static/video/yuan.png" mode=""></image>
+				<text class="clip-t">{{ time < 10 ? '0' + time : time }}</text>
+			</div>
 		</view>
 		<div class="mask-pos" v-else>
 			<!-- 全屏展示 -->
 			<image @click="exitfull_video" class="images3" src="../../static/video/xiao.png" mode=""></image>
 			<image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image>
+			<image v-if="clip" @click="handClip(1)" class="images3" src="../../static/video/shexiangji.png" mode=""></image>
+			<div class="cliptime1" @click="handClip(2)" v-else>
+				<image class="clip-img1" src="../../static/video/yuan.png" mode=""></image>
+				<text class="clip-t1">{{ time < 10 ? '0' + time : time }}</text>
+			</div>
 		</div>
 		<div class="dateflex" @click="handDate(1)" style="margin-top: 20rpx;">
 			<text class="date-1">开始日期</text>
@@ -33,7 +43,7 @@
 			<text class="date-2">{{ endDate }}</text>
 		</div>
 		<div><text class="date-btn" @click="videodetail">播放</text></div>
-		
+
 		<u-datetime-picker
 			:title="title"
 			:formatter="formatter"
@@ -45,8 +55,6 @@
 			@close="show = false"
 			@cancel="show = false"
 		></u-datetime-picker>
-		
-		
 	</div>
 </template>
 <script>
@@ -93,6 +101,33 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
+		handClip(val) {
+			if (!this.PlaybackUrl) {
+				return uni.showToast({
+					title: '请先选择时间段',
+					icon: 'none'
+				});
+			}
+			//点击 1开始录像 2停止录像
+			if (val == 1) {
+				this.clip = false;
+				this.startRecord();
+				this.timer = setInterval(() => {
+					this.time--;
+					if (this.time == 0) {
+						this.stopRecord();
+						clearInterval(this.timer);
+						this.clip = true;
+						this.time = 30;
+					}
+				}, 1000);
+			} else {
+				this.stopRecord();
+				clearInterval(this.timer);
+				this.clip = true;
+				this.time = 30;
+			}
+		},
 		handconfirm(e) {
 			//确定日期选择
 			this.show = false;
@@ -156,11 +191,11 @@ export default {
 				false
 			)
 				.then(res => {
-					console.log(res) 
+					console.log(res);
 					if (res.code == 0) {
 						console.log(res.data.playbackUrl, '333');
 						this.PlaybackUrl = res.data.playbackUrl;
-						let list =  res.data.list
+						let list = res.data.list;
 						this.startPlayback();
 					}
 				})
@@ -172,10 +207,10 @@ export default {
 		 * 全屏
 		 * */
 		full_video() {
-			if (!this.PlaybackUrl){
+			if (!this.PlaybackUrl) {
 				return uni.showToast({
 					title: '请先选择时间段',
-					icon:'none'
+					icon: 'none'
 				});
 			}
 			plus.screen.lockOrientation('landscape-primary');
@@ -203,7 +238,6 @@ export default {
 			console.log('er: ' + JSON.stringify(e.detail));
 			uni.hideLoading();
 			if (e.detail.playStatus == 'SUCCESS') {
-				this.getOSDTime();
 			} else {
 				uni.showToast({
 					title: '播放失败',
@@ -228,6 +262,9 @@ export default {
 		 * 时间格式：yyyy-MM-dd HH:mm:ss
 		 * */
 		startPlayback() {
+			if (this.PlaybackUrl) {
+				this.stopPlay();
+			}
 			var _this = this;
 			this.$refs.HikVideoPlayer.stopPlay(res => {
 				console.log('stopPlay: ' + JSON.stringify(res));
@@ -271,7 +308,7 @@ export default {
 			if (!this.PlaybackUrl) {
 				return uni.showToast({
 					title: '请先选择时间段',
-					icon:'none'
+					icon: 'none'
 				});
 			}
 			var filePath = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
