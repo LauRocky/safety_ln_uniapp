@@ -368,11 +368,11 @@ export default {
 							uni.sendNativeEvent('logout', c => {});
 						}
 						
-						uni.navigateTo({
+						uni.reLaunch({
 							url: '/pages/login/index'
-						});
+						})
 						uni.clearStorageSync();
-						
+						clearInterval(App.globalData.monitoring)  //清空轮训
 						if (is_iOS()) {
 							let tool = new igexinTool(); //解绑别名
 							let string = App.globalData.Apushid;

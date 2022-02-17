@@ -32,6 +32,7 @@
 		},
 		watch:{
 			category2(newName, oldName){
+				this.cooindex = null
 				this.handgETLIST();
 			}
 		},

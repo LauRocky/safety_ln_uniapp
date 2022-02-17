@@ -3,7 +3,8 @@ export default {
 	globalData: {
 		version: '',
 		Apushid: '',
-		cid: ''
+		cid: '',
+		monitoring:null,
 	},
 	onLaunch: function() {
 		// #ifdef APP-PLUS
