@@ -4,6 +4,9 @@ export var BASE_URL = 'http://192.168.124.7:12002/safety-server/api'
 // #ifdef H5
 BASE_URL = '/web'; //H5下将地址修改为/web 
 // #endif
+import {
+	is_iOS
+} from './utils.js';
 export function request(url, type, date, tips) {
 	// 默认为开启错误提示
 	if (tips == undefined) {
@@ -45,9 +48,13 @@ export function request(url, type, date, tips) {
 
 // 错误处理
 const showError = (res) => {
-	if (res.data.code == 111 || res.data.code == 100|| res.data.code==401) {
+	if (res.data.code == 111 || res.data.code == 100 || res.data.code == 401) {
 		uni.clearStorage();
-		uni.sendNativeEvent("logout",c=>{console.log(c)});
+		if (!is_iOS()) {
+			uni.sendNativeEvent("logout", c => {
+				console.log(c)
+			});
+		}
 		uni.showToast({
 			title: 'Token超期',
 			icon: 'none',
