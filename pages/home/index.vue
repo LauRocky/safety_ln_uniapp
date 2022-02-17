@@ -266,7 +266,6 @@ export default {
 						if (res.page.totalCount == 0) {} else {
 							res.page.list.forEach(el => {
 								if (el.readStatus == 0) {
-									console.log(this.tabberShow)
 									uni.showTabBarRedDot({
 										index: 4,
 									})

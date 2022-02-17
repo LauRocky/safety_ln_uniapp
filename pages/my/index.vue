@@ -364,18 +364,21 @@ export default {
 				content: '确定要退出当前用户？',
 				success: function(res) {
 					if (res.confirm) {
-						uni.sendNativeEvent('logout', c => {});
+						if (!is_iOS()) {
+							uni.sendNativeEvent('logout', c => {});
+						}
+						
+						uni.navigateTo({
+							url: '/pages/login/index'
+						});
 						uni.clearStorageSync();
-						uni.removeStorageSync('userInfo');
-						uni.removeStorageSync('token');
+						
 						if (is_iOS()) {
 							let tool = new igexinTool(); //解绑别名
-							App.globalData.Apushid = string;
+							let string = App.globalData.Apushid;
 							tool.unbindAlias(string);
 						}
-						uni.navigateTo({
-							url: '/page/login/index'
-						});
+						
 					} else if (res.cancel) {
 						console.log('用户点击取消');
 					}

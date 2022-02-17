@@ -36,7 +36,7 @@ export default {
 	onLoad() {},
 	//组件生命周期
 	created() {
-		// this.handgETLIST();
+		this.handgETLIST()
 		let obj = uni.getStorageSync('categoryList');
 		if (obj) {
 			//缓存下标

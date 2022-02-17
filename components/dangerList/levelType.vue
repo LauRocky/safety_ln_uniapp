@@ -21,7 +21,7 @@
 	} from '../../utils/api.js';
 	export default {
 		name: 'levelType',
-		props: ['showl', 'category'],
+		props: ['showl', 'category2'],
 		components: {},
 		data() {
 			return {
@@ -30,14 +30,17 @@
 				obj: {}
 			};
 		},
+		watch:{
+			category2(newName, oldName){
+				this.handgETLIST();
+			}
+		},
 		onLoad() {},
 		//组件生命周期
 		created() {
-
-		},
-		updated() {
 			this.handgETLIST();
 			let obj = uni.getStorageSync('levelType');
+			console.log(obj,'222222')
 			if (obj) {
 				//缓存下标
 				this.cooindex = obj.cooindex;
@@ -66,11 +69,8 @@
 				this.$emit('closeL');
 			},
 			handgETLIST() {
-				let type = 'PROBLEM_TYPE';
-				if (this.$props.category == '质量') {
-					type = 'QUALITY_PROBLEM_TYPE';
-				}
-				getDictList(type)
+				
+				getDictList(this.category2)
 					.then(res => {
 						this.dictLsit = res.dict;
 					})

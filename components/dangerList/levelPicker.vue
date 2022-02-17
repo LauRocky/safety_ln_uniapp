@@ -18,7 +18,7 @@
 import { getDictList } from '../../utils/api.js';
 export default {
 	name: 'levelPicker',
-	props: ['showl', 'objDataL','category'],
+	props: ['showl', 'objDataL','category1'],
 	components: {},
 	data() {
 		return {
@@ -27,15 +27,15 @@ export default {
 			obj: {}
 		};
 	},
+	watch:{
+		category1(newName, oldName){
+			this.cooindex = null
+			this.handgETLIST()
+		}
+	},
 	onLoad() {},
 	//组件生命周期
 	created() {
-		
-	},
-	mounted() {
-		
-	},
-	updated() {
 		this.handgETLIST();
 		let obj = uni.getStorageSync('levelPicker');
 		if (obj) {
@@ -43,6 +43,9 @@ export default {
 			this.cooindex = obj.cooindex;
 			this.$emit('handEndl', obj);
 		}
+	},
+	mounted() {
+
 	},
 	methods: {
 		handcoo(val, v) {
@@ -63,12 +66,7 @@ export default {
 			this.$emit('closeL');
 		},
 		handgETLIST() {
-			let type='PROBLEMS_LEVEL_TYPE';
-			if(this.$props.category=='质量'){
-				type='QUALITY_PROBLEM_LEVEL';
-			}
-
-			getDictList(type)
+			getDictList(this.category1)
 				.then(res => {
 					this.dictLsit = res.dict;
 				})
