@@ -105,7 +105,7 @@
 							console.log(res);
 						});
 					}
-
+					console.log('222222222')
 					that.getCode(JSON.parse(data).code);
 				}
 			});
@@ -113,6 +113,7 @@
 
 		methods: {
 			getCode(code) {
+				console.log('00000000')
 				uni.showLoading({
 					title: '正在登陆中'
 				});
@@ -187,7 +188,6 @@
 						});
 						this.$http('/loginApp', 'POST', this.form, false)
 							.then(res => {
-								console.error(res);
 								if (res.code == 0) {
 								
 									if (!is_iOS()) {

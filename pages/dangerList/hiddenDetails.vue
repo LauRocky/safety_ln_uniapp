@@ -34,8 +34,8 @@
 					</view>
 				</view>
 			</view>
-			<image class="xuan-imgsa" v-if="status == '1'" @click="handZgup" src="../../static/danger/xuan.png" mode=""></image>
-			<template v-if="status == '2' || status == '3'">
+			<image class="xuan-imgsa" @click="handZgup" v-if="problem.status == -1" src="../../static/danger/xuan.png" mode=""></image>
+			<template v-if="problem.status == 1 || problem.status == 0">
 				<view class="names">整改信息：</view>
 				<view class="top">
 					<view class="top-1">
@@ -56,7 +56,7 @@
 					<view class="imgs"><image :src="val"  mode="widthFix" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
 				</view>
 			</template>
-			<template v-if="status == '3'">
+			<template v-if="problem.status == 0">
 				<view class="names">复核信息：</view>
 				<view class="top">
 					<view class="top-1">
@@ -81,7 +81,7 @@
 		</view>
 		
 		<uni-fab
-			v-if="status == '2'"
+			v-if="problem.status == 1"
 			:pattern="pattern"
 			:content="content"
 			horizontal="right"

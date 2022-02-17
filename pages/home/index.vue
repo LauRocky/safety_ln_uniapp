@@ -108,15 +108,10 @@
 </template>
 
 <script>
-import {
-	scanCode,
-	is_iOS
-} from '../../utils/utils.js';
-import {
-	monitoring,
-	alerts
-} from '../../utils/api.js'
+import { scanCode, is_iOS } from '../../utils/utils.js';
+import { monitoring, alerts } from '../../utils/api.js';
 import barecharts from '../../components/home/barecharts.vue';
+let App = getApp();
 export default {
 	components: {
 		barecharts
@@ -125,9 +120,7 @@ export default {
 		return {
 			tabberShow: true, //待办
 			tabberShowL: true, //监控
-			swiperList: [
-				"说明：登录电脑端请访问https://esq.cgdg.com/"
-			],
+			swiperList: ['说明：登录电脑端请访问https://esq.cgdg.com/'],
 			showPopup: false,
 			show: false, //true是显示,false是隐藏
 			project: {
@@ -145,7 +138,8 @@ export default {
 				limit: 6
 			},
 			problem: {},
-			list1: [{
+			list1: [
+				{
 					name: '项目预警',
 					value: 1
 				},
@@ -161,7 +155,8 @@ export default {
 			status: 1, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
 			totalCount: 0,
 			indexList: [],
-			dataList: [{
+			dataList: [
+				{
 					value: 75,
 					name: '重大风险'
 				},
@@ -186,7 +181,7 @@ export default {
 	},
 	onBackPress(e) {
 		if (is_iOS()) {
-			return
+			return;
 		}
 		uni.showModal({
 			content: '是否要退出应用？',
@@ -195,21 +190,18 @@ export default {
 			success: function(res) {
 				if (res.confirm) {
 					if (!is_iOS()) {
-					uni.sendNativeEvent("colseapp", res => {
-						console.log(res);
-					});
+						uni.sendNativeEvent('colseapp', res => {
+							console.log(res);
+						});
 					}
 				} else if (res.cancel) {
-
 				}
 				return true;
 			}
 		});
 		return true;
 	},
-	onShow() {
-
-	},
+	onShow() {},
 	onLoad() {
 		this.handProbleBar();
 		this.monitorMessage();
@@ -221,80 +213,48 @@ export default {
 	},
 	methods: {
 		monitorMessage() {
-			monitoring().then(res => {
+			var that = this
+			clearInterval(App.globalData.monitoring)  //清空轮训 否越来越快
+			monitoring()
+				.then(res => {
 					if (res.code == 0) {
 						if (res.data == 0) {
-
 						} else {
 							res.data.forEach(el => {
 								if (el.alarmStatus == 0) {
 									uni.showTabBarRedDot({
-										index: 4,
-									})
+										index: 4
+									});
 								}
-							})
+							});
 						}
 					}
 				})
 				.catch(err => {
-					console.log(err)
+					console.log(err);
 				});
-				setInterval(function() {
-					monitoring().then(res => {
-							if (res.code == 0) {
-								if (res.data == 0) {
-
-								} else {
-									res.data.forEach(el => {
-										if (el.alarmStatus == 0) {
-											uni.showTabBarRedDot({
-												index: 4,
-											})
-										}
-									})
-								}
-							}
-						})
-						.catch(err => {
-							console.log(err)
-						});
-				}, 20000)
-		},
-		alertsMessage() {
-			alerts().then(res => {
+			alerts()
+				.then(res => {
 					if (res.code == 0) {
-						if (res.page.totalCount == 0) {} else {
+						if (res.page.totalCount == 0) {
+						} else {
 							res.page.list.forEach(el => {
 								if (el.readStatus == 0) {
 									uni.showTabBarRedDot({
-										index: 4,
-									})
+										index: 4
+									});
 								}
-							})
+							});
 						}
 					}
 				})
 				.catch(err => {
-					console.log(err)
-				})
-				setInterval(function() {
-					alerts().then(res => {
-							if (res.code == 0) {
-								if (res.page.totalCount == 0) {} else {
-									res.page.list.forEach(el => {
-										if (el.readStatus == 0) {
-											uni.showTabBarRedDot({
-												index: 4,
-											})
-										}
-									})
-								}
-							}
-						})
-						.catch(err => {
-							console.log(err)
-						})
-				}, 20000)
+					console.log(err);
+				});
+				
+			App.globalData.monitoring = setInterval(function() {
+				that.monitorMessage()
+			}, 20000);
 		},
 		handXq(v) {
 			if (this.status == 1) {
@@ -312,24 +272,25 @@ export default {
 		handProbleBar() {
 			//获取饼状图类型
 			this.$http(
-					`/risk/list`,
-					'GET', {
-						page: 1,
-						limit: 100000,
-						searchKey: null,
-						evaluate: '',
-						level: '',
-						status: '',
-						riskMark: ''
-					},
-					false
-				)
+				`/risk/list`,
+				'GET',
+				{
+					page: 1,
+					limit: 100000,
+					searchKey: null,
+					evaluate: '',
+					level: '',
+					status: '',
+					riskMark: ''
+				},
+				false
+			)
 				.then(res => {
 					if (res.code == 0) {
-						let majorList = []
-						let moreList = []
-						let commonlyList = []
-						let low = []
+						let majorList = [];
+						let moreList = [];
+						let commonlyList = [];
+						let low = [];
 						res.page.list.forEach(item => {
 							if (item.level == '1') {
 								majorList.push(item);
@@ -341,10 +302,10 @@ export default {
 								low.push(item);
 							}
 						});
-						this.dataList[0].value = majorList.length
-						this.dataList[1].value = moreList.length
-						this.dataList[2].value = commonlyList.length
-						this.dataList[3].value = low.length
+						this.dataList[0].value = majorList.length;
+						this.dataList[1].value = moreList.length;
+						this.dataList[2].value = commonlyList.length;
+						this.dataList[3].value = low.length;
 					}
 				})
 				.catch(err => {
@@ -387,15 +348,15 @@ export default {
 			});
 		},
 		close() {
-			this.show = false
+			this.show = false;
 			uni.showTabBar();
 		},
 		checkboxChange(e) {
 			this.showPopup = !this.showPopup;
 			if (this.showPopup) {
-				uni.setStorageSync('show', 2) //2是隐藏
+				uni.setStorageSync('show', 2); //2是隐藏
 			} else {
-				uni.setStorageSync('show', 1) //1是显示
+				uni.setStorageSync('show', 1); //1是显示
 			}
 		},
 		loginCode() {
@@ -425,15 +386,14 @@ export default {
 			});
 		},
 		handscanCode() {
-			console.log(uni.getStorageSync('show'))
+			console.log(uni.getStorageSync('show'));
 			if (!uni.getStorageSync('show') || uni.getStorageSync('show') == 1) {
 				// 点击弹出一个弹窗
-				this.show = true
+				this.show = true;
 			} else {
-				this.show = false
+				this.show = false;
 				this.loginCode();
 			}
-
 		},
 		handtolower() {},
 		handtabs(val) {
@@ -467,9 +427,8 @@ export default {
 									item.projectName = val.projectName;
 									item.companyId = val.companyId;
 									list.push(item);
-								})
+								});
 							}
-
 						});
 						if (list.length >= 6) {
 							this.indexList = list.slice(0, 6);
