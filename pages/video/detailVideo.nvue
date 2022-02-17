@@ -53,6 +53,7 @@
 		<div class="mask-ios" v-else>
 			<image @click="full_video" class="mask-ios-img" src="../../static/video/da.png" mode=""></image>
 			<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image>
+			<!-- <image @click="handplatback" class="mask-ios-img" src="../../static/video/hui.png" mode=""></image> -->
 			<image v-if="clip" @click="handClip(1)" class="mask-ios-img" src="../../static/video/shexiangji.png" mode=""></image>
 			<div class="cliptime" @click="handClip(2)" v-else>
 				<image class="clip-img" src="../../static/video/yuan.png" mode=""></image>
@@ -100,6 +101,7 @@
 				</div>
 			</div>
 		</div>
+		<u-modal :show="showPicker" title="回放时间选择"><uni-datetime-picker v-model="datetimerange" type="datetimerange" rangeSeparator="至" /></u-modal>
 	</div>
 </template>
 <script>
@@ -127,6 +129,7 @@ export default {
 			// loading: false,
 			hd: 2,
 			// played:false
+			PlaybackUrl: '',
 			platform: '',
 			palyerHeight: '500rpx',
 			filePathvideo: '',
@@ -135,7 +138,9 @@ export default {
 			touchStartY: 0, // 触屏起始点y
 			time: 30,
 			timer: null,
-			clip: true
+			clip: true,
+			datetimerange: [],
+			showPicker: false
 		};
 	},
 	onShow() {
@@ -144,6 +149,11 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
+		handplatback() {
+			uni.navigateTo({
+				url: `/pages/video/playback?camera=${this.status.camera}`
+			});
+		},
 		handClip(val) {
 			//点击 1开始录像 2停止录像
 			if (val == 1) {
@@ -157,7 +167,6 @@ export default {
 						this.clip = true;
 						this.time = 30;
 					}
-					
 				}, 1000);
 			} else {
 				this.stopRecord();
@@ -502,6 +511,46 @@ export default {
 			});
 		},
 		/**
+		 * 开启录像回放
+		 * 时间格式：yyyy-MM-dd HH:mm:ss
+		 * */
+		startPlayback() {
+			var _this = this;
+			this.$refs.HikVideoPlayer.stopPlay(res => {
+				console.log('stopPlay: ' + JSON.stringify(res));
+				_this.$refs.HikVideoPlayer.startPlayback(this.PlaybackUrl, '2020-07-28 1:00:00', '2020-07-28 23:59:59', res => {
+					console.log('startPlayback: ' + JSON.stringify(res));
+				});
+			});
+		},
+		/**
+		 * 暂停回放
+		 * */
+		pause() {
+			this.$refs.HikVideoPlayer.pause(res => {
+				console.log('pause: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 * 恢复回放
+		 * */
+		resume() {
+			this.$refs.HikVideoPlayer.resume(res => {
+				console.log('resume: ' + JSON.stringify(res));
+			});
+		},
+		/**
+		 *获取视频中屏幕显示时间
+		 * */
+		getOSDTime() {
+			var _this = this;
+			var interval3 = setInterval(function() {
+				_this.$refs.HikVideoPlayer.getOSDTime(res => {
+					console.log('getOSDTime: ' + JSON.stringify(res));
+				});
+			}, 1000);
+		},
+		/**
 		 *抓图
 		 *注意：filePath 一定要是_doc绝对目录
 		 * */
@@ -611,11 +660,11 @@ export default {
 }
 .headerTitle {
 	width: 750rpx;
-	background-color: #00b48f;
+	background: #00b48f;
 }
 
 .EZOpen {
-	background-color: #464950;
+	background: #464950;
 	position: fixed;
 	bottom: 0;
 	left: 0;
@@ -630,7 +679,7 @@ export default {
 	right: 0;
 }
 .header-top {
-	background-color: #00b48f;
+	background: #00b48f;
 	width: 750rpx;
 	height: 92rpx;
 	padding: 0 20rpx;
@@ -688,7 +737,7 @@ export default {
 	width: 750rpx;
 	height: 100rpx;
 	position: relative;
-	background-color: #464950;
+	background: #464950;
 }
 
 .mask-loading {
@@ -703,7 +752,7 @@ export default {
 	align-items: center;
 	width: 750rpx;
 	height: 100rpx;
-	background-color: #464950;
+	background: #464950;
 	.cliptime {
 		margin-right: 20rpx;
 		position: relative;
@@ -754,7 +803,6 @@ export default {
 }
 
 .clip-yuan {
-	display: inline-block;
 	width: 20rpx;
 	height: 20rpx;
 	background: red($color: #b61e11);

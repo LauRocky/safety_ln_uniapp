@@ -50,7 +50,7 @@ export default {
 	},
 	methods: {
 		img(e) {
-			console.log(e);
+			console.log(e,'2222');
 			const index = e.target.dataset.index;
 			this.showList[index].image = this.showImg;
 		},
@@ -103,9 +103,11 @@ export default {
 									name: item.ipcName,
 									id: item.ipcId
 								};
-								uni.sendNativeEvent(JSON.stringify(body), rest => {
-									console.log(rest);
-								});
+								if (!is_iOS()) {
+									uni.sendNativeEvent(JSON.stringify(body), rest => {
+										console.log(rest);
+									});
+								}
 							})
 							.catch(e => {
 								console.error(e);
@@ -189,23 +191,22 @@ export default {
 					uni.hideLoading();
 					console.log(res);
 					if (res.code == 0) {
-						let obj={}
-						res.projectInfoEntities[0].cameraEntities.forEach(el=>{
-							if(el.status==1){
-								obj=el
-								this.showList.unshift(obj)
-								this.rawList.unshift(obj)
+						let obj = {};
+						res.projectInfoEntities[0].cameraEntities.forEach(el => {
+							if (el.status == 1) {
+								obj = el;
+								this.showList.unshift(obj);
+								this.rawList.unshift(obj);
+							} else if (el.status == 0) {
+								obj = el;
+								this.showList.push(obj);
+								this.rawList.push(obj);
+							} else {
+								obj = el;
+								this.showList.push(obj);
+								this.rawList.push(obj);
 							}
-							else if(el.status==0){
-								obj=el
-								this.showList.push(obj)
-								this.rawList.push(obj)
-							}else{
-								obj=el
-								this.showList.push(obj)
-								this.rawList.push(obj)
-							}
-						})
+						});
 						console.log('da', this.showList);
 					}
 				})
@@ -215,13 +216,13 @@ export default {
 		}
 	},
 	onLoad(options) {
-		console.log("555",options)
+		console.log('555', options);
 		this.project.projectId = options.projectId;
 		this.project.projectName = options.projectName;
 	},
 	onShow() {
-		this.showList=[];
-		this.rawList=[];
+		this.showList = [];
+		this.rawList = [];
 		this.show();
 	}
 };

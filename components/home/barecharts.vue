@@ -17,13 +17,15 @@ export default {
 		 dataList: {
 		    handler(newName, oldName) {
 		      this.data = newName
-			  this.getEcharts();
-			  this.$refs.chart.init(config => {
-			  	const { canvas } = config;
-			  	const chart = echarts.init(canvas, null, config);
-			  	chart.setOption(this.option);
-			  	return chart;
-			  });
+			  if(newName){
+				  this.getEcharts();
+				  this.$refs.chart.init(config => {
+				  	const { canvas } = config;
+				  	const chart = echarts.init(canvas, null, config);
+				  	chart.setOption(this.option);
+				  	return chart;
+				  });
+			  }
 		    },
 		    // 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法
 		    deep: true

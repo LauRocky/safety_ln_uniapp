@@ -34,8 +34,10 @@
 
 <script>
 	import {
-		is_iOS
+		is_iOS,
+		igexinTool
 	} from '../../utils/utils.js';
+	const App = getApp();
 	export default {
 		data() {
 			return {
@@ -108,6 +110,7 @@
 				}
 			});
 		},
+
 		methods: {
 			getCode(code) {
 				uni.showLoading({
@@ -117,37 +120,35 @@
 						code: code
 					})
 					.then(res => {
+						console.error(res);
 						uni.hideLoading();
 						if (res.code == 0) {
+						
+							uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
+							uni.setStorageSync('token', res.data.token.token);
 							if (!is_iOS()) {
+								uni.sendNativeEvent(JSON.stringify({
+									"userId": res.data.user.userId + "",
+									"onlyPush": true
+								}), call => {});
 								uni.sendNativeEvent(res, rest => {
 									console.log(rest);
 								});
-								uni.sendNativeEvent(JSON.stringify({
-									'userId':
-									res.data.user.userId + ""
-								}), call => {});
-								uni.sendNativeEvent('login', call => {
-									console.log(call);
-								});
+							}else{
+								// #ifdef APP-PLUS
+								//个推绑定别名和userid一起绑定
+								let userinfo = res.data.user;
+								let tool = new igexinTool();
+								let num = 20 - userinfo.userId.toString().length;
+								let string = userinfo.userId.toString();
+								for (var i = 0; i < num; i++) {
+									string += '0';
+								}
+								App.globalData.Apushid = string;
+								tool.bindAlias(string, App.globalData.cid);
+								// #endif
 							}
-
-							// 根据用户id,key
-							let obj = uni.getStorageSync('show');
-							uni.clearStorageSync();
-							if (obj) {
-								uni.setStorageSync('show', obj);
-							}
-
-							uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
-							uni.setStorageSync('token', res.data.token.token);
 							this.toHome();
-						} else {
-							uni.showToast({
-								icon: 'error',
-								duration: 1500,
-								title: '登录失败'
-							});
 						}
 					})
 					.catch(err => {
@@ -160,6 +161,11 @@
 							title: '登录失败'
 						});
 					});
+			},
+			toHome() {
+				uni.switchTab({
+					url: '/pages/home/index'
+				});
 			},
 			toHome() {
 				uni.switchTab({
@@ -181,22 +187,39 @@
 						});
 						this.$http('/loginApp', 'POST', this.form, false)
 							.then(res => {
+								console.error(res);
 								if (res.code == 0) {
-									uni.hideToast();
-									let obj = uni.getStorageSync('show');
-
-									uni.clearStorageSync();
-									if (obj) {
-										uni.setStorageSync('show', obj);
-									}
+								
 									if (!is_iOS()) {
+										let userinfo = JSON.parse(res.user);
 										uni.sendNativeEvent(JSON.stringify({
-											'userId':
-											res.data.user.userId + ""
+											"userId": userinfo.userId + "",
+											"onlyPush": true
 										}), call => {});
 										uni.sendNativeEvent('login', call => {
 											console.log(call);
 										});
+									}else{
+										// #ifdef APP-PLUS
+										//个推绑定别名和userid一起绑定
+										let userinfo = JSON.parse(res.user);
+										let tool = new igexinTool();
+										let num = 20 - userinfo.userId.toString().length;
+										let string = userinfo.userId.toString();
+										for (var i = 0; i < num; i++) {
+											string += '0';
+										}
+										App.globalData.Apushid = string;
+										tool.bindAlias(string, App.globalData.cid);
+										// #endif
+										
+									}
+									uni.hideToast();
+									let obj = uni.getStorageSync('show');
+									
+									uni.clearStorageSync();
+									if (obj) {
+										uni.setStorageSync('show', obj);
 									}
 									uni.setStorageSync('userInfo', res.user);
 									uni.setStorageSync('token', res.token);
@@ -213,15 +236,14 @@
 							})
 							.catch(err => {
 								console.error(err);
-
 								uni.showToast({
 									title: '登录失败',
 									duration: 2000,
 									icon: 'error'
 								});
 							});
-					})
-					.catch(err => {
+
+					}).catch(err => {
 						// 校验信息
 						uni.hideToast({
 							title: err.errorMessage
