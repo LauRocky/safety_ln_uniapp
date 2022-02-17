@@ -56,4 +56,7 @@ export default {
 
 <style lang="scss">
 @import 'uview-ui/index.scss';
+html body{
+	background: #fafafa;
+}
 </style>
