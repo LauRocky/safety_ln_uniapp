@@ -18,68 +18,58 @@
 			<view class="main">
 				<view class="main-a">
 					{{ problem.problemDesc }}:请
-					<text>@{{ problem.problemSolverDisplay }}</text>
+					<text style="color: #3e8ef7">@{{ problem.problemSolverDisplay }}</text>
 					{{ problem.problemRequire }}
 				</view>
-				<view class="main-a">通知@{{ problem.notifyPersonDisplay }}</view>
+				<view class="main-a" v-if="problem.notifyPersonDisplay != null && problem.notifyPersonDisplay != ''">
+					<!-- 知会 -->
+					通知
+					<text style="color: #3e8ef7">@{{ problem.notifyPersonDisplay }}</text>
+				</view>
+				<view v-if="problem.status !== -1">
+					，请
+					<text style="color: #3e8ef7">@{{ problem.problemCheckerDisplay }}</text>
+					<!-- 复核 -->
+					复核
+				</view>
 				<view class="imgs"><image :src="val" mode="widthFix" v-for="(val, i) in problem.imglist" :key="i"></image></view>
 				<view class="bot">
 					<view class="bot-1">
 						<view class=""><image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image></view>
-						<view class="bot-w">整改到期：{{ problem.createTime }}</view>
+						<view class="bot-w">发现时间：{{ problem.createTimeStr }}</view>
 					</view>
 					<view class="bot-1 bot-top">
 						<view class="bot-flex"><image class="bot-imgs" src="../../static/danger/adersstwo.png" mode=""></image></view>
 						<view class="bot-w">{{ problem.location }}</view>
 					</view>
+					<view class="bot-1 bot-top">
+						<view class=""><image class="bot-imgs" src="../../static/danger/chao.png" mode=""></image></view>
+						<view class="bot-w">超期时间：{{ problem.expireTimeStr }}</view>
+					</view>
 				</view>
 			</view>
-			<image class="xuan-imgsa" @click="handZgup" v-if="problem.status == -1" src="../../static/danger/xuan.png" mode=""></image>
-			<template v-if="problem.status == 1 || problem.status == 0">
-				<view class="names">整改信息：</view>
-				<view class="top">
-					<view class="top-1">
-						<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
-						<view class="cet">
-							<view class="title">{{ problem.problemSolverDisplay }}</view>
-							<view class="title-1">{{ problem.problemType2 }}</view>
+
+			<template v-if="problem && problem.id">
+				<view class="all-2" v-for="val in tableData" :key="val.id">
+					<view class="top">
+						<view class="top-1">
+							<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
+							<view class="cet">
+								<view class="title">{{ val.creatorDisplay }}</view>
+							</view>
 						</view>
 					</view>
-					<view class="top-r">{{ problem.solutionTime2 }}</view>
-				</view>
-				<view class="main">
-					<view class="main-a">
-						{{ problem.solutionDesc }}:请
-						<text>@{{ problem.problemCheckerDisplay }}</text>
-						请进行复核
-					</view>
-					<view class="imgs"><image :src="val"  mode="widthFix" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
-				</view>
-			</template>
-			<template v-if="problem.status == 0">
-				<view class="names">复核信息：</view>
-				<view class="top">
-					<view class="top-1">
-						<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
-						<view class="cet">
-							<view class="title">{{ problem.problemCreatorDisplay }}</view>
-							<view class="title-1">{{ problem.problemType2 }}</view>
+					<view class="main">
+						<view class="main-a" v-if="val.fallbackUserName">
+							回复给 @{{ val.fallbackUserName }}
+							<text v-if="parseInt(val.status) === 1 && problem.checkerUserEntity">，请 @{{ problem.checkerUserEntity.fullname }} 复核</text>
 						</view>
+						<view class="imgs"><image :src="val.statusImages" mode="widthFix"></image></view>
 					</view>
-					<view class="top-r">{{ problem.recheckTime2 }}</view>
-				</view>
-				<view class="main">
-					<view class="main-a">
-						<text class="textcoo">{{ problem.recheckDesc }}</text>
-						:请
-						<text>@{{ problem.problemCheckerDisplay }}</text>
-						,请重新进行整改;
-					</view>
-					<view class="imgs"><image :src="val"  mode="widthFix" v-for="(val, i) in problem.solutionimglist" :key="i"></image></view>
 				</view>
 			</template>
 		</view>
-		
+		<image class="xuan-imgsa" @click="handZgup" v-if="problem.status == -1" src="../../static/danger/xuan.png" mode=""></image>
 		<uni-fab
 			v-if="problem.status == 1"
 			:pattern="pattern"
@@ -95,7 +85,7 @@
 </template>
 <script>
 import { getDictList } from '../../utils/api.js';
-import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue'
+import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 export default {
 	name: 'hiddenDetails',
 	props: [],
@@ -104,11 +94,12 @@ export default {
 	},
 	data() {
 		return {
-			titles:'隐患详情',
+			titles: '隐患详情',
 			id: '',
 			problem: {},
 			dictLsit: [],
 			problemSolver: null,
+			tableData: [],
 			pattern: {
 				color: 'gray',
 				backgroundColor: '#FFFFFF',
@@ -137,6 +128,7 @@ export default {
 	onShow() {
 		this.handgETLIST();
 		this.handbacklog();
+		this.getApproveHisList();
 	},
 	//组件生命周期
 	created() {},
@@ -212,14 +204,45 @@ export default {
 				.catch(err => {
 					console.log(err);
 				});
+		},
+		getApproveHisList() {
+			this.tableData = [];
+			if (this.id) {
+				this.$http('/problems/status/' + this.id, 'POST', { page: 1, limit: 1000 }, false).then(res => {
+					if (res && res.code === 0) {
+						this.tableData = res.problemStatus.filter(item => {
+							if (parseInt(item.status) !== -1) {
+								return item;
+							}
+						});
+						if (this.tableData.length > 1) {
+							for (var i = 0; i < this.tableData.length; i++) {
+								for (var j = 0; j < this.tableData.length - 1 - i; j++) {
+									let temp = {};
+									if (this.tableData[j].createTime > this.tableData[j + 1].createTime) {
+										temp = this.tableData[j];
+										this.tableData[j] = this.tableData[j + 1];
+										this.tableData[j + 1] = temp;
+									}
+								}
+							}
+						}
+					} else {
+						this.tableData = [];
+					}
+				});
+			}
 		}
 	}
 };
 </script>
 <style lang="less" scoped>
 .hiddenDetails {
-	.all{
+	.all {
 		padding: 27upx 20upx;
+	}
+	.all-2{
+		margin-top: 40upx;
 	}
 	.top {
 		display: flex;

@@ -57,7 +57,6 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
-		
 		handReview() {
 			//提交
 			uni.showLoading({ title: '提交中', mask: true });
@@ -73,15 +72,15 @@ export default {
 				.then(res => {
 					uni.hideLoading();
 					if (res.code == 0) {
-					setTimeout(() => {
 						uni.showToast({
 							title: '提交成功',
 							duration: 1500
 						});
-					}, 1500);
-						uni.navigateBack({
-							delta: 1
-						});
+						setTimeout(() => {
+							uni.navigateBack({
+								delta: 1
+							});
+						}, 1500);
 					}
 				})
 				.catch(err => {
@@ -90,7 +89,7 @@ export default {
 		},
 		imgDelete(list, eq) {
 			//删除图片
-			this.imgList = list
+			this.imgList = list;
 		},
 		chooseFile(list, v) {
 			//上传图片
@@ -105,7 +104,7 @@ export default {
 				},
 				success: res => {
 					const imgRes = JSON.parse(res.data);
-					this.$set(this.imgList,this.imgList.length,imgRes.data.file_full_url)
+					this.$set(this.imgList, this.imgList.length, imgRes.data.file_full_url);
 				}
 			});
 		},
@@ -122,15 +121,14 @@ export default {
 					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
 					this.handReview();
 					uni.navigateBack({
-						delta:1,
-					})
+						delta: 1
+					});
 					/* uni.$u.toast('校验通过'); */
 				})
 				.catch(err => {
 					console.log(err);
 					/* uni.$u.toast('校验失败'); */
 				});
-				
 		}
 	}
 };
