@@ -14,14 +14,14 @@
 						<uni-icons size="20" color=" #737373" type="right"></uni-icons>
 					</view>
 					<view class="main-item1">
-						<text class="item1-text">
+						<view class="item1-text">
 							<image src="../../static/video/jiankong.png" mode=""></image>
 							监控数量: {{ item.MonitorMumber }}
-						</text>
-						<text class="item1-text">
+						</view>
+						<view class="item1-text">
 							<image src="../../static/video/danbing.png" mode=""></image>
 							单兵数量: {{ item.individual }}
-						</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -219,6 +219,8 @@ export default {
 }
 
 .main-item1 {
+	display: flex;
+	align-items: center;
 	margin-top: 15upx;
 	font-size: 28upx;
 	color: #7d7d7d;
