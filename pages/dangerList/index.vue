@@ -126,10 +126,10 @@ export default {
 	},
 	onLoad() {},
 	onShow() {
+		this.handgETLIST();
 		this.handclick({
 			value: this.status
 		});
-		this.handgETLIST();
 	},
 	methods: {
 		handgreList(val, i) {
@@ -218,7 +218,7 @@ export default {
 						if (this.numsList.length < res.page.totalCount) {
 							this.page++;
 							res.page.list.forEach(val => {
-								let obj = {};
+								let obj = [];
 								if (val.problemType) {
 									if (val.category && val.category == '安全') {
 										obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
@@ -228,6 +228,7 @@ export default {
 										val.problemType2 = obj[0].value;
 									}
 								}
+								console.log(obj)
 								val.crtime = val.createTime.split(' ')[0];
 								if (val.images) {
 									val.images2 = val.images.split('|')[0];
