@@ -1,5 +1,6 @@
-// export var BASE_URL = 'http://192.168.124.7:12002/safety-server/api'
-export var BASE_URL = 'https://esq.cgdg.com/api'//正式环境
+// export var BASE_URL = 'https://esq.zhongqian.info:1443/api'
+export var BASE_URL = "http://192.168.1.141:12002/safety-server/api"//测试
+/* export var BASE_URL = 'https://esq.cgdg.com/api'//正式环境 */
 
 // #ifdef H5
 BASE_URL = '/web'; //H5下将地址修改为/web 

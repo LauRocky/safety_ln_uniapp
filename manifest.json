@@ -164,10 +164,11 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
-                       // "target" : "http://59.110.136.159:12002/safety-server/api",
-                    // "target" : "http://192.168.124.7:12002/safety-server/api", //测试
+                    "target" : "https://esq.zhongqian.info:1443/api",
+                    // "target" : "http://192.168.133.12:12002/safety-server/api", //测试
+
                     //以下部分请勿改动！
-                    "target" : "https://esq.cgdg.com/api", //正式环境
+                    // "target" : "https://esq.cgdg.com/api", //正式环境
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
