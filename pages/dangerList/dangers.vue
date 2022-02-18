@@ -59,7 +59,7 @@ export default {
 	methods: {
 		handReview() {
 			//提交
-			console.log(this.objId.problemChecker, this.userAdd.images);
+			console.log(this.objId,this.userAdd.images)
 			uni.showLoading({ title: '提交中', mask: true });
 			this.$http(
 				`/problems/solve/${this.objId.id}`,
@@ -82,8 +82,8 @@ export default {
 								delta: 1
 							});
 						}, 1500);
-					}else{
-						console.log(res)
+					} else {
+						console.log(res);
 					}
 				})
 				.catch(err => {
@@ -95,6 +95,7 @@ export default {
 			this.imgList = list;
 		},
 		chooseFile(list, v) {
+			uni.showLoading({ title: '上传中', mask: true });
 			//上传图片
 			uni.uploadFile({
 				url: BASE_URL + '/upload/image',
@@ -110,19 +111,20 @@ export default {
 					this.$set(this.imgList, this.imgList.length, imgRes.data.file_full_url);
 				}
 			});
+			uni.hideLoading();
 		},
 		submit() {
 			this.$refs.uForm
 				.validate()
 				.then(res => {
-						if (this.imgList.length == 0) {
-							return uni.$u.toast('请上传图片');
-						}
-						this.imgList.forEach(val => {
-							this.userAdd.images += val + '|';
-						});
-						this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
-						this.handReview();
+					if (this.imgList.length == 0) {
+						return uni.$u.toast('请上传图片');
+					}
+					this.imgList.forEach(val => {
+						this.userAdd.images += val + '|';
+					});
+					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
+					this.handReview();
 				})
 				.catch(err => {
 					console.log(err);

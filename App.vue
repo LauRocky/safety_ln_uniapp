@@ -1,6 +1,7 @@
 <script>
 export default {
 	globalData: {
+		userInfo:{},
 		version: '',
 		Apushid: '',
 		cid: '',
@@ -36,10 +37,10 @@ export default {
 			plus.push.addEventListener(
 				'receive',
 				msg => {
-					if ((msg.type = 'receive')) {
-						let content = JSON.parse(msg.content.content);
+					if (msg.type = 'receive' && msg.payload) {
+						console.log(msg,'333333333')
 						let options = { cover: false, sound: 'system', title: msg.title };
-						plus.push.createMessage(content, msg.payload, options);
+						plus.push.createMessage(msg.payload.content, msg.payload, options);
 					}
 				},
 				false

@@ -100,6 +100,7 @@ export default {
 					token: uni.getStorageSync('token')
 				},
 				success: res => {
+					console.log(res,'222111111')
 					const imgRes = JSON.parse(res.data);
 					this.$set(this.imgList,this.imgList.length,imgRes.data.file_full_url)
 				}

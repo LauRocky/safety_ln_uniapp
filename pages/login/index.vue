@@ -105,7 +105,6 @@
 							console.log(res);
 						});
 					}
-					console.log('222222222')
 					that.getCode(JSON.parse(data).code);
 				}
 			});
@@ -189,9 +188,8 @@
 						this.$http('/loginApp', 'POST', this.form, false)
 							.then(res => {
 								if (res.code == 0) {
-								
+								let userinfo = JSON.parse(res.user);
 									if (!is_iOS()) {
-										let userinfo = JSON.parse(res.user);
 										uni.sendNativeEvent(JSON.stringify({
 											"userId": userinfo.userId + "",
 											"onlyPush": true
@@ -202,7 +200,6 @@
 									}else{
 										// #ifdef APP-PLUS
 										//个推绑定别名和userid一起绑定
-										let userinfo = JSON.parse(res.user);
 										let tool = new igexinTool();
 										let num = 20 - userinfo.userId.toString().length;
 										let string = userinfo.userId.toString();
