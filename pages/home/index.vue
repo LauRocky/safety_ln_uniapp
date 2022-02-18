@@ -205,7 +205,7 @@ export default {
 	onLoad() {
 		this.handProbleBar();
 		this.monitorMessage();
-		this.alertsMessage();
+
 	},
 	mounted: function() {
 		this.handbacklog();

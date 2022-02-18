@@ -59,6 +59,7 @@ export default {
 	methods: {
 		handReview() {
 			//提交
+			console.log(this.objId.problemChecker, this.userAdd.images);
 			uni.showLoading({ title: '提交中', mask: true });
 			this.$http(
 				`/problems/solve/${this.objId.id}`,
@@ -81,6 +82,8 @@ export default {
 								delta: 1
 							});
 						}, 1500);
+					}else{
+						console.log(res)
 					}
 				})
 				.catch(err => {
@@ -112,22 +115,17 @@ export default {
 			this.$refs.uForm
 				.validate()
 				.then(res => {
-					if (this.imgList.length == 0) {
-						return uni.$u.toast('请上传图片');
-					}
-					this.imgList.forEach(val => {
-						this.userAdd.images += val + '|';
-					});
-					this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
-					this.handReview();
-					uni.navigateBack({
-						delta: 1
-					});
-					/* uni.$u.toast('校验通过'); */
+						if (this.imgList.length == 0) {
+							return uni.$u.toast('请上传图片');
+						}
+						this.imgList.forEach(val => {
+							this.userAdd.images += val + '|';
+						});
+						this.userAdd.images = this.userAdd.images.substr(0, this.userAdd.images.length - 1);
+						this.handReview();
 				})
 				.catch(err => {
 					console.log(err);
-					/* uni.$u.toast('校验失败'); */
 				});
 		}
 	}

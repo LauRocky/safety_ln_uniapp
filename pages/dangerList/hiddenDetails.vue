@@ -69,9 +69,9 @@
 				</view>
 			</template>
 		</view>
-		<image class="xuan-imgsa" @click="handZgup" v-if="problem.status == -1" src="../../static/danger/xuan.png" mode=""></image>
+		<image class="xuan-imgsa" @click="handZgup" v-if="problem.status == -1 && problemSolver == problem.problemSolver" src="../../static/danger/xuan.png" mode=""></image>
 		<uni-fab
-			v-if="problem.status == 1"
+			v-if="problem.status == 1 && problemSolver == problem.problemChecker"
 			:pattern="pattern"
 			:content="content"
 			horizontal="right"
@@ -123,7 +123,8 @@ export default {
 	onLoad(val) {
 		this.id = val.id;
 		this.status = val.status;
-		this.problemSolver = JSON.parse(uni.getStorageSync('userInfo')).userId;
+		this.problemSolver = JSON.parse(uni.getStorageSync('userInfo')).userId.toString();
+		
 	},
 	onShow() {
 		this.handgETLIST();

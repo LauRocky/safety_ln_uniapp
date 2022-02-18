@@ -342,7 +342,6 @@ export default {
 		},
 		handEndl(v) {
 			//隐患等级
-			console.log(v.code, '111111');
 			this.userAdd.dagner = v.value;
 			this.userAdd.assessment = v.code;
 			this.showl = false;

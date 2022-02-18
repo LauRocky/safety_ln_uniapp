@@ -41,7 +41,6 @@
 		created() {
 			this.handgETLIST();
 			let obj = uni.getStorageSync('levelType');
-			console.log(obj,'222222')
 			if (obj) {
 				//缓存下标
 				this.cooindex = obj.cooindex;
