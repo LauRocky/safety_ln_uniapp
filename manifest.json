@@ -43,7 +43,8 @@
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a" ]
             },
             /* ios打包配置 */
             "ios" : {
@@ -132,20 +133,6 @@
                     "pid" : "2403",
                     "parameters" : {}
                 }
-            },
-            "zhongqian-lvxin-login" : {
-                "__plugin_info__" : {
-                    "name" : "绿信登录插件",
-                    "description" : "绿信登录插件",
-                    "platforms" : "Android",
-                    "url" : "",
-                    "android_package_name" : "",
-                    "ios_bundle_id" : "",
-                    "isCloud" : false,
-                    "bought" : -1,
-                    "pid" : "",
-                    "parameters" : {}
-                }
             }
         }
     },
@@ -179,11 +166,11 @@
             "proxy" : {
                 "/web" : {
                     // "target" : "http://59.110.136.159:12002/safety-server/api",
-                    "target" : "http://192.168.1.141:12002/safety-server/api", //测试
+                    // "target" : "http://192.168.1.141:12002/safety-server/api", //测试
 
                     //以下部分请勿改动！
                     // "target" : "https://esq.cgdg.com/api", //正式环境
-                    // "target" : "https://esq.zhongqian.info:1443/api", //测试环境
+                    "target" : "https://esq.zhongqian.info:1443/api", //测试环境
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
