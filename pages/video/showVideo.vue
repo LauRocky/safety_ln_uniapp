@@ -48,7 +48,7 @@ export default {
 	},
 	methods: {
 		img(e) {
-			console.log(e,'2222');
+			console.log(e, '2222');
 			const index = e.target.dataset.index;
 			this.showList[index].image = this.showImg;
 		},
@@ -205,6 +205,7 @@ export default {
 								this.rawList.push(obj);
 							}
 						});
+						console.log(this.showList, '00000000');
 					}
 				})
 				.catch(err => {
@@ -216,6 +217,7 @@ export default {
 		console.log('555', options);
 		this.project.projectId = options.projectId;
 		this.project.projectName = options.projectName;
+		
 	},
 	onShow() {
 		this.showList = [];
@@ -228,7 +230,6 @@ export default {
 <style lang="scss" scoped>
 .video {
 	overflow: hidden;
-
 	.list {
 		.searchs {
 			width: 92vw;

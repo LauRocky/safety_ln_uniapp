@@ -187,6 +187,7 @@
 						});
 						this.$http('/loginApp', 'POST', this.form, false)
 							.then(res => {
+								console.log(res)
 								if (res.code == 0) {
 								let userinfo = JSON.parse(res.user);
 									if (!is_iOS()) {

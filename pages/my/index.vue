@@ -253,15 +253,17 @@ export default {
 		},
 		// 更新
 		check() {
-			//android 更新
-			uni.sendNativeEvent(
-				{
-					checkUpdate: true
-				},
-				res => {
-					console.log(res);
-				}
-			);
+			if (!is_iOS()) {
+				//android 更新
+				uni.sendNativeEvent(
+					{
+						checkUpdate: true
+					},
+					res => {
+						console.log(res);
+					}
+				);
+			}
 		},
 		// 意见反馈
 		feedback() {
@@ -367,18 +369,17 @@ export default {
 						if (!is_iOS()) {
 							uni.sendNativeEvent('logout', c => {});
 						}
-						
+
 						uni.reLaunch({
 							url: '/pages/login/index'
-						})
+						});
 						uni.clearStorageSync();
-						clearInterval(App.globalData.monitoring)  //清空轮训
+						clearInterval(App.globalData.monitoring); //清空轮训
 						if (is_iOS()) {
 							let tool = new igexinTool(); //解绑别名
 							let string = App.globalData.Apushid;
 							tool.unbindAlias(string);
 						}
-						
 					} else if (res.cancel) {
 						console.log('用户点击取消');
 					}

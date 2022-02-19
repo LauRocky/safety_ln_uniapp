@@ -228,7 +228,6 @@ export default {
 										val.problemType2 = obj[0].value;
 									}
 								}
-								console.log(obj)
 								val.crtime = val.createTime.split(' ')[0];
 								if (val.images) {
 									val.images2 = val.images.split('|')[0];
