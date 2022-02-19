@@ -148,8 +148,8 @@ export default {
 		this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2;
 		this.status = option;
 		// console.log(option.names.length)
-		if (option.names.length >= 12) {
-			this.Videotitle = option.names.slice(0, 11) + '...';
+		if (option.names.length >= 7) {
+			this.Videotitle = option.names.slice(0, 7) + '...';
 		} else {
 			this.Videotitle = option.names;
 		}
