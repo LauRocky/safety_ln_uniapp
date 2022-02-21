@@ -102,28 +102,6 @@ export default {
 			]
 		};
 	},
-	onBackPress(e) {
-		if (is_iOS()) {
-			return;
-		}
-		uni.showModal({
-			content: '是否要退出应用？',
-			confirmText: '确定',
-			cancelText: '取消',
-			success: function(res) {
-				if (res.confirm) {
-					if (!is_iOS()) {
-						uni.sendNativeEvent('colseapp', res => {
-							console.log(res);
-						});
-					}
-				} else if (res.cancel) {
-				}
-				return true;
-			}
-		});
-		return true;
-	},
 	onLoad() {},
 	onShow() {
 		this.handgETLIST();

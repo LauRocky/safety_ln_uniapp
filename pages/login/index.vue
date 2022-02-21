@@ -31,25 +31,22 @@
 </template>
 
 <script>
-	var lxLogin =  uni.requireNativePlugin("zhongqian-lvxin-login");
-	import {
-		is_iOS,
-		igexinTool
-	} from '../../utils/utils.js';
-	const App = getApp();
-	export default {
-		data() {
-			return {
-				lastTouch: 0,
-				type: 'password',
-				icon: 'eye-off',
-				radio: false,
-				form: {
-					username: '',
-					password: ''
-				},
-				rules: {
-					username: [{
+import { is_iOS, igexinTool } from '../../utils/utils.js';
+const App = getApp();
+export default {
+	data() {
+		return {
+			lastTouch: 0,
+			type: 'password',
+			icon: 'eye-off',
+			radio: false,
+			form: {
+				username: '',
+				password: ''
+			},
+			rules: {
+				username: [
+					{
 						required: true,
 						message: '请输入用户',
 						trigger: ['blur']
@@ -65,28 +62,6 @@
 			}
 		};
 	},
-	onBackPress(e) {
-		if (is_iOS()) {
-			return;
-		}
-		uni.showModal({
-			content: '是否要退出应用？',
-			confirmText: '确定',
-			cancelText: '取消',
-			success: function(res) {
-				if (res.confirm) {
-					if (!is_iOS()) {
-						uni.sendNativeEvent('colseapp', res => {
-							console.log(res);
-						});
-					}
-				} else if (res.cancel) {
-				}
-				return true;
-			}
-		});
-		return true;
-	},
 	onReady() {},
 	mounted: function() {
 		// #ifdef APP-PLUS
@@ -97,25 +72,19 @@
 			if (code) {
 				this.getCode(code);
 			}
+		} else {
+			let lxLogin = uni.requireNativePlugin('zhongqian-lvxin-login');
+			lxLogin.getLxCode({}, res => {
+				if (res.code) {
+					this.getCode(res.code);
+				}
+			});
 		}
 		// #endif
-		const that = this;
-		uni.onNativeEventReceive((event, data) => {
-			//监听安卓端传参
-			if (data) {
-				if (!is_iOS()) {
-					uni.sendNativeEvent(data, res => {
-						console.log(res);
-					});
-				}
-				that.getCode(JSON.parse(data).code);
-			}
-		});
 	},
 
 	methods: {
 		getCode(code) {
-			console.log('00000000');
 			uni.showLoading({
 				title: '正在登陆中'
 			});
@@ -167,11 +136,6 @@
 						title: '登录失败'
 					});
 				});
-		},
-		toHome() {
-			uni.switchTab({
-				url: '/pages/home/index'
-			});
 		},
 		toHome() {
 			uni.switchTab({
