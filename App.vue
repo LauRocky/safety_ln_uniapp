@@ -5,7 +5,8 @@ export default {
 		version: '',
 		Apushid: '',
 		cid: '',
-		monitoring: null
+		Todo: null,
+		warning: null
 	},
 	onLaunch: function() {
 		// #ifdef APP-PLUS
@@ -18,7 +19,6 @@ export default {
 			plus.push.addEventListener(
 				'click',
 				msg => {
-					console.log(msg, '11111', uni.getStorageSync('token'));
 					clearTimeout(timer);
 					timer = setTimeout(() => {
 						if (uni.getStorageSync('token')) {
@@ -41,6 +41,7 @@ export default {
 						console.log(msg, '333333333');
 						let options = { cover: false, sound: 'system', title: msg.title };
 						plus.push.createMessage(msg.payload.content, msg.payload, options);
+						this.monitorMessage()
 					}
 				},
 				false
@@ -54,14 +55,55 @@ export default {
 	onError(err) {
 		console.log(err, '0000');
 	},
-	mounted: function() {},
-	methods: {}
+	mounted: function() {
+	},
+	methods: {
+		monitorMessage() {
+			this.$http(
+				'/upcoming/page',
+				'POST',
+				{
+					readStatus: 0,
+					page: '',
+					limit: ''
+				},
+				false
+			).then(res => {
+				console.log(res,'21212')
+					if (res.code == 0) {
+						this.globalData.Todo = res.page.totalCount;
+						uni.showTabBarRedDot({
+							index: 4
+						});
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+			this.$http('/notification/cameraAlarmList', 'GET', {}, false)
+				.then(res => {
+					if (res.code == 0) {
+						if (res.data == 0) {
+						} else {
+							let list = res.data.filter(val => val.alarmStatus == 0)
+							this.globalData.warning = list.length;
+							uni.showTabBarRedDot({
+								index: 4
+							});
+						}
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+	}
 };
 </script>
 <style lang="scss">
 @import 'uview-ui/index.scss';
 /* #ifndef APP-PLUS-NVUE */
-page{
+page {
 	background-color: #fafafa;
 }
 /* #endif */

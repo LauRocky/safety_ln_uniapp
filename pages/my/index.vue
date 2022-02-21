@@ -38,12 +38,12 @@
 					<view class="image-text">意见反馈</view>
 				</view>
 				<view class="image-item" @click="alerts" style="position: relative;">
-					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="value"></u-badge></view>
+					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="Todo"></u-badge></view>
 					<image class="image-imgs" src="../../static/my/alerts.png" mode=""></image>
 					<view class="image-text">待办通知</view>
 				</view>
 				<view class="image-item" @click="offline" style="position: relative;">
-					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="nums"></u-badge></view>
+					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="warnings"></u-badge></view>
 					<image class="image-imgs" src="../../static/my/offline.png" mode=""></image>
 					<view class="image-text">监控预警</view>
 				</view>
@@ -114,14 +114,14 @@ export default {
 	data() {
 		return {
 			showPopup: false,
-			value: '', //待办
 			user: JSON.parse(uni.getStorageSync('userInfo')),
 			show: false, //true是显示,false是隐藏
 			status: 1,
 			danger: 2,
 			public: 3,
 			deptNames: '',
-			nums: '' //监控未读数量
+			Todo: App.globalData.Todo, //待办
+			warnings: App.globalData.warning //监控未读数量
 		};
 	},
 	onBackPress(e) {
@@ -271,59 +271,6 @@ export default {
 				url: '/pages/my/feedbackList'
 			});
 		},
-		//技术支持
-		// skill() {
-		// 	this.show = true
-		// },
-		//进入页面后,调取数据,拿到待办未读数量
-		alertsNotice() {
-			this.$http(
-				'/upcoming/page',
-				'POST',
-				{
-					readStatus: 0,
-					page: '',
-					limit: ''
-				},
-				false
-			)
-				.then(res => {
-					if (res.code == 0) {
-						this.value = res.page.totalCount;
-						uni.showTabBarRedDot({
-							index: 4
-						});
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
-		// 进入页面后,调取数据,拿到监控未读数量
-		monitoring() {
-			this.$http('/notification/cameraAlarmList', 'GET', {}, false)
-				.then(res => {
-					if (res.code == 0) {
-						if (res.data == 0) {
-						} else {
-							let nums = 0;
-							res.data.forEach(el => {
-								if (el.alarmStatus == 0) {
-									nums++;
-									uni.showTabBarRedDot({
-										index: 4
-									});
-								}
-								this.nums = nums;
-							});
-						}
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
-
 		// 消息通知
 		alerts() {
 			uni.navigateTo({
@@ -346,15 +293,7 @@ export default {
 				url: '/pages/my/about'
 			});
 		},
-		// handscanCode() {
-		// 	// 允许从相机和相册扫码
-		// 	uni.scanCode({
-		// 		success: function(res) {
-		// 			console.log('条码类型：' + res.scanType);
-		// 			console.log('条码内容：' + res.result);
-		// 		}
-		// 	});
-		// },
+
 		scan() {
 			uni.showToast({
 				title: '扫码'
@@ -374,7 +313,6 @@ export default {
 							url: '/pages/login/index'
 						});
 						uni.clearStorageSync();
-						clearInterval(App.globalData.monitoring); //清空轮训
 						if (is_iOS()) {
 							let tool = new igexinTool(); //解绑别名
 							let string = App.globalData.Apushid;
@@ -389,13 +327,10 @@ export default {
 	},
 	onLoad() {
 		this.deptInfo();
-	},
-	onShow() {
-		this.alertsNotice();
-		this.monitoring();
 		//刷新用户数据
 		this.user = JSON.parse(uni.getStorageSync('userInfo'));
-	}
+	},
+	onShow() {}
 };
 </script>
 

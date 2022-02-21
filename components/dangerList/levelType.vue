@@ -41,7 +41,7 @@
 		created() {
 			this.handgETLIST();
 			let obj = uni.getStorageSync('levelType');
-			if (obj) {
+			if (obj && obj.value) {
 				//缓存下标
 				this.cooindex = obj.cooindex;
 				this.$emit('handEndl', obj);

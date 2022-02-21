@@ -37,7 +37,6 @@
                     "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
                     "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.UPDATE_DEVICE_STATS\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
@@ -64,7 +63,8 @@
                     "NSLocationWhenInUseUsageDescription" : "获取当前位置自动填写隐患发生位置",
                     "NSLocationAlwaysAndWhenInUseUsageDescription" : "获取当前位置自动填写隐患发生位置",
                     "NSCameraUsageDescription" : "打开相机用于智慧安质平台扫码登录"
-                }
+                },
+                "dSYMs" : false
             },
             /* SDK配置 */
             "sdkConfigs" : {
@@ -77,7 +77,8 @@
                 "ad" : {},
                 "push" : {
                     "unipush" : {}
-                }
+                },
+                "statics" : {}
             },
             "screenOrientation" : [
                 "portrait-primary",
@@ -133,6 +134,9 @@
                     "parameters" : {}
                 }
             }
+        },
+        "uniStatistics" : {
+            "enable" : true
         }
     },
     /* 快应用特有相关 */
@@ -165,11 +169,9 @@
             "proxy" : {
                 "/web" : {
                     // "target" : "http://59.110.136.159:12002/safety-server/api",
-                    "target" : "http://192.168.1.141:12002/safety-server/api", //测试
-
-                    //以下部分请勿改动！
+                    /* "target" : "http://192.168.1.141:12002/safety-server/api", //测试 *///以下部分请勿改动！
                     // "target" : "https://esq.cgdg.com/api", //正式环境
-                    // "target" : "https://esq.zhongqian.info:1443/api", //测试环境
+                    "target" : "https://esq.zhongqian.info:1443/api", //测试环境
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

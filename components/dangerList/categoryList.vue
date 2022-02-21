@@ -38,7 +38,7 @@ export default {
 	created() {
 		this.handgETLIST()
 		let obj = uni.getStorageSync('categoryList');
-		if (obj) {
+		if (obj && obj.name) {
 			//缓存下标
 			this.cooindex = obj.cooindex;
 			this.$emit('handEndl', obj);

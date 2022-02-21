@@ -72,7 +72,7 @@ export default {
 	created() {
 		this.handSelectData();
 		let obj = uni.getStorageSync('projectPicker');
-		if (obj) {
+		if (obj && obj.companyId) {
 			//缓存获取上次数据
 			this.one = obj.one;
 			this.two = obj.two;

@@ -127,9 +127,6 @@ export default {
 	onLoad() {},
 	onShow() {
 		this.handgETLIST();
-		this.handclick({
-			value: this.status
-		});
 	},
 	methods: {
 		handgreList(val, i) {
@@ -173,6 +170,9 @@ export default {
 			getDictList('PROBLEMS_LEVEL_TYPE')
 				.then(res => {
 					this.dictLsit = res.dict;
+					this.handclick({
+						value: this.status
+					});
 				})
 				.catch(err => {
 					console.log(err);

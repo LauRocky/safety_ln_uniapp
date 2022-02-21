@@ -204,62 +204,12 @@ export default {
 	onShow() {},
 	onLoad() {
 		this.handProbleBar();
-		// this.monitorMessage();
 	},
 	mounted: function() {
 		this.handbacklog();
 		this.handdetailByUser();
 	},
 	methods: {
-		monitorMessage() {
-			console.log('0101010')
-			var that = this;
-			clearInterval(App.globalData.monitoring); //清空轮训 否越来越快
-			monitoring()
-				.then(res => {
-					if (res.code == 0) {
-						if (res.data == 0) {
-						} else {
-							res.data.forEach(el => {
-								if (el.alarmStatus == 0) {
-									uni.showTabBarRedDot({
-										index: 4
-									});
-								}
-							});
-						}
-					}else{
-						console.log(res,'-----')
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-			alerts()
-				.then(res => {
-					if (res.code == 0) {
-						if (res.page.totalCount == 0) {
-						} else {
-							res.page.list.forEach(el => {
-								if (el.readStatus == 0) {
-									uni.showTabBarRedDot({
-										index: 4
-									});
-								}
-							});
-						}
-					}else{
-						console.log(res,'-----')
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-
-			App.globalData.monitoring = setInterval(function() {
-				return that.monitorMessage();
-			}, 20000);
-		},
 		handXq(v) {
 			if (this.status == 1) {
 				uni.navigateTo({

@@ -31,7 +31,7 @@ export default {
 	//组件生命周期
 	created() {
 		let obj = uni.getStorageSync('address');
-		if (obj.address) {
+		if (obj && obj.address) {
 			this.address = obj.address
 			this.$emit('handEndA', obj.address);
 		}

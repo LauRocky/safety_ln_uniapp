@@ -101,7 +101,6 @@
 				</div>
 			</div>
 		</div>
-		<u-modal :show="showPicker" title="回放时间选择"><uni-datetime-picker v-model="datetimerange" type="datetimerange" rangeSeparator="至" /></u-modal>
 	</view>
 </template>
 <script>
@@ -139,8 +138,7 @@ export default {
 			time: 30,
 			timer: null,
 			clip: true,
-			datetimerange: [],
-			showPicker: false
+			fileSizeString: ''
 		};
 	},
 	onLoad(option) {
@@ -153,10 +151,9 @@ export default {
 		} else {
 			this.Videotitle = option.names;
 		}
-		
+		this.videodetail();
 	},
 	onShow() {
-		this.videodetail();
 		plus.screen.lockOrientation('portrait-primary');
 	},
 	created() {},
@@ -650,8 +647,7 @@ export default {
 				console.log('stopPlay: ' + JSON.stringify(res));
 			});
 		}
-	},
-	
+	}
 };
 </script>
 

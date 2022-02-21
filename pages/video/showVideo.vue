@@ -15,7 +15,8 @@
 						<view class="item-color" v-else></view>
 						<text class="item-text">{{ item.status == 0 ? '离线' : '在线' }}</text>
 					</view>
-					<image class="imgs" :src="item.image" mode="" @error="img" :data-index="index"></image>
+					<image class="imgs" v-if="item.image !== 'camera.png'" :src="item.image" mode=""></image>
+					<image class="imgs" src="../../static/video/detailVideo.png" v-else mode=""></image>
 					<view class="mask"></view>
 					<text class="mask-name">{{ item.ipcName }}</text>
 				</view>
@@ -47,11 +48,6 @@ export default {
 		};
 	},
 	methods: {
-		img(e) {
-			console.log(e, '2222');
-			const index = e.target.dataset.index;
-			this.showList[index].image = this.showImg;
-		},
 		handsearch(val) {
 			if (this.rawList) {
 				this.showList = this.rawList;
@@ -88,7 +84,6 @@ export default {
 						request(url, 'POST', {}, false)
 							.then(res => {
 								let apiUrl = 'https://esq.cgdg.com';
-
 								let body = {
 									stream: 'rtsp',
 									type: 'video',
@@ -186,7 +181,6 @@ export default {
 				false
 			)
 				.then(res => {
-					uni.hideLoading();
 					console.log(res);
 					if (res.code == 0) {
 						let obj = {};
@@ -207,6 +201,7 @@ export default {
 						});
 						console.log(this.showList, '00000000');
 					}
+					uni.hideLoading();
 				})
 				.catch(err => {
 					console.log(err);
@@ -217,7 +212,6 @@ export default {
 		console.log('555', options);
 		this.project.projectId = options.projectId;
 		this.project.projectName = options.projectName;
-		
 	},
 	onShow() {
 		this.showList = [];
