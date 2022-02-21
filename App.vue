@@ -1,11 +1,11 @@
 <script>
 export default {
 	globalData: {
-		userInfo:{},
+		userInfo: {},
 		version: '',
 		Apushid: '',
 		cid: '',
-		monitoring:null,
+		monitoring: null
 	},
 	onLaunch: function() {
 		// #ifdef APP-PLUS
@@ -37,8 +37,8 @@ export default {
 			plus.push.addEventListener(
 				'receive',
 				msg => {
-					if (msg.type = 'receive' && msg.payload) {
-						console.log(msg,'333333333')
+					if ((msg.type = 'receive' && msg.payload)) {
+						console.log(msg, '333333333');
 						let options = { cover: false, sound: 'system', title: msg.title };
 						plus.push.createMessage(msg.payload.content, msg.payload, options);
 					}
@@ -51,14 +51,18 @@ export default {
 	onLoad() {},
 	onShow: function() {},
 	onHide() {},
+	onError(err) {
+		console.log(err, '0000');
+	},
 	mounted: function() {},
 	methods: {}
 };
 </script>
-
 <style lang="scss">
 @import 'uview-ui/index.scss';
-html body{
-	background: #fafafa;
+/* #ifndef APP-PLUS-NVUE */
+page{
+	background-color: #fafafa;
 }
+/* #endif */
 </style>

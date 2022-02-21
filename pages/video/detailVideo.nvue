@@ -1,5 +1,5 @@
 <template>
-	<div class="detailVideo">
+	<view class="detailVideo">
 		<div class="headerTitle" :style="{ height: iStatusBarHeight + 'rpx' }"></div>
 		<div class="header-top">
 			<image @click="getBack" class="img" src="../../static/video/back.png" mode=""></image>
@@ -102,7 +102,7 @@
 			</div>
 		</div>
 		<u-modal :show="showPicker" title="回放时间选择"><uni-datetime-picker v-model="datetimerange" type="datetimerange" rangeSeparator="至" /></u-modal>
-	</div>
+	</view>
 </template>
 <script>
 import { request } from '../../utils/request.js';
@@ -143,7 +143,20 @@ export default {
 			showPicker: false
 		};
 	},
+	onLoad(option) {
+		this.platform = uni.getSystemInfoSync().platform;
+		this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2;
+		this.status = option;
+		// console.log(option.names.length)
+		if (option.names.length >= 7) {
+			this.Videotitle = option.names.slice(0, 7) + '...';
+		} else {
+			this.Videotitle = option.names;
+		}
+		
+	},
 	onShow() {
+		this.videodetail();
 		plus.screen.lockOrientation('portrait-primary');
 	},
 	created() {},
@@ -638,18 +651,7 @@ export default {
 			});
 		}
 	},
-	onLoad(option) {
-		this.platform = uni.getSystemInfoSync().platform;
-		this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight * 2;
-		this.status = option;
-		// console.log(option.names.length)
-		if (option.names.length >= 12) {
-			this.Videotitle = option.names.slice(0, 11) + '...';
-		} else {
-			this.Videotitle = option.names;
-		}
-		this.videodetail();
-	}
+	
 };
 </script>
 

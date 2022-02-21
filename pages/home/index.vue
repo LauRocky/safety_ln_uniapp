@@ -204,7 +204,7 @@ export default {
 	onShow() {},
 	onLoad() {
 		this.handProbleBar();
-		this.monitorMessage();
+		// this.monitorMessage();
 	},
 	mounted: function() {
 		this.handbacklog();
@@ -212,6 +212,7 @@ export default {
 	},
 	methods: {
 		monitorMessage() {
+			console.log('0101010')
 			var that = this;
 			clearInterval(App.globalData.monitoring); //清空轮训 否越来越快
 			monitoring()
@@ -227,6 +228,8 @@ export default {
 								}
 							});
 						}
+					}else{
+						console.log(res,'-----')
 					}
 				})
 				.catch(err => {
@@ -245,6 +248,8 @@ export default {
 								}
 							});
 						}
+					}else{
+						console.log(res,'-----')
 					}
 				})
 				.catch(err => {

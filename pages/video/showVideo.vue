@@ -10,27 +10,25 @@
 			<view v-if="this.showList.length == 0"><image class="kong" src="../../static/danger/kong.png" mode=""></image></view>
 			<view class="videolist" v-else>
 				<view class="item" v-for="(item, index) in showList" :key="index" @click="videodetail(item)">
-					<text class="item-status">
+					<view class="item-status">
 						<view class="item-color" v-if="item.status == 0" style="background-color:#E43D33;"></view>
 						<view class="item-color" v-else></view>
 						<text class="item-text">{{ item.status == 0 ? '离线' : '在线' }}</text>
-					</text>
+					</view>
 					<image class="imgs" :src="item.image" mode="" @error="img" :data-index="index"></image>
 					<view class="mask"></view>
-					<span class="mask-name">{{ item.ipcName }}</span>
+					<text class="mask-name">{{ item.ipcName }}</text>
 				</view>
 			</view>
 		</view>
 	</view>
 </template>
 <script>
-import navBar from '../../components/navBar/navBar.vue';
 import twoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 import { request } from '../../utils/request.js';
 import { scanCode, is_iOS } from '../../utils/utils.js';
 export default {
 	components: {
-		navBar,
 		twoNavbar
 	},
 	data() {
@@ -50,7 +48,7 @@ export default {
 	},
 	methods: {
 		img(e) {
-			console.log(e,'2222');
+			console.log(e, '2222');
 			const index = e.target.dataset.index;
 			this.showList[index].image = this.showImg;
 		},
@@ -207,7 +205,7 @@ export default {
 								this.rawList.push(obj);
 							}
 						});
-						console.log('da', this.showList);
+						console.log(this.showList, '00000000');
 					}
 				})
 				.catch(err => {
@@ -219,6 +217,7 @@ export default {
 		console.log('555', options);
 		this.project.projectId = options.projectId;
 		this.project.projectName = options.projectName;
+		
 	},
 	onShow() {
 		this.showList = [];
@@ -231,7 +230,6 @@ export default {
 <style lang="scss" scoped>
 .video {
 	overflow: hidden;
-
 	.list {
 		.searchs {
 			width: 92vw;
