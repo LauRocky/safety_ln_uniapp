@@ -1,0 +1,29 @@
+{
+  "name": "绿信登录插件",
+  "id": "zhongqian-lvxin-login",
+  "version": "1.0",
+  "description": "绿信登录插件",
+  "_dp_type":"nativeplugin",
+  "_dp_nativeplugin":{
+    "android": {
+      "plugins": [
+        {
+          "type": "module",
+          "name": "zhongqian-lvxin-login",
+          "class": "com.leanit.safety.activity.LXLoginModule"
+        }
+      ],
+      "integrateType": "aar",
+      "compileOptions": {
+        "sourceCompatibility": "1.8",
+        "targetCompatibility": "1.8"
+      },
+
+      "useAndroidX": false,
+
+      "parameters": {
+
+      }
+    }
+  }
+}

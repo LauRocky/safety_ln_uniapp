@@ -33,6 +33,7 @@
 </template>
 
 <script>
+	var lxLogin =  uni.requireNativePlugin("zhongqian-lvxin-login");
 	import {
 		is_iOS,
 		igexinTool
@@ -86,6 +87,7 @@
 		},
 		onReady() {},
 		mounted: function() {
+			this.testLogin();
 			// #ifdef APP-PLUS
 			let platform = uni.getSystemInfoSync().platform; //判断ioa还是安卓，第三方登录获取参数
 			if (platform == 'ios') {
@@ -111,6 +113,13 @@
 		},
 
 		methods: {
+			testLogin(){
+				lxLogin.getLxCode({},(res)=>{
+					if(res.code){
+						this.getCode(res.code);
+					}
+				});
+			},
 			getCode(code) {
 				console.log('00000000')
 				uni.showLoading({
