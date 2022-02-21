@@ -31,22 +31,25 @@
 </template>
 
 <script>
-import { is_iOS, igexinTool } from '../../utils/utils.js';
-const App = getApp();
-export default {
-	data() {
-		return {
-			lastTouch: 0,
-			type: 'password',
-			icon: 'eye-off',
-			radio: false,
-			form: {
-				username: '',
-				password: ''
-			},
-			rules: {
-				username: [
-					{
+	var lxLogin =  uni.requireNativePlugin("zhongqian-lvxin-login");
+	import {
+		is_iOS,
+		igexinTool
+	} from '../../utils/utils.js';
+	const App = getApp();
+	export default {
+		data() {
+			return {
+				lastTouch: 0,
+				type: 'password',
+				icon: 'eye-off',
+				radio: false,
+				form: {
+					username: '',
+					password: ''
+				},
+				rules: {
+					username: [{
 						required: true,
 						message: '请输入用户',
 						trigger: ['blur']
