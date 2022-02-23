@@ -120,7 +120,7 @@ export default {
 		return {
 			tabberShow: true, //待办
 			tabberShowL: true, //监控
-			swiperList: ['说明：登录电脑端请访问https://esq.cgdg.com/'],
+			swiperList: ['登录电脑端请访问https://esq.cgdg.com/'],
 			showPopup: false,
 			show: false, //true是显示,false是隐藏
 			project: {
