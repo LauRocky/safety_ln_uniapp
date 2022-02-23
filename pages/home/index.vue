@@ -111,6 +111,7 @@
 import { scanCode, is_iOS } from '../../utils/utils.js';
 import { monitoring, alerts } from '../../utils/api.js';
 import barecharts from '../../components/home/barecharts.vue';
+import AppUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update';
 let App = getApp();
 export default {
 	components: {
@@ -180,13 +181,17 @@ export default {
 		};
 	},
 
-	onShow() {},
+	onShow() {
+		
+	},
 	onLoad() {
+		/* AppUpdate()   //监听升级 */
 		this.handProbleBar();
 	},
 	mounted: function() {
 		this.handbacklog();
 		this.handdetailByUser();
+		
 	},
 	methods: {
 		handXq(v) {

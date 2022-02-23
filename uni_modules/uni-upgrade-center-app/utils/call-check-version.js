@@ -2,12 +2,13 @@ export default function() {
 	// #ifdef APP-PLUS
 	return new Promise((resolve, reject) => {
 		plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {
-			console.log(plus.runtime.appid, plus.runtime.version)
+			console.log(plus.runtime.appid,plus.runtime.version,widgetInfo.version,'--------------')
+			
 			uniCloud.callFunction({
 				name: 'check-version',
 				data: {
 					appid: plus.runtime.appid,
-					appVersion:  plus.runtime.version,
+					appVersion: plus.runtime.version,
 					wgtVersion: widgetInfo.version
 				},
 				success: (e) => {

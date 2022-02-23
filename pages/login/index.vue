@@ -97,8 +97,7 @@ export default {
 					if (res.code == 0) {
 						uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
 						uni.setStorageSync('token', res.data.token.token);
-						if (!is_iOS()) {
-							uni.sendNativeEvent(
+						/* 	uni.sendNativeEvent(
 								JSON.stringify({
 									userId: res.data.user.userId + '',
 									onlyPush: true
@@ -107,8 +106,7 @@ export default {
 							);
 							uni.sendNativeEvent(res, rest => {
 								console.log(rest);
-							});
-						} else {
+							}); */
 							// #ifdef APP-PLUS
 							//个推绑定别名和userid一起绑定
 							let userinfo = res.data.user;
@@ -121,7 +119,6 @@ export default {
 							App.globalData.Apushid = string;
 							tool.bindAlias(string, App.globalData.cid);
 							// #endif
-						}
 						this.toHome();
 						this.monitorMessage();
 					}
@@ -159,8 +156,7 @@ export default {
 						.then(res => {
 							if (res.code == 0) {
 								let userinfo = JSON.parse(res.user);
-								if (!is_iOS()) {
-									uni.sendNativeEvent(
+									/* uni.sendNativeEvent(
 										JSON.stringify({
 											userId: userinfo.userId + '',
 											onlyPush: true
@@ -169,8 +165,7 @@ export default {
 									);
 									uni.sendNativeEvent('login', call => {
 										console.log(call);
-									});
-								} else {
+									}); */
 									// #ifdef APP-PLUS
 									//个推绑定别名和userid一起绑定
 									let tool = new igexinTool();
@@ -179,13 +174,12 @@ export default {
 									for (var i = 0; i < num; i++) {
 										string += '0';
 									}
+									console.log(string)
 									App.globalData.Apushid = string;
 									tool.bindAlias(string, App.globalData.cid);
 									// #endif
-								}
 								uni.hideToast();
 								let obj = uni.getStorageSync('show');
-
 								uni.clearStorageSync();
 								if (obj) {
 									uni.setStorageSync('show', obj);
