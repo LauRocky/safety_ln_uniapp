@@ -97,28 +97,19 @@ export default {
 					if (res.code == 0) {
 						uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
 						uni.setStorageSync('token', res.data.token.token);
-						/* 	uni.sendNativeEvent(
-								JSON.stringify({
-									userId: res.data.user.userId + '',
-									onlyPush: true
-								}),
-								call => {}
-							);
-							uni.sendNativeEvent(res, rest => {
-								console.log(rest);
-							}); */
-							// #ifdef APP-PLUS
-							//个推绑定别名和userid一起绑定
-							let userinfo = res.data.user;
-							let tool = new igexinTool();
-							let num = 20 - userinfo.userId.toString().length;
-							let string = userinfo.userId.toString();
-							for (var i = 0; i < num; i++) {
-								string += '0';
-							}
-							App.globalData.Apushid = string;
-							tool.bindAlias(string, App.globalData.cid);
-							// #endif
+
+						// #ifdef APP-PLUS
+						//个推绑定别名和userid一起绑定
+						let userinfo = res.data.user;
+						let tool = new igexinTool();
+						let num = 20 - userinfo.userId.toString().length;
+						let string = userinfo.userId.toString();
+						for (var i = 0; i < num; i++) {
+							string += '0';
+						}
+						App.globalData.Apushid = string;
+						tool.bindAlias(string, App.globalData.cid);
+						// #endif
 						this.toHome();
 						this.monitorMessage();
 					}
@@ -156,28 +147,19 @@ export default {
 						.then(res => {
 							if (res.code == 0) {
 								let userinfo = JSON.parse(res.user);
-									/* uni.sendNativeEvent(
-										JSON.stringify({
-											userId: userinfo.userId + '',
-											onlyPush: true
-										}),
-										call => {}
-									);
-									uni.sendNativeEvent('login', call => {
-										console.log(call);
-									}); */
-									// #ifdef APP-PLUS
-									//个推绑定别名和userid一起绑定
-									let tool = new igexinTool();
-									let num = 20 - userinfo.userId.toString().length;
-									let string = userinfo.userId.toString();
-									for (var i = 0; i < num; i++) {
-										string += '0';
-									}
-									console.log(string)
-									App.globalData.Apushid = string;
-									tool.bindAlias(string, App.globalData.cid);
-									// #endif
+
+								// #ifdef APP-PLUS
+								//个推绑定别名和userid一起绑定
+								let tool = new igexinTool();
+								let num = 20 - userinfo.userId.toString().length;
+								let string = userinfo.userId.toString();
+								for (var i = 0; i < num; i++) {
+									string += '0';
+								}
+								console.log(string);
+								App.globalData.Apushid = string;
+								tool.bindAlias(string, App.globalData.cid);
+								// #endif
 								uni.hideToast();
 								let obj = uni.getStorageSync('show');
 								uni.clearStorageSync();

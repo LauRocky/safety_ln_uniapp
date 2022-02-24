@@ -27,7 +27,7 @@
 				<view class="look" @click="handGp">查看更多 ({{ totalCount }})</view>
 			</view>
 			<!-- 说明 -->
-			<view class="main-prompt main-top">
+			<view class="main-prompt main-top" @click="copy('https://esq.cgdg.com')">
 				<u-notice-bar bgColor="#ffffff" duration="3000" color="#333333" direction="column" :text="swiperList"></u-notice-bar>
 				<!-- <image src="../../static/home/prompt.png" mode=""></image> -->
 				<!-- 说明：登录电脑端请访问 -->
@@ -177,13 +177,12 @@ export default {
 					name: '低风险'
 				}
 			],
-			showScanLogin: false
+			showScanLogin: false,
+			showlink: false
 		};
 	},
 
-	onShow() {
-		
-	},
+	onShow() {},
 	onLoad() {
 		/* AppUpdate()   //监听升级 */
 		this.handProbleBar();
@@ -191,9 +190,34 @@ export default {
 	mounted: function() {
 		this.handbacklog();
 		this.handdetailByUser();
-		
 	},
 	methods: {
+		copy(value) {
+			//提示模板
+			uni.showModal({
+				content: value, //模板中提示的内容
+				confirmText: '复制',
+				success: res => {
+					if (res.confirm) {
+						//点击复制内容的后调函数
+						//uni.setClipboardData方法就是讲内容复制到粘贴板
+						uni.setClipboardData({
+							data: value, //要被复制的内容
+							success: () => {
+								//复制成功的回调函数
+								uni.showToast({
+									//提示
+									title: '复制成功'
+								});
+							}
+						});
+					} else if (res.cancel) {
+						console.log('用户点击取消');
+					}
+				}
+			});
+		},
+
 		handXq(v) {
 			if (this.status == 1) {
 				uni.navigateTo({

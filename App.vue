@@ -14,7 +14,6 @@ export default {
 		var pinf = plus.push.getClientInfo();
 		var cid = pinf.clientid; //客户端标识
 		this.globalData.cid = pinf.clientid;
-		console.log(pinf.clientid,'=========')
 		let timer = null;
 		plus.push.addEventListener(
 			'click',

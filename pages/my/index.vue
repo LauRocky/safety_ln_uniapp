@@ -231,19 +231,7 @@ export default {
 			uni.showTabBar();
 		},
 		// 更新
-		check() {
-			if (!is_iOS()) {
-				//android 更新
-				uni.sendNativeEvent(
-					{
-						checkUpdate: true
-					},
-					res => {
-						console.log(res);
-					}
-				);
-			}
-		},
+		check() {},
 		// 意见反馈
 		feedback() {
 			uni.navigateTo({
@@ -284,19 +272,13 @@ export default {
 				content: '确定要退出当前用户？',
 				success: function(res) {
 					if (res.confirm) {
-						if (!is_iOS()) {
-							uni.sendNativeEvent('logout', c => {});
-						}
-
 						uni.reLaunch({
 							url: '/pages/login/index'
 						});
 						uni.clearStorageSync();
-						if (is_iOS()) {
-							let tool = new igexinTool(); //解绑别名
-							let string = App.globalData.Apushid;
-							tool.unbindAlias(string);
-						}
+						let tool = new igexinTool(); //解绑别名
+						let string = App.globalData.Apushid;
+						tool.unbindAlias(string);
 					} else if (res.cancel) {
 						console.log('用户点击取消');
 					}
