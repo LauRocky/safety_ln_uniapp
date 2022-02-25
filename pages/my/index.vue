@@ -108,6 +108,7 @@
 
 <script>
 import { scanCode, is_iOS, igexinTool } from '../../utils/utils.js';
+import AppUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update';
 const App = getApp();
 export default {
 	components: {},
@@ -231,7 +232,9 @@ export default {
 			uni.showTabBar();
 		},
 		// 更新
-		check() {},
+		check() {
+			/* AppUpdate() */
+		},
 		// 意见反馈
 		feedback() {
 			uni.navigateTo({

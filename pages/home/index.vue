@@ -173,7 +173,7 @@ export default {
 				},
 
 				{
-					value: 30,
+					value: 30, 
 					name: '低风险'
 				}
 			],
