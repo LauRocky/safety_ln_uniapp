@@ -108,8 +108,7 @@
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
-			// align-items: center;
-			border-bottom: 1upx solid #ccc;
+			border-bottom: 2upx solid rgba(188, 188, 188, 0.2);
 		
 			.card-yuan {
 				margin-top: 40upx;

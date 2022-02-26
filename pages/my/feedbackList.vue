@@ -115,7 +115,7 @@
 
 		.par {
 			margin: 20upx;
-			border-bottom: 2upx solid #dadada;
+			border-bottom: 2upx solid rgba(188, 188, 188, 0.2);
 
 			.par-1 {
 				display: flex;

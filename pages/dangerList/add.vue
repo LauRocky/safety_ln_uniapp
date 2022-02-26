@@ -230,14 +230,14 @@ export default {
 		};
 	},
 	onLoad() {
-		let obj = uni.getStorageSync('categoryList'); //隐患类别
+		/* let obj = uni.getStorageSync('categoryList'); //隐患类别
 		if (obj.name == '安全') {
 			this.category1 = 'PROBLEMS_LEVEL_TYPE';
 			this.category2 = 'PROBLEM_TYPE';
 		} else if (obj.name == '质量') {
 			this.category1 = 'QUALITY_PROBLEM_LEVEL';
 			this.category2 = 'QUALITY_PROBLEM_TYPE';
-		}
+		} */
 	},
 	onShow() {},
 	//组件生命周期

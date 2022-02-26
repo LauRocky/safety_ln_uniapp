@@ -64,7 +64,7 @@ export default {
 		
 		this.handlistByProjectId()
 		let obj = uni.getStorageSync('InformPerson');
-		if (obj) {
+		if (obj && obj.value) {
 			//缓存下标
 			this.checkboxValue1 = obj.checkboxValue1;
 			this.$emit('handEndP', obj);

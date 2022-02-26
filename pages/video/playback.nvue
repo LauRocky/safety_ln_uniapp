@@ -8,7 +8,7 @@
 		</div>
 		<div style="height: 500rpx; width: 100%;"></div>
 		<KJ-HikVideoPlayer
-			ref="HikVideoPlayer"
+			ref="HikVideoPlayerP"
 			:class="full == 1 ? 'EZOpen_full' : 'EZOpen'"
 			:style="{ width: '100%', height: palyerHeight, top: full == 1 ? 0 : iStatusBarHeight + 92 + 'rpx' }"
 			@player="er"
@@ -250,9 +250,9 @@ export default {
 		 * */
 		startRealPlay() {
 			var _this = this;
-			_this.$refs.HikVideoPlayer.stopPlay(res => {
+			_this.$refs.HikVideoPlayerP.stopPlay(res => {
 				console.log('stopPlay: ' + JSON.stringify(res));
-				_this.$refs.HikVideoPlayer.startRealPlay(_this.videoUrl, res => {
+				_this.$refs.HikVideoPlayerP.startRealPlay(_this.videoUrl, res => {
 					console.log('startRealPlay: ' + res);
 				});
 			});
@@ -266,9 +266,9 @@ export default {
 				this.stopPlay();
 			}
 			var _this = this;
-			this.$refs.HikVideoPlayer.stopPlay(res => {
+			this.$refs.HikVideoPlayerP.stopPlay(res => {
 				console.log('stopPlay: ' + JSON.stringify(res));
-				_this.$refs.HikVideoPlayer.startPlayback(this.PlaybackUrl, this.startDate, this.endDate, res => {
+				_this.$refs.HikVideoPlayerP.startPlayback(this.PlaybackUrl, this.startDate, this.endDate, res => {
 					console.log('startPlayback: ' + JSON.stringify(res));
 				});
 			});
@@ -277,7 +277,7 @@ export default {
 		 * 暂停回放
 		 * */
 		pause() {
-			this.$refs.HikVideoPlayer.pause(res => {
+			this.$refs.HikVideoPlayerP.pause(res => {
 				console.log('pause: ' + JSON.stringify(res));
 			});
 		},
@@ -285,7 +285,7 @@ export default {
 		 * 恢复回放
 		 * */
 		resume() {
-			this.$refs.HikVideoPlayer.resume(res => {
+			this.$refs.HikVideoPlayerP.resume(res => {
 				console.log('resume: ' + JSON.stringify(res));
 			});
 		},
@@ -295,7 +295,7 @@ export default {
 		getOSDTime() {
 			var _this = this;
 			var interval3 = setInterval(function() {
-				_this.$refs.HikVideoPlayer.getOSDTime(res => {
+				_this.$refs.HikVideoPlayerP.getOSDTime(res => {
 					console.log('getOSDTime: ' + JSON.stringify(res));
 				});
 			}, 1000);
@@ -319,7 +319,7 @@ export default {
 			};
 
 			var _this = this;
-			_this.$refs.HikVideoPlayer.capturePicture(dic, res => {
+			_this.$refs.HikVideoPlayerP.capturePicture(dic, res => {
 				console.log('capturePicture: ' + JSON.stringify(res));
 				_this.imageSrc = 'file://' + filePath + '/' + fileName;
 				uni.saveImageToPhotosAlbum({
@@ -351,7 +351,7 @@ export default {
 				fileName: 'test.mp4'
 			};
 			var _this = this;
-			_this.$refs.HikVideoPlayer.startRecord(dic, res => {
+			_this.$refs.HikVideoPlayerP.startRecord(dic, res => {
 				console.log('startRecord: ' + JSON.stringify(res));
 			});
 		},
@@ -360,7 +360,7 @@ export default {
 		 * */
 		stopRecord() {
 			var tempFilePath = 'file://' + this.filePathvideo + '/test.mp4';
-			this.$refs.HikVideoPlayer.stopRecord(res => {
+			this.$refs.HikVideoPlayerP.stopRecord(res => {
 				console.log('stopRecord: ' + JSON.stringify(res));
 				uni.saveVideoToPhotosAlbum({
 					filePath: tempFilePath,
@@ -389,7 +389,7 @@ export default {
 		 * 停止取流和播放
 		 * */
 		stopPlay() {
-			this.$refs.HikVideoPlayer.stopPlay(res => {
+			this.$refs.HikVideoPlayerP.stopPlay(res => {
 				console.log('stopPlay: ' + JSON.stringify(res));
 			});
 		}

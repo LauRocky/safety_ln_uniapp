@@ -55,7 +55,6 @@
 				font-weight: bold;
 			}
 		}
-
 		.body {
 			width: 319upx;
 			margin: 0 auto;

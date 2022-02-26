@@ -6,53 +6,20 @@
 			<text class="header-item">{{ Videotitle }}</text>
 			<text class="header-items"></text>
 		</div>
-		<div v-if="platform == 'ios'" style="height: 500rpx; width: 100%;"></div>
+		<div style="height: 500rpx; width: 100%;"></div>
 		<KJ-HikVideoPlayer
 			@touchstart="touchStart"
 			@touchend="touchEnd"
 			ref="HikVideoPlayer"
-			v-if="platform == 'ios'"
 			:class="full == 1 ? 'EZOpen_full' : 'EZOpen'"
 			:style="{ width: '100%', height: palyerHeight, top: full == 1 ? 0 : iStatusBarHeight + 92 + 'rpx' }"
 			@player="er"
 			@intercomClient="onIntercomClient"
 		></KJ-HikVideoPlayer>
-		<video
-			class="vid"
-			v-else
-			@play="playVideo"
-			@error="error"
-			@waiting="waiting"
-			:show-center-play-btn="play"
-			:show-loading="true"
-			:src="videoUrl"
-			@fullscreenchange="fullScreenEvent"
-			id="myVideo"
-			:autoplay="zidong"
-			:play-strategy="0"
-			:controls="false"
-			:show-play-btn="pmgressbar"
-			:show-fullscreen-btn="pmgressbar"
-		>
-			<cover-view v-if="isShow" class="container">
-				<image @click="recording" class="images1" src="" mode=""></image>
-				<image @click="screenshots" class="images2" src="" mode=""></image>
-				<image @click="exitFull" class="images3" src="../../static/video/last.png" mode=""></image>
-			</cover-view>
-		</video>
 
-		<view class="mask" v-if="platform !== 'ios'">
-			<!-- 	<view class="mask-loading" v-if="loading">
-						<text class="loading-text">视频加载中...</text>
-					</view> -->
-			<!-- sd标清,hd高清 -->
-			<image v-if="hd == 2" @click="clarity(1)" class="clarity" src="../../static/video/sd.png" mode=""></image>
-			<image v-else @click="clarity(2)" class="clarity" src="../../static/video/hd.png" mode=""></image>
-			<image @click="full" class="mask-img" src="../../static/video/last.png" mode=""></image>
-		</view>
-		<div class="mask-ios" v-else>
+		<div class="mask-ios" v-if="full == 0">
 			<image @click="full_video" class="mask-ios-img" src="../../static/video/da.png" mode=""></image>
-			<image @click="capturePicture" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image>
+			<image @click="capturePicture(false)" class="mask-ios-img" src="../../static/video/jiandao.png" mode=""></image>
 			<image @click="handplatback" class="mask-ios-img" src="../../static/video/hui.png" mode=""></image>
 			<image v-if="clip" @click="handClip(1)" class="mask-ios-img" src="../../static/video/shexiangji.png" mode=""></image>
 			<div class="cliptime" @click="handClip(2)" v-else>
@@ -60,10 +27,10 @@
 				<text class="clip-t">{{ time < 10 ? '0' + time : time }}</text>
 			</div>
 		</div>
-		<div class="mask-pos" v-if="full == 1">
+		<div class="mask-pos" v-else>
 			<!-- 全屏展示 -->
 			<image @click="exitfull_video" class="images3" src="../../static/video/xiao.png" mode=""></image>
-			<image @click="capturePicture" class="images3" src="../../static/video/jiandao.png" mode=""></image>
+			<image @click="capturePicture(false)" class="images3" src="../../static/video/jiandao.png" mode=""></image>
 			<image v-if="clip" @click="handClip(1)" class="images3" src="../../static/video/shexiangji.png" mode=""></image>
 			<div class="cliptime1" @click="handClip(2)" v-else>
 				<image class="clip-img1" src="../../static/video/yuan.png" mode=""></image>
@@ -101,11 +68,10 @@
 				</div>
 			</div>
 		</div>
-		<u-modal :show="showPicker" title="回放时间选择"><uni-datetime-picker v-model="datetimerange" type="datetimerange" rangeSeparator="至" /></u-modal>
 	</view>
 </template>
 <script>
-import { request } from '../../utils/request.js';
+import { request, BASE_URL } from '../../utils/request.js';
 import { is_iOS } from '../../utils/utils.js';
 export default {
 	components: {},
@@ -139,8 +105,7 @@ export default {
 			time: 30,
 			timer: null,
 			clip: true,
-			datetimerange: [],
-			showPicker: false
+			fileSizeString: ''
 		};
 	},
 	onLoad(option) {
@@ -153,10 +118,9 @@ export default {
 		} else {
 			this.Videotitle = option.names;
 		}
-		
+		this.videodetail();
 	},
 	onShow() {
-		this.videodetail();
 		plus.screen.lockOrientation('portrait-primary');
 	},
 	created() {},
@@ -385,22 +349,6 @@ export default {
 			}
 		},
 
-		/* // 退出全屏
-		exitFull() {
-			this.videoContext = uni.createVideoContext('myVideo', this);
-			this.videoContext.exitFullScreen();
-			this.zidong = false;
-		},
-		// 全屏
-		full() {
-			if (is_iOS()) {
-				console.log('222');
-			} else {
-				this.videoContext = uni.createVideoContext('myVideo', this);
-				this.videoContext.requestFullScreen();
-				this.zidong = true;
-			}
-		}, */
 		back() {
 			uni.navigateBack({
 				delta: 1
@@ -446,7 +394,6 @@ export default {
 							});
 						} else {
 							this.videoUrl = res.url;
-							console.log(this.videoUrl, '2222');
 							this.startRealPlay();
 						}
 					})
@@ -475,6 +422,40 @@ export default {
 					});
 			}
 		},
+		async chooseFile() {
+			//上传图片
+			await uni.uploadFile({
+				url: BASE_URL + '/upload/image',
+				filePath: this.imageSrc,
+				name: 'pic',
+				header: {
+					accept: '*/*',
+					'Content-Type': 'application/x-www-form-urlencoded',
+					token: uni.getStorageSync('token')
+				},
+				success: res => {
+					const imgRes = JSON.parse(res.data);
+					this.handimgUpdata(imgRes.data.file_full_url);
+				}
+			});
+		},
+		handimgUpdata(img) { //封面上传
+			request(
+				'/updateCameraImage',
+				'POST',
+				{
+					image: img,
+					cameraId: this.status.ipcId
+				},
+				false
+			)
+				.then(res => {
+					console.log(res,']]]]')
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 		/**
 		 * 全屏
 		 * */
@@ -499,11 +480,15 @@ export default {
 		 * 播放状态回调
 		 * */
 		er(e) {
+			let that = this;
 			//{"playStatus":"SUCCESS","errorCode":"HVPErrorCodeSuccess"}
 			//错误码参考插件市场文档
 			console.log('er: ' + JSON.stringify(e.detail));
 			uni.hideLoading();
 			if (e.detail.playStatus == 'SUCCESS') {
+				setTimeout(() => {
+					that.capturePicture(true);
+				}, 30000);
 			} else {
 				uni.showToast({
 					title: '播放失败',
@@ -567,7 +552,8 @@ export default {
 		 *抓图
 		 *注意：filePath 一定要是_doc绝对目录
 		 * */
-		capturePicture() {
+		capturePicture(val) {
+			console.log('-------------');
 			var filePath = plus.io.convertLocalFileSystemURL('_doc/KJ-HikVideoPlayer');
 			var fileName = 'test.png';
 			var dic = {
@@ -579,21 +565,25 @@ export default {
 			_this.$refs.HikVideoPlayer.capturePicture(dic, res => {
 				console.log('capturePicture: ' + JSON.stringify(res));
 				_this.imageSrc = 'file://' + filePath + '/' + fileName;
-				uni.saveImageToPhotosAlbum({
-					filePath: _this.imageSrc,
-					success: function() {
-						uni.showToast({
-							title: '截图成功',
-							duration: 1500
-						});
-					},
-					fail: function() {
-						uni.showToast({
-							title: '截图失败',
-							duration: 1500
-						});
-					}
-				});
+				if (!val) {
+					uni.saveImageToPhotosAlbum({
+						filePath: _this.imageSrc,
+						success: function() {
+							uni.showToast({
+								title: '截图成功',
+								duration: 1500
+							});
+						},
+						fail: function() {
+							uni.showToast({
+								title: '截图失败',
+								duration: 1500
+							});
+						}
+					});
+				} else {
+					_this.chooseFile();
+				}
 			});
 		},
 
@@ -650,8 +640,7 @@ export default {
 				console.log('stopPlay: ' + JSON.stringify(res));
 			});
 		}
-	},
-	
+	}
 };
 </script>
 

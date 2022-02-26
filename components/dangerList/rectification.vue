@@ -40,7 +40,7 @@ export default {
 	created() {
 		this.handlistByProjectId();
 		let obj = uni.getStorageSync('rectification');
-		if (obj) {
+		if (obj && obj.fullname) {
 			//缓存下标
 			this.cooindex = obj.cooindex;
 			this.$emit('handEndR', obj);

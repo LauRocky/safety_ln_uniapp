@@ -68,7 +68,8 @@
                     "NSLocationWhenInUseUsageDescription" : "获取当前位置自动填写隐患发生位置",
                     "NSLocationAlwaysAndWhenInUseUsageDescription" : "获取当前位置自动填写隐患发生位置",
                     "NSCameraUsageDescription" : "打开相机用于智慧安质平台扫码登录"
-                }
+                },
+                "dSYMs" : false
             },
             /* SDK配置 */
             "sdkConfigs" : {
@@ -81,7 +82,8 @@
                 "ad" : {},
                 "push" : {
                     "unipush" : {}
-                }
+                },
+                "statics" : {}
             },
             "screenOrientation" : [
                 "portrait-primary",
@@ -151,6 +153,9 @@
                     "parameters" : {}
                 }
             }
+        },
+        "uniStatistics" : {
+            "enable" : true
         }
     },
     /* 快应用特有相关 */
@@ -186,7 +191,7 @@
                     // "target" : "http://192.168.1.141:12002/safety-server/api", //测试
                     //以下部分请勿改动！
                     // "target" : "https://esq.cgdg.com/api", //正式环境
-                    // "target" : "https://esq.zhongqian.info:1443/api", //测试环境
+                    "target" : "https://esq.zhongqian.info:1443/api", //测试环境
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

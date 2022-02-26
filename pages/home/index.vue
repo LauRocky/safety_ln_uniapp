@@ -27,7 +27,7 @@
 				<view class="look" @click="handGp">查看更多 ({{ totalCount }})</view>
 			</view>
 			<!-- 说明 -->
-			<view class="main-prompt main-top">
+			<view class="main-prompt main-top" @click="copy('https://esq.cgdg.com')">
 				<u-notice-bar bgColor="#ffffff" duration="3000" color="#333333" direction="column" :text="swiperList"></u-notice-bar>
 				<!-- <image src="../../static/home/prompt.png" mode=""></image> -->
 				<!-- 说明：登录电脑端请访问 -->
@@ -111,6 +111,7 @@
 import { scanCode, is_iOS } from '../../utils/utils.js';
 import { monitoring, alerts } from '../../utils/api.js';
 import barecharts from '../../components/home/barecharts.vue';
+import AppUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update';
 let App = getApp();
 export default {
 	components: {
@@ -120,7 +121,7 @@ export default {
 		return {
 			tabberShow: true, //待办
 			tabberShowL: true, //监控
-			swiperList: ['说明：登录电脑端请访问https://esq.cgdg.com/'],
+			swiperList: ['登录电脑端请访问https://esq.cgdg.com/'],
 			showPopup: false,
 			show: false, //true是显示,false是隐藏
 			project: {
@@ -172,94 +173,51 @@ export default {
 				},
 
 				{
-					value: 30,
+					value: 30, 
 					name: '低风险'
 				}
 			],
-			showScanLogin: false
+			showScanLogin: false,
+			showlink: false
 		};
 	},
-	onBackPress(e) {
-		if (is_iOS()) {
-			return;
-		}
-		uni.showModal({
-			content: '是否要退出应用？',
-			confirmText: '确定',
-			cancelText: '取消',
-			success: function(res) {
-				if (res.confirm) {
-					if (!is_iOS()) {
-						uni.sendNativeEvent('colseapp', res => {
-							console.log(res);
-						});
-					}
-				} else if (res.cancel) {
-				}
-				return true;
-			}
-		});
-		return true;
-	},
+
 	onShow() {},
 	onLoad() {
+		/* AppUpdate()   //监听升级 */
 		this.handProbleBar();
-		// this.monitorMessage();
 	},
 	mounted: function() {
 		this.handbacklog();
 		this.handdetailByUser();
 	},
 	methods: {
-		monitorMessage() {
-			console.log('0101010')
-			var that = this;
-			clearInterval(App.globalData.monitoring); //清空轮训 否越来越快
-			monitoring()
-				.then(res => {
-					if (res.code == 0) {
-						if (res.data == 0) {
-						} else {
-							res.data.forEach(el => {
-								if (el.alarmStatus == 0) {
-									uni.showTabBarRedDot({
-										index: 4
-									});
-								}
-							});
-						}
-					}else{
-						console.log(res,'-----')
+		copy(value) {
+			//提示模板
+			uni.showModal({
+				content: value, //模板中提示的内容
+				confirmText: '复制',
+				success: res => {
+					if (res.confirm) {
+						//点击复制内容的后调函数
+						//uni.setClipboardData方法就是讲内容复制到粘贴板
+						uni.setClipboardData({
+							data: value, //要被复制的内容
+							success: () => {
+								//复制成功的回调函数
+								uni.showToast({
+									//提示
+									title: '复制成功'
+								});
+							}
+						});
+					} else if (res.cancel) {
+						console.log('用户点击取消');
 					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-			alerts()
-				.then(res => {
-					if (res.code == 0) {
-						if (res.page.totalCount == 0) {
-						} else {
-							res.page.list.forEach(el => {
-								if (el.readStatus == 0) {
-									uni.showTabBarRedDot({
-										index: 4
-									});
-								}
-							});
-						}
-					}else{
-						console.log(res,'-----')
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-
-			App.globalData.monitoring = setInterval(function() {
-				return that.monitorMessage();
-			}, 20000);
+				}
+			});
 		},
+
 		handXq(v) {
 			if (this.status == 1) {
 				uni.navigateTo({

@@ -3,7 +3,7 @@
 		<view class="content botton-radius">
 			<view class="content-top">
 				<text class="content-top-text">{{title}}</text>
-				<image class="content-top" style="top: 0;" width="100%" height="100%" src="../static/bg_top.png">
+				<image class="content-top" style="top: 0;" width="100%" height="100%" src="../images/bg_top.png">
 				</image>
 			</view>
 			<view class="content-header"></view>
@@ -55,8 +55,8 @@
 				</view>
 			</view>
 
-			<!-- <image v-if="!is_mandatory" class="close-img" src="../static/app_update_close.png"
-				@click.stop="closeUpdate"></image> -->
+			<image v-if="!is_mandatory" class="close-img" src="../images/app_update_close.png"
+				@click.stop="closeUpdate"></image>
 		</view>
 	</view>
 </template>
@@ -484,12 +484,10 @@
 		font-weight: 400;
 		color: #FFFFFF;
 		border-radius: 40rpx;
-		margin: 0 18rpx;
 
 		height: 80rpx;
 		line-height: 80rpx;
-
-		background: linear-gradient(to right, #00a27b, #3ac598);
+		background: linear-gradient(to right, #3ac598, #00a27b);
 	}
 
 	.flex-column {

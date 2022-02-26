@@ -15,7 +15,8 @@
 						<view class="item-color" v-else></view>
 						<text class="item-text">{{ item.status == 0 ? '离线' : '在线' }}</text>
 					</view>
-					<image class="imgs" :src="item.image" mode="" @error="img" :data-index="index"></image>
+					<image class="imgs" v-if="item.image !== 'camera.png'" :src="item.image" mode=""></image>
+					<image class="imgs" src="../../static/video/detailVideo.png" v-else mode=""></image>
 					<view class="mask"></view>
 					<text class="mask-name">{{ item.ipcName }}</text>
 				</view>
@@ -47,11 +48,6 @@ export default {
 		};
 	},
 	methods: {
-		img(e) {
-			console.log(e, '2222');
-			const index = e.target.dataset.index;
-			this.showList[index].image = this.showImg;
-		},
 		handsearch(val) {
 			if (this.rawList) {
 				this.showList = this.rawList;
@@ -76,89 +72,13 @@ export default {
 				});
 			} else {
 				if (item.cameraIndexCode) {
-					//安卓端不需要跳转。需判断。
-					if (is_iOS()) {
-						uni.navigateTo({
-							url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&ipcId=${item.ipcId}`
-						});
-					} else {
-						//以下代码在安卓端生效
-						let url = '/ehome/camera/previewurl/rtsp/rtsp/' + item.cameraIndexCode;
-						console.error(url);
-						request(url, 'POST', {}, false)
-							.then(res => {
-								let apiUrl = 'https://esq.cgdg.com';
-
-								let body = {
-									stream: 'rtsp',
-									type: 'video',
-									body: res,
-									cameraIndexCode: item.cameraIndexCode,
-									channel: null,
-									nvr: null,
-									token: uni.getStorageSync('token'),
-									ezvizAccountId: null,
-									name: item.ipcName,
-									id: item.ipcId
-								};
-								if (!is_iOS()) {
-									uni.sendNativeEvent(JSON.stringify(body), rest => {
-										console.log(rest);
-									});
-								}
-							})
-							.catch(e => {
-								console.error(e);
-								uni.showToast({
-									title: '获取播放地址失败',
-									icon: 'none'
-								});
-							});
-					}
+					uni.navigateTo({
+						url: `/pages/video/detailVideo?ezv=${0}&camera=${item.cameraIndexCode}&names=${item.ipcName}&ipcId=${item.ipcId}`
+					});
 				} else if (item.ezvizAccountId) {
-					//安卓端不需要跳转。需判断。
-					if (is_iOS()) {
-						uni.navigateTo({
-							url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}&channel=${item.channel}`
-						});
-					} else {
-						//以下代码在安卓端生效
-						let url = `/getEzNewLiveAddress/${item.nvrDeviceSerial}/${item.channel}/${item.ezvizAccountId}/2`;
-						console.error(url);
-						request(url, 'POST', {}, false)
-							.then(res => {
-								console.error(res);
-								if (res.result.code == 20007) {
-									uni.showToast({
-										title: '设备离线',
-										icon: 'none'
-									});
-								} else {
-									let body = {
-										stream: 'hls',
-										body: res,
-										type: 'video',
-										cameraIndexCode: null,
-										channel: item.channel,
-										nvr: item.nvrDeviceSerial,
-										token: uni.getStorageSync('token'),
-										ezvizAccountId: item.ezvizAccountId,
-										name: item.ipcName,
-										id: item.ipcId
-									};
-									uni.sendNativeEvent(JSON.stringify(body), rest => {
-										console.log(rest);
-									});
-								}
-							})
-							.catch(e => {
-								console.error(e);
-								uni.showToast({
-									title: '获取播放地址失败',
-									icon: 'none'
-								});
-							});
-					}
+					uni.navigateTo({
+						url: `/pages/video/detailVideo?ezv=${1}&nvr=${item.nvrDeviceSerial}&ezviz=${item.ezvizAccountId}&names=${item.ipcName}&channel=${item.channel}`
+					});
 				} else {
 					uni.showToast({
 						title: '获取播放地址失败',
@@ -186,7 +106,6 @@ export default {
 				false
 			)
 				.then(res => {
-					uni.hideLoading();
 					console.log(res);
 					if (res.code == 0) {
 						let obj = {};
@@ -207,6 +126,7 @@ export default {
 						});
 						console.log(this.showList, '00000000');
 					}
+					uni.hideLoading();
 				})
 				.catch(err => {
 					console.log(err);
@@ -217,7 +137,6 @@ export default {
 		console.log('555', options);
 		this.project.projectId = options.projectId;
 		this.project.projectName = options.projectName;
-		
 	},
 	onShow() {
 		this.showList = [];
