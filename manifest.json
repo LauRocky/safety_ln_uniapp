@@ -2,8 +2,8 @@
     "name" : "智慧安质平台",
     "appid" : "__UNI__A9A3937",
     "description" : "",
-    "versionName" : "1.0.45",
-    "versionCode" : 1045,
+    "versionName" : "1.0.50",
+    "versionCode" : 1050,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -190,8 +190,9 @@
                     // "target" : "http://59.110.136.159:12002/safety-server/api",
                     // "target" : "http://192.168.1.141:12002/safety-server/api", //测试
                     //以下部分请勿改动！
-                    // "target" : "https://esq.cgdg.com/api", //正式环境
-                    "target" : "https://esq.zhongqian.info:1443/api", //测试环境
+                    "target" : "https://esq.cgdg.com/api", //正式环境
+
+                    // "target" : "https://esq.zhongqian.info:1443/api", //测试环境
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
