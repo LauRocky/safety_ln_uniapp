@@ -66,7 +66,6 @@ export default {
 				false
 			)
 				.then(res => {
-					console.log(res, '21212');
 					if (res.code == 0) {
 						this.globalData.Todo = res.page.totalCount;
 						uni.showTabBarRedDot({
