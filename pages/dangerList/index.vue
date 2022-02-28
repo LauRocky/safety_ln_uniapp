@@ -139,14 +139,14 @@ export default {
 		},
 		handgETLIST() {
 			//获取公司项目数据
-			getDictList('QUALITY_PROBLEM_LEVEL')
+			getDictList('PROBLEM_TYPE')
 				.then(res => {
 					this.qualityDictList = res.dict;
 					console.error(res);
 				})
 				.catch(e => {});
 
-			getDictList('PROBLEMS_LEVEL_TYPE')
+			getDictList('QUALITY_PROBLEM_TYPE')
 				.then(res => {
 					this.dictLsit = res.dict;
 					console.error(res);
