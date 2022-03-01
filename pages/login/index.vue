@@ -128,7 +128,7 @@
 					.then(res => {
 						console.error(res);
 						uni.hideLoading();
-						if (res.code == 0) {
+						if (res.code == 0 && res.data) {
 							
 							uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
 							uni.setStorageSync('token', res.data.token.token);
