@@ -142,14 +142,12 @@ export default {
 			getDictList('PROBLEM_TYPE')
 				.then(res => {
 					this.qualityDictList = res.dict;
-					console.error(res);
 				})
 				.catch(e => {});
 
 			getDictList('QUALITY_PROBLEM_TYPE')
 				.then(res => {
 					this.dictLsit = res.dict;
-					console.error(res);
 					this.handclick({
 						value: this.status
 					});
