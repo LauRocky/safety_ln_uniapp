@@ -20,7 +20,37 @@ export default {
 			msg => {
 				console.error("android click",msg);
 				// 安卓离线点击内容如下。重点关注payload中的内容。
-				// {"__UUID__":"androidPushMsg259827978","title":"content","appid":"__UNI__A9A3937","content":"body","payload":{"title":"content","content":"body","something":"123"}}
+				// {"__UUID__":"androidPushMsg250386936","title":"content","appid":"__UNI__A9A3937","content":"body","payload":{"path":"/pages/dangerList/hiddenDetails?id=710","receiver":"10492","text":"没有","type":"notify"}}
+				// type ： notify=推送 ，需要处理path  alert=弹窗提示 ,显示text的内容  
+				let userText=uni.getStorageSync('userInfo');
+				
+				let userInfo=null;
+				if(userText){
+				 userInfo=JSON.parse(userText);
+				}
+				if(userInfo&&userInfo.userId==msg.payload.receiver){
+					if(msg.payload.type==='notify'){
+						console.error(msg.payload.path);
+						uni.navigateTo({
+							url:msg.payload.path
+						});
+						uni.switchTab({
+							url: msg.payload.path
+						});
+					}else if (msg.payload.type==='alert'){
+						uni.showModal({
+										title: '提示',
+										content: msg.payload.text,
+										showCancel: false,
+										confirmText: '确定'
+									});
+
+					}
+					
+				}
+				
+				
+				
 				clearTimeout(timer);
 				timer = setTimeout(() => {
 					if (uni.getStorageSync('token')) {
