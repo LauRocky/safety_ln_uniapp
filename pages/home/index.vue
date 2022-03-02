@@ -184,7 +184,7 @@ export default {
 
 	onShow() {},
 	onLoad() {
-		/* AppUpdate()   //监听升级 */
+		AppUpdate()   //监听升级
 		this.handProbleBar();
 	},
 	mounted: function() {

@@ -233,7 +233,7 @@ export default {
 		},
 		// 更新
 		check() {
-			/* AppUpdate() */
+			AppUpdate()
 		},
 		// 意见反馈
 		feedback() {
