@@ -18,6 +18,9 @@ export default {
 		plus.push.addEventListener(
 			'click',
 			msg => {
+				console.error("android click",msg);
+				// 安卓离线点击内容如下。重点关注payload中的内容。
+				// {"__UUID__":"androidPushMsg259827978","title":"content","appid":"__UNI__A9A3937","content":"body","payload":{"title":"content","content":"body","something":"123"}}
 				clearTimeout(timer);
 				timer = setTimeout(() => {
 					if (uni.getStorageSync('token')) {
@@ -37,6 +40,9 @@ export default {
 			'receive',
 			msg => {
 				if ((msg.type = 'receive' && msg.payload)) {
+					
+					console.error("android receive",msg);
+					
 					let options = { cover: false, sound: 'system', title: msg.title };
 					plus.push.createMessage(msg.payload.content, msg.payload, options);
 					this.monitorMessage();
