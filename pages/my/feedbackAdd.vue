@@ -89,10 +89,11 @@
 					name: 'pic',
 					header: {
 						accept: '*/*',
-						'Content-Type': 'application/x-www-form-urlencoded',
+						'Content-Type': 'multipart/form-data',
 						token: uni.getStorageSync('token')
 					},
 					success: res => {
+						console.log(res)
 						const imgRes = JSON.parse(res.data);
 						this.$set(this.imgList, this.imgList.length, imgRes.data.file_full_url)
 					}

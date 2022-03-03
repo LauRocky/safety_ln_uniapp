@@ -307,7 +307,53 @@
 				}
 			}
 
+		},{
+			"path": "pages/my/fileNotification",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "文件通知",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		
+		},{
+			"path": "pages/my/fileAdd",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "新增文件",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},{
+			"path": "pages/my/fileDetail",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "文件通知",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
+		},{
+			"path": "pages/my/submission",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "报送",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+			}
 		}
+		
 	],
 	"tabBar": {
 		"color": "#A9A9A9",
