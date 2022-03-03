@@ -18,26 +18,67 @@ export default {
 		plus.push.addEventListener(
 			'click',
 			msg => {
-				clearTimeout(timer);
-				timer = setTimeout(() => {
-					if (uni.getStorageSync('token')) {
-						uni.switchTab({
-							url: '/pages/home/index'
-						});
-					} else {
-						uni.navigateTo({
-							url: '/pages/login/index'
-						});
+				// {"__UUID__":"androidPushMsg250386936","title":"content","appid":"__UNI__A9A3937","content":"body","payload":{"path":"/pages/dangerList/hiddenDetails?id=710","receiver":"10492","text":"没有","type":"notify"}}
+				// type ： notify=推送 ，需要处理path  alert=弹窗提示 ,显示text的内容
+				console.log('click', msg);
+				let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
+				if (plus.os.name == 'iOS') {
+					let obj = JSON.parse(msg.payload.data);
+					if (userInfo && userInfo.userId == obj.receiver) {
+						if (obj.type === 'notify') {
+								if (obj.status == '0') {
+									uni.switchTab({
+										url: obj.path
+									});
+								} else if (obj.status == '1') {
+									uni.navigateTo({
+										url: obj.path
+									});
+								}
+						} else if (obj.type === 'alert') {
+							uni.showModal({
+								title: '提示',
+								content: obj.text,
+								showCancel: false,
+								confirmText: '确定'
+							});
+						}
 					}
-				}, 1000);
+				} else {
+					if (userInfo && userInfo.userId == msg.payload.receiver) {
+						if (msg.payload.type === 'notify') {
+								if (msg.payload.status == '0') {
+									uni.switchTab({
+										url: msg.payload.path
+									});
+								} else if (msg.payload.status == '1') {
+									uni.navigateTo({
+										url: msg.payload.path
+									});
+								}
+						} else if (msg.payload.type === 'alert') {
+							uni.showModal({
+								title: '提示',
+								content: msg.payload.text,
+								showCancel: false,
+								confirmText: '确定'
+							});
+						}
+					}
+				}
 			},
 			false
 		);
 		plus.push.addEventListener(
 			'receive',
 			msg => {
+				console.error('receive', msg);
 				if ((msg.type = 'receive' && msg.payload)) {
-					let options = { cover: false, sound: 'system', title: msg.title };
+					let options = {
+						cover: false,
+						sound: 'system',
+						title: plus.os.name == 'iOS' ? msg.payload.title : msg.title
+					};
 					plus.push.createMessage(msg.payload.content, msg.payload, options);
 					this.monitorMessage();
 				}
@@ -98,9 +139,11 @@ export default {
 </script>
 <style lang="scss">
 @import 'uview-ui/index.scss';
+
 /* #ifndef APP-PLUS-NVUE */
 page {
 	background-color: #fafafa;
 }
+
 /* #endif */
 </style>

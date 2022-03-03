@@ -76,7 +76,6 @@
 			} else {
 				let lxLogin = uni.requireNativePlugin('zhongqian-lvxin-login');
 				lxLogin.getLxCode({}, res => {
-					
 					if (res.code) {
 						this.getCode(res.code);
 					}
@@ -94,25 +93,30 @@
 					this.getCode(code);
 				}
 			} else {
-				let lxLogin = uni.requireNativePlugin('zhongqian-lvxin-login');
-				
-				lxLogin.getLxCode({}, res => {
-					//存在code就登录。不存在code需要去判断是否存在绿信。存在的话就去授权登录。
-					//请不要把判断是否存在绿信的代码放在onshow，因为会出现死循环。
-					if (res.code) {
-					
-						this.getCode(res.code);
-					}else{
-						lxLogin.checkHasLxPackage({}, callback => {
-							let hasLX = callback.hasLX;
+				let userInfo = uni.getStorageSync('userInfo');
+				let token = uni.getStorageSync('token');
+				if (!userInfo || !token) {
+					let lxLogin = uni.requireNativePlugin('zhongqian-lvxin-login');
+					lxLogin.getLxCode({}, res => {
+						//存在code就登录。不存在code需要去判断是否存在绿信。存在的话就去授权登录。
+						//请不要把判断是否存在绿信的代码放在onshow，因为会出现死循环。
+						if (res.code) {
 
-							if (hasLX) {
-								//起调绿信
-								lxLogin.launchLx({}, resp => {});
-							}
-						});
-					}
-				});
+							this.getCode(res.code);
+						} else {
+							lxLogin.checkHasLxPackage({}, callback => {
+								let hasLX = callback.hasLX;
+
+								if (hasLX) {
+									//起调绿信
+									lxLogin.launchLx({}, resp => {});
+								}
+							});
+						}
+					});
+				}
+
+
 			}
 			// #endif
 		},
@@ -129,7 +133,7 @@
 						console.error(res);
 						uni.hideLoading();
 						if (res.code == 0 && res.data) {
-							
+
 							uni.setStorageSync('userInfo', JSON.stringify(res.data.user));
 							uni.setStorageSync('token', res.data.token.token);
 
