@@ -199,14 +199,13 @@ export default {
 								let obj = [];
 								if (val.problemType) {
 									// console.error(val.problemType);
-									if(val.problemType == 9 ){
-										console.error(val);
-									}
+									
 									if (val.category && val.category == '安全') {
-										obj = this.dictLsit.filter(item => val.problemType == item.code); //判断安全等级对比
+										obj = this.qualityDictList.filter(item => val.problemType == item.code); //判断安全等级对比
+										
 										val.problemType2 = obj[0].value;
 									} else if (val.category && val.category == '质量') {
-										obj = this.qualityDictList.filter(item => val.problemType == item.code); //判断安全等级对比
+										obj = this.dictList.filter(item => val.problemType == item.code); //判断安全等级对比
 										
 										val.problemType2 = obj[0].value;
 									}
