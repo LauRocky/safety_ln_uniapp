@@ -23,18 +23,29 @@ export default {
 				console.log('click', msg);
 				let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
 				if (plus.os.name == 'iOS') {
-					let obj = JSON.parse(msg.payload.data);
+					let obj = {};
+					if (msg.aps) {
+						obj = JSON.parse(msg.payload.payload);
+					} else {
+						let list = msg.payload.split(',');
+						obj = {
+							path: list[0],
+							receiver: list[1],
+							status: list[2],
+							type: list[3]
+						};
+					}
 					if (userInfo && userInfo.userId == obj.receiver) {
 						if (obj.type === 'notify') {
-								if (obj.status == '0') {
-									uni.switchTab({
-										url: obj.path
-									});
-								} else if (obj.status == '1') {
-									uni.navigateTo({
-										url: obj.path
-									});
-								}
+							if (obj.status == '0') {
+								uni.switchTab({
+									url: obj.path
+								});
+							} else if (obj.status == '1') {
+								uni.navigateTo({
+									url: obj.path
+								});
+							}
 						} else if (obj.type === 'alert') {
 							uni.showModal({
 								title: '提示',
@@ -47,15 +58,15 @@ export default {
 				} else {
 					if (userInfo && userInfo.userId == msg.payload.receiver) {
 						if (msg.payload.type === 'notify') {
-								if (msg.payload.status == '0') {
-									uni.switchTab({
-										url: msg.payload.path
-									});
-								} else if (msg.payload.status == '1') {
-									uni.navigateTo({
-										url: msg.payload.path
-									});
-								}
+							if (msg.payload.status == '0') {
+								uni.switchTab({
+									url: msg.payload.path
+								});
+							} else if (msg.payload.status == '1') {
+								uni.navigateTo({
+									url: msg.payload.path
+								});
+							}
 						} else if (msg.payload.type === 'alert') {
 							uni.showModal({
 								title: '提示',
@@ -72,15 +83,32 @@ export default {
 		plus.push.addEventListener(
 			'receive',
 			msg => {
-				console.error('receive', msg);
-				if ((msg.type = 'receive' && msg.payload)) {
-					let options = {
-						cover: false,
-						sound: 'system',
-						title: plus.os.name == 'iOS' ? msg.payload.title : msg.title
-					};
-					plus.push.createMessage(msg.payload.content, msg.payload, options);
-					this.monitorMessage();
+				console.error('receive22', msg);
+				if (plus.os.name == 'iOS') {
+					if (msg.type == 'receive' && msg.payload) {
+						let options = {
+							cover: false,
+							sound: 'system',
+							title: msg.title
+						};
+
+						if (typeof msg.payload == 'string') {
+							let payload = JSON.parse(msg.payload);
+							let stringA = payload.path + ',' + payload.receiver + ',' + payload.status + ',' + payload.type;
+							plus.push.createMessage(msg.content, stringA, options);
+						}
+						this.monitorMessage();
+					}
+				} else {
+					if (msg.type == 'receive' && msg.payload) {
+						let options = {
+							cover: false,
+							sound: 'system',
+							title: msg.title
+						};
+						plus.push.createMessage(msg.payload.content, msg.payload, options);
+						this.monitorMessage();
+					}
 				}
 			},
 			false
@@ -91,7 +119,7 @@ export default {
 	onShow: function() {},
 	onHide() {},
 	onError(err) {
-		console.log(err, '0000');
+		console.error('onError', err);
 	},
 	mounted: function() {},
 	methods: {
