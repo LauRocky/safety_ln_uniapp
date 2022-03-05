@@ -47,6 +47,11 @@
 					<image class="image-imgs" src="../../static/my/offline.png" mode=""></image>
 					<view class="image-text">监控预警</view>
 				</view>
+				<view class="image-item" @click="fileNotification" style="position: relative;">
+					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="Todo"></u-badge></view>
+					<image class="image-imgs" src="../../static/my/documentsnew.png" mode=""></image>
+					<view class="image-text">文件通知</view>
+				</view>
 			</view>
 
 			<view class="app-plug" style="margin-top: 20upx;">
@@ -251,6 +256,12 @@ export default {
 		offline() {
 			uni.navigateTo({
 				url: '/pages/my/MonitorWarning'
+			});
+		},
+		// 文件通知
+		fileNotification(){
+			uni.navigateTo({
+				url: '/pages/my/fileNotification'
 			});
 		},
 		// 分享

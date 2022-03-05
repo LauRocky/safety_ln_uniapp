@@ -18,65 +18,97 @@ export default {
 		plus.push.addEventListener(
 			'click',
 			msg => {
-				console.error("android click",msg);
-				// 安卓离线点击内容如下。重点关注payload中的内容。
 				// {"__UUID__":"androidPushMsg250386936","title":"content","appid":"__UNI__A9A3937","content":"body","payload":{"path":"/pages/dangerList/hiddenDetails?id=710","receiver":"10492","text":"没有","type":"notify"}}
-				// type ： notify=推送 ，需要处理path  alert=弹窗提示 ,显示text的内容  
-				let userText=uni.getStorageSync('userInfo');
-				console.error(userText);
-				let userInfo=null;
-				if(userText){
-				 userInfo=JSON.parse(userText);
-				}
-				if(userInfo&&userInfo.userId==msg.payload.receiver){
-						console.error(userInfo);
-					if(msg.payload.type==='notify'){
-						console.error(msg.payload.path);
-						uni.navigateTo({
-							url:msg.payload.path
-						});
-						uni.switchTab({
-							url: msg.payload.path
-						});
-					}else if (msg.payload.type==='alert'){
-						uni.showModal({
-										title: '提示',
-										content: msg.payload.text,
-										showCancel: false,
-										confirmText: '确定'
-									});
-
+				// type ： notify=推送 ，需要处理path  alert=弹窗提示 ,显示text的内容
+				console.log('click', msg);
+				let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
+				if (plus.os.name == 'iOS') {
+					let obj = {};
+					if (msg.aps) {
+						obj = JSON.parse(msg.payload.payload);
+					} else {
+						let list = msg.payload.split(',');
+						obj = {
+							path: list[0],
+							receiver: list[1],
+							status: list[2],
+							type: list[3]
+						};
 					}
-					
+					if (userInfo && userInfo.userId == obj.receiver) {
+						if (obj.type === 'notify') {
+							if (obj.status == '0') {
+								uni.switchTab({
+									url: obj.path
+								});
+							} else if (obj.status == '1') {
+								uni.navigateTo({
+									url: obj.path
+								});
+							}
+						} else if (obj.type === 'alert') {
+							uni.showModal({
+								title: '提示',
+								content: obj.text,
+								showCancel: false,
+								confirmText: '确定'
+							});
+						}
+					}
+				} else {
+					if (userInfo && userInfo.userId == msg.payload.receiver) {
+						if (msg.payload.type === 'notify') {
+							if (msg.payload.status == '0') {
+								uni.switchTab({
+									url: msg.payload.path
+								});
+							} else if (msg.payload.status == '1') {
+								uni.navigateTo({
+									url: msg.payload.path
+								});
+							}
+						} else if (msg.payload.type === 'alert') {
+							uni.showModal({
+								title: '提示',
+								content: msg.payload.text,
+								showCancel: false,
+								confirmText: '确定'
+							});
+						}
+					}
 				}
-				
-				
-				
-				// clearTimeout(timer);
-				// timer = setTimeout(() => {
-				// 	if (uni.getStorageSync('token')) {
-				// 		uni.switchTab({
-				// 			url: '/pages/home/index'
-				// 		});
-				// 	} else {
-				// 		uni.navigateTo({
-				// 			url: '/pages/login/index'
-				// 		});
-				// 	}
-				// }, 1000);
 			},
 			false
 		);
 		plus.push.addEventListener(
 			'receive',
 			msg => {
-				if ((msg.type = 'receive' && msg.payload)) {
-					
-					console.error("android receive",msg);
-					
-					let options = { cover: false, sound: 'system', title: msg.title };
-					plus.push.createMessage(msg.payload.content, msg.payload, options);
-					this.monitorMessage();
+				console.error('receive22', msg);
+				if (plus.os.name == 'iOS') {
+					if (msg.type == 'receive' && msg.payload) {
+						let options = {
+							cover: false,
+							sound: 'system',
+							title: msg.title
+						};
+
+						if (typeof msg.payload == 'string') {
+							let payload = JSON.parse(msg.payload);
+							let stringA = payload.path + ',' + payload.receiver + ',' + payload.status + ',' + payload.type;
+							plus.push.createMessage(msg.content, stringA, options);
+						}
+						this.monitorMessage();
+					}
+				} else {
+					if (msg.type == 'receive' && msg.payload) {
+						let options = {
+							cover: false,
+							sound: 'system',
+							title: msg.title
+						};
+						plus.push.createMessage(msg.payload.content, msg.payload, options);
+						this.monitorMessage();
+					}
 				}
 			},
 			false
@@ -87,7 +119,7 @@ export default {
 	onShow: function() {},
 	onHide() {},
 	onError(err) {
-		console.log(err, '0000');
+		console.error('onError', err);
 	},
 	mounted: function() {},
 	methods: {
@@ -135,9 +167,11 @@ export default {
 </script>
 <style lang="scss">
 @import 'uview-ui/index.scss';
+
 /* #ifndef APP-PLUS-NVUE */
 page {
 	background-color: #fafafa;
 }
+
 /* #endif */
 </style>
