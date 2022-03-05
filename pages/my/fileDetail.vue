@@ -8,8 +8,6 @@
 					<view class="cet">
 						<view class="title">{{ user.fullname }}</view>
 						<view class="title-1">{{ deptNames }}</view>
-
-
 					</view>
 				</view>
 				<!-- <view class="top-right">2022/11/02</view> -->
@@ -18,6 +16,7 @@
 			<view class="detailname">
 				<rich-text :nodes="dataList.content"></rich-text>
 			</view>
+			
 			<view class="bot">
 				<view class="bot-1">
 					<view class="">
@@ -45,9 +44,50 @@
 					</view>
 				</view>
 			</view>
-
 		</view>
-		<image class="submission" @click="handPush" src="../../static/danger/submission.png" mode="" v-if="dataList.status==='1'&&dataList.feedback==='1'"></image>
+		<view class="all" v-for="(li,i) in List" :key='i'>
+			<view class="bsinfo">
+				报送信息：
+			</view>
+			<view class="top">
+				<view class="top-1">
+					<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
+					<view class="cet">
+						<view class="title">{{ user.fullname }}</view>
+						<view class="title-1">{{ deptNames }}</view>
+					</view>
+				</view>
+				<!-- <view class="top-right">2022/11/02</view> -->
+				<view class="top-right">{{li.createTime}}</view>
+			</view>
+			
+			<view class="bot">
+				<view class="bot-1">
+					{{li.content}}
+				</view>
+				<view class="bot-1 bot-top">
+					<view class="bot-flex">
+						<image class="bot-imgs" src="../../static/add/newAddAttachment.png" mode=""></image>
+					</view>
+					<view class="bot-w">附件（{{numTwo}}）
+						<text class="save" @click="saveAll">保存全部</text>
+						<!-- <text class="save">用wps打开</text> -->
+					</view>
+				</view>
+			</view>
+			<view class="wordlist">
+				<view class="word" v-for="(item,index) in li.fileList" :key='index'>
+					<view class="nickname">
+						{{item.name}}
+					</view>
+					<view class="downWord" @click="xiazai(item.url)">
+						<u-icon name="arrow-down" color="#666666" size="18"></u-icon>
+					</view>
+				</view>
+			</view>
+		</view>
+		<image class="submission" @click="handPush" src="../../static/danger/submission.png" mode=""
+			v-if="dataList.status==='1'&&dataList.feedback==='1'"></image>
 	</view>
 </template>
 
@@ -64,28 +104,28 @@
 				name: "文件主题",
 				rightText: '编辑',
 				dataList: [],
-				num:0,
+				num: 0,
+				numTwo: 0,
 				deptInfoList: [],
 				deptNames: '',
 				luj: null,
 				dd: '',
-				List: {
-					menuId: "",
-					limit: 10,
-					page: 1,
-					readStatus: '',
-					status: '',
+				List: {},
+				dataForm: {
 					fileNoticeId: '',
-					feedback:''
+					readStatus: '',
+					status: ''
 				},
 			};
 		},
 		onLoad(val) {
 			this.id = val.id;
+			this.dataForm.fileNoticeId = val.id;
 		},
 		onShow() {
 			this.getDataList();
 			this.deptInfo();
+			this.overSubmission()
 		},
 		methods: {
 			rightcilck() {
@@ -127,7 +167,7 @@
 						uni.hideLoading();
 						if (res.code == 0) {
 							this.dataList = res.data
-							this.num=this.dataList.fileList.length
+							this.num = this.dataList.fileList.length
 							this.dataList.content = this.dataList.content.replace(/\<p/gi, '<p class="conspan"', );
 							console.log(res.data)
 						}
@@ -191,12 +231,36 @@
 					console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
 				});
 			},
+			// 报送完信息
+			overSubmission() {
+				uni.showLoading({
+					title: '加载中',
+				});
+				this.$http('/filenotice/feedbackPage', 'GET', this.dataForm, false)
+					.then(res => {
+						if (res.code == 0) {
+							this.List = res.page.list
+							this.numTwo = this.List.fileList.length
+						}
+					})
+					.catch(err => {
+						console.log(err);
+
+					});
+			},
 
 		},
 	}
 </script>
 
 <style lang="scss" scoped>
+	.bsinfo{
+		font-size: 36upx;
+		font-family: PingFang SC;
+		font-weight: bold;
+		color: #333333;
+		margin-bottom: 28upx;
+	}
 	.filedetail {
 		.all {
 			padding: 27upx 20upx;
