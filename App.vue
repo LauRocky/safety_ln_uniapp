@@ -55,7 +55,6 @@ export default {
 							});
 						}
 					}
-				} else {
 					if (userInfo && userInfo.userId == msg.payload.receiver) {
 						if (msg.payload.type === 'notify') {
 							if (msg.payload.status == '0') {

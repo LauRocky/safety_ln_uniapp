@@ -76,7 +76,6 @@ export default {
 		} else {
 			let userInfo = uni.getStorageSync('userInfo');
 			let token = uni.getStorageSync('token');
-			if (!userInfo || !token) {
 				this.lxLogin.getLxCode({}, res => {
 					//存在code就登录。不存在code需要去判断是否存在绿信。存在的话就去授权登录。
 					//请不要把判断是否存在绿信的代码放在onshow，因为会出现死循环。
@@ -93,7 +92,6 @@ export default {
 						});
 					}
 				});
-			}
 		}
 		// #endif
 	},
@@ -108,6 +106,7 @@ export default {
 				code: code
 			})
 				.then(res => {
+					
 					console.error(res);
 					uni.hideLoading();
 					if (res.code == 0 && res.data) {
@@ -217,10 +216,11 @@ export default {
 			this.$http('/app/notify/count', 'POST', {}, false)
 				.then(res => {
 					if (res.code == 0) {
-						console.log(res)
-						uni.showTabBarRedDot({
-							index: 4
-						});
+						if (res.data.todoUnread || res.data.problemUnread) {
+							uni.showTabBarRedDot({
+								index: 4
+							});
+						}
 					}
 				})
 				.catch(err => {
