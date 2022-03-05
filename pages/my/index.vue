@@ -238,7 +238,7 @@ export default {
 		},
 		// 更新
 		check() {
-			AppUpdate()
+			AppUpdate();
 		},
 		// 意见反馈
 		feedback() {
@@ -259,7 +259,7 @@ export default {
 			});
 		},
 		// 文件通知
-		fileNotification(){
+		fileNotification() {
 			uni.navigateTo({
 				url: '/pages/my/fileNotification'
 			});
@@ -286,13 +286,15 @@ export default {
 				content: '确定要退出当前用户？',
 				success: function(res) {
 					if (res.confirm) {
-						uni.reLaunch({
-							url: '/pages/login/index'
-						});
 						uni.clearStorageSync();
 						let tool = new igexinTool(); //解绑别名
 						let string = App.globalData.Apushid;
-						tool.unbindAlias(string);
+						tool.unbindAlias(string,App.globalData.cid);
+						setTimeout(() => {
+							uni.reLaunch({
+								url: '/pages/login/index'
+							});
+						}, 1000);
 					} else if (res.cancel) {
 						console.log('用户点击取消');
 					}

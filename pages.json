@@ -4,6 +4,18 @@
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarBackgroundColor": "#11B38C",
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"bounce": "none"
+				}
+
+			}
+		}, {
 			"path": "pages/login/index",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -15,19 +27,7 @@
 				}
 			}
 		},
-		{
-			"path": "pages/home/index",
-			"style": {
-				"navigationBarBackgroundColor": "#11B38C",
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"bounce": "none"
-				}
-		
-			}
-		},
+
 		{
 			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
 			"style": {
@@ -308,7 +308,7 @@
 				}
 			}
 
-		},{
+		}, {
 			"path": "pages/my/fileNotification",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -319,8 +319,8 @@
 					"bounce": "none"
 				}
 			}
-		
-		},{
+
+		}, {
 			"path": "pages/my/fileAdd",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -331,7 +331,7 @@
 					"bounce": "none"
 				}
 			}
-		},{
+		}, {
 			"path": "pages/my/fileDetail",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -342,7 +342,7 @@
 					"bounce": "none"
 				}
 			}
-		},{
+		}, {
 			"path": "pages/my/submission",
 			"style": {
 				"navigationBarBackgroundColor": "#11B38C",
@@ -354,7 +354,7 @@
 				}
 			}
 		}
-		
+
 	],
 	"tabBar": {
 		"color": "#A9A9A9",

@@ -53,7 +53,7 @@ export function igexinTool() {
 		}
 	}
 
-	this.unbindAlias = function(alias) {
+	this.unbindAlias = function(alias,cid) {
 		if (isAndorid) {
 			Instance.unBindAlias(context, alias, cid, false); //true所有设备解绑，false解锁自已的
 		} else {
