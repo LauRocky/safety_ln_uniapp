@@ -14,7 +14,7 @@ export default {
 		var pinf = plus.push.getClientInfo();
 		var cid = pinf.clientid; //客户端标识
 		this.globalData.cid = pinf.clientid;
-		let timer = null;
+
 		plus.push.addEventListener(
 			'click',
 			msg => {
@@ -55,7 +55,6 @@ export default {
 							});
 						}
 					}
-				} else {
 					if (userInfo && userInfo.userId == msg.payload.receiver) {
 						if (msg.payload.type === 'notify') {
 							if (msg.payload.status == '0') {
@@ -83,7 +82,7 @@ export default {
 		plus.push.addEventListener(
 			'receive',
 			msg => {
-				console.error('receive22', msg);
+				console.error('receive', msg);
 				if (plus.os.name == 'iOS') {
 					if (msg.type == 'receive' && msg.payload) {
 						let options = {
@@ -113,6 +112,55 @@ export default {
 			},
 			false
 		);
+		if (plus.os.name == 'iOS') {
+			//启动页跳转和推送跳转
+			let args = plus.runtime.arguments;
+			let code = args ? args.split('//')[1] : '';
+			if (code) {
+				//存在则跳转至登录页
+				uni.reLaunch({
+					url: '/pages/login/index',
+					success: () => {
+						plus.navigator.closeSplashscreen();
+					}
+				});
+			} else if (uni.getStorageSync('userInfo')) {
+				// 关闭启动页进入首页
+				plus.navigator.closeSplashscreen();
+			} else {
+				//存在则跳转至登录页
+				uni.reLaunch({
+					url: '/pages/login/index',
+					success: () => {
+						plus.navigator.closeSplashscreen();
+					}
+				});
+			}
+		} else {
+			let lxLogin = uni.requireNativePlugin('zhongqian-lvxin-login');
+			lxLogin.getLxCode({}, res => {
+				if (res.code) {
+					//存在则跳转至登录页
+					uni.reLaunch({
+						url: '/pages/login/index',
+						success: () => {
+							plus.navigator.closeSplashscreen();
+						}
+					});
+				} else if (uni.getStorageSync('userInfo')) {
+					// 关闭启动页进入首页
+					plus.navigator.closeSplashscreen();
+				} else {
+					//存在则跳转至登录页
+					uni.reLaunch({
+						url: '/pages/login/index',
+						success: () => {
+							plus.navigator.closeSplashscreen();
+						}
+					});
+				}
+			});
+		}
 		// #endif
 	},
 	onLoad() {},
@@ -124,34 +172,10 @@ export default {
 	mounted: function() {},
 	methods: {
 		monitorMessage() {
-			this.$http(
-				'/todo/page',
-				'GET',
-				{
-					status: "0",
-					page: '',
-					limit: ''
-				},
-				false
-			)
+			this.$http('/app/notify/count', 'POST', {}, false)
 				.then(res => {
 					if (res.code == 0) {
-						this.globalData.Todo = res.page.totalCount;
-						uni.showTabBarRedDot({
-							index: 4
-						});
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-			this.$http('/notification/cameraAlarmList', 'GET', {}, false)
-				.then(res => {
-					if (res.code == 0) {
-						if (res.data == 0) {
-						} else {
-							let list = res.data.filter(val => val.alarmStatus == 0);
-							this.globalData.warning = list.length;
+						if (res.data.todoUnread || res.data.problemUnread) {
 							uni.showTabBarRedDot({
 								index: 4
 							});

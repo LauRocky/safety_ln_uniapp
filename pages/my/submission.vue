@@ -11,7 +11,6 @@
 			</view>
 		</view>
 		<view class="">
-
 			<u-tag v-for="(item,index) in fileList" :key='index' :text="item.name" size="mini" closable :show="close1"
 				@close="close(item,index)"></u-tag>
 		</view>
