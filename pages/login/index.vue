@@ -238,7 +238,7 @@
 			monitorMessage() {
 				this.$http(
 						'/todo/page',
-						'POST', {
+						'GET', {
 							status: "0",
 							page: '',
 							limit: ''

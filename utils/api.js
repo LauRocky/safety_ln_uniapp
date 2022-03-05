@@ -16,7 +16,7 @@ export function  monitoring() {
 }
 // 待办
 export function  alerts() {
-		return new request('/todo/page', 'POST', {
+		return new request('/todo/page', 'GET', {
 			status: "0",
 			page: "",
 			limit: "",

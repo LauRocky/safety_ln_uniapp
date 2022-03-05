@@ -1,6 +1,6 @@
 <template>
 	<view class="filedetail">
-		<TwoNavbar :name="name" :rightText='rightText' @leftClick="leftClick" @rightcilck='rightcilck()' />
+		<TwoNavbar :name="name" :rightText='rightText'  @rightcilck='rightcilck()' />
 		<view class="all">
 			<view class="top">
 				<view class="top-1">
@@ -16,7 +16,7 @@
 			<view class="detailname">
 				<rich-text :nodes="dataList.content"></rich-text>
 			</view>
-			
+
 			<view class="bot">
 				<view class="bot-1">
 					<view class="">
@@ -35,11 +35,11 @@
 				</view>
 			</view>
 			<view class="wordlist">
-				<view class="word" v-for="(item,index) in dataList.fileList" :key='index'>
+				<view class="word" v-for="(item,index) in dataList.fileList" :key='index' @click="xiazai(item.url)">
 					<view class="nickname">
 						{{item.name}}
 					</view>
-					<view class="downWord" @click="xiazai(item.url)">
+					<view class="downWord" >
 						<u-icon name="arrow-down" color="#666666" size="18"></u-icon>
 					</view>
 				</view>
@@ -53,14 +53,13 @@
 				<view class="top-1">
 					<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
 					<view class="cet">
-						<view class="title">{{ user.fullname }}</view>
-						<view class="title-1">{{ deptNames }}</view>
+						<view class="title-1">{{ li.company.name }}</view>
 					</view>
 				</view>
 				<!-- <view class="top-right">2022/11/02</view> -->
 				<view class="top-right">{{li.createTime}}</view>
 			</view>
-			
+
 			<view class="bot">
 				<view class="bot-1">
 					{{li.content}}
@@ -69,25 +68,26 @@
 					<view class="bot-flex">
 						<image class="bot-imgs" src="../../static/add/newAddAttachment.png" mode=""></image>
 					</view>
-					<view class="bot-w">附件（{{numTwo}}）
+					<view class="bot-w">附件（{{li.fileList.length}}）
 						<text class="save" @click="saveAll">保存全部</text>
 						<!-- <text class="save">用wps打开</text> -->
 					</view>
 				</view>
 			</view>
 			<view class="wordlist">
-				<view class="word" v-for="(item,index) in li.fileList" :key='index'>
+				<view class="word" v-for="(item,index) in li.fileList" :key='index'  @click="xiazai(item.url)">
 					<view class="nickname">
 						{{item.name}}
 					</view>
-					<view class="downWord" @click="xiazai(item.url)">
+					<view class="downWord">
 						<u-icon name="arrow-down" color="#666666" size="18"></u-icon>
 					</view>
 				</view>
 			</view>
 		</view>
 		<image class="submission" @click="handPush" src="../../static/danger/submission.png" mode=""
-			v-if="dataList.status==='1'&&dataList.feedback==='1'"></image>
+			v-if="needFeedback"></image>
+		<!-- v-if="dataList.status==='1'&&dataList.feedback==='1'"></image> -->
 	</view>
 </template>
 
@@ -99,9 +99,10 @@
 		},
 		data() {
 			return {
+				needFeedback:false,
 				user: JSON.parse(uni.getStorageSync('userInfo')),
 				id: '',
-				name: "文件主题",
+				name: "文件标题",
 				rightText: '编辑',
 				dataList: [],
 				num: 0,
@@ -114,13 +115,15 @@
 				dataForm: {
 					fileNoticeId: '',
 					readStatus: '',
-					status: ''
+					status: '1',
+					limit: 999
 				},
 			};
 		},
 		onLoad(val) {
 			this.id = val.id;
 			this.dataForm.fileNoticeId = val.id;
+
 		},
 		onShow() {
 			this.getDataList();
@@ -128,6 +131,7 @@
 			this.overSubmission()
 		},
 		methods: {
+			
 			rightcilck() {
 				uni.navigateTo({
 					url: `/pages/my/fileAdd?id=${this.id}`
@@ -164,11 +168,16 @@
 					title: '加载中',
 				});
 				this.$http(`/filenotice/get/${this.id}`, "GET", false).then(res => {
+				
 						uni.hideLoading();
 						if (res.code == 0) {
-							this.dataList = res.data
-							this.num = this.dataList.fileList.length
-							this.dataList.content = this.dataList.content.replace(/\<p/gi, '<p class="conspan"', );
+							
+							this.dataList = res.data;
+							this.rightText= this.dataList.createBy===this.user.userId?"编辑":null;
+							this.needFeedback= this.dataList.status === '1' && this.dataList.feedback === '1' &&
+							this.dataList.companyIds.indexOf(this.user.companyId) > -1 && this.user.jobId === 3;
+							this.num = this.dataList.fileList.length;
+							// this.dataList.content = this.dataList.content.replace(/\<p/gi, '<p class="conspan"', );
 							console.log(res.data)
 						}
 					})
@@ -240,7 +249,7 @@
 					.then(res => {
 						if (res.code == 0) {
 							this.List = res.page.list
-							this.numTwo = this.List.fileList.length
+					
 						}
 					})
 					.catch(err => {
@@ -254,13 +263,14 @@
 </script>
 
 <style lang="scss" scoped>
-	.bsinfo{
+	.bsinfo {
 		font-size: 36upx;
 		font-family: PingFang SC;
 		font-weight: bold;
 		color: #333333;
 		margin-bottom: 28upx;
 	}
+
 	.filedetail {
 		.all {
 			padding: 27upx 20upx;
