@@ -45,7 +45,7 @@
 						    iconPlacement="right" 
 							@change="checkboxChange"
 						    placement="row">
-							<u-checkbox activeColor="red" :checked="hasChecked(val1.id)" v-for="(val1, i1) in list" :key="val1.id" :value="val1" :label="val1.name" :name="val1.id" :id="val1.id"></u-checkbox>
+							<u-checkbox activeColor="#11B38C" :checked="hasChecked(val1.id)" v-for="(val1, i1) in list" :key="val1.id" :value="val1" :label="val1.name" :name="val1.id" :id="val1.id"></u-checkbox>
 						</u-checkbox-group>
 						<view class="text-a" v-if="!one" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)"
 							v-for="(val1, i1) in list" :key="i1">{{ val1.name }}</view>

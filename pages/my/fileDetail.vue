@@ -1,6 +1,6 @@
 <template>
 	<view class="filedetail">
-		<TwoNavbar :name="name" :rightText='rightText'  @rightcilck='rightcilck()' />
+		<TwoNavbar :name="name" :rightText='rightText' @rightcilck='rightcilck()' />
 		<view class="all">
 			<view class="top">
 				<view class="top-1">
@@ -11,13 +11,19 @@
 					</view>
 				</view>
 				<!-- <view class="top-right">2022/11/02</view> -->
-				<view class="top-right">{{dataList.createTime}}</view>
+				<!-- <view class="top-right">{{dataList.createTime}}</view> -->
 			</view>
 			<view class="detailname">
 				<rich-text :nodes="dataList.content"></rich-text>
 			</view>
 
 			<view class="bot">
+				<view class="bot-1">
+					<view class="">
+						<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
+					</view>
+					<view class="bot-w">创建时间：{{dataList.createTime}}</view>
+				</view>
 				<view class="bot-1">
 					<view class="">
 						<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
@@ -39,7 +45,7 @@
 					<view class="nickname">
 						{{item.name}}
 					</view>
-					<view class="downWord" >
+					<view class="downWord">
 						<u-icon name="arrow-down" color="#666666" size="18"></u-icon>
 					</view>
 				</view>
@@ -57,12 +63,20 @@
 					</view>
 				</view>
 				<!-- <view class="top-right">2022/11/02</view> -->
-				<view class="top-right">{{li.createTime}}</view>
+				<!-- <view class="top-right">{{li.createTime}}</view> -->
 			</view>
-
-			<view class="bot">
+			<view class="detailname">
 				<view class="bot-1">
 					{{li.content}}
+				</view>
+			</view>
+			<view class="bot">
+				
+				<view class="bot-1">
+					<view class="">
+						<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
+					</view>
+					<view class="bot-w">{{li.createTime}}</view>
 				</view>
 				<view class="bot-1 bot-top">
 					<view class="bot-flex">
@@ -75,7 +89,7 @@
 				</view>
 			</view>
 			<view class="wordlist">
-				<view class="word" v-for="(item,index) in li.fileList" :key='index'  @click="xiazai(item.url)">
+				<view class="word" v-for="(item,index) in li.fileList" :key='index' @click="xiazai(item.url)">
 					<view class="nickname">
 						{{item.name}}
 					</view>
@@ -99,7 +113,7 @@
 		},
 		data() {
 			return {
-				needFeedback:false,
+				needFeedback: false,
 				user: JSON.parse(uni.getStorageSync('userInfo')),
 				id: '',
 				name: "文件标题",
@@ -131,7 +145,7 @@
 			this.overSubmission()
 		},
 		methods: {
-			
+
 			rightcilck() {
 				uni.navigateTo({
 					url: `/pages/my/fileAdd?id=${this.id}`
@@ -168,14 +182,14 @@
 					title: '加载中',
 				});
 				this.$http(`/filenotice/get/${this.id}`, "GET", false).then(res => {
-				
+
 						uni.hideLoading();
 						if (res.code == 0) {
-							
+
 							this.dataList = res.data;
-							this.rightText= this.dataList.createBy===this.user.userId?"编辑":null;
-							this.needFeedback= this.dataList.status === '1' && this.dataList.feedback === '1' &&
-							this.dataList.companyIds.indexOf(this.user.companyId) > -1 && this.user.jobId === 3;
+							this.rightText = this.dataList.createBy === this.user.userId ? "编辑" : null;
+							this.needFeedback = this.dataList.status === '1' && this.dataList.feedback === '1' &&
+								this.dataList.companyIds.indexOf(this.user.companyId) > -1 && this.user.jobId === 3;
 							this.num = this.dataList.fileList.length;
 							// this.dataList.content = this.dataList.content.replace(/\<p/gi, '<p class="conspan"', );
 							console.log(res.data)
@@ -249,7 +263,7 @@
 					.then(res => {
 						if (res.code == 0) {
 							this.List = res.page.list
-					
+
 						}
 					})
 					.catch(err => {
