@@ -23,12 +23,13 @@ export default {
 				// {"__UUID__":"androidPushMsg250386936","title":"content","appid":"__UNI__A9A3937","content":"body","payload":{"path":"/pages/dangerList/hiddenDetails?id=710","receiver":"10492","text":"没有","type":"notify"}}
 				// type ： notify=推送 ，需要处理path  alert=弹窗提示 ,显示text的内容  
 				let userText=uni.getStorageSync('userInfo');
-				
+				console.error(userText);
 				let userInfo=null;
 				if(userText){
 				 userInfo=JSON.parse(userText);
 				}
 				if(userInfo&&userInfo.userId==msg.payload.receiver){
+						console.error(userInfo);
 					if(msg.payload.type==='notify'){
 						console.error(msg.payload.path);
 						uni.navigateTo({
@@ -51,18 +52,18 @@ export default {
 				
 				
 				
-				clearTimeout(timer);
-				timer = setTimeout(() => {
-					if (uni.getStorageSync('token')) {
-						uni.switchTab({
-							url: '/pages/home/index'
-						});
-					} else {
-						uni.navigateTo({
-							url: '/pages/login/index'
-						});
-					}
-				}, 1000);
+				// clearTimeout(timer);
+				// timer = setTimeout(() => {
+				// 	if (uni.getStorageSync('token')) {
+				// 		uni.switchTab({
+				// 			url: '/pages/home/index'
+				// 		});
+				// 	} else {
+				// 		uni.navigateTo({
+				// 			url: '/pages/login/index'
+				// 		});
+				// 	}
+				// }, 1000);
 			},
 			false
 		);
