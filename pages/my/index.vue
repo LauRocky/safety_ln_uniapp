@@ -26,6 +26,7 @@
 					<view class="image-text">项目预警</view>
 				</view>
 				<view class="image-item" @click="dangerNotice">
+					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="problemUnread"></u-badge></view>
 					<image class="image-imgs" src="../../static/my/project2.png" mode=""></image>
 					<view class="image-text">隐患通知</view>
 				</view>
@@ -43,7 +44,6 @@
 					<view class="image-text">待办通知</view>
 				</view>
 				<view class="image-item" @click="offline" style="position: relative;">
-					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="warnings"></u-badge></view>
 					<image class="image-imgs" src="../../static/my/offline.png" mode=""></image>
 					<view class="image-text">监控预警</view>
 				</view>
@@ -126,12 +126,31 @@ export default {
 			danger: 2,
 			public: 3,
 			deptNames: '',
-			Todo: App.globalData.Todo, //待办
-			warnings: App.globalData.warning //监控未读数量
+			Todo: '33', //待办
+			problemUnread: '22' //问题
 		};
 	},
-
+	
 	methods: {
+		monitorMessage() {
+			this.$http('/app/notify/count', 'GET', {}, false)
+				.then(res => {
+					if (res.code == 0) {
+						console.log(res)
+						this.Todo = res.data.todoUnread;
+						this.problemUnread = res.data.problemUnread;
+						console.log(this.Todo ,this.problemUnread)
+						if (res.data.todoUnread || res.data.problemUnread) {
+							uni.showTabBarRedDot({
+								index: 4
+							});
+						}
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 		checkboxChange(e) {
 			this.showPopup = !this.showPopup;
 			if (this.showPopup) {
@@ -238,7 +257,7 @@ export default {
 		},
 		// 更新
 		check() {
-			AppUpdate()
+			AppUpdate();
 		},
 		// 意见反馈
 		feedback() {
@@ -246,7 +265,7 @@ export default {
 				url: '/pages/my/feedbackList'
 			});
 		},
-		// 消息通知
+		// 待办通知
 		alerts() {
 			uni.navigateTo({
 				url: '/pages/my/alertsNotice'
@@ -259,7 +278,7 @@ export default {
 			});
 		},
 		// 文件通知
-		fileNotification(){
+		fileNotification() {
 			uni.navigateTo({
 				url: '/pages/my/fileNotification'
 			});
@@ -286,13 +305,15 @@ export default {
 				content: '确定要退出当前用户？',
 				success: function(res) {
 					if (res.confirm) {
-						uni.reLaunch({
-							url: '/pages/login/index'
-						});
 						uni.clearStorageSync();
 						let tool = new igexinTool(); //解绑别名
 						let string = App.globalData.Apushid;
-						tool.unbindAlias(string);
+						tool.unbindAlias(string, App.globalData.cid);
+						setTimeout(() => {
+							uni.reLaunch({
+								url: '/pages/login/index'
+							});
+						}, 1000);
 					} else if (res.cancel) {
 						console.log('用户点击取消');
 					}
@@ -305,7 +326,9 @@ export default {
 		//刷新用户数据
 		this.user = JSON.parse(uni.getStorageSync('userInfo'));
 	},
-	onShow() {}
+	onShow() {
+		this.monitorMessage()
+	}
 };
 </script>
 
@@ -406,6 +429,7 @@ export default {
 }
 
 .image-item {
+	position: relative;
 	width: 25%;
 	height: 80%;
 	padding-bottom: 20upx;

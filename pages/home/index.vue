@@ -173,7 +173,7 @@ export default {
 				},
 
 				{
-					value: 30, 
+					value: 30,
 					name: '低风险'
 				}
 			],
@@ -184,12 +184,16 @@ export default {
 
 	onShow() {},
 	onLoad() {
-		AppUpdate()   //监听升级
-		this.handProbleBar();
+		AppUpdate(); //监听升级
+		if (uni.getStorageSync('userInfo')) {
+			this.handProbleBar();
+		}
 	},
 	mounted: function() {
-		this.handbacklog();
-		this.handdetailByUser();
+		if (uni.getStorageSync('userInfo')) {
+			this.handbacklog();
+			this.handdetailByUser();
+		}
 	},
 	methods: {
 		copy(value) {
@@ -264,6 +268,7 @@ export default {
 								low.push(item);
 							}
 						});
+						
 						this.dataList[0].value = majorList.length;
 						this.dataList[1].value = moreList.length;
 						this.dataList[2].value = commonlyList.length;
