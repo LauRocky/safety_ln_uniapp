@@ -237,7 +237,7 @@ export default {
 		},
 		// app+h5返回内容，此处按实际项目修改
 		handleBack(fileName,str = '{}',size) {
-			console.log('可根据需求自行修改emit内容，服务端返回：'+ str);
+			// console.log('可根据需求自行修改emit内容，服务端返回：'+ str);
 			try{
 				str = JSON.parse(str);
 			}catch(e){

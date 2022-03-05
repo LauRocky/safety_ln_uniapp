@@ -1,6 +1,6 @@
 <template>
 	<view class="add">
-		<TwoNavbar :name="twoname" :rightText="rightText" @leftClick="leftClick" @rightcilck='rightcilck' />
+		<TwoNavbar :name="twoname" :rightText="rightText" @leftClick="leftClick" @rightcilck="rightcilck('1')" />
 		<u--form class="add-form" labelPosition="left" :model="userAdd" :rules="rules" ref="uForm">
 			<u-form-item class="form-item" prop="require" @click="showtitle = true" borderBottom>
 				<view class="add-1">
@@ -55,7 +55,7 @@
 					<image class="add-imgs" src="../../static/add/newFileContent.png" mode=""></image>
 					<view class="add-title">文件内容</view>
 				</view>
-				<u--input v-model="userAdd.content" maxlength="15" inputAlign="right" disabled placeholder="请输入文件通知主题"
+				<u--input v-model="userAdd.content" maxlength="15" inputAlign="right" disabled placeholder="请输入文件内容"
 					border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
@@ -64,6 +64,9 @@
 					<image class="add-imgs" src="../../static/add/newAddAttachment.png" mode=""></image>
 					<view class="add-title">添加附件</view>
 				</view>
+				<u-tag v-for="(item,index) in userAdd.fileList" :key='index' :text="item.name" size="mini" closable
+					:show="close1" @close="close(item,index)"></u-tag>
+
 				<view class="fileimgadd" @click="showfileimg = true">
 					<view class="uploadfile">+</view>
 				</view>
@@ -79,7 +82,9 @@
 		<signRead ref="signRead" :show="showcompanyList" @close="showcompanyList = false" @handEnd="handEndcompanyList"
 			@companyId='companyId' />
 		<describe :showD="showcontent" @closeD="showcontent = false" @handEndD="handEndshowcontent">文件内容</describe>
-		<enclosure :showl="showfileimg" @closeL="showfileimg = false" @handEndD="handEndshowshowfileimg"></enclosure>
+		<enclosure :showl="showfileimg" :fileList='userAdd.fileList' @closeL="showfileimg = false"
+			@successfile='successfile' @handEndD="handEndshowshowfileimg"></enclosure>
+		<u-button type="success" text="保存草稿" @click="rightcilck('0')" color="#11B38C" class="button"></u-button>
 	</view>
 </template>
 <script>
@@ -116,17 +121,20 @@
 				showcontent: false, // 文件内容
 				showfileimg: false, // 添加附件
 				feedbackTwo: true,
+				close1: true,
 				userAdd: {
+					id: 0,
 					title: '',
 					fileNo: '',
 					feedback: 0,
+					fileNoticeId:0,
 					feedbackExpireTime: '',
-					// feedbackExpireTime: new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date()
-					// .getDate(),
+					fileList: [],
 					companyIds: '',
 					companyList: '',
 					content: '',
 					companyId: '',
+					status: '',
 				},
 				rules: {
 					value: [{
@@ -136,6 +144,11 @@
 					}],
 				},
 			};
+		},
+		onLoad(v){
+			if(v.id){
+				this.getDetailList(v.id)
+			}
 		},
 		methods: {
 			// 文件主题
@@ -178,9 +191,8 @@
 			},
 			// 签约公司
 			handEndcompanyList(v) {
-				console.log(v)
-				this.userAdd.companyList = v.name
-				this.showcompanyList = false
+				this.userAdd.companyList = v
+				// this.showcompanyList = false
 			},
 			companyId(v) {
 				console.log(v)
@@ -195,6 +207,16 @@
 			handEndshowshowfileimg() {
 
 			},
+			// 获取上传的附件
+			successfile(data) {
+				console.log(data)
+				this.userAdd.fileList = data
+			},
+			// 删除附件
+			close(v, index) {
+				console.log(v)
+				this.userAdd.fileList.splice(index, 1)
+			},
 			// 添加文件
 			addFile() {
 				uni.showLoading({
@@ -205,19 +227,45 @@
 				} else {
 					this.userAdd.feedback = 0
 				}
-				// this.userAdd.companyIds = this.userAdd.companyList.join(',')
-				this.$http('/filenotice/save', 'POST', this.userAdd, false)
-					.then(res => {
-						if (res.code == 0) {
-							uni.showToast({
-								title: '创建成功',
-								duration: 1500
-							});
-						}
-					})
-					.catch(err => {
-						console.log(err);
-					});
+				if(this.userAdd.id === 0){
+					// this.userAdd.companyIds = this.userAdd.companyList.join(',')
+					this.$http('/filenotice/save', 'POST', this.userAdd, false)
+						.then(res => {
+							if (res.code == 0) {
+								uni.showToast({
+									title: '创建成功',
+									duration: 1500
+								});
+								setTimeout(() => {
+									uni.redirectTo({
+										url: '/pages/my/fileNotification'
+									});
+									// uni.navigateBack({
+									// 	delta: 1
+									// });
+								}, 1500);
+							}
+						})
+						.catch(err => {
+							console.log(err);
+						});
+				}else{
+					this.userAdd.fileNoticeId=0
+					this.$http('/filenotice/update', 'POST', this.userAdd, false)
+						.then(res => {
+							if (res.code == 0) {
+								uni.showToast({
+									title: '操作成功',
+									duration: 1500
+								});
+								setTimeout(() => {
+									uni.redirectTo({
+										url: '/pages/my/fileNotification'
+									});
+								}, 1500);
+							}
+						})
+				}
 			},
 			async chooseFile(list, v) {
 				//上传图片
@@ -236,6 +284,33 @@
 					}
 				});
 			},
+			// 编辑数据
+			// 获取数据列表
+			getDetailList(id) {
+				console.log(id,'---------------')
+				uni.showLoading({
+					title: '加载中',
+				});
+				this.$http(`/filenotice/get/${id}`, "GET", false).then(res => {
+						uni.hideLoading();
+						if (res.code == 0) {
+							this.userAdd = res.data
+							if(this.userAdd.feedback===0){
+								this.feedbackTwo=false
+							}else{
+								this.feedbackTwo=true
+							}
+						}else{
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'none'
+							})
+						}
+					})
+					.catch(err => {
+						console.log(err)
+					})
+			},
 			imgDelete(list, eq) {
 				//删除图片
 				this.imgList = list;
@@ -245,7 +320,8 @@
 					delta: 1
 				});
 			},
-			rightcilck() {
+			rightcilck(status) {
+				this.userAdd.status = status
 				this.addFile()
 			},
 			ultZeroize(v, l) {
@@ -266,8 +342,31 @@
 	};
 </script>
 <style lang="less" scoped>
+	.button {
+		margin-top: 30upx;
+		width: 80%;
+		height: 80upx;
+		font-size: 36upx;
+		font-family: PingFang SC;
+		font-weight: bold;
+		border-radius: 40upx;
+	}
+
 	.add {
 		background: #ffffff;
+
+		/deep/.u-tag-wrapper {
+			width: 80%;
+			margin: 0 auto;
+
+			span {
+				width: 80%;
+				display: block;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
 
 		.add-form {
 			padding: 0upx 24upx 36upx 24upx;
@@ -345,7 +444,8 @@
 		.fileimgadd {
 			width: 162upx;
 			height: 170upx;
-			.uploadfile{
+
+			.uploadfile {
 				width: 162upx;
 				height: 170upx;
 				font-size: 100upx;

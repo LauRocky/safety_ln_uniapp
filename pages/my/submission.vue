@@ -1,6 +1,6 @@
 <template>
 	<view class="submission">
-		<TwoNavbar :name="name" @leftClick="leftClick" :rightText="rightText" @rightcilck='rightcilck' />
+		<TwoNavbar :name="name" @leftClick="leftClick" />
 		<u--textarea v-model="userAdd.content" @input='addtextarea' placeholder="点击此处输入您的报送内容" height="500upx"
 			class="textarea" border="surround">
 		</u--textarea>
@@ -12,14 +12,14 @@
 		</view>
 		<view class="">
 
-			<u-tag v-for="(item,index) in fileList" :key='index' :text="item" size="mini" closable :show="close1"
-				@close="close"></u-tag>
+			<u-tag v-for="(item,index) in fileList" :key='index' :text="item.name" size="mini" closable :show="close1"
+				@close="close(item,index)"></u-tag>
 		</view>
 		<l-file ref="lFile" :logo="logo" @up-success="onSuccess"></l-file>
 		<view class="uploadfile">
 			<view @tap="onUpload">+</view>
 		</view>
-		<u-button type="success" text="保存" @click="toSubmission" color="#11B38C" class="button"></u-button>
+		<u-button type="success" text="报送" @click="rightcilck" color="#11B38C" class="button"></u-button>
 	</view>
 </template>
 
@@ -40,13 +40,14 @@
 				close1: true,
 				logo: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbpic.588ku.com%2Felement_origin_min_pic%2F00%2F00%2F07%2F155788a6d8a5c42.jpg&refer=http%3A%2F%2Fbpic.588ku.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619847627&t=2da40b583002205c204d980b54b35040',
 				name: "报送",
-				rightText: '确认报送',
+				// rightText: '确认报送',
 				userAdd: {
 					id: '',
 					content: '',
 					title: '',
 					fileNo: '',
-					feedback: '0',
+					feedback: '1',
+					fileNoticeId: '',
 					feedbackExpireTime: '',
 					status: '',
 					companyIds: '',
@@ -64,9 +65,34 @@
 		},
 		onLoad(val) {
 			this.id = val.id;
+			this.userAdd.fileNoticeId = val.id
+			this.selectbaosong()
 		},
 		methods: {
-			// 保存
+			/* 查询报送记录 */
+			selectbaosong() {
+				uni.showLoading({
+					title: '加载中',
+				});
+				this.$http(`/filenotice/feedback/get/${this.id}`, 'GET', false)
+					.then(res => {
+						if (res.code == 0) {
+							uni.hideLoading();
+							console.log(res.data)
+							this.userAdd = res.data
+						} else {
+							console.log(res)
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'none',
+								duration: 2000
+							});
+						}
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			},
 			toSubmission() {
 				uni.showLoading({
 					title: '加载中',
@@ -103,7 +129,7 @@
 				uni.showLoading({
 					title: '加载中',
 				});
-
+					this.userAdd.status = 1
 				this.$http('/filenotice/feedback', 'POST', this.userAdd, false)
 					.then(res => {
 						if (res.code == 0) {
@@ -133,8 +159,9 @@
 			// 输入框
 			addtextarea(e) {},
 			// 关闭
-			close(v) {
-
+			close(v, index) {
+				console.log(v)
+				this.fileList.splice(index, 1)
 			},
 			onUpload2() {
 
@@ -152,27 +179,20 @@
 					name: 'file',
 					//根据你接口需求自定义 (优先不传content-type,安卓端无法收到参数再传)
 					header: {
-						'content-type': 'application/json; charset=utf-8',
-						'token': uni.getStorageSync('token')
+						'token': uni.getStorageSync('token'),
 					},
-
-					// 限制选择附件的大小上限，默认10M
-					// maxSize: 20,
-
-					// 若需要在body单独添加附件名或附件大小如下方式传入组件：
-					// addName: '后端要的附件名称字段key,此处请勿写name的同值如(file)，会覆盖name',
-					// addSize: '后端要的附件大小字段key'
-
-					// body参数直接写key,value,如：
-					// date: '2020-1-1',
-					// key2: 'value2',
 				});
 			},
 			onSuccess(res) {
-				console.log('上传成功回调', JSON.stringify(res));
-				this.fileList.push(res.fileName)
+				// console.log('上传成功回调', JSON.stringify(res));
+				let uploadFile = {}
+				uploadFile.url = res.data.data.file_full_url
+				uploadFile.name = res.data.data.name
+				uploadFile.fileImages = res.data.data.file_images
+				console.log(uploadFile)
+				this.fileList.push(uploadFile)
 				uni.showToast({
-					title: JSON.stringify(res),
+					title: res.data.data.name,
 					icon: 'none'
 				})
 			},
@@ -211,7 +231,7 @@
 
 <style lang="scss" scoped>
 	.submission {
-		.uploadfile{
+		.uploadfile {
 			width: 162upx;
 			height: 170upx;
 			font-size: 100upx;
@@ -223,10 +243,24 @@
 			margin: 20upx 20upx;
 			opacity: 0.4;
 		}
+
 		.textarea {
 			margin: 20upx;
 			border-radius: 16upx;
 			box-shadow: 0px 3upx 16upx 0px rgba(0, 0, 0, 0.06);
+		}
+
+		/deep/.u-tag-wrapper {
+			width: 80%;
+			margin: 0 auto;
+
+			span {
+				width: 80%;
+				display: block;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
 		}
 
 		.button {

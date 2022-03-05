@@ -80,6 +80,7 @@ export default {
 		},
 		// 上传图片
 		uploadImg() {
+			console.log('sss')
 			uni.chooseImage({
 				sizeType: ['compressed'],
 				sourceType: this.sourceType,

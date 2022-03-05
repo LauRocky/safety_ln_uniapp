@@ -1,19 +1,19 @@
 <template>
 	<view class="filedetail">
-		<TwoNavbar :name="name" @leftClick="leftClick" />
+		<TwoNavbar :name="name" :rightText='rightText' @leftClick="leftClick" @rightcilck='rightcilck()' />
 		<view class="all">
 			<view class="top">
 				<view class="top-1">
 					<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
 					<view class="cet">
 						<view class="title">{{ user.fullname }}</view>
-							<!-- <view class="title-1">崔菜菜爱吃菠菜</view> -->
-							<view class="title-1">{{ deptNames }}</view>
+						<view class="title-1">{{ deptNames }}</view>
 
 
 					</view>
 				</view>
-				<view class="top-right">2022/11/02</view>
+				<!-- <view class="top-right">2022/11/02</view> -->
+				<view class="top-right">{{dataList.createTime}}</view>
 			</view>
 			<view class="detailname">
 				<rich-text :nodes="dataList.content"></rich-text>
@@ -23,13 +23,13 @@
 					<view class="">
 						<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
 					</view>
-					<view class="bot-w">报送截止日期：{{dataList.statusTime}}</view>
+					<view class="bot-w">报送截止日期：{{dataList.feedbackExpireTime}}</view>
 				</view>
 				<view class="bot-1 bot-top">
 					<view class="bot-flex">
 						<image class="bot-imgs" src="../../static/add/newAddAttachment.png" mode=""></image>
 					</view>
-					<view class="bot-w">附件（1）
+					<view class="bot-w">附件（{{num}}）
 						<text class="save" @click="saveAll">保存全部</text>
 						<!-- <text class="save">用wps打开</text> -->
 					</view>
@@ -47,7 +47,7 @@
 			</view>
 
 		</view>
-		<image class="submission" @click="handPush" src="../../static/danger/submission.png" mode=""></image>
+		<image class="submission" @click="handPush" src="../../static/danger/submission.png" mode="" v-if="dataList.status==='1'&&dataList.feedback==='1'"></image>
 	</view>
 </template>
 
@@ -61,8 +61,10 @@
 			return {
 				user: JSON.parse(uni.getStorageSync('userInfo')),
 				id: '',
-				name: "文件通知",
+				name: "文件主题",
+				rightText: '编辑',
 				dataList: [],
+				num:0,
 				deptInfoList: [],
 				deptNames: '',
 				luj: null,
@@ -74,6 +76,7 @@
 					readStatus: '',
 					status: '',
 					fileNoticeId: '',
+					feedback:''
 				},
 			};
 		},
@@ -85,41 +88,21 @@
 			this.deptInfo();
 		},
 		methods: {
+			rightcilck() {
+				uni.navigateTo({
+					url: `/pages/my/fileAdd?id=${this.id}`
+				});
+			},
 			handPush() {
 				uni.navigateTo({
 					url: `/pages/my/submission?id=${this.id}`
 				})
 			},
-			//获取人员信息
-			// deptInfo() {
-			// 	const userInfo = uni.getStorageSync('userInfo')
-			// 	let userinfo = JSON.parse(userInfo);
-			// 	console.log(userinfo)
-			// 	console.log(userinfo.parentId.toString())
-			// 	console.log(userinfo.companyId.toString())
-			// 	uni.showLoading({
-			// 		title: '加载中',
-			// 	});
-			// 	this.$http(`/lvxin/deptInfo`, "POST", {
-			// 			parentId: userinfo.parentId.toString()
-			// 		}, false).then(res => {
-			// 			uni.hideLoading();
-			// 			if (res.code == 0) {
-			// 				this.deptInfoList = res.data
-			// 				// this.dataList.content = this.dataList.content.replace(/\<p/gi, '<p class="conspan"', );
-			// 				console.log(res.data)
-			// 			}
-			// 		})
-			// 		.catch(err => {
-			// 			console.log(err)
-			// 		})
-			// },
 			// 获取登录人部门信息
 			deptInfo() {
 				this.$http(
 					'/lvxin/deptInfo',
-					'POST',
-					{
+					'POST', {
 						parentId: this.user.companyId
 					},
 					false
@@ -144,6 +127,7 @@
 						uni.hideLoading();
 						if (res.code == 0) {
 							this.dataList = res.data
+							this.num=this.dataList.fileList.length
 							this.dataList.content = this.dataList.content.replace(/\<p/gi, '<p class="conspan"', );
 							console.log(res.data)
 						}

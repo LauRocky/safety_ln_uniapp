@@ -49,7 +49,7 @@
 				</view>
 				<view class="image-item" @click="fileNotification" style="position: relative;">
 					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="Todo"></u-badge></view>
-					<image class="image-imgs" src="../../static/my/documents.png" mode=""></image>
+					<image class="image-imgs" src="../../static/my/documentsnew.png" mode=""></image>
 					<view class="image-text">文件通知</view>
 				</view>
 			</view>

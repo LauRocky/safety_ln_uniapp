@@ -5,10 +5,10 @@
 			<view class="card" v-for="(item,index) in dataList" :key='index' @click="navgetDetail(item)">
 				<view class="card_top">
 					<text class="theme">{{item.title}}</text>
-					<text class="read" v-if="item.status=='1'">已读</text>
-					<text class="read" v-if="item.status=='0'">未读</text>
+					<text class="read" v-if="item.status=='1'">已发布</text>
+					<text class="read" v-if="item.status=='0'">未发布</text>
 				</view>
-				<view class="card_content" >
+				<view class="card_content">
 					<rich-text :nodes="item.content"></rich-text>
 				</view>
 				<view class="card_bot">
@@ -31,7 +31,7 @@
 		},
 		data() {
 			return {
-				id:'',
+				id: '',
 				name: "文件通知",
 				List: {
 					menuId: "",
@@ -39,6 +39,7 @@
 					page: 1
 				},
 				totalCount: 0,
+				totalPage:0,
 				dataList: [],
 				dataForm: {
 					searchKey: ''
@@ -46,6 +47,14 @@
 			};
 		},
 		onLoad() {
+			// location.reload()
+		},
+		onReachBottom() {
+			console.log('ssssssssssssssssssssssssssssssssssss')
+			this.List.page++
+			this.getDataList()
+		},
+		onShow() {
 			this.getDataList()
 		},
 		methods: {
@@ -75,26 +84,31 @@
 				this.$http('/filenotice/page', "GET", this.List, false).then(res => {
 						uni.hideLoading();
 						if (res.code == 0) {
-							if (this.dataList.length < res.page.totalCount) {
-								this.List.page++;
-								this.dataList = this.dataList.concat(res.page.list);
-								const dataarr = this.getCurrentTime()
-								this.dataList.forEach(item => {
-									item.content=item.content.replace(/\<p/gi, '<p class="conspan"',);
-									if (item.statusTime.substr(0, 4) === dataarr[0] && item.statusTime.substr(
-											5, 2) === dataarr[1] && item.statusTime.substr(8, 2) === dataarr[
-											2]) {
-										item.statusTime = item.statusTime.substr(14, 5)
-									} else if (item.statusTime.substr(0, 4) === dataarr[0] && item.statusTime
-										.substr(
-											5, 2) === dataarr[1]) {
-										if (item.statusTime.substr(8, 2)) {
-
-										}
-									}
+							if (this.List.page > res.page.totalPage) {
+								uni.showToast({
+									title: '已到最后一页',
+									duration: 1500
 								});
+								return
 							}
-							this.totalCount = res.page.totalCount;
+							// this.List.page++;
+							this.dataList = this.dataList.concat(res.page.list);
+							const dataarr = this.getCurrentTime()
+							this.dataList.forEach(item => {
+								let zuo = this.aa()
+								if (item.statusTime.substr(0, 4) === dataarr[0] && item.statusTime.substr(
+										5, 2) === dataarr[1] && item.statusTime.substr(8, 2) === dataarr[
+										2]) {
+									item.statusTime = item.statusTime.substr(14, 5)
+								} else if (item.statusTime.substr(0, 4) === dataarr[0] && item.statusTime
+									.substr(5, 2) === dataarr[1]) {
+									if (item.statusTime.substr(9, 1) === zuo[0].substr(2, 1)) {
+										item.statusTime = '昨天'
+									}
+								}
+							});
+							// }
+							this.totalPage ++;
 						}
 					})
 					.catch(err => {
@@ -111,14 +125,19 @@
 				let ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
 				let dataarr = [yy, mm, dd]
 				return dataarr
-			}
-			// beforeDay() {
-			//       //前一天
-			//       let beforeDay = new Date(
-			//         new Date(this.alarmformSearch.date).getTime() - 24 * 60 * 60 * 1000
-			//       ); //计算当前日期 -1
-			//       this.alarmformSearch.date = this.convertToDate(beforeDay); //格式化日期并赋值
-			//     },
+			},
+			aa() {
+				var myDate = new Date() // 获取今天日期
+				myDate.setDate(myDate.getDate() - 1)
+				var dateArray = []
+				var dateTemp
+				var flag = 1
+				dateTemp = (myDate.getMonth() + 1) + '-' + myDate.getDate()
+				dateArray.push(dateTemp)
+				myDate.setDate(myDate.getDate() + flag)
+				console.log('123456+', dateArray)
+				return dateArray
+			},
 		}
 	}
 </script>
@@ -127,6 +146,7 @@
 	.fileNotification {
 		width: 100%;
 		height: 100vh;
+
 		.card {
 			padding: 35upx 20upx;
 			height: 156upx;
@@ -173,7 +193,8 @@
 				-webkit-line-clamp: 2;
 				line-clamp: 2;
 				-webkit-box-orient: vertical;
-				p{
+
+				p {
 					line-height: 42upx;
 					font-size: 28upx !important;
 					color: #666666 !important;
@@ -181,11 +202,13 @@
 			}
 
 		}
-		.conspan{
+
+		.conspan {
 			line-height: 42upx !important;
 			font-size: 28upx !important;
 			color: #666666;
-			span{
+
+			span {
 				line-height: 42upx !important;
 				font-size: 28upx !important;
 				color: #666666;
