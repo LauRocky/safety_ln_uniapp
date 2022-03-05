@@ -1,6 +1,6 @@
 <template>
 	<view class="enclosure">
-		<u-popup :show="showl" @close="handIcon" :closeable="false" :round="10" mode="bottom">
+		<u-popup :show="showl" :closeable="false" :round="10" mode="bottom">
 			<!-- <view class="titles" @click="uploadImg">
 				添加照片
 			</view> -->
