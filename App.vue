@@ -15,13 +15,12 @@ export default {
 		var cid = pinf.clientid; //客户端标识
 		this.globalData.cid = pinf.clientid;
 
-		let timer = null;
 		plus.push.addEventListener(
 			'click',
 			msg => {
 				// {"__UUID__":"androidPushMsg250386936","title":"content","appid":"__UNI__A9A3937","content":"body","payload":{"path":"/pages/dangerList/hiddenDetails?id=710","receiver":"10492","text":"没有","type":"notify"}}
 				// type ： notify=推送 ，需要处理path  alert=弹窗提示 ,显示text的内容
-				console.log('click', msg)
+				console.log('click', msg);
 				let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
 				if (plus.os.name == 'iOS') {
 					let obj = {};
@@ -35,7 +34,6 @@ export default {
 							status: list[2],
 							type: list[3]
 						};
-	
 					}
 					if (userInfo && userInfo.userId == obj.receiver) {
 						if (obj.type === 'notify') {
@@ -115,7 +113,8 @@ export default {
 			},
 			false
 		);
-		if (plus.os.name == 'iOS') {         //启动页跳转和推送跳转
+		if (plus.os.name == 'iOS') {
+			//启动页跳转和推送跳转
 			let args = plus.runtime.arguments;
 			let code = args ? args.split('//')[1] : '';
 			if (code) {
@@ -174,34 +173,10 @@ export default {
 	mounted: function() {},
 	methods: {
 		monitorMessage() {
-			this.$http(
-				'/upcoming/page',
-				'POST',
-				{
-					readStatus: 0,
-					page: '',
-					limit: ''
-				},
-				false
-			)
+			this.$http('/app/notify/count', 'POST', {}, false)
 				.then(res => {
 					if (res.code == 0) {
-						this.globalData.Todo = res.page.totalCount;
-						uni.showTabBarRedDot({
-							index: 4
-						});
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-			this.$http('/notification/cameraAlarmList', 'GET', {}, false)
-				.then(res => {
-					if (res.code == 0) {
-						if (res.data == 0) {
-						} else {
-							let list = res.data.filter(val => val.alarmStatus == 0);
-							this.globalData.warning = list.length;
+						if (res.data.todoUnread || res.data.problemUnread) {
 							uni.showTabBarRedDot({
 								index: 4
 							});

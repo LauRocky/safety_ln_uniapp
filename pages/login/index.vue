@@ -214,38 +214,13 @@ export default {
 				});
 		},
 		monitorMessage() {
-			this.$http(
-				'/upcoming/page',
-				'POST',
-				{
-					readStatus: 0,
-					page: '',
-					limit: ''
-				},
-				false
-			)
+			this.$http('/app/notify/count', 'POST', {}, false)
 				.then(res => {
 					if (res.code == 0) {
-						App.globalData.Todo = res.page.totalCount;
+						console.log(res)
 						uni.showTabBarRedDot({
 							index: 4
 						});
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-			this.$http('/notification/cameraAlarmList', 'GET', {}, false)
-				.then(res => {
-					if (res.code == 0) {
-						if (res.data == 0) {
-						} else {
-							let list = res.data.filter(val => val.alarmStatus == 0);
-							App.globalData.warning = list.length > 99 ? 99 : list.length;
-							uni.showTabBarRedDot({
-								index: 4
-							});
-						}
 					}
 				})
 				.catch(err => {
