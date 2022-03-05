@@ -237,9 +237,9 @@
 			},
 			monitorMessage() {
 				this.$http(
-						'/upcoming/page',
+						'/todo/page',
 						'POST', {
-							readStatus: 0,
+							status: "0",
 							page: '',
 							limit: ''
 						},

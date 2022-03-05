@@ -246,7 +246,7 @@ export default {
 				url: '/pages/my/feedbackList'
 			});
 		},
-		// 消息通知
+		// 待办通知
 		alerts() {
 			uni.navigateTo({
 				url: '/pages/my/alertsNotice'

@@ -62,6 +62,7 @@ export default {
 				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 			},
 			backlog: {
+				isRead:'0',
 				readStatus: '0',
 				page: 1,
 				limit: 10
@@ -108,6 +109,12 @@ export default {
 		},
 		handProblemsId(val) {
 			//获取隐患类型
+			
+			this.$http(`/msg/read`,`POST`,{ids:[val.eventId]},false)
+				.then(res=>{
+					console.error("处理隐患待办成功",res);
+				})
+			
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
 					if (res.code == 0) {

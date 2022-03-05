@@ -78,8 +78,8 @@
 				uni.showLoading({
 					title: '加载中',
 				});
-				this.$http('/upcoming/page', 'POST', {
-						readStatus: "",
+				this.$http('/todo/page', 'POST', {
+						status: "0",
 						page:this.page,
 						limit:this.limit,
 					}, false).then(res => {
