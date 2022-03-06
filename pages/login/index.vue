@@ -74,24 +74,24 @@ export default {
 				this.getCode(code);
 			}
 		} else {
-			let userInfo = uni.getStorageSync('userInfo');
-			let token = uni.getStorageSync('token');
-				this.lxLogin.getLxCode({}, res => {
-					//存在code就登录。不存在code需要去判断是否存在绿信。存在的话就去授权登录。
-					//请不要把判断是否存在绿信的代码放在onshow，因为会出现死循环。
-					if (res.code) {
-						this.getCode(res.code);
-					} else {
-						this.lxLogin.checkHasLxPackage({}, callback => {
-							let hasLX = callback.hasLX;
-
-							if (hasLX) {
-								//起调绿信
-								this.lxLogin.launchLx({}, resp => {});
-							}
-						});
-					}
-				});
+		
+			let lxnum = uni.getStorageSync('lxnum') ? uni.getStorageSync('lxnum') : 0;
+			this.lxLogin.getLxCode({}, res => {
+				//存在code就登录。不存在code需要去判断是否存在绿信。存在的话就去授权登录。
+				//请不要把判断是否存在绿信的代码放在onshow，因为会出现死循环。
+				if (res.code) {
+					this.getCode(res.code);
+				} else {
+					this.lxLogin.checkHasLxPackage({}, callback => {
+						let hasLX = callback.hasLX;
+						if (hasLX && lxnum == 0) {
+							//起调绿信
+							uni.setStorageSync('lxnum', 1);
+							this.lxLogin.launchLx({}, resp => {});
+						}
+					});
+				}
+			});
 		}
 		// #endif
 	},
@@ -106,7 +106,6 @@ export default {
 				code: code
 			})
 				.then(res => {
-					
 					console.error(res);
 					uni.hideLoading();
 					if (res.code == 0 && res.data) {

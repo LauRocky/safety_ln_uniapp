@@ -14,6 +14,7 @@ export default {
 		var pinf = plus.push.getClientInfo();
 		var cid = pinf.clientid; //客户端标识
 		this.globalData.cid = pinf.clientid;
+		let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
 
 		plus.push.addEventListener(
 			'click',
@@ -21,7 +22,6 @@ export default {
 				// {"__UUID__":"androidPushMsg250386936","title":"content","appid":"__UNI__A9A3937","content":"body","payload":{"path":"/pages/dangerList/hiddenDetails?id=710","receiver":"10492","text":"没有","type":"notify"}}
 				// type ： notify=推送 ，需要处理path  alert=弹窗提示 ,显示text的内容
 				console.log('click', msg);
-				let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
 				if (plus.os.name == 'iOS') {
 					let obj = {};
 					if (msg.aps) {
@@ -42,9 +42,13 @@ export default {
 									url: obj.path
 								});
 							} else if (obj.status == '1') {
-								uni.navigateTo({
-									url: obj.path
-								});
+								let timer = null;
+								clearTimeout(timer);
+								timer = setTimeout(() => {
+									uni.navigateTo({
+										url: obj.path
+									});
+								}, 1000);
 							}
 						} else if (obj.type === 'alert') {
 							uni.showModal({
@@ -55,6 +59,7 @@ export default {
 							});
 						}
 					}
+				} else {
 					if (userInfo && userInfo.userId == msg.payload.receiver) {
 						if (msg.payload.type === 'notify') {
 							if (msg.payload.status == '0') {
@@ -62,9 +67,13 @@ export default {
 									url: msg.payload.path
 								});
 							} else if (msg.payload.status == '1') {
-								uni.navigateTo({
-									url: msg.payload.path
-								});
+								let timer = null;
+								clearTimeout(timer);
+								timer = setTimeout(() => {
+									uni.navigateTo({
+										url: obj.path
+									});
+								}, 1000);
 							}
 						} else if (msg.payload.type === 'alert') {
 							uni.showModal({
@@ -117,47 +126,37 @@ export default {
 			let args = plus.runtime.arguments;
 			let code = args ? args.split('//')[1] : '';
 			if (code) {
-				//存在则跳转至登录页
-				uni.reLaunch({
-					url: '/pages/login/index',
-					success: () => {
-						plus.navigator.closeSplashscreen();
-					}
-				});
-			} else if (uni.getStorageSync('userInfo')) {
-				// 关闭启动页进入首页
+				// 关闭启动页进入登录
 				plus.navigator.closeSplashscreen();
-			} else {
-				//存在则跳转至登录页
+			} else if (userInfo) {
+				//不存在则跳转至首页页
 				uni.reLaunch({
-					url: '/pages/login/index',
+					url: '/pages/home/index',
 					success: () => {
 						plus.navigator.closeSplashscreen();
 					}
 				});
+			} else {
+				// 关闭启动页进入登录
+				plus.navigator.closeSplashscreen();
 			}
 		} else {
 			let lxLogin = uni.requireNativePlugin('zhongqian-lvxin-login');
 			lxLogin.getLxCode({}, res => {
 				if (res.code) {
-					//存在则跳转至登录页
-					uni.reLaunch({
-						url: '/pages/login/index',
-						success: () => {
-							plus.navigator.closeSplashscreen();
-						}
-					});
-				} else if (uni.getStorageSync('userInfo')) {
-					// 关闭启动页进入首页
+					// 关闭启动页进入登录
 					plus.navigator.closeSplashscreen();
-				} else {
-					//存在则跳转至登录页
+				} else if (userInfo) {
+					//不存在则跳转至首页页
 					uni.reLaunch({
-						url: '/pages/login/index',
+						url: '/pages/home/index',
 						success: () => {
 							plus.navigator.closeSplashscreen();
 						}
 					});
+				} else {
+					// 关闭启动页进入登录
+					plus.navigator.closeSplashscreen();
 				}
 			});
 		}
