@@ -9,14 +9,14 @@
 				<image class="add-imgs" src="../../static/add/newAddAttachment.png" mode=""></image>
 				<view class="add-title">添加附件</view>
 			</view>
-		</view>
-		<view class="">
-			<u-tag v-for="(item,index) in fileList" :key='index' :text="item.name" size="mini" closable :show="close1"
-				@close="close(item,index)"></u-tag>
-		</view>
-		<l-file ref="lFile" :logo="logo" @up-success="onSuccess"></l-file>
-		<view class="uploadfile">
-			<view @tap="onUpload">+</view>
+			<view class="">
+				<u-tag v-for="(item,index) in fileList" :key='index' :text="item.name" size="mini" closable :show="close1"
+					@close="close(item,index)"></u-tag>
+			</view>
+			<l-file ref="lFile" :logo="logo" @up-success="onSuccess"></l-file>
+			<view class="uploadfile">
+				<view @tap="onUpload">+</view>
+			</view>
 		</view>
 		<u-button type="success" text="报送" @click="rightcilck" color="#11B38C" class="button"></u-button>
 	</view>
@@ -80,6 +80,7 @@
 							console.log(res.data)
 							if(res.data){
 								this.userAdd = res.data
+								this.fileList=res.data.fileList
 							}
 						} else {
 							console.log(res)
@@ -131,11 +132,13 @@
 					title: '加载中',
 				});
 					this.userAdd.status = 1;
-					let files=this.userAdd.fileList?this.userAdd.fileList:[];
+					// let files=this.userAdd.fileList?this.userAdd.fileList:[];
+					let files=this.fileList?this.fileList:[];
 					this.fileList.forEach(e=>{
 						files.push(e);
 					})
-					this.userAdd.fileList=files;
+					// this.userAdd.fileList=files;
+					this.fileList=files;
 				this.$http('/filenotice/feedback', 'POST', this.userAdd, false)
 					.then(res => {
 						if (res.code == 0) {
@@ -238,6 +241,7 @@
 <style lang="scss" scoped>
 	.submission {
 		.uploadfile {
+			margin-left: 50upx;
 			width: 162upx;
 			height: 170upx;
 			font-size: 100upx;
@@ -281,6 +285,8 @@
 
 		.form-item2 {
 			padding: 40upx 0;
+			// margin-right: 20upx;
+			margin-left: 20upx;
 
 			.add-title {
 				font-size: 28upx;
@@ -294,12 +300,14 @@
 			}
 
 			.add-1 {
-				margin-right: 20upx;
+				// margin-right: 30upx;
+				margin-left: 30upx;
 				display: flex;
 				align-items: center;
+				margin-bottom: 30upx;
 
 				.add-imgs {
-					margin-right: 10upx;
+					margin-right: 20upx;
 					width: 40upx;
 					height: 40upx;
 				}
