@@ -77,11 +77,11 @@
 		<u-datetime-picker v-model="valueData" :show="feedbackExpireTime" @cancel='cancel' @confirm='confirm'
 			mode="date">
 		</u-datetime-picker>
-		<describe :showD="showtitle" @closeD="showtitle = false" @handEndD="handEndZ">文件主题</describe>
-		<describe :showD="showfileNo" @closeD="showfileNo = false" @handEndD="handEndshowfileNo">文件号</describe>
+		<describe :showD="showtitle" @closeD="showtitle = false" @handEndD="handEndZ" ref="a1">文件主题</describe>
+		<describe :showD="showfileNo" @closeD="showfileNo = false" @handEndD="handEndshowfileNo" ref="a2">文件号</describe>
 		<signRead ref="signRead" :show="showcompanyList" @close="showcompanyList = false" @handEnd="handEndcompanyList"
 			@companyId='companyId' />
-		<describe :showD="showcontent" @closeD="showcontent = false" @handEndD="handEndshowcontent">文件内容</describe>
+		<describe :showD="showcontent" @closeD="showcontent = false" @handEndD="handEndshowcontent" ref="a3">文件内容</describe>
 		<enclosure :showl="showfileimg" :fileList='userAdd.fileList' @closeL="showfileimg = false"
 			@successfile='successfile' @handEndD="handEndshowshowfileimg"></enclosure>
 		<u-button type="success" text="保存草稿" @click="rightcilck('0')" color="#11B38C" class="button"></u-button>
@@ -191,13 +191,18 @@
 			},
 			// 签约公司
 			handEndcompanyList(v) {
-				this.userAdd.companyList = v
+				console.error(v);
+				let names=v.map(e=>{return e.name});
+				let ids=v.map(e=>{return e.id});
+				this.userAdd.companyList = names.join(",");
+				this.userAdd.companyIds=ids.join(',');
+				console.error(this.userAdd);
 				// this.showcompanyList = false
 			},
 			companyId(v) {
-				console.log(v)
-				this.userAdd.companyId = v
-				this.userAdd.companyIds = v
+				// console.log(v)
+				// this.userAdd.companyId = v
+				// this.userAdd.companyIds = v
 			},
 			// 文件内容
 			handEndshowcontent(v) {
@@ -227,7 +232,7 @@
 				} else {
 					this.userAdd.feedback = 0
 				}
-				if(this.userAdd.id === 0){
+				if(this.userAdd.id ===0){
 					// this.userAdd.companyIds = this.userAdd.companyList.join(',')
 					this.$http('/filenotice/save', 'POST', this.userAdd, false)
 						.then(res => {
@@ -244,6 +249,11 @@
 									// 	delta: 1
 									// });
 								}, 1500);
+							}else{
+							uni.showToast({
+								title: '创建失败，请稍后重试。',
+								duration: 1500
+							});	
 							}
 						})
 						.catch(err => {
@@ -293,8 +303,14 @@
 				});
 				this.$http(`/filenotice/get/${id}`, "GET", false).then(res => {
 						uni.hideLoading();
+							console.error("123",res);
 						if (res.code == 0) {
-							this.userAdd = res.data
+							this.userAdd = res.data;
+							this.userAdd.companyList=this.userAdd.companyName;
+							this.$refs.a1.init(this.userAdd.title);
+							this.$refs.a2.init(this.userAdd.fileNo);
+							this.$refs.a3.init(this.userAdd.content);
+							this.$refs.signRead.init(this.userAdd.companyIds.split(","))
 							if(this.userAdd.feedback===0){
 								this.feedbackTwo=false
 							}else{

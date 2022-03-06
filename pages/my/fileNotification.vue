@@ -14,6 +14,7 @@
 				<view class="card_bot">
 					{{item.statusTime}}
 				</view>
+				<view class="divider" style="width: 100%;"><u-divider lineColor="#b9b9b9" :hairline="false" style="opacity: 0.2"></u-divider></view>
 			</view>
 		</view>
 		<view v-else>

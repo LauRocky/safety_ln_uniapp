@@ -29,6 +29,9 @@ export default {
 	created() {},
 	mounted() {},
 	methods: {
+		init(val){
+			this.value2=val;
+		},
 		handcoo() {
 			this.$emit('handEndD',this.value2);
 		},

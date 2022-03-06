@@ -45,7 +45,7 @@
 						    iconPlacement="right" 
 							@change="checkboxChange"
 						    placement="row">
-							<u-checkbox activeColor="red"  v-for="(val1, i1) in list" :key="i1" :label="val1.name" :name="val1.name"></u-checkbox>
+							<u-checkbox activeColor="#11B38C" :checked="hasChecked(val1.id)" v-for="(val1, i1) in list" :key="val1.id" :value="val1" :label="val1.name" :name="val1.id" :id="val1.id"></u-checkbox>
 						</u-checkbox-group>
 						<view class="text-a" v-if="!one" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)"
 							v-for="(val1, i1) in list" :key="i1">{{ val1.name }}</view>
@@ -82,7 +82,8 @@
 				cooindex: null,
 				allList: {}, //所有数据
 				companyId: '',
-				projectId: ''
+				projectId: '',
+				selected:[],
 			};
 		},
 		onLoad() {},
@@ -101,13 +102,32 @@
 					this.projectId = obj.projectId
 				this.cooindex = this.threeindex = obj.threeindex;
 				this.handByCompanyName();
-				this.$emit('handEnd', obj);
+				console.error(obj);
+				// this.$emit('handEnd', obj);
 			}
 		},
 		mounted() {},
 		methods: {
+			hasChecked(row){
+				console.error(row);
+				return this.selected.indexOf(row)>-1;
+			},
+			init(array){
+				if(array){
+		
+					this.selected=array;
+				}
+			
+			},
 			checkboxChange(e){
-				this.$emit('handEnd',e.join(","));
+				console.error("end",e);
+				let result=this.list.filter(item=>{
+					return  e.indexOf(    item.id)>-1; 
+				});
+				console.error(result);
+				
+				
+				this.$emit('handEnd',result);
 				this.$emit('companyId', JSON.parse(uni.getStorageSync('userInfo')).companyId);
 			},
 			handcache() { //缓存数据
@@ -143,7 +163,7 @@
 			},
 			handcoo(val, v) {
 				//点击下面的选项;
-				console.log(v)
+				
 				if (v.i == 0) {
 					if (this.one !== v.name) {
 						this.two = this.three = '';
@@ -156,13 +176,16 @@
 					this.companyId = v.companyId; //缓存数据
 					this.projectId = v.projectId;
 					this.cooindex = this.threeindex = val;
+					console.error(v);
+					console.error(val);
 					this.$emit('handEnd', v);
-					this.$emit('companyId', JSON.parse(uni.getStorageSync('userInfo')).companyId);
+				
+					// this.$emit('companyId', JSON.parse(uni.getStorageSync('userInfo')).companyId);
 					// this.twoindex = val;
 					// this.handByCompanyName();
 				} else if (v.i == 2) {
 					this.three = v.name;
-
+					console.error(this.three);
 				}
 			},
 			handtolower() {},
@@ -191,7 +214,7 @@
 			handSelectData() {
 				//shujui  两级
 				this.$http(
-						'/lvxin/getCompanySelectData',
+						'/lvxin/getCompanySelectDataNew',
 						'GET', {
 							companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 						},
@@ -199,12 +222,14 @@
 					)
 					.then(res => {
 						if (res.code == 0) {
-							console.log(res)
+							console.log("data",res)
+							
 							res.data.first1 = [];
 							res.data.second2 = [];
 							res.data.first.forEach(val => {
 								let obj = {};
 								obj.name = val;
+				
 								obj.i = 0;
 								res.data.first1.push(obj);
 							});
@@ -212,7 +237,8 @@
 								res.data.second2[i] = [];
 								res.data.second[i].forEach(val => {
 									let obj = {};
-									obj.name = val;
+									obj.name = val.name;
+									obj.id=val.id;
 									obj.i = 1;
 									res.data.second2[i].push(obj);
 								});

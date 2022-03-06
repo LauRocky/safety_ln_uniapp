@@ -78,7 +78,9 @@
 						if (res.code == 0) {
 							uni.hideLoading();
 							console.log(res.data)
-							this.userAdd = res.data
+							if(res.data){
+								this.userAdd = res.data
+							}
 						} else {
 							console.log(res)
 							uni.showToast({
@@ -128,7 +130,12 @@
 				uni.showLoading({
 					title: '加载中',
 				});
-					this.userAdd.status = 1
+					this.userAdd.status = 1;
+					let files=this.userAdd.fileList?this.userAdd.fileList:[];
+					this.fileList.forEach(e=>{
+						files.push(e);
+					})
+					this.userAdd.fileList=files;
 				this.$http('/filenotice/feedback', 'POST', this.userAdd, false)
 					.then(res => {
 						if (res.code == 0) {
