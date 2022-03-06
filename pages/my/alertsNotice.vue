@@ -64,12 +64,19 @@
 				// this.showL=true
 			},
 			eachItem(e) {
-				console.log("55", e)
-				this.content = e.content
-				this.show = true;
+				console.error(e);
+				this.$http('/todo/handled/'+e.id,'POST',{},false).then(res=>{});
+				if(e.serviceType==="fn"){
+					uni.navigateTo({
+						url:'/pages/my/fileDetail?id='+e.eventId
+					})
+				}else{
+					this.content = e.content
+					this.show = true;
+				}
+				
 			},
 			leftClick() {
-				console.log('leftClick');
 				uni.navigateBack({
 					delta: 1
 				});
