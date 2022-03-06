@@ -74,7 +74,8 @@ export default {
 				this.getCode(code);
 			}
 		} else {
-		
+			let userInfo = uni.getStorageSync('userInfo');
+			let token = uni.getStorageSync('token');
 			let lxnum = uni.getStorageSync('lxnum') ? uni.getStorageSync('lxnum') : 0;
 			this.lxLogin.getLxCode({}, res => {
 				//存在code就登录。不存在code需要去判断是否存在绿信。存在的话就去授权登录。

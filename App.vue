@@ -71,7 +71,7 @@ export default {
 								clearTimeout(timer);
 								timer = setTimeout(() => {
 									uni.navigateTo({
-										url: obj.path
+										url: msg.payload.path
 									});
 								}, 1000);
 							}
@@ -141,13 +141,14 @@ export default {
 				plus.navigator.closeSplashscreen();
 			}
 		} else {
+			console.log('11111111')
 			let lxLogin = uni.requireNativePlugin('zhongqian-lvxin-login');
 			lxLogin.getLxCode({}, res => {
 				if (res.code) {
-					// 关闭启动页进入登录
+					// 关闭启动页进入登录,如果项目在后台运行，直接跳转到首页
 					plus.navigator.closeSplashscreen();
 				} else if (userInfo) {
-					//不存在则跳转至首页页
+					//跳转至首页页
 					uni.reLaunch({
 						url: '/pages/home/index',
 						success: () => {

@@ -75,7 +75,7 @@ export default {
 				false
 			)
 				.then(res => {
-					console.log(res);
+					console.log(res,'9999999');
 					if (res.code == 0) {
 						uni.hideLoading();
 						res.data.forEach(el => {
