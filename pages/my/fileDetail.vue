@@ -67,7 +67,8 @@
 			</view>
 			<view class="detailname">
 				<view class="bot-1">
-					{{li.content}}
+					<!-- {{li.content}} -->
+					<rich-text :nodes="li.content"></rich-text>
 				</view>
 			</view>
 			<view class="bot">
