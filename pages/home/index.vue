@@ -14,11 +14,11 @@
 					<view class="scroll" v-if="indexList.length !== 0">
 						<view v-for="(item, index) in indexList" :key="index" @click="handXq(item)">
 							<view class="main-all">
-								<view class="main-left">
+								<view :class="[status == 3 ? 'main-left' : 'main-left2']">
 									<view class="main-yuan"></view>
 									<view class="main-sao">{{ item.title }}</view>
 								</view>
-								<view class="main-right">{{ item.time }}</view>
+								<view class="main-right" v-show="status == 3">{{ item.time }}</view>
 							</view>
 						</view>
 					</view>
@@ -109,7 +109,7 @@
 
 <script>
 import { scanCode, is_iOS } from '../../utils/utils.js';
-import { monitoring, alerts } from '../../utils/api.js';
+import { monitoring, alerts, monitorMessage } from '../../utils/api.js';
 import barecharts from '../../components/home/barecharts.vue';
 import AppUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update';
 let App = getApp();
@@ -129,7 +129,7 @@ export default {
 				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 			},
 			backlog: {
-				readStatus: '0',
+				isRead: '0',
 				page: 1,
 				limit: 6
 			},
@@ -142,15 +142,24 @@ export default {
 			list1: [
 				{
 					name: '项目预警',
-					value: 1
+					value: 1,
+					badge: {
+						isDot: false
+					}
 				},
 				{
 					name: '隐患通知',
-					value: 2
+					value: 2,
+					badge: {
+						isDot: false
+					}
 				},
 				{
 					name: '公告',
-					value: 3
+					value: 3,
+					badge: {
+						isDot: false
+					}
 				}
 			],
 			status: 1, //点击状态控制  1.项目预警 2.隐患通知 3. 公告
@@ -181,21 +190,40 @@ export default {
 			showlink: false
 		};
 	},
-
-	onShow() {},
 	onLoad() {
 		AppUpdate(); //监听升级
-		if (uni.getStorageSync('userInfo')) {
-			this.handProbleBar();
-		}
+		this.handbacklog();
+		this.handProbleBar();
+		this.handdetailByUser();
 	},
-	mounted: function() {
-		if (uni.getStorageSync('userInfo')) {
-			this.handbacklog();
-			this.handdetailByUser();
-		}
+	onShow() {
+		this.monitorMessage();
 	},
+	mounted() {},
 	methods: {
+		monitorMessage() {
+			//获取最新得消息  红点
+			this.$http('/app/notify/count', 'GET', {}, false)
+				.then(res => {
+					if (res.code == 0) {
+						if (res.data.problemUnread) {
+							this.list1[1].badge.isDot = true;
+						}
+						if (res.data.todoUnread || res.data.problemUnread || res.data.fileNoticeUnread) {
+							uni.showTabBarRedDot({
+								index: 4
+							});
+						} else {
+							uni.hideTabBarRedDot({
+								index: 4
+							});
+						}
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 		copy(value) {
 			//提示模板
 			uni.showModal({
@@ -268,7 +296,7 @@ export default {
 								low.push(item);
 							}
 						});
-						
+
 						this.dataList[0].value = majorList.length;
 						this.dataList[1].value = moreList.length;
 						this.dataList[2].value = commonlyList.length;
@@ -281,8 +309,12 @@ export default {
 		},
 		handProblemsId(val) {
 			//获取隐患类型
+			uni.showLoading({
+				title: '跳转中'
+			});
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
+					uni.hideLoading();
 					if (res.code == 0) {
 						if (!res.problem) {
 							return uni.showToast({
@@ -353,7 +385,6 @@ export default {
 			});
 		},
 		handscanCode() {
-			console.log(uni.getStorageSync('show'));
 			if (!uni.getStorageSync('show') || uni.getStorageSync('show') == 1) {
 				// 点击弹出一个弹窗
 				this.show = true;
@@ -364,6 +395,7 @@ export default {
 		},
 		handtolower() {},
 		handtabs(val) {
+			this.indexList = [];
 			if (val.value == 1) {
 				this.status = 1;
 				this.handbacklog();
@@ -377,32 +409,34 @@ export default {
 		},
 		handbacklog() {
 			//项目预警
-			let url = '/project/plan/page?companyId=' + JSON.parse(uni.getStorageSync('userInfo')).companyId;
-			this.$http(url, 'GET', {}, false)
+			let url = '/project/plan/realPage?companyId=' + JSON.parse(uni.getStorageSync('userInfo')).companyId;
+			this.$http(
+				url,
+				'GET',
+				{
+					page: 1,
+					limit: 6
+				},
+				false
+			)
 				.then(res => {
+					uni.hideLoading();
 					if (res.code == 0) {
 						let list = [];
-						res.page.forEach(val => {
-							if (val.nodes) {
-								val.nodes.forEach(e => {
-									let item = {};
-									item.title = val.projectName + e.taskName;
-									let listT = [];
-									listT = val.createTime.split(' ');
-									item.time = listT[0];
-									item.projectId = val.projectId;
-									item.projectName = val.projectName;
-									item.companyId = val.companyId;
-									list.push(item);
-								});
-							}
+						res.page.list.forEach(val => {
+							val.nodes.forEach(e => {
+								let item = {};
+								item.title = val.projectName + e.taskName;
+								item.time = val.createTime.split(' ')[0];
+								item.projectId = val.projectId;
+								item.projectName = val.projectName;
+								item.companyId = val.companyId;
+								list.push(item);
+							});
 						});
-						if (list.length >= 6) {
-							this.indexList = list.slice(0, 6);
-						} else {
-							this.indexList = list;
-						}
+						this.list1[0].badge.isDot = list.length ? true : false; //获取最新得消息  红点
 						this.totalCount = list.length;
+						this.indexList = list.splice(0, 6);
 					}
 				})
 				.catch(err => {
@@ -411,16 +445,18 @@ export default {
 		},
 		handmsglist() {
 			//隐患通知
-			this.$http('/msg/list', 'POST', this.backlog, false)
+			uni.showLoading({
+				title: '加载中'
+			});
+			this.$http('/app/problem/msg/page', 'POST', this.backlog, false)
 				.then(res => {
+					uni.hideLoading();
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
 							val.title = val.content;
-							let list = [];
-							list = val.createTime.split(' ');
-							val.time = list[0];
+							val.time = val.createTime.split(' ')[0];
 						});
-						this.indexList = res.page.list.splice(0, 6);
+						this.indexList = res.page.list;
 						this.totalCount = res.page.totalCount;
 					}
 				})
@@ -430,16 +466,18 @@ export default {
 		},
 		handquerylist() {
 			//公告
+			uni.showLoading({
+				title: '加载中'
+			});
 			this.$http('/news/all/list', 'GET', this.receiver, false)
 				.then(res => {
+					uni.hideLoading();
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
 							val.title = val.newsName;
-							let list = [];
-							list = val.createTime.split(' ');
-							val.time = list[0];
+							val.time = val.createTime.split(' ')[0];
 						});
-						this.indexList = res.page.list.splice(0, 6);
+						this.indexList = res.page.list;
 						this.totalCount = res.page.totalCount;
 					}
 				})
@@ -580,7 +618,6 @@ export default {
 					.main-left {
 						display: flex;
 						align-items: center;
-
 						.main-yuan {
 							width: 16upx;
 							height: 16upx;
@@ -591,6 +628,28 @@ export default {
 
 						.main-sao {
 							width: 60vw;
+							font-size: 28upx;
+							font-family: PingFang SC;
+							font-weight: 500;
+							color: #333333;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
+						}
+					}
+					.main-left2 {
+						display: flex;
+						align-items: center;
+						.main-yuan {
+							width: 16upx;
+							height: 16upx;
+							background: #00b490;
+							border-radius: 50%;
+							margin-right: 12upx;
+						}
+
+						.main-sao {
+							width: 650upx;
 							font-size: 28upx;
 							font-family: PingFang SC;
 							font-weight: 500;

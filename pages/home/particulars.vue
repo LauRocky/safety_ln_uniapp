@@ -4,37 +4,43 @@
 		<template v-if="indexList.length !== 0">
 			<view class="par" v-for="(val, i) in indexList" :key="i" @click="handXq(val)">
 				<view class="par-1">
-					<view class="tou" v-if="status !== 3">{{ val.title }}</view>
 					<view class="par-cet">
-						<view class="proname">{{ val.projectName }}</view>
-						<view class="tags" v-if="status == 1">
-							<view class="tt" v-if="val.expireStatus == '1'">
-								【一般】
-								<text>{{val.taskName}}</text>
-							</view>
-							<view class="tt" v-else-if="val.expireStatus == '2'">
-								【较重】
-							<text>{{val.taskName}}</text>
-							</view>
-							<view class="tt" v-else-if="val.expireStatus == '3'">
-								【严重】
-								<text>{{val.taskName}}</text>
-							</view>
-							<view class="tt" v-else-if="val.expireStatus == '4'">
-								【特别严重】
-								<text>{{val.taskName}}</text>
+						<view class="proname">
+							{{ val.projectName ? val.projectName : '无' }}
+							<view class="float-r" v-show="status == 2">
+								<text v-if="val.status == -1" style="color:#ff0000;">待整改</text>
+								<text v-else-if="val.status == 1" style="color:#ff6c00;">待复核</text>
+								<text v-else-if="val.status == 0" style="color:#11B38C ;">已完成</text>
 							</view>
 						</view>
-						<view class="tags" v-if="status == 2"></view>
-						<view class="tags2" v-if="status == 3">
+						<view class="tags" v-if="status == 1">
+							<view class="tt">
+								<text v-if="val.expireStatus == '1'">[一般]</text>
+								<text v-else-if="val.expireStatus == '2'">[较重]</text>
+								<text v-else-if="val.expireStatus == '3'">[严重]</text>
+								<text v-else-if="val.expireStatus == '4'">[特别严重]</text>
+								<text>{{ val.taskName }}</text>
+							</view>
+							<view class="par-2" v-show="status !== 3">
+								<view class="times">{{ val.time }}</view>
+								<!-- <button class="btn">点击查看</button> -->
+							</view>
+						</view>
+						<view class="tags" v-else-if="status == 2">
+							<view class="tt">
+								<text>[{{ val.expireStatus }}]</text>
+								<text>{{ val.taskName }}</text>
+							</view>
+							<view class="par-2" v-show="status !== 3">
+								<view class="times">{{ val.time }}</view>
+								<!-- <button class="btn">点击查看</button> -->
+							</view>
+						</view>
+						<view class="tags2" v-else-if="status == 3">
 							<view class="tag-text">{{ val.content }}</view>
 							<view class="times">{{ val.time }}</view>
 						</view>
 					</view>
-				</view>
-				<view class="par-2" v-if="status !== 3">
-					<view class="times">{{ val.time }}</view>
-					<!-- <button class="btn">点击查看</button> -->
 				</view>
 			</view>
 		</template>
@@ -58,11 +64,13 @@ export default {
 			titles: '',
 			indexList: [],
 			project: {
+				page: 1,
+				limit: 1000,
 				projectName: '',
 				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 			},
 			backlog: {
-				isRead:'0',
+				isRead: '0',
 				readStatus: '0',
 				page: 1,
 				limit: 10
@@ -109,14 +117,16 @@ export default {
 		},
 		handProblemsId(val) {
 			//获取隐患类型
-			
-			this.$http(`/msg/read`,`POST`,{ids:[val.eventId]},false)
-				.then(res=>{
-					console.error("处理隐患待办成功",res);
-				})
-			
+			uni.showLoading({
+				title: '跳转中'
+			});
+			this.$http(`/msg/read`, `POST`, { ids: [val.eventId] }, false).then(res => {
+				console.error('处理隐患待办成功', res);
+			});
+
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
+					uni.hideLoading();
 					if (res.code == 0) {
 						switch (res.problem.status) {
 							case -1:
@@ -144,35 +154,30 @@ export default {
 
 		handbacklog() {
 			//项目预警
-			this.$http('/project/plan/page', 'POST', this.project, false)
+			uni.showLoading({
+				title: '加载中'
+			});
+			this.$http('project/plan/realPage', 'POST', this.project, false)
 				.then(res => {
+					uni.hideLoading();
 					if (res.code == 0) {
-						let list=[];
-						res.page.forEach(val => {
-							if(val.nodes){
-								val.nodes.forEach(e=>{
-									let item={};
-									item.title=val.projectName.substr(0,1);
-									let listT = [];
-									listT = val.createTime.split(' ');
-									item.time = listT[0];
-									item.taskName=e.taskName;
-									item.expireStatus=val.expireStatus;
-									item.projectId=val.projectId;
-									item.projectName=val.projectName;
-									item.companyId=val.companyId;
-									list.push(item);
-								})
-							}
-							
+						this.project.page++;
+						let list = [];
+						res.page.list.forEach(val => {
+							val.nodes.forEach(e => {
+								let item = {};
+								item.title = val.projectName.substr(0, 1);
+								item.time = val.createTime.split(' ')[0];
+								item.taskName = e.taskName;
+								item.expireStatus = e.expireStatus;
+								item.projectId = val.projectId;
+								item.projectName = val.projectName;
+								item.companyId = val.companyId;
+								list.push(item);
+							});
 						});
-						
-							this.indexList=list;
-						
-						
+						this.indexList = list;
 						this.totalCount = list.length;
-						
-
 					}
 				})
 				.catch(err => {
@@ -184,7 +189,7 @@ export default {
 			uni.showLoading({
 				title: '正在加载'
 			});
-			this.$http('/msg/list', 'POST', this.backlog, false)
+			this.$http('/app/problem/msg/page', 'POST', this.backlog, false)
 				.then(res => {
 					uni.hideLoading();
 					if (res.code == 0) {
@@ -192,10 +197,19 @@ export default {
 							this.backlog.page++;
 							res.page.list.forEach(val => {
 								val.title = val.content.substr(0, 1);
-								val.projectName = val.content;
-								let list = [];
-								list = val.createTime.split(' ');
-								val.time = list[0];
+								val.payload2 = JSON.parse(val.payload);
+								if (val.payload2) {
+									val.projectName = val.payload2.projectName;
+									val.expireStatus = val.payload2.level;
+									val.status = val.payload2.status;
+								} else {
+									val.projectName = '';
+									val.expireStatus = '';
+									val.status = '';
+								}
+
+								val.taskName = val.content;
+								val.time = val.createTime.split(' ')[0];
 							});
 							this.indexList = this.indexList.concat(res.page.list);
 						}
@@ -236,7 +250,9 @@ export default {
 		}
 	},
 	onReachBottom() {
-		if (this.status == 2) {
+		if (this.status == 1) {
+			this.handbacklog();
+		} else if (this.status == 2) {
 			this.handmsglist();
 		} else if (this.status == 3) {
 			this.handquerylist();
@@ -251,12 +267,9 @@ export default {
 	padding: 15upx 0;
 	.par {
 		margin: 20upx;
-		display: flex;
-		justify-content: space-between;
 		border-bottom: 2upx solid rgba(188, 188, 188, 0.2);
 		.par-1 {
 			padding-bottom: 20upx;
-			display: flex;
 			.tou {
 				margin-right: 20upx;
 				width: 100upx;
@@ -271,33 +284,41 @@ export default {
 				color: #feffff;
 			}
 			.par-cet {
+				width: 100%;
 				padding-top: 10upx;
 				.proname {
 					font-size: 32upx;
 					font-family: PingFang SC;
 					font-weight: bold;
 					color: #333333;
-					width: 50vw;
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
+					.float-r {
+						float: right;
+						font-size: 26upx;
+						font-weight: 500;
+					}
 				}
 				.tags {
-					width: 50vw;
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					font-size: 26upx;
+					color: #666666;
 					.tt {
-						margin-top: 20upx;
-						font-size: 24upx;
-						font-family: PingFang SC;
-						font-weight: bold;
-						color: #333333;
-						text {
-							font-size: 24upx;
-							font-family: PingFang SC;
-							font-weight: 400;
-							color: #8f8f8f;
+						flex: 1;
+						margin: 20upx 20upx 0 0;
+						overflow: hidden;
+						-webkit-line-clamp: 2;
+						text-overflow: ellipsis;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+					}
+					.par-2 {
+						padding-top: 15upx;
+						.times {
+							width: 20vw;
+							font-size: 28upx;
+							font-weight: 500;
+							color: #666666;
 						}
 					}
 				}
@@ -324,15 +345,6 @@ export default {
 						color: #666666;
 					}
 				}
-			}
-		}
-		.par-2 {
-			padding-top: 15upx;
-			.times {
-				font-size: 28upx;
-				font-family: PingFang SC;
-				font-weight: 500;
-				color: #666666;
 			}
 		}
 	}

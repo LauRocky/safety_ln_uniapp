@@ -1,4 +1,3 @@
-
 import {
 	request
 } from "./request.js"
@@ -10,16 +9,34 @@ export function getDictList(dictType) {
 	})
 }
 // 监控预警
-export function  monitoring() {
-		return new request('/notification/cameraAlarmList', 'GET', {
-	})
+export function monitoring() {
+	return new request('/notification/cameraAlarmList', 'GET', {})
 }
 // 待办
-export function  alerts() {
-		return new request('/todo/page', 'GET', {
-			status: "0",
-			page: "",
-			limit: "",
+export function alerts() {
+	return new request('/todo/page', 'GET', {
+		status: "0",
+		page: "",
+		limit: "",
 	})
 }
- 
+export function monitorMessage() {
+	return new request('/app/notify/count', 'POST', {}, false)
+		.then(res => {
+			if (res.code == 0) {
+				if (res.data.todoUnread || res.data.problemUnread || res.data.fileNoticeUnread) {
+					uni.showTabBarRedDot({
+						index: 4
+					});
+				} else {
+					uni.hideTabBarRedDot({
+						index: 4
+					});
+				}
+			}
+		})
+		.catch(err => {
+			console.log(err);
+		});
+
+}

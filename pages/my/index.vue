@@ -21,10 +21,10 @@
 			</view>
 
 			<view class="images">
-				<view class="image-item" @click="warning">
+				<!-- <view class="image-item" @click="warning">
 					<image class="image-imgs" src="../../static/my/project1.png" mode=""></image>
 					<view class="image-text">项目预警</view>
-				</view>
+				</view> -->
 				<view class="image-item" @click="dangerNotice">
 					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="problemUnread"></u-badge></view>
 					<image class="image-imgs" src="../../static/my/project2.png" mode=""></image>
@@ -38,11 +38,11 @@
 					<image class="image-imgs" src="../../static/my/project4.png" mode=""></image>
 					<view class="image-text">意见反馈</view>
 				</view>
-				<view class="image-item" @click="alerts" style="position: relative;">
+				<!-- <view class="image-item" @click="alerts" style="position: relative;">
 					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="Todo"></u-badge></view>
 					<image class="image-imgs" src="../../static/my/alerts.png" mode=""></image>
 					<view class="image-text">待办通知</view>
-				</view>
+				</view> -->
 				<view class="image-item" @click="offline" style="position: relative;">
 					<image class="image-imgs" src="../../static/my/offline.png" mode=""></image>
 					<view class="image-text">监控预警</view>
@@ -126,22 +126,26 @@ export default {
 			danger: 2,
 			public: 3,
 			deptNames: '',
-			Todo: '33', //待办
-			problemUnread: '22' //问题
+			Todo: '', //待办
+			problemUnread: '', //问题
+			fileNoticeUnread: ''
 		};
 	},
-	
+
 	methods: {
 		monitorMessage() {
 			this.$http('/app/notify/count', 'GET', {}, false)
 				.then(res => {
 					if (res.code == 0) {
-						console.log(res)
 						this.Todo = res.data.todoUnread;
 						this.problemUnread = res.data.problemUnread;
-						console.log(this.Todo ,this.problemUnread)
-						if (res.data.todoUnread || res.data.problemUnread) {
+						this.fileNoticeUnread = res.data.fileNoticeUnread;
+						if (res.data.todoUnread || res.data.problemUnread || res.data.fileNoticeUnread) {
 							uni.showTabBarRedDot({
+								index: 4
+							});
+						} else {
+							uni.hideTabBarRedDot({
 								index: 4
 							});
 						}
@@ -327,7 +331,7 @@ export default {
 		this.user = JSON.parse(uni.getStorageSync('userInfo'));
 	},
 	onShow() {
-		this.monitorMessage()
+		this.monitorMessage();
 	}
 };
 </script>
