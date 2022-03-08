@@ -5,10 +5,11 @@
 			<view class="card" v-for="(item,index) in dataList" :key='index' @click="navgetDetail(item)">
 				<view class="card_top">
 					<text class="theme">{{item.title}}</text>
-					<text class="read" v-if="item.statusText=='未报送' || item.statusText=='未读'" style="color: #ff0000;">{{item.statusText}}</text>
+					<text class="read" v-if="item.statusText=='未报送' || item.statusText=='未读'"
+						style="color: #ff0000;">{{item.statusText}}</text>
 					<text class="read" v-if="item.statusText=='已报送'" style="color: #11B38C;">{{item.statusText}}</text>
 					<text class="read" v-if="item.statusText=='已读'" style="color: #666666;">{{item.statusText}}</text>
-				<!-- 	<text class="read" v-if="item.status=='1'">已发布</text>
+					<!-- 	<text class="read" v-if="item.status=='1'">已发布</text>
 					<text class="read" v-if="item.status=='0'">未发布</text> -->
 				</view>
 				<view class="card_content">
@@ -17,7 +18,9 @@
 				<view class="card_bot">
 					{{item.statusTime}}
 				</view>
-				<view class="divider" style="width: 100%;"><u-divider lineColor="#b9b9b9" :hairline="false" style="opacity: 0.2"></u-divider></view>
+				<view class="divider" style="width: 100%;">
+					<u-divider lineColor="#b9b9b9" :hairline="false" style="opacity: 0.2"></u-divider>
+				</view>
 			</view>
 		</view>
 		<view v-else>
@@ -43,7 +46,7 @@
 					page: 1
 				},
 				totalCount: 0,
-				totalPage:0,
+				totalPage: 0,
 				dataList: [],
 				dataForm: {
 					searchKey: ''
@@ -52,16 +55,13 @@
 		},
 		onLoad() {
 			// location.reload()
+			this.getDataList()
 		},
 		onReachBottom() {
-			console.log('ssssssssssssssssssssssssssssssssssss')
 			this.List.page++
 			this.getDataList()
 		},
-		onShow() {
-			this.getDataList()
-			// this.getDataListTwo()
-		},
+		onShow() {},
 		methods: {
 			leftClick() {
 				console.log('leftClick');
@@ -151,7 +151,7 @@
 								}
 							});
 							// }
-							this.totalPage ++;
+							this.totalPage++;
 						}
 					})
 					.catch(err => {
