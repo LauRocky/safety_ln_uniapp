@@ -18,17 +18,17 @@
 			<view class="main">
 				<view class="main-a">
 					{{ problem.problemDesc }}请
-					<text style="color: #3e8ef7">@{{ problem.problemSolverDisplay }}</text>
+					<text>@{{ problem.problemSolverDisplay }}</text>
 					{{ problem.problemRequire }}
 				</view>
 				<view class="main-a" v-if="problem.notifyPersonDisplay != null && problem.notifyPersonDisplay != ''">
 					<!-- 知会 -->
 					通知
-					<text style="color: #3e8ef7">{{ problem.notifyPersonDisplay }}</text>
+					<text>{{ problem.notifyPersonDisplay }}</text>
 				</view>
-				<view v-if="problem.status !== -1">
+				<view class="main-a" v-if="problem.status !== -1">
 					请
-					<text style="color: #3e8ef7">@{{ problem.problemCheckerDisplay }}</text>
+					<text>@{{ problem.problemCheckerDisplay }}</text>
 					<!-- 复核 -->
 					复核
 				</view>
@@ -61,8 +61,13 @@
 					</view>
 					<view class="main">
 						<view class="main-a" v-if="val.fallbackUserName">
-							回复给 @{{ val.fallbackUserName }}
-							<text v-if="parseInt(val.status) === 1 && problem.checkerUserEntity">，请 @{{ problem.checkerUserEntity.fullname }} 复核</text>
+							回复给
+							<text>@{{ val.fallbackUserName }}</text>
+						</view>
+						<view class="main-a" v-if="parseInt(val.status) === 1 && problem.checkerUserEntity">
+							请
+							<text>@{{ problem.checkerUserEntity.fullname }}</text>
+							复核
 						</view>
 						<view class="imgs"><image :src="val.statusImages" mode="widthFix"></image></view>
 					</view>
@@ -124,7 +129,6 @@ export default {
 		this.id = val.id;
 		this.status = val.status;
 		this.userId = JSON.parse(uni.getStorageSync('userInfo')).userId.toString();
-		
 	},
 	onShow() {
 		this.handgETLIST();
@@ -242,7 +246,7 @@ export default {
 	.all {
 		padding: 27upx 20upx;
 	}
-	.all-2{
+	.all-2 {
 		margin-top: 40upx;
 	}
 	.top {
