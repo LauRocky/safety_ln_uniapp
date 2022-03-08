@@ -84,7 +84,13 @@
                 "push" : {
                     "unipush" : {}
                 },
-                "statics" : {}
+                "statics" : {},
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "",
+                        "appkey_android" : ""
+                    }
+                }
             },
             "screenOrientation" : [
                 "portrait-primary",
@@ -188,11 +194,11 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
-                    // "target" : "http://59.110.136.159:12002/safety-server/api",
-                    // "target" : "http://192.168.1.141:12002/safety-server/api", //测试
+                    "target" : "http://192.168.11.129:12002/safety-server/api",
+                    "target" : "http://192.168.11.129:12002/safety-server/api", //测试
                     //以下部分请勿改动！
                     // "target" : "https://esq.cgdg.com/api", //正式环境
-                    "target" : "https://esq.zhongqian.info:1443/api", //测试环境
+                    /* "target" : "https://esq.zhongqian.info:1443/api", //测试环境 */
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
