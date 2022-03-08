@@ -6,7 +6,17 @@
 				<view class="top-1">
 					<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
 					<view class="cet">
-						<view class="title">{{ user.fullname }}</view>
+						<view class="title">
+							<view class="fullname">
+								{{ user.fullname }}
+							</view>
+						<view class="bot-1">
+							<view class="">
+								<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
+							</view>
+							<view class="bot-w">创建时间：{{dataList.createTime}}</view>
+						</view>
+						</view>
 						<view class="title-1">{{ deptNames }}</view>
 					</view>
 				</view>
@@ -18,12 +28,12 @@
 			</view>
 
 			<view class="bot">
-				<view class="bot-1">
+				<!-- <view class="bot-1">
 					<view class="">
 						<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
 					</view>
 					<view class="bot-w">创建时间：{{dataList.createTime}}</view>
-				</view>
+				</view> -->
 				<view class="bot-1">
 					<view class="">
 						<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
@@ -31,10 +41,10 @@
 					<view class="bot-w">报送截止日期：{{dataList.feedbackExpireTime}}</view>
 				</view>
 				<view class="bot-1 bot-top">
-					<view class="bot-flex">
-						<image class="bot-imgs" src="../../static/add/newAddAttachment.png" mode=""></image>
+					<view class="bot-flex" v-if="num!=0">
+						<image class="bot-imgs" src="../../static/add/accessory.png" mode=""></image>
 					</view>
-					<view class="bot-w">附件（{{num}}）
+					<view class="bot-w" v-if="num!=0">附件（{{num}}）
 						<text class="save" @click="saveAll">保存全部</text>
 						<!-- <text class="save">用wps打开</text> -->
 					</view>
@@ -51,15 +61,15 @@
 				</view>
 			</view>
 		</view>
+		<view class="bsinfo">
+			报送信息：
+		</view>
 		<view class="all" v-for="(li,i) in List" :key='i'>
-			<view class="bsinfo">
-				报送信息：
-			</view>
 			<view class="top">
 				<view class="top-1">
-					<image class="top-imgs" src="../../static/user/tou.png" mode=""></image>
+					<!-- <image class="top-imgs" src="../../static/user/tou.png" mode=""></image> -->
 					<view class="cet">
-						<view class="title-1">{{ li.company.name }}</view>
+						<view class="title">{{ li.company.name }}</view>
 					</view>
 				</view>
 				<!-- <view class="top-right">2022/11/02</view> -->
@@ -72,18 +82,18 @@
 				</view>
 			</view>
 			<view class="bot">
-				
+
 				<view class="bot-1">
 					<view class="">
 						<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
 					</view>
-					<view class="bot-w">{{li.createTime}}</view>
+					<view class="bot-w">报送时间：{{li.feedbackExpireTime}}</view>
 				</view>
 				<view class="bot-1 bot-top">
-					<view class="bot-flex">
-						<image class="bot-imgs" src="../../static/add/newAddAttachment.png" mode=""></image>
+					<view class="bot-flex" v-if="li.fileList.length!=0">
+						<image class="bot-imgs" src="../../static/add/accessory.png" mode=""></image>
 					</view>
-					<view class="bot-w">附件（{{li.fileList.length}}）
+					<view class="bot-w" v-if="li.fileList.length!=0">附件（{{li.fileList.length}}）
 						<text class="save" @click="saveAll">保存全部</text>
 						<!-- <text class="save">用wps打开</text> -->
 					</view>
@@ -117,7 +127,8 @@
 				needFeedback: false,
 				user: JSON.parse(uni.getStorageSync('userInfo')),
 				id: '',
-				name: "文件标题",
+				// name: this.dataList.title,
+				name: null,
 				rightText: '编辑',
 				dataList: [],
 				num: 0,
@@ -138,15 +149,17 @@
 		onLoad(val) {
 			this.id = val.id;
 			this.dataForm.fileNoticeId = val.id;
-
+			// uni.$once("xiazai", )
 		},
 		onShow() {
 			this.getDataList();
 			this.deptInfo();
 			this.overSubmission()
+			uni.setNavigationBarTitle({
+				title: this.dataList.title //此处写页面的title
+			});
 		},
 		methods: {
-
 			rightcilck() {
 				uni.navigateTo({
 					url: `/pages/my/fileAdd?id=${this.id}`
@@ -183,17 +196,18 @@
 					title: '加载中',
 				});
 				this.$http(`/filenotice/get/${this.id}`, "GET", false).then(res => {
-
 						uni.hideLoading();
 						if (res.code == 0) {
-
-							this.dataList = res.data;
-							this.rightText = this.dataList.createBy === this.user.userId ? "编辑" : null;
-							this.needFeedback = this.dataList.status === '1' && this.dataList.feedback === '1' &&
-								this.dataList.companyIds.indexOf(this.user.companyId) > -1 && this.user.jobId === 3;
-							this.num = this.dataList.fileList.length;
-							// this.dataList.content = this.dataList.content.replace(/\<p/gi, '<p class="conspan"', );
-							console.log(res.data)
+							if(res.data){
+								this.dataList = res.data;
+								this.rightText = this.dataList.createBy === this.user.userId ? "编辑" : null;
+								this.needFeedback = this.dataList.status === '1' && this.dataList.feedback === '1' &&
+									this.dataList.companyIds.indexOf(this.user.companyId) > -1 && this.user.jobId === 3;
+								this.num = this.dataList.fileList.length;
+								this.name=this.dataList.title;
+								this.dataList.content = this.dataList.content.replace(/\<p/gi, '<p class="conspan"', );
+							}
+							
 						}
 					})
 					.catch(err => {
@@ -230,7 +244,7 @@
 									icon: 'none',
 									mask: true,
 									title: '文件已保存：' + res.savedFilePath, //保存路径
-									duration: 3000,
+									duration: 1000,
 								});
 								setTimeout(() => {
 									//打开文档查看
@@ -240,7 +254,7 @@
 											console.log('打开文档成功');
 										}
 									});
-								}, 3000)
+								}, 1000)
 							}
 						});
 					}
@@ -284,6 +298,7 @@
 		font-weight: bold;
 		color: #333333;
 		margin-bottom: 28upx;
+		margin-left: 20upx;
 	}
 
 	.filedetail {
@@ -322,10 +337,47 @@
 					margin-left: 20upx;
 
 					.title {
+						display: flex;
 						font-size: 32upx;
 						font-family: PingFang SC;
 						font-weight: bold;
 						color: #333333;
+						.fullname{
+							font-size: 32upx;
+							font-family: PingFang SC;
+							font-weight: bold;
+							color: #333333;
+							margin-right: 20upx;
+						}
+						.bot-1 {
+							display: flex;
+							font-size: 28upx;
+							font-family: PingFang SC;
+							font-weight: 500;
+							color: #666666;
+						
+							.bot-imgs {
+								margin-right: 10upx;
+								width: 40upx;
+								height: 40upx;
+							}
+						
+							.bot-flex {
+								margin-top: 4upx;
+							}
+						
+							.bot-w {
+								width: 100%;
+						
+								.save {
+									font-size: 26upx;
+									font-family: PingFang SC;
+									font-weight: bold;
+									margin-left: 30upx;
+									color: #11B38C;
+								}
+							}
+						}
 					}
 
 					.deptInfotitle {

@@ -6,13 +6,13 @@
 			</view> -->
 			<view class="bont"></view>
 			<l-file ref="lFile" :logo="logo" @up-success="onSuccess"></l-file>
-			<view class="titles" @tap="onUpload">
+			<!-- <view class="titles" @tap="onUpload">
 				添加系统文件
-			</view>
+			</view> -->
 			<view class="bont"></view>
-			<view class="titles" @click="closefile">
+			<!-- <view class="titles" @click="closefile">
 				取消
-			</view>
+			</view> -->
 		</u-popup>
 		<!-- <uploadImg class="uploadImg" ref="uploadImg" :mode="imgList" @chooseFile="chooseFile" @imgDelete="imgDelete" :control="control" :columnNum="columnNum" /> -->
 	</view>
@@ -27,7 +27,7 @@
 	} from '../../utils/request.js';
 	export default {
 		name: 'enclosure',
-		props: ['showl', 'category2','fileList'],
+		props: ['showl', 'category2', 'fileList'],
 		components: {
 			uploadImg,
 		},
@@ -42,11 +42,17 @@
 			};
 		},
 		watch: {},
-		onLoad() {},
-		//组件生命周期
-		created() {},
-		mounted() {
+		onLoad() {
+			console.log('---')
 
+		},
+		//组件生命周期
+		created() {
+			console.log('---')
+			
+		},
+		mounted() {
+this.onUpload()
 		},
 		methods: {
 			/* 上传 */
@@ -72,12 +78,13 @@
 				uploadFile.url = res.data.data.file_full_url
 				uploadFile.name = res.data.data.name
 				uploadFile.fileImages = res.data.data.file_images
+				this.fileList=[]
 				this.fileList.push(uploadFile)
 				uni.showToast({
 					title: res.data.data.name,
 					icon: 'none'
 				})
-				this.$emit('successfile',this.fileList)
+				this.$emit('successfile', this.fileList)
 			},
 			// 上传图片
 			uploadImg() {
@@ -106,7 +113,6 @@
 						token: uni.getStorageSync('token')
 					},
 					success: res => {
-						console.log(res.data, '------------------')
 						const imgRes = JSON.parse(res.data);
 						this.$set(this.imgList, this.imgList.length, imgRes.data.file_full_url);
 					}
