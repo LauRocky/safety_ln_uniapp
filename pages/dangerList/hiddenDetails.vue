@@ -17,17 +17,17 @@
 			</view>
 			<view class="main">
 				<view class="main-a">
-					{{ problem.problemDesc }}:请
+					{{ problem.problemDesc }},请
 					<text style="color: #3e8ef7">@{{ problem.problemSolverDisplay }}</text>
 					{{ problem.problemRequire }}
 				</view>
 				<view class="main-a" v-if="problem.notifyPersonDisplay != null && problem.notifyPersonDisplay != ''">
 					<!-- 知会 -->
 					通知
-					<text style="color: #3e8ef7">@{{ problem.notifyPersonDisplay }}</text>
+					<text style="color: #3e8ef7">{{ problem.notifyPersonDisplay }}</text>
 				</view>
 				<view v-if="problem.status !== -1">
-					，请
+					请
 					<text style="color: #3e8ef7">@{{ problem.problemCheckerDisplay }}</text>
 					<!-- 复核 -->
 					复核
