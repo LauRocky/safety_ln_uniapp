@@ -1,4 +1,5 @@
 <script>
+import { monitorMessage } from 'utils/api.js';
 export default {
 	globalData: {
 		userInfo: {},
@@ -23,6 +24,20 @@ export default {
 				// type ： notify=推送 ，需要处理path  alert=弹窗提示 ,显示text的内容
 				console.log('click', msg);
 				if (plus.os.name == 'iOS') {
+					var UIApplication = plus.ios.import('UIApplication');
+					var app = UIApplication.sharedApplication();
+					//获取应用图标的数量
+					var oldNum = app.applicationIconBadgeNumber();
+					if (oldNum != 0) {
+						console.log('oldNum:' + oldNum);
+						var newNum = oldNum - 1;
+						console.log('newNum:' + newNum);
+						//设置应用图标的数量
+						plus.runtime.setBadgeNumber(newNum);
+						//导入个推原生类
+						var GeTuiSdk = plus.ios.importClass('GeTuiSdk');
+						GeTuiSdk.setBadge(newNum);
+					}
 					let obj = {};
 					if (msg.aps) {
 						obj = JSON.parse(msg.payload.payload);
@@ -105,7 +120,7 @@ export default {
 							let stringA = payload.path + ',' + payload.receiver + ',' + payload.status + ',' + payload.type;
 							plus.push.createMessage(msg.content, stringA, options);
 						}
-						this.monitorMessage();
+						monitorMessage();
 					}
 				} else {
 					if (msg.type == 'receive' && msg.payload) {
@@ -115,7 +130,7 @@ export default {
 							title: msg.title
 						};
 						plus.push.createMessage(msg.payload.content, msg.payload, options);
-						this.monitorMessage();
+						monitorMessage();
 					}
 				}
 			},
@@ -141,7 +156,6 @@ export default {
 				plus.navigator.closeSplashscreen();
 			}
 		} else {
-			console.log('11111111')
 			let lxLogin = uni.requireNativePlugin('zhongqian-lvxin-login');
 			lxLogin.getLxCode({}, res => {
 				if (res.code) {
@@ -170,23 +184,7 @@ export default {
 		console.error('onError', err);
 	},
 	mounted: function() {},
-	methods: {
-		monitorMessage() {
-			this.$http('/app/notify/count', 'POST', {}, false)
-				.then(res => {
-					if (res.code == 0) {
-						if (res.data.todoUnread || res.data.problemUnread) {
-							uni.showTabBarRedDot({
-								index: 4
-							});
-						}
-					}
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		}
-	}
+	methods: {}
 };
 </script>
 <style lang="scss">

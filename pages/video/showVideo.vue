@@ -124,7 +124,6 @@ export default {
 								this.rawList.push(obj);
 							}
 						});
-						console.log(this.showList, '00000000');
 					}
 					uni.hideLoading();
 				})
@@ -139,6 +138,9 @@ export default {
 		this.project.projectName = options.projectName;
 	},
 	onShow() {
+		// #ifdef APP-PLUS
+		plus.screen.lockOrientation('portrait-primary');
+		// #endif
 		this.showList = [];
 		this.rawList = [];
 		this.show();

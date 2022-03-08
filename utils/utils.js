@@ -29,7 +29,7 @@ export function is_iOS() {
 
 //个推如何修改绑定别名
 export function igexinTool() {
-	
+
 	var isAndorid, PushManager, context, Instance, GeTuiSdk;
 	if (plus.os.name == 'Android') {
 		isAndorid = true;
