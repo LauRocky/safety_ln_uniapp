@@ -133,12 +133,12 @@
 				});
 					this.userAdd.status = 1;
 					// let files=this.userAdd.fileList?this.userAdd.fileList:[];
-					let files=this.fileList?this.fileList:[];
-					this.fileList.forEach(e=>{
-						files.push(e);
-					})
-					// this.userAdd.fileList=files;
-					this.fileList=files;
+					// let files=this.fileList?this.fileList:[];
+					// this.fileList.forEach(e=>{
+					// 	files.push(e);
+					// })
+					this.userAdd.fileList=this.fileList;
+					// this.fileList=files;
 				this.$http('/filenotice/feedback', 'POST', this.userAdd, false)
 					.then(res => {
 						if (res.code == 0) {
