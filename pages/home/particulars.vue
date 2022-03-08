@@ -100,13 +100,9 @@ export default {
 		}
 	},
 	onShow() {
-		if (this.status == 1) {
-			this.handbacklog();
-		} else if (this.status == 2) {
+		 if (this.status == 2) {
 			this.handmsglist();
-		} else if (this.status == 3) {
-			this.handquerylist();
-		}
+		} 
 	},
 	//组件生命周期
 	created() {},
