@@ -216,7 +216,7 @@ export default {
 						if (res.data.nodeCount) {
 							this.list1[0].badge.isDot = true; //获取项目消息  红点
 						}
-						if (res.data.todoUnread || res.data.problemUnread || res.data.fileNoticeUnread || res.data.nodeCount) {
+						if (res.data.problemUnread || res.data.fileNoticeUnread) {
 							uni.showTabBarRedDot({
 								index: 4
 							});
