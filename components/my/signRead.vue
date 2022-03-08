@@ -14,7 +14,7 @@
 								<text v-if="one">{{ one }}</text>
 								<text v-else>请选择城市</text>
 							</view>
-							<u-icon v-if="one" name="arrow-right" color="#5F5F5F"></u-icon>
+							<u-icon v-if="one" name="arrow-right" color="#5F5F5F" @click="navgetcity"></u-icon>
 						</view>
 						<view class="main-1" v-if="one" @click="handtwo">
 							<view class="main-2">
@@ -39,25 +39,16 @@
 				<view class="main-cet">
 					<view class="p-titles">{{ titles }}</view>
 					<scroll-view class="scroll-a" scroll-y>
-						<u-checkbox-group 
-						v-if="one"
-						    v-model="checked"
-						    iconPlacement="right" 
-							@change="checkboxChange"
-						    placement="row">
-							<u-checkbox activeColor="#11B38C" :checked="hasChecked(val1.id)" v-for="(val1, i1) in list" :key="val1.id" :value="val1" :label="val1.name" :name="val1.id" :id="val1.id"></u-checkbox>
+						<u-checkbox-group v-if="one" v-model="checked" iconPlacement="right" @change="checkboxChange"
+							placement="row">
+							<u-checkbox activeColor="#11B38C" :checked='val1.disabled' 
+								v-for="(val1, i1) in citylist" :key="val1.id" :value="val1" :label="val1.name"
+								:name="val1.id" :id="val1.id"></u-checkbox>
 						</u-checkbox-group>
-						<view class="text-a" v-if="!one" :class="[cooindex == i1 ? 'active' : '']" @click="handcoo(i1, val1)"
-							v-for="(val1, i1) in list" :key="i1">{{ val1.name }}</view>
-							
+						<view class="text-a" v-if="!one" :class="[cooindex == i1 ? 'active' : '']"
+							@click="handcoo(i1, val1)" v-for="(val1, i1) in list" :key="i1">{{ val1.name.name }}</view>
+
 					</scroll-view>
-					
-<!-- 					<scroll-view class="scroll-a" scroll-y>
-						<u-checkbox-group v-model="checkboxValue1" placement="column" @change="checkboxChange">
-							<u-checkbox :customStyle="{marginBottom: '8px'}" v-for="(val1, i1) in list" :key="i1" :label="val1.name" :name="val1.name">
-							</u-checkbox>
-						</u-checkbox-group>
-					</scroll-view> -->
 				</view>
 			</view>
 		</u-popup>
@@ -70,7 +61,7 @@
 		components: {},
 		data() {
 			return {
-				checked:[],
+				checked: [],
 				one: '', //记录选择的name
 				oneindex: 0, //记录选择的index
 				two: '',
@@ -83,7 +74,13 @@
 				allList: {}, //所有数据
 				companyId: '',
 				projectId: '',
-				selected:[],
+				selected: [],
+				citylist: [],
+				cityname: [],
+				citynameto: [],
+				cityIdlist: [],
+				cityIdlisto: [],
+				cityNum: 0,
 			};
 		},
 		onLoad() {},
@@ -108,27 +105,53 @@
 		},
 		mounted() {},
 		methods: {
-			hasChecked(row){
-				console.error(row);
-				return this.selected.indexOf(row)>-1;
-			},
-			init(array){
-				if(array){
-		
-					this.selected=array;
+			navgetcity() {
+				this.cityNum++
+				console.log(this.cityIdlist)
+				console.log(this.cityname)
+				for (let i = 0; i < this.cityIdlist.length; i++) {
+					this.cityIdlisto.push(this.cityIdlist[i])
 				}
-			
+				for (let i = 0; i < this.cityname.length; i++) {
+					this.citynameto.push(this.cityname[i])
+				}
+				console.log(this.cityIdlisto)
+				console.log(this.citynameto)
+				this.one = ''
 			},
-			checkboxChange(e){
-				console.error("end",e);
-				let result=this.list.filter(item=>{
-					return  e.indexOf(    item.id)>-1; 
-				});
-				console.error(result);
-				
-				
-				this.$emit('handEnd',result);
+			hasChecked(row) {
+				return this.selected.indexOf(row) > -1;
+			},
+			init(array) {
+				if (array) {
+					console.log(array)
+					this.selected = array;
+				}
+
+			},
+			checkboxChange(e) {
+				this.cityIdlist = e
+				this.cityname = []
+				for (let i = 0; i < e.length; i++) {
+					this.citylist.forEach(item => {
+						if (item.id == e[i]) {
+							this.cityname.push(item.name)
+						}
+					});
+				}
+
+			},
+			handIcon() {
+				for (let i = 0; i < this.cityIdlist.length; i++) {
+					this.cityIdlisto.push(this.cityIdlist[i])
+				}
+				for (let i = 0; i < this.cityname.length; i++) {
+					this.citynameto.push(this.cityname[i])
+				}
+				this.$emit('handEnd', this.cityIdlisto.join(","));
+				this.$emit('handCityName', this.citynameto.join(","));
 				this.$emit('companyId', JSON.parse(uni.getStorageSync('userInfo')).companyId);
+				this.$emit('close');
 			},
 			handcache() { //缓存数据
 				let obj = {
@@ -163,35 +186,33 @@
 			},
 			handcoo(val, v) {
 				//点击下面的选项;
-				
-				if (v.i == 0) {
-					if (this.one !== v.name) {
-						this.two = this.three = '';
-					}
-					this.one = v.name;
-					this.oneindex = val; //取消选中下个下标选中的问题
-					this.list = this.allList.second2[v.name];
-				} else if (v.i == 1) {
-					this.two = v.name;
-					this.companyId = v.companyId; //缓存数据
-					this.projectId = v.projectId;
-					this.cooindex = this.threeindex = val;
-					console.error(v);
-					console.error(val);
-					this.$emit('handEnd', v);
-				
-					// this.$emit('companyId', JSON.parse(uni.getStorageSync('userInfo')).companyId);
-					// this.twoindex = val;
-					// this.handByCompanyName();
-				} else if (v.i == 2) {
-					this.three = v.name;
-					console.error(this.three);
+				if (this.one !== v.name.name) {
+					this.two = this.three = '';
 				}
+				this.one = v.name.name;
+				this.oneindex = val;
+				for (const key in this.allList.second) {
+					if (v.name.name === key) {
+						this.citylist = this.allList.second[key]
+					}
+				}
+				console.log(this.citylist)
+				this.citylist.forEach(item => {
+					this.$set(item,'disabled',false)
+				});
+				if(this.selected){
+					console.log(this.selected,'----------------------------------------------------')
+					for (let i = 0; i < this.selected.length; i++) {
+						this.citylist.forEach(item => {
+							if(this.selected[i]===item.id){
+								item.disabled=true
+							}
+						});
+					}
+				}
+				console.log(this.citylist)
 			},
 			handtolower() {},
-			handIcon() {
-				this.$emit('close');
-			},
 			handByCompanyName() {
 				//项目数据
 				this.$http('/lvxin/getCompanyProjectByCompanyName', 'POST', {
@@ -214,7 +235,7 @@
 			handSelectData() {
 				//shujui  两级
 				this.$http(
-						'/lvxin/getCompanySelectDataNew',
+						'/lvxin/getFileNotifyCompanySelectDataNew',
 						'GET', {
 							companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 						},
@@ -222,14 +243,13 @@
 					)
 					.then(res => {
 						if (res.code == 0) {
-							console.log("data",res)
-							
+							console.log("data", res)
 							res.data.first1 = [];
 							res.data.second2 = [];
 							res.data.first.forEach(val => {
 								let obj = {};
 								obj.name = val;
-				
+
 								obj.i = 0;
 								res.data.first1.push(obj);
 							});
@@ -238,7 +258,7 @@
 								res.data.second[i].forEach(val => {
 									let obj = {};
 									obj.name = val.name;
-									obj.id=val.id;
+									obj.id = val.id;
 									obj.i = 1;
 									res.data.second2[i].push(obj);
 								});
@@ -256,12 +276,13 @@
 </script>
 <style lang="less" scoped>
 	.mypicker {
-		/deep/.u-checkbox-group--row{
+		/deep/.u-checkbox-group--row {
 			display: block;
 			padding-bottom: 30upx;
-			.u-checkbox-label--right{
+
+			.u-checkbox-label--right {
 				margin-bottom: 30upx;
-				
+
 				// .uni-text{
 				// 	color: #333333;
 				// 	span{
@@ -270,6 +291,7 @@
 				// }
 			}
 		}
+
 		.titles {
 			position: relative;
 			padding: 40upx 0;

@@ -121,7 +121,7 @@ export default {
 			.left-1 {
 				height: 100upx;
 				line-height: 100upx;
-				font-size: 32upx;
+				font-size: 30upx;
 				font-family: PingFang SC;
 				font-weight: bold;
 				color: #333333;
@@ -139,10 +139,12 @@ export default {
 
 			.right-scroll {
 				height: 50vh;
+				font-size:28upx;
+				// padding: ;
 
 				.gg {
 					padding: 0 40upx;
-					height: 100upx;
+					height: 68upx;
 					line-height: 100upx;
 					overflow: hidden;
 					white-space: nowrap;

@@ -5,8 +5,11 @@
 			<view class="card" v-for="(item,index) in dataList" :key='index' @click="navgetDetail(item)">
 				<view class="card_top">
 					<text class="theme">{{item.title}}</text>
-					<text class="read" v-if="item.status=='1'">已发布</text>
-					<text class="read" v-if="item.status=='0'">未发布</text>
+					<text class="read" v-if="item.statusText=='未报送' || item.statusText=='未读'" style="color: #ff0000;">{{item.statusText}}</text>
+					<text class="read" v-if="item.statusText=='已报送'" style="color: #11B38C;">{{item.statusText}}</text>
+					<text class="read" v-if="item.statusText=='已读'" style="color: #666666;">{{item.statusText}}</text>
+				<!-- 	<text class="read" v-if="item.status=='1'">已发布</text>
+					<text class="read" v-if="item.status=='0'">未发布</text> -->
 				</view>
 				<view class="card_content">
 					<rich-text :nodes="item.content"></rich-text>
@@ -20,7 +23,7 @@
 		<view v-else>
 			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
 		</view>
-		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
+		<!-- <image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image> -->
 	</view>
 </template>
 
@@ -57,6 +60,7 @@
 		},
 		onShow() {
 			this.getDataList()
+			// this.getDataListTwo()
 		},
 		methods: {
 			leftClick() {
@@ -78,11 +82,49 @@
 				});
 			},
 			// 获取数据列表
+			// getDataList() {
+			// 	uni.showLoading({
+			// 		title: '加载中',
+			// 	});
+			// 	this.$http('/filenotice/page', "GET", this.List, false).then(res => {
+			// 			uni.hideLoading();
+			// 			if (res.code == 0) {
+			// 				if (this.List.page > res.page.totalPage) {
+			// 					uni.showToast({
+			// 						title: '已到最后一页',
+			// 						duration: 1500
+			// 					});
+			// 					return
+			// 				}
+			// 				// this.List.page++;
+			// 				this.dataList = this.dataList.concat(res.page.list);
+			// 				const dataarr = this.getCurrentTime()
+			// 				this.dataList.forEach(item => {
+			// 					let zuo = this.aa()
+			// 					if (item.statusTime.substr(0, 4) === dataarr[0] && item.statusTime.substr(
+			// 							5, 2) === dataarr[1] && item.statusTime.substr(8, 2) === dataarr[
+			// 							2]) {
+			// 						item.statusTime = item.statusTime.substr(14, 5)
+			// 					} else if (item.statusTime.substr(0, 4) === dataarr[0] && item.statusTime
+			// 						.substr(5, 2) === dataarr[1]) {
+			// 						if (item.statusTime.substr(9, 1) === zuo[0].substr(2, 1)) {
+			// 							item.statusTime = '昨天'
+			// 						}
+			// 					}
+			// 				});
+			// 				// }
+			// 				this.totalPage ++;
+			// 			}
+			// 		})
+			// 		.catch(err => {
+			// 			console.log(err)
+			// 		})
+			// },
 			getDataList() {
 				uni.showLoading({
 					title: '加载中',
 				});
-				this.$http('/filenotice/page', "GET", this.List, false).then(res => {
+				this.$http(`/app/fileNotice/getReceivePage`, "POST", false).then(res => {
 						uni.hideLoading();
 						if (res.code == 0) {
 							if (this.List.page > res.page.totalPage) {
@@ -183,7 +225,7 @@
 
 			.card_content {
 				margin-top: 25upx;
-				text-indent: 80upx;
+				// text-indent: 80upx;
 				line-height: 42upx;
 				font-size: 28upx;
 				color: #666666;

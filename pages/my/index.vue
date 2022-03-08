@@ -496,7 +496,7 @@ export default {
 
 .info {
 	display: flex;
-	height: 128upx;
+	height: 138upx;
 	position: relative;
 	background-color: #ffffff;
 	margin-top: 20upx;

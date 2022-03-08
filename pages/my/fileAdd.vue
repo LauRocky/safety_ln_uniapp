@@ -41,7 +41,7 @@
 					placeholder="请选择截止时间" border="none"></u--input>
 				<u-icon slot="right" name="arrow-right" color="#5F5F5F"></u-icon>
 			</u-form-item>
-			<u-form-item class="form-item" prop="name" @click="showcompanyList = true" borderBottom>
+			<u-form-item class="form-item" prop="name" @click="navcompanyList" borderBottom>
 				<view class="add-1">
 					<image class="add-imgs" src="../../static/add/newUnitLeader.png" mode=""></image>
 					<view class="add-title">签阅公司</view>
@@ -67,9 +67,22 @@
 				<u-tag v-for="(item,index) in userAdd.fileList" :key='index' :text="item.name" size="mini" closable
 					:show="close1" @close="close(item,index)"></u-tag>
 
+				<view class="" style="display: flex;flex-wrap: wrap;">
+					<view class="fileimg" v-if="showfilelist">
+						<!-- <image v-for="(item,index) in userAdd.fileList" :key='index' :src="item.url" mode="" ></image> -->
+						<u-album :urls="fileListimgs" style="width: 200upx; height: 200upx;"></u-album>
+					</view>
+					
+				</view>
+				<l-file ref="lFile" :logo="logo" @up-success="onSuccess"></l-file>
 				<view class="fileimgadd" @click="showfileimg = true">
 					<view class="uploadfile">+</view>
 				</view>
+				
+				<!-- <view class="fileimgadd" @click="onUpload" >
+					<view class="uploadfile">+</view>
+				</view>
+				<l-file ref="lFile" :logo="logo" @up-success="onSuccess"></l-file> -->
 				<!-- <uploadImg class="uploadImg" ref="uploadImg" :mode="imgList" @chooseFile="chooseFile"
 					@imgDelete="imgDelete" :control="control" :columnNum="columnNum" /> -->
 			</view>
@@ -79,18 +92,20 @@
 		</u-datetime-picker>
 		<describe :showD="showtitle" @closeD="showtitle = false" @handEndD="handEndZ" ref="a1">文件主题</describe>
 		<describe :showD="showfileNo" @closeD="showfileNo = false" @handEndD="handEndshowfileNo" ref="a2">文件号</describe>
-		<signRead ref="signRead" :show="showcompanyList" @close="showcompanyList = false" @handEnd="handEndcompanyList"
-			@companyId='companyId' />
-		<describe :showD="showcontent" @closeD="showcontent = false" @handEndD="handEndshowcontent" ref="a3">文件内容</describe>
-		<enclosure :showl="showfileimg" :fileList='userAdd.fileList' @closeL="showfileimg = false"
+		<signRead ref="signRead" :show="showcompanyList" @close="showcompanyList = false" @handCityName='handCityName'
+			@handEnd="handEndcompanyList" @companyId='companyId' />
+		<describe :showD="showcontent" @closeD="showcontent = false" @handEndD="handEndshowcontent" ref="a3">文件内容
+		</describe>
+		<enclosure :showl="showfileimg" v-if="showfileimg" @closeL="showfileimg = false"
 			@successfile='successfile' @handEndD="handEndshowshowfileimg"></enclosure>
+			<!-- :fileList='userAdd.fileList' -->
 		<u-button type="success" text="保存草稿" @click="rightcilck('0')" color="#11B38C" class="button"></u-button>
 	</view>
 </template>
 <script>
 	import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 	import describe from '../../components/dangerList/describe.vue';
-	import signRead from '../../components/my/signRead.vue';
+	import signRead from '../../components/my/signRead2.vue';
 	import uploadImg from '../../components/xiaohuang-uploadImg/uploadImg.vue';
 	import enclosure from '../../components/my/enclosure.vue';
 	import {
@@ -108,6 +123,7 @@
 		},
 		data() {
 			return {
+				logo: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbpic.588ku.com%2Felement_origin_min_pic%2F00%2F00%2F07%2F155788a6d8a5c42.jpg&refer=http%3A%2F%2Fbpic.588ku.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619847627&t=2da40b583002205c204d980b54b35040',
 				valueData: Number(new Date()),
 				control: true, //上传图片变量
 				columnNum: 4,
@@ -127,7 +143,7 @@
 					title: '',
 					fileNo: '',
 					feedback: 0,
-					fileNoticeId:0,
+					fileNoticeId: 0,
 					feedbackExpireTime: '',
 					fileList: [],
 					companyIds: '',
@@ -143,14 +159,46 @@
 						trigger: ['blur', 'change']
 					}],
 				},
+				showfilelist: false,
+				fileListimgs: [],
 			};
 		},
-		onLoad(v){
-			if(v.id){
+		onLoad(v) {
+			if (v.id) {
 				this.getDetailList(v.id)
 			}
 		},
 		methods: {
+			/* 上传 */
+			onUpload() {
+				this.$refs.lFile.upload({
+					// #ifdef APP-PLUS
+					//（app端必传）nvue页面使用时请查阅nvue获取当前webview的api，当前示例为vue窗口
+					currentWebview: this.$mp.page.$getAppWebview(),
+					// #endif
+					//替换为你的上传接口地址
+					url: BASE_URL + '/upload/file',
+					// 服务端接收附件的key
+					name: 'file',
+					//根据你接口需求自定义 (优先不传content-type,安卓端无法收到参数再传)
+					header: {
+						'token': uni.getStorageSync('token'),
+					},
+				});
+			},
+			onSuccess(res) {
+				// console.log('上传成功回调', JSON.stringify(res));
+				let uploadFile = {}
+				uploadFile.url = res.data.data.file_full_url
+				uploadFile.name = res.data.data.name
+				uploadFile.fileImages = res.data.data.file_images
+				this.fileList.push(uploadFile)
+				uni.showToast({
+					title: res.data.data.name,
+					icon: 'none'
+				})
+				this.$emit('successfile', this.fileList)
+			},
 			// 文件主题
 			handEndZ(v) {
 				//要求
@@ -168,12 +216,9 @@
 			},
 			// 报送截止时间
 			cancel(e) {
-				console.log(e)
 				this.feedbackExpireTime = false
 			},
 			confirm(e) {
-				console.log(this.valueData)
-				console.log(e)
 				var data = new Date().getTime();
 				if (data > e.value) {
 					uni.showToast({
@@ -184,25 +229,27 @@
 				} else {
 					var d = new Date(e.value);
 					this.userAdd.feedbackExpireTime = this.dateToStr(d)
-					console.log(this.userAdd.feedbackExpireTime)
 					this.feedbackExpireTime = false
 				}
 
 			},
 			// 签约公司
+			navcompanyList(){
+				this.showcompanyList=true
+				console.log(this.userAdd.companyIds)
+				this.$refs.signRead.init(this.userAdd.companyIds)
+			},
 			handEndcompanyList(v) {
-				console.error(v);
-				let names=v.map(e=>{return e.name});
-				let ids=v.map(e=>{return e.id});
-				this.userAdd.companyList = names.join(",");
-				this.userAdd.companyIds=ids.join(',');
-				console.error(this.userAdd);
-				// this.showcompanyList = false
+				console.log(v)
+				this.userAdd.companyIds = v // 所选择签约公司id
+			},
+			// 签约公司名称vv
+			handCityName(v) {
+				console.log(v)
+				this.userAdd.companyList = v // 所选择签约公司名称
 			},
 			companyId(v) {
-				// console.log(v)
-				// this.userAdd.companyId = v
-				// this.userAdd.companyIds = v
+				this.userAdd.companyId = v
 			},
 			// 文件内容
 			handEndshowcontent(v) {
@@ -215,11 +262,15 @@
 			// 获取上传的附件
 			successfile(data) {
 				console.log(data)
-				this.userAdd.fileList = data
+				this.showfilelist = true
+				data.forEach(item => {
+					this.fileListimgs.push(item.url)
+					this.userAdd.fileList.push(item)
+				});
+				this.showfileimg = false
 			},
 			// 删除附件
 			close(v, index) {
-				console.log(v)
 				this.userAdd.fileList.splice(index, 1)
 			},
 			// 添加文件
@@ -232,7 +283,7 @@
 				} else {
 					this.userAdd.feedback = 0
 				}
-				if(this.userAdd.id ===0){
+				if (this.userAdd.id === 0) {
 					// this.userAdd.companyIds = this.userAdd.companyList.join(',')
 					this.$http('/filenotice/save', 'POST', this.userAdd, false)
 						.then(res => {
@@ -249,18 +300,18 @@
 									// 	delta: 1
 									// });
 								}, 1500);
-							}else{
-							uni.showToast({
-								title: '创建失败，请稍后重试。',
-								duration: 1500
-							});	
+							} else {
+								uni.showToast({
+									title: '创建失败，请稍后重试。',
+									duration: 1500
+								});
 							}
 						})
 						.catch(err => {
 							console.log(err);
 						});
-				}else{
-					this.userAdd.fileNoticeId=0
+				} else {
+					this.userAdd.fileNoticeId = 0
 					this.$http('/filenotice/update', 'POST', this.userAdd, false)
 						.then(res => {
 							if (res.code == 0) {
@@ -297,26 +348,24 @@
 			// 编辑数据
 			// 获取数据列表
 			getDetailList(id) {
-				console.log(id,'---------------')
 				uni.showLoading({
 					title: '加载中',
 				});
 				this.$http(`/filenotice/get/${id}`, "GET", false).then(res => {
 						uni.hideLoading();
-							console.error("123",res);
 						if (res.code == 0) {
 							this.userAdd = res.data;
-							this.userAdd.companyList=this.userAdd.companyName;
+							this.userAdd.companyList = this.userAdd.companyName;
 							this.$refs.a1.init(this.userAdd.title);
 							this.$refs.a2.init(this.userAdd.fileNo);
 							this.$refs.a3.init(this.userAdd.content);
 							this.$refs.signRead.init(this.userAdd.companyIds.split(","))
-							if(this.userAdd.feedback===0){
-								this.feedbackTwo=false
-							}else{
-								this.feedbackTwo=true
+							if (this.userAdd.feedback === 0) {
+								this.feedbackTwo = false
+							} else {
+								this.feedbackTwo = true
 							}
-						}else{
+						} else {
 							uni.showToast({
 								title: res.data.msg,
 								icon: 'none'
@@ -470,8 +519,30 @@
 				line-height: 170upx;
 				border: 1px solid #666666;
 				color: #666666;
-				margin: 20upx 20upx;
+				margin: 20upx 0;
 				opacity: 0.4;
+			}
+		}
+
+		
+
+		.fileimg {
+			display: flex;
+			flex-wrap: wrap;
+
+			image {
+				width: 162upx !important;
+				height: 170upx !important;
+				
+			}
+			/deep/.u-album__row{
+				display: flex;
+				flex-wrap: nowrap;
+			}
+			/deep/ uni-image {
+				width: 162upx !important;
+				height: 170upx !important;
+				padding: 20upx 20upx 20upx 0;
 			}
 		}
 	}
