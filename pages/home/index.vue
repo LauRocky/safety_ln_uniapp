@@ -202,6 +202,9 @@ export default {
 	},
 	onShow() {
 		this.monitorMessage();
+		if (this.status == 2) {
+			this.handmsglist();
+		}
 	},
 	mounted() {},
 	methods: {
