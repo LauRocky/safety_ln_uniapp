@@ -84,13 +84,7 @@
                 "push" : {
                     "unipush" : {}
                 },
-                "statics" : {},
-                "maps" : {
-                    "amap" : {
-                        "appkey_ios" : "",
-                        "appkey_android" : ""
-                    }
-                }
+                "statics" : {}
             },
             "screenOrientation" : [
                 "portrait-primary",

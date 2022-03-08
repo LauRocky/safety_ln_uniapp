@@ -123,7 +123,7 @@ export default {
 			uni.showLoading({
 				title: '跳转中'
 			});
-			_handIds(val.eventId);
+			_handIds(val.id);
 
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
