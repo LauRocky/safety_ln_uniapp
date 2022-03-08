@@ -99,6 +99,11 @@ export default {
 			this.handquerylist();
 		}
 	},
+	onShow() {
+		 if (this.status == 2) {
+			this.handmsglist();
+		} 
+	},
 	//组件生命周期
 	created() {},
 	mounted() {},
@@ -121,8 +126,7 @@ export default {
 			uni.showLoading({
 				title: '跳转中'
 			});
-			_handIds(val.eventId);
-
+			_handIds(val.id);
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
 					uni.hideLoading();

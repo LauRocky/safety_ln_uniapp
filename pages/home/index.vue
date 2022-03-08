@@ -202,6 +202,9 @@ export default {
 	},
 	onShow() {
 		this.monitorMessage();
+		if (this.status == 2) {
+			this.handmsglist();
+		}
 	},
 	mounted() {},
 	methods: {
@@ -323,7 +326,7 @@ export default {
 			uni.showLoading({
 				title: '跳转中'
 			});
-			_handIds(val.eventId);
+			_handIds(val.id);
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
 					uni.hideLoading();
