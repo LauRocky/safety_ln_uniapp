@@ -212,9 +212,13 @@ export default {
 					if (res.code == 0) {
 						if (res.data.problemUnread) {
 							this.list1[1].badge.isDot = true; //获取隐患消息  红点
+						} else {
+							this.list1[1].badge.isDot = false;
 						}
 						if (res.data.nodeCount) {
 							this.list1[0].badge.isDot = true; //获取项目消息  红点
+						} else {
+							this.list1[0].badge.isDot = false;
 						}
 						if (res.data.problemUnread || res.data.fileNoticeUnread) {
 							uni.showTabBarRedDot({
