@@ -193,8 +193,9 @@ export default {
 						obj = this.dictLsit.filter(item => this.problem.problemType == item.code); //判断安全等级对比
 						this.problem.problemType2 = obj[0].value;
 						if (this.problem.status == -1) {
-							var oDate2 = new Date(this.problem.expireTime); //时间状态判断
-							if (!myDate.getTime() > oDate2.getTime()) {
+							var oDate2 = new Date(this.problem.expireTime.replace(/-/g, '/'));
+							oDate2 = new Date(oDate2); //时间状态判断
+							if (myDate.getTime() > oDate2.getTime()) {
 								this.problem.statusTime = 1; //超期
 							} else {
 								this.problem.statusTime = 2; //未超期

@@ -10,12 +10,12 @@
 							<view class="fullname">
 								{{ user.fullname }}
 							</view>
-						<view class="bot-1">
-							<view class="">
-								<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
+							<view class="bot-1">
+								<view class="">
+									<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
+								</view>
+								<view class="bot-w">创建时间：{{dataList.createTime}}</view>
 							</view>
-							<view class="bot-w">创建时间：{{dataList.createTime}}</view>
-						</view>
 						</view>
 						<view class="title-1">{{ deptNames }}</view>
 					</view>
@@ -144,6 +144,8 @@
 					status: '1',
 					limit: 999
 				},
+				showurl:false,
+				fileshowurl:'',
 			};
 		},
 		onLoad(val) {
@@ -198,16 +200,17 @@
 				this.$http(`/filenotice/get/${this.id}`, "GET", false).then(res => {
 						uni.hideLoading();
 						if (res.code == 0) {
-							if(res.data){
+							if (res.data) {
 								this.dataList = res.data;
 								this.rightText = this.dataList.createBy === this.user.userId ? "编辑" : null;
 								this.needFeedback = this.dataList.status === '1' && this.dataList.feedback === '1' &&
-									this.dataList.companyIds.indexOf(this.user.companyId) > -1 && this.user.jobId === 3;
+									this.dataList.companyIds.indexOf(this.user.companyId) > -1 && this.user.jobId ===
+									3;
 								this.num = this.dataList.fileList.length;
-								this.name=this.dataList.title;
+								this.name = this.dataList.title;
 								this.dataList.content = this.dataList.content.replace(/\<p/gi, '<p class="conspan"', );
 							}
-							
+
 						}
 					})
 					.catch(err => {
@@ -221,13 +224,13 @@
 				});
 			},
 			xiazai(url) {
+				console.log(url)
 				const downloadTask = uni.downloadFile({
 					url: url, //仅为示例，并非真实的资源
 					success: (res) => {
 						if (res.statusCode === 200) {
 							console.log('下载成功');
 						}
-
 						console.log(res.tempFilePath)
 						//文件保存到本地
 						// var tempFilePaths = res.tempFilePaths;
@@ -260,7 +263,6 @@
 					}
 					// this.dd = res.tempFilePath;
 					// console.log(res.tempFilePath);
-
 				});
 
 				downloadTask.onProgressUpdate((res) => {
@@ -342,33 +344,35 @@
 						font-family: PingFang SC;
 						font-weight: bold;
 						color: #333333;
-						.fullname{
+
+						.fullname {
 							font-size: 32upx;
 							font-family: PingFang SC;
 							font-weight: bold;
 							color: #333333;
 							margin-right: 20upx;
 						}
+
 						.bot-1 {
 							display: flex;
 							font-size: 28upx;
 							font-family: PingFang SC;
 							font-weight: 500;
 							color: #666666;
-						
+
 							.bot-imgs {
 								margin-right: 10upx;
 								width: 40upx;
 								height: 40upx;
 							}
-						
+
 							.bot-flex {
 								margin-top: 4upx;
 							}
-						
+
 							.bot-w {
 								width: 100%;
-						
+
 								.save {
 									font-size: 26upx;
 									font-family: PingFang SC;
