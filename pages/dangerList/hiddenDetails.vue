@@ -17,7 +17,7 @@
 			</view>
 			<view class="main">
 				<view class="main-a">
-					{{ problem.problemDesc }},请
+					{{ problem.problemDesc }}请
 					<text style="color: #3e8ef7">@{{ problem.problemSolverDisplay }}</text>
 					{{ problem.problemRequire }}
 				</view>
