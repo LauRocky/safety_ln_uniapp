@@ -202,6 +202,13 @@ export default {
 	},
 	onShow() {
 		this.monitorMessage();
+		if (this.status == 1) {
+			this.handbacklog();
+		} else if (this.status == 2) {
+			this.handmsglist();
+		} else if (this.status == 3) {
+			this.handquerylist();
+		}
 	},
 	mounted() {},
 	methods: {

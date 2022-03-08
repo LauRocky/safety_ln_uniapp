@@ -99,6 +99,8 @@ export default {
 			this.handquerylist();
 		}
 	},
+	onShow() {
+	},
 	//组件生命周期
 	created() {},
 	mounted() {},
