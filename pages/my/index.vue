@@ -48,7 +48,7 @@
 					<view class="image-text">监控预警</view>
 				</view>
 				<view class="image-item" @click="fileNotification" style="position: relative;">
-					<!-- <view class="box"><u-badge numberType="overflow" type="error" max="99" :value="Todo"></u-badge></view> -->
+					<view class="box"><u-badge numberType="overflow" type="error" max="99" :value="fileNoticeUnread"></u-badge></view>
 					<image class="image-imgs" src="../../static/my/documentsnew.png" mode=""></image>
 					<view class="image-text">文件通知</view>
 				</view>
@@ -140,7 +140,7 @@ export default {
 						this.Todo = res.data.todoUnread;
 						this.problemUnread = res.data.problemUnread;
 						this.fileNoticeUnread = res.data.fileNoticeUnread;
-						if (res.data.todoUnread || res.data.problemUnread || res.data.fileNoticeUnread) {
+						if (res.data.problemUnread || res.data.fileNoticeUnread) {
 							uni.showTabBarRedDot({
 								index: 4
 							});
@@ -310,9 +310,11 @@ export default {
 				success: function(res) {
 					if (res.confirm) {
 						uni.clearStorageSync();
+						// #ifdef APP-PLUS
 						let tool = new igexinTool(); //解绑别名
 						let string = App.globalData.Apushid;
 						tool.unbindAlias(string, App.globalData.cid);
+						// #endif
 						setTimeout(() => {
 							uni.reLaunch({
 								url: '/pages/login/index'

@@ -104,18 +104,21 @@
 				</u-checkbox-group>
 			</view>
 		</u-popup>
+		<loading :visible="visible" />
 	</view>
 </template>
 
 <script>
 import { scanCode, is_iOS } from '../../utils/utils.js';
-import { monitoring, alerts, monitorMessage } from '../../utils/api.js';
+import { monitoring, alerts, monitorMessage, _handIds } from '../../utils/api.js';
 import barecharts from '../../components/home/barecharts.vue';
+import loading from '../../components/loading/loading.vue';
 import AppUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update';
 let App = getApp();
 export default {
 	components: {
-		barecharts
+		barecharts,
+		loading
 	},
 	data() {
 		return {
@@ -187,7 +190,8 @@ export default {
 				}
 			],
 			showScanLogin: false,
-			showlink: false
+			showlink: false,
+			visible: false
 		};
 	},
 	onLoad() {
@@ -207,9 +211,12 @@ export default {
 				.then(res => {
 					if (res.code == 0) {
 						if (res.data.problemUnread) {
-							this.list1[1].badge.isDot = true;
+							this.list1[1].badge.isDot = true; //获取隐患消息  红点
 						}
-						if (res.data.todoUnread || res.data.problemUnread || res.data.fileNoticeUnread) {
+						if (res.data.nodeCount) {
+							this.list1[0].badge.isDot = true; //获取项目消息  红点
+						}
+						if (res.data.todoUnread || res.data.problemUnread || res.data.fileNoticeUnread || res.data.nodeCount) {
 							uni.showTabBarRedDot({
 								index: 4
 							});
@@ -312,6 +319,7 @@ export default {
 			uni.showLoading({
 				title: '跳转中'
 			});
+			_handIds(val.eventId);
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
 					uni.hideLoading();
@@ -409,10 +417,11 @@ export default {
 		},
 		handbacklog() {
 			//项目预警
-			let url = '/project/plan/realPage?companyId=' + JSON.parse(uni.getStorageSync('userInfo')).companyId;
+			this.visible = true;
+			let url = '/app/project/getNodePage?companyId=' + JSON.parse(uni.getStorageSync('userInfo')).companyId;
 			this.$http(
 				url,
-				'GET',
+				'POST',
 				{
 					page: 1,
 					limit: 6
@@ -420,23 +429,13 @@ export default {
 				false
 			)
 				.then(res => {
-					uni.hideLoading();
+					this.visible = false;
 					if (res.code == 0) {
-						let list = [];
 						res.page.list.forEach(val => {
-							val.nodes.forEach(e => {
-								let item = {};
-								item.title = val.projectName + e.taskName;
-								item.time = val.createTime.split(' ')[0];
-								item.projectId = val.projectId;
-								item.projectName = val.projectName;
-								item.companyId = val.companyId;
-								list.push(item);
-							});
+							val.title = val.projectName + val.taskName;
 						});
-						this.list1[0].badge.isDot = list.length ? true : false; //获取最新得消息  红点
-						this.totalCount = list.length;
-						this.indexList = list.splice(0, 6);
+						this.indexList = res.page.list;
+						this.totalCount = res.page.totalCount;
 					}
 				})
 				.catch(err => {
@@ -445,12 +444,10 @@ export default {
 		},
 		handmsglist() {
 			//隐患通知
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.visible = true;
 			this.$http('/app/problem/msg/page', 'POST', this.backlog, false)
 				.then(res => {
-					uni.hideLoading();
+					this.visible = false;
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
 							val.title = val.content;
@@ -466,12 +463,10 @@ export default {
 		},
 		handquerylist() {
 			//公告
-			uni.showLoading({
-				title: '加载中'
-			});
+			this.visible = true;
 			this.$http('/news/all/list', 'GET', this.receiver, false)
 				.then(res => {
-					uni.hideLoading();
+					this.visible = false;
 					if (res.code == 0) {
 						res.page.list.forEach(val => {
 							val.title = val.newsName;

@@ -27,7 +27,7 @@
 				<text class="clip-t">{{ time < 10 ? '0' + time : time }}</text>
 			</div>
 		</div>
-		<div class="mask-pos" v-else>
+		<view class="mask-pos" v-else>
 			<!-- 全屏展示 -->
 			<image @click="exitfull_video" class="images3" src="../../static/video/xiao.png" mode=""></image>
 			<image @click="capturePicture(false)" class="images3" src="../../static/video/jiandao.png" mode=""></image>
@@ -36,7 +36,7 @@
 				<image class="clip-img1" src="../../static/video/yuan.png" mode=""></image>
 				<text class="clip-t1">{{ time < 10 ? '0' + time : time }}</text>
 			</div>
-		</div>
+		</view>
 		<div class="middle">
 			<div class="middle-content">
 				<image @touchstart="down(1)" @touchend="up(1)" class="content-img" src="../../static/video/shadowon.png" mode=""></image>
@@ -121,7 +121,11 @@ export default {
 		this.videodetail();
 	},
 	onShow() {
+		// #ifdef APP-PLUS
 		plus.screen.lockOrientation('portrait-primary');
+		// #endif
+	},
+	onUnload() {
 	},
 	created() {},
 	mounted() {},
@@ -439,7 +443,8 @@ export default {
 				}
 			});
 		},
-		handimgUpdata(img) { //封面上传
+		handimgUpdata(img) {
+			//封面上传
 			request(
 				'/updateCameraImage',
 				'POST',
@@ -450,7 +455,7 @@ export default {
 				false
 			)
 				.then(res => {
-					console.log(res,']]]]')
+					console.log(res, ']]]]');
 				})
 				.catch(err => {
 					console.log(err);
@@ -470,6 +475,7 @@ export default {
 		 * 退出全屏
 		 * */
 		exitfull_video() {
+			/* plus.screen.unlockOrientation(); */
 			plus.screen.lockOrientation('portrait-primary');
 			setTimeout(() => {
 				this.full = 0;
@@ -796,7 +802,7 @@ export default {
 .clip-yuan {
 	width: 20rpx;
 	height: 20rpx;
-	background: red($color: #b61e11);
+	background: #b61e11;
 }
 
 .loading-text {

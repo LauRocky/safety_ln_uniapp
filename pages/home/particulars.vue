@@ -52,6 +52,7 @@
 <script>
 import TwoNavbar from '../../components/TwoNavbar/TwoNavbar.vue';
 import { removeTag } from '../../utils/utils.js';
+import { _handIds } from '../../utils/api.js';
 export default {
 	name: 'particulars',
 	props: [],
@@ -65,7 +66,7 @@ export default {
 			indexList: [],
 			project: {
 				page: 1,
-				limit: 1000,
+				limit: 10,
 				projectName: '',
 				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
 			},
@@ -120,9 +121,7 @@ export default {
 			uni.showLoading({
 				title: '跳转中'
 			});
-			this.$http(`/msg/read`, `POST`, { ids: [val.eventId] }, false).then(res => {
-				console.error('处理隐患待办成功', res);
-			});
+			_handIds(val.eventId);
 
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
@@ -157,27 +156,19 @@ export default {
 			uni.showLoading({
 				title: '加载中'
 			});
-			this.$http('project/plan/realPage', 'POST', this.project, false)
+			this.$http('/app/project/getNodePage', 'POST', this.project, false)
 				.then(res => {
 					uni.hideLoading();
+
 					if (res.code == 0) {
-						this.project.page++;
-						let list = [];
-						res.page.list.forEach(val => {
-							val.nodes.forEach(e => {
-								let item = {};
-								item.title = val.projectName.substr(0, 1);
-								item.time = val.createTime.split(' ')[0];
-								item.taskName = e.taskName;
-								item.expireStatus = e.expireStatus;
-								item.projectId = val.projectId;
-								item.projectName = val.projectName;
-								item.companyId = val.companyId;
-								list.push(item);
+						if (this.indexList.length < res.page.totalCount) {
+							this.project.page++;
+							res.page.list.forEach(val => {
+								val.time = val.projectCreateTime.split(' ')[0];
 							});
-						});
-						this.indexList = list;
-						this.totalCount = list.length;
+						}
+						this.indexList = this.indexList.concat(res.page.list);
+						this.totalCount = res.page.totalCount;
 					}
 				})
 				.catch(err => {
@@ -207,7 +198,6 @@ export default {
 									val.expireStatus = '';
 									val.status = '';
 								}
-
 								val.taskName = val.content;
 								val.time = val.createTime.split(' ')[0];
 							});
@@ -234,9 +224,7 @@ export default {
 							res.page.list.forEach(val => {
 								val.title = val.newsName.substr(0, 1);
 								val.projectName = val.newsName;
-								let list = [];
-								list = val.createTime.split(' ');
-								val.time = list[0];
+								val.time = val.createTime.split(' ')[0];
 								val.content = removeTag(val.newsText);
 							});
 							this.indexList = this.indexList.concat(res.page.list);

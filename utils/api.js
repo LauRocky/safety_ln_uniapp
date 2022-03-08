@@ -24,7 +24,7 @@ export function monitorMessage() {
 	return new request('/app/notify/count', 'POST', {}, false)
 		.then(res => {
 			if (res.code == 0) {
-				if (res.data.todoUnread || res.data.problemUnread || res.data.fileNoticeUnread) {
+				if (res.data.problemUnread || res.data.fileNoticeUnread) {
 					uni.showTabBarRedDot({
 						index: 4
 					});
@@ -39,4 +39,9 @@ export function monitorMessage() {
 			console.log(err);
 		});
 
+}
+export function _handIds(id) {
+	return new request(`/msg/read`, `POST`, {
+		ids: [id]
+	}, false)
 }
