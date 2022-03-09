@@ -12,9 +12,9 @@
 							</view>
 							<view class="bot-1">
 								<view class="">
-									<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
+									<!-- <image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image> -->
 								</view>
-								<view class="bot-w">创建时间：{{dataList.createTime}}</view>
+								<view class="bot-w">{{dataList.createTime}}</view>
 							</view>
 						</view>
 						<view class="title-1">{{ deptNames }}</view>
@@ -87,7 +87,7 @@
 					<view class="">
 						<image class="bot-imgs" src="../../static/danger/shij.png" mode=""></image>
 					</view>
-					<view class="bot-w">报送时间：{{li.feedbackExpireTime}}</view>
+					<view class="bot-w">报送时间：{{li.statusTime}}</view>
 				</view>
 				<view class="bot-1 bot-top">
 					<view class="bot-flex" v-if="li.fileList.length!=0">
