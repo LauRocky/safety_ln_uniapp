@@ -26,7 +26,7 @@
 		<view v-else>
 			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
 		</view>
-		<!-- <image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image> -->
+		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
 	</view>
 </template>
 
@@ -55,14 +55,14 @@
 		},
 		onLoad() {
 			// location.reload()
-			this.getDataList()
+			// this.getDataList()
 		},
 		onReachBottom() {
 			this.List.page++
 			this.getDataList()
 		},
 		onShow() {
-			// this.getDataList()
+			this.getDataList()
 		},
 		methods: {
 			leftClick() {
@@ -154,7 +154,9 @@
 							});
 							// }
 							this.totalPage++;
-						}
+						}else {
+						this.dataList = [];
+					}
 					})
 					.catch(err => {
 						console.log(err)
