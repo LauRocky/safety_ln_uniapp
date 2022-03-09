@@ -26,7 +26,7 @@
 		<view v-else>
 			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
 		</view>
-		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
+		<!-- <image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image> -->
 	</view>
 </template>
 
