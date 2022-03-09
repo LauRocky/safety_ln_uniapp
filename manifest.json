@@ -20,7 +20,8 @@
         /* 模块配置 */
         "modules" : {
             "VideoPlayer" : {},
-            "Push" : {}
+            "Push" : {},
+            "Maps" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -84,7 +85,13 @@
                 "push" : {
                     "unipush" : {}
                 },
-                "statics" : {}
+                "statics" : {},
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "2cce1aa20637ec4e15efdc523b234173",
+                        "appkey_android" : "b3048c161348a3d5c8ae538479bf7347"
+                    }
+                }
             },
             "screenOrientation" : [
                 "portrait-primary",

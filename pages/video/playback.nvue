@@ -549,7 +549,7 @@ export default {
 .clip-yuan {
 	width: 20rpx;
 	height: 20rpx;
-	background: red($color: #b61e11);
+	background: #b61e11;
 }
 
 .dateflex {
