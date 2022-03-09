@@ -51,8 +51,6 @@ export default {
 							type: list[3]
 						};
 					}
-					console.log(userInfo)
-					console.log(userInfo.userId,obj.receiver)
 					if (userInfo && userInfo.userId == obj.receiver) {
 						if (obj.type === 'notify') {
 							if (obj.status == '0') {
@@ -141,6 +139,7 @@ export default {
 		);
 		if (plus.os.name == 'iOS') {
 			//启动页跳转和推送跳转
+			let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
 			let args = plus.runtime.arguments;
 			let code = args ? args.split('//')[1] : '';
 			if (code) {
@@ -159,6 +158,7 @@ export default {
 				plus.navigator.closeSplashscreen();
 			}
 		} else {
+			let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
 			let lxLogin = uni.requireNativePlugin('zhongqian-lvxin-login');
 			lxLogin.getLxCode({}, res => {
 				if (res.code) {
