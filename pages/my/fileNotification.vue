@@ -26,7 +26,7 @@
 		<view v-else>
 			<image class="kong" src="../../static/danger/kong.png" mode=""></image>
 		</view>
-		<!-- <image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image> -->
+		<image class="add" @click="handPush" src="../../static/danger/jia.png" mode=""></image>
 	</view>
 </template>
 
@@ -61,7 +61,9 @@
 			this.List.page++
 			this.getDataList()
 		},
-		onShow() {},
+		onShow() {
+			this.getDataList()
+		},
 		methods: {
 			leftClick() {
 				console.log('leftClick');
