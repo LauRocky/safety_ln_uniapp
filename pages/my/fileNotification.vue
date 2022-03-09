@@ -55,14 +55,14 @@
 		},
 		onLoad() {
 			// location.reload()
-			this.getDataList()
+			// this.getDataList()
 		},
 		onReachBottom() {
 			this.List.page++
 			this.getDataList()
 		},
 		onShow() {
-			// this.getDataList()
+			this.getDataList()
 		},
 		methods: {
 			leftClick() {
@@ -154,7 +154,9 @@
 							});
 							// }
 							this.totalPage++;
-						}
+						}else {
+						this.dataList = [];
+					}
 					})
 					.catch(err => {
 						console.log(err)
