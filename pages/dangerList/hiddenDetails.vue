@@ -128,9 +128,9 @@ export default {
 	onLoad(val) {
 		this.id = val.id;
 		this.userId = JSON.parse(uni.getStorageSync('userInfo')).userId.toString();
+		this.handgETLIST();
 	},
 	onShow() {
-		this.handgETLIST();
 		this.handbacklog();
 		this.getApproveHisList();
 	},
@@ -169,6 +169,7 @@ export default {
 			getDictList('PROBLEMS_LEVEL_TYPE')
 				.then(res => {
 					this.dictLsit = res.dict;
+					
 				})
 				.catch(err => {
 					console.log(err);
@@ -188,9 +189,7 @@ export default {
 						//复核图片
 						res.problem.recheckImages ? (this.problem.recheckImages = res.problem.recheckImages.split('|')) : '';
 						res.problem.recheckTime ? (this.problem.recheckTime2 = res.problem.recheckTime.split(' ')[0]) : '';
-						let obj = {};
-						obj = this.dictLsit.filter(item => this.problem.problemType == item.code); //判断安全等级对比
-						this.problem.problemType2 = obj[0].value;
+						this.problem.problemType2 = this.dictLsit.filter(item => this.problem.assessment == item.code)[0].value; //判断安全等级对比;
 						if (this.problem.status == -1) {
 							var oDate2 = new Date(this.problem.expireTime.replace(/-/g, '/'));
 							oDate2 = new Date(oDate2); //时间状态判断
