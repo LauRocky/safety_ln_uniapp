@@ -30,7 +30,7 @@ export default {
 				page: 1,
 				limit: 20,
 				searchKey: '',
-				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
+				companyId: ''
 			},
 			obj: {}
 		};

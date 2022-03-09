@@ -49,7 +49,7 @@ export default {
 				page:1,
 				searchKey:'',
 				limit:20,
-				companyId: JSON.parse(uni.getStorageSync('userInfo')).companyId
+				companyId: ''
 			},
 			obj:{}
 		};
