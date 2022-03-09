@@ -127,7 +127,6 @@ export default {
 	},
 	onLoad(val) {
 		this.id = val.id;
-		this.status = val.status;
 		this.userId = JSON.parse(uni.getStorageSync('userInfo')).userId.toString();
 	},
 	onShow() {

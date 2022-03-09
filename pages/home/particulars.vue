@@ -125,7 +125,6 @@ export default {
 				title: '跳转中'
 			});
 			_handIds(val.id);
-			console.log(val.id, val.eventId);
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
 					uni.hideLoading();
@@ -171,7 +170,6 @@ export default {
 		},
 		handmsglist() {
 			//隐患通知
-			console.log(this.backlog, '------------');
 			uni.showLoading({
 				title: '正在加载'
 			});
