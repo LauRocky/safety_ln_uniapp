@@ -15,7 +15,7 @@ export default {
 		var pinf = plus.push.getClientInfo();
 		var cid = pinf.clientid; //客户端标识
 		this.globalData.cid = pinf.clientid;
-		let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
+		
 
 		plus.push.addEventListener(
 			'click',
@@ -23,6 +23,7 @@ export default {
 				// {"__UUID__":"androidPushMsg250386936","title":"content","appid":"__UNI__A9A3937","content":"body","payload":{"path":"/pages/dangerList/hiddenDetails?id=710","receiver":"10492","text":"没有","type":"notify"}}
 				// type ： notify=推送 ，需要处理path  alert=弹窗提示 ,显示text的内容
 				console.log('click', msg);
+				let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
 				if (plus.os.name == 'iOS') {
 					var UIApplication = plus.ios.import('UIApplication');
 					var app = UIApplication.sharedApplication();
@@ -136,6 +137,7 @@ export default {
 			},
 			false
 		);
+		let userInfo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')) : '';
 		if (plus.os.name == 'iOS') {
 			//启动页跳转和推送跳转
 			let args = plus.runtime.arguments;
