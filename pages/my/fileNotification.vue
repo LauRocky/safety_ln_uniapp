@@ -61,7 +61,9 @@
 			this.List.page++
 			this.getDataList()
 		},
-		onShow() {},
+		onShow() {
+			// this.getDataList()
+		},
 		methods: {
 			leftClick() {
 				console.log('leftClick');

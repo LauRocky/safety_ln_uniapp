@@ -8,9 +8,9 @@
 						<view class="proname">
 							{{ val.projectName ? val.projectName : '无' }}
 							<view class="float-r" v-show="status == 2">
-								<text v-if="val.status == -1" style="color:#ff0000;">待整改</text>
-								<text v-else-if="val.status == 1" style="color:#ff6c00;">待复核</text>
-								<text v-else-if="val.status == 0" style="color:#11B38C ;">已完成</text>
+								<!-- <text v-if="val.status == -1" style="color:#ff0000;">待整改</text> -->
+								<!-- <text v-if="val.status == 1" style="color:#ff6c00;">待复核</text>
+								<text v-else-if="val.status == 0" style="color:#11B38C ;">已完成</text> -->
 							</view>
 						</view>
 						<view class="tags" v-if="status == 1">
@@ -85,24 +85,22 @@ export default {
 		};
 	},
 	onLoad(val) {
+		this.status = val.status;
 		if (val.status == 1) {
 			this.titles = '项目预警';
-			this.status = 1;
 			this.handbacklog();
-		} else if (val.status == 2) {
-			this.titles = '隐患通知';
-			this.status = 2;
-			this.handmsglist();
 		} else if (val.status == 3) {
 			this.titles = '公告';
-			this.status = 3;
 			this.handquerylist();
 		}
 	},
 	onShow() {
-		 if (this.status == 2) {
+		if (this.status == 2) {
+			this.titles = '隐患通知';
+			this.backlog.page = 1;
+			this.indexList = [];
 			this.handmsglist();
-		} 
+		}
 	},
 	//组件生命周期
 	created() {},
@@ -127,22 +125,14 @@ export default {
 				title: '跳转中'
 			});
 			_handIds(val.id);
+			console.log(val.id, val.eventId);
 			this.$http(`/problems/${val.eventId}`, 'GET', {}, false)
 				.then(res => {
 					uni.hideLoading();
 					if (res.code == 0) {
-						switch (res.problem.status) {
-							case -1:
-								uni.navigateTo({
-									url: `/pages/dangerList/hiddenDetails?id=${res.problem.id}&status=1`
-								});
-								break;
-							case 1:
-								uni.navigateTo({
-									url: `/pages/dangerList/hiddenDetails?id=${res.problem.id}&status=2`
-								});
-								break;
-						}
+						uni.navigateTo({
+							url: `/pages/dangerList/hiddenDetails?id=${res.problem.id}`
+						});
 					}
 				})
 				.catch(err => {
@@ -181,6 +171,7 @@ export default {
 		},
 		handmsglist() {
 			//隐患通知
+			console.log(this.backlog, '------------');
 			uni.showLoading({
 				title: '正在加载'
 			});
@@ -308,14 +299,13 @@ export default {
 						padding-top: 15upx;
 						.times {
 							width: 20vw;
-							font-size: 28upx;
-							font-weight: 500;
-							color: #666666;
+							font-size: 24upx;
 						}
 					}
 				}
 				.tags2 {
 					width: 95vw;
+					color: #666666;
 					.tag-text {
 						padding-top: 20upx;
 						overflow: hidden;
@@ -325,16 +315,10 @@ export default {
 						overflow: hidden;
 						-webkit-box-orient: vertical;
 						font-size: 28upx;
-						font-family: PingFang SC;
-						font-weight: 500;
-						color: #666666;
 					}
 					.times {
 						text-align: right;
-						font-size: 28upx;
-						font-family: PingFang SC;
-						font-weight: 500;
-						color: #666666;
+						font-size: 24upx;
 					}
 				}
 			}

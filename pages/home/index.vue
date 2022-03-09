@@ -331,25 +331,9 @@ export default {
 				.then(res => {
 					uni.hideLoading();
 					if (res.code == 0) {
-						if (!res.problem) {
-							return uni.showToast({
-								icon: 'none',
-								title: '暂无此项目',
-								duration: 1500
-							});
-						}
-						switch (res.problem.status) {
-							case -1:
-								uni.navigateTo({
-									url: `/pages/dangerList/hiddenDetails?id=${res.problem.id}&status=1`
-								});
-								break;
-							case 1:
-								uni.navigateTo({
-									url: `/pages/dangerList/hiddenDetails?id=${res.problem.id}&status=2`
-								});
-								break;
-						}
+						uni.navigateTo({
+							url: `/pages/dangerList/hiddenDetails?id=${res.problem.id}`
+						});
 					}
 				})
 				.catch(err => {
