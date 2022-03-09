@@ -18,7 +18,7 @@
 		<scroll-view class="lists" scroll-y @scrolltolower="handtolower" v-if="numsList.length !== 0">
 			<view class="list-1" v-for="(val, i) in numsList" :key="i" @click="handLsit(val.id)">
 				<view class="list-top">
-					<image class="list-imgs" :src="val.images2" mode=""></image>
+					<image class="list-imgs" :src="val.images2" mode="aspectFill"></image>
 					<view class="list-right">
 						<view class="list-top-1">
 							<view class="top-left">{{ val.problemType2 }}</view>
