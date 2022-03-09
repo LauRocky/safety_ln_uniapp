@@ -128,7 +128,8 @@
 				});
 				this.$http(`/app/fileNotice/getReceivePage`, "POST", false).then(res => {
 						uni.hideLoading();
-						if (res.code == 0) {
+						if (res.code == 0&&res.page) {
+							
 							if (this.List.page > res.page.totalPage) {
 								uni.showToast({
 									title: '已到最后一页',
